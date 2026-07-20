@@ -1,0 +1,27 @@
+[build]
+  # Nitro (preset: netlify) outputs the client bundle to dist/ directly
+  command   = "npm run build"
+  publish   = "dist"
+  # Nitro (preset: netlify) generates the SSR edge function here
+  functions = ".netlify/functions-internal"
+
+[build.environment]
+  # Tell Nitro explicitly to target Netlify (redundant with vite.config but safe)
+  NITRO_PRESET = "netlify"
+  # Use Node 22 (matches Netlify's auto-detected version)
+  NODE_VERSION = "22"
+
+# Redirect all non-static requests to the SSR function so TanStack Router
+# can handle client-side navigation on hard refresh / direct URL access.
+# Nitro packages the function as "server" (server.mjs → /.netlify/functions/server).
+[[redirects]]
+  from   = "/*"
+  to     = "/.netlify/functions/server"
+  status = 200
+  # force=false lets Netlify serve real static files first (JS, CSS, images),
+  # only falling back to SSR for non-matching paths.
+  force  = false
+
+[functions]
+  # Ensure the SSR function uses Node 22
+  node_bundler = "esbuild"

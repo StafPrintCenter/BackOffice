@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { Printer } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -41,11 +40,6 @@ function LoginPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       <div className="hidden lg:flex bg-gradient-hero p-12 text-primary-foreground flex-col justify-between">
-        <div className="inline-flex items-center gap-2 font-display text-xl font-bold">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-ivory text-primary"><Printer className="h-4 w-4" /></span>
-          STAF PRINT CENTER
-        </div>
-
         <div className="flex items-center">
           <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
         </div>

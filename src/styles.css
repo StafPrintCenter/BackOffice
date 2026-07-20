@@ -124,18 +124,49 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
+  * {
+    border-color: var(--color-border);
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
 }
 
-@utility text-balance { text-wrap: balance; }
-@utility bg-gradient-hero { background: var(--gradient-hero); }
-@utility bg-gradient-warm { background: var(--gradient-warm); }
-@utility shadow-elegant { box-shadow: var(--shadow-elegant); }
-@utility shadow-glow { box-shadow: var(--shadow-glow); }
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility bg-gradient-hero {
+  background: var(--gradient-hero);
+}
+
+@utility bg-gradient-warm {
+  background: var(--gradient-warm);
+}
+
+@utility shadow-elegant {
+  box-shadow: var(--shadow-elegant);
+}
+
+@utility shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+@utility bg-grain {
+  background-image:
+    linear-gradient(oklch(0.18 0.02 45 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.18 0.02 45 / 4%) 1px, transparent 1px);
+  background-size: 24px 24px;
+}

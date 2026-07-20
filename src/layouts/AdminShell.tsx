@@ -1,12 +1,11 @@
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import {
-  LayoutDashboard, Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, LogOut,
-  Printer, ChevronLeft, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Inbox, ShieldAlert, Users, CalendarClock,
-} from "lucide-react";
+import { LayoutDashboard, Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, LogOut, Printer, ChevronLeft, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Inbox, ShieldAlert, Users, CalendarClock, } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import logo from "@/assets/logos.json";
+import { SITE } from "@/data/site";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
 type NavGroup = { label: string; items: NavItem[] };
@@ -108,12 +107,13 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
   const SidebarInner = (
     <>
       <div className={"border-b border-sidebar-border flex items-center gap-2 " + (collapsed ? "p-3 justify-center" : "p-5")}>
-        <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-          <Printer className="h-4 w-4" />
+        <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center">
+          <img src={logo.mw} alt="Logo SPC" className="h-10 w-auto" />
         </span>
         {!collapsed && (
           <div className="min-w-0">
-            <div className="font-display font-bold text-sm truncate">STAF PRINT</div>
+            <div className="font-display font-bold text-sm truncate"> {SITE.name} </div>
+
             <div className="text-[10px] opacity-60 truncate">Admin dashboard</div>
           </div>
         )}

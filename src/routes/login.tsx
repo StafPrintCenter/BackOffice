@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Printer } from "lucide-react";
@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logos.json";
 
 export const Route = createFileRoute("/login")({
   head: () => ({ meta: [{ title: "Connexion admin — Staf Print" }, { name: "robots", content: "noindex" }] }),
@@ -44,6 +45,11 @@ function LoginPage() {
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-ivory text-primary"><Printer className="h-4 w-4" /></span>
           STAF PRINT CENTER
         </div>
+
+        <div className="flex items-center">
+          <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
+        </div>
+
         <div>
           <h1 className="font-display text-5xl font-bold tracking-tight text-balance">Pilotez votre studio en un coup d'œil.</h1>
           <p className="mt-4 opacity-90">Tableau de bord centralisé pour services, formations, projets, articles et témoignages.</p>
@@ -72,6 +78,6 @@ function LoginPage() {
 
         </div>
       </div>
-    </div>
+    </div >
   );
 }

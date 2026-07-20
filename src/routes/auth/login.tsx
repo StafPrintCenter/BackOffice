@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logos.json";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/auth/login")({
   head: () => ({ meta: [{ title: "Connexion admin — Staf Print" }, { name: "robots", content: "noindex" }] }),
@@ -48,12 +49,15 @@ function LoginPage() {
           <h1 className="font-display text-5xl font-bold tracking-tight text-balance">Pilotez votre studio en un coup d'œil.</h1>
           <p className="mt-4 opacity-90">Tableau de bord centralisé pour services, formations, projets, articles et témoignages.</p>
         </div>
-        <div className="text-sm opacity-70">© {new Date().getFullYear()} Staf Print Center</div>
+        <div className="text-sm opacity-70">© {new Date().getFullYear()} {SITE.name} </div>
       </div>
 
-      <div className="flex items-center justify-center p-8">
+      <div className="flex items-center justify-center p-8 bg-grain">
         <div className="w-full max-w-md">
-          <div className="lg:hidden mb-8 font-display text-xl font-bold">STAF PRINT</div>
+          <div className="lg:hidden mb-8">
+            <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
+          </div>
+
           <h2 className="font-display text-3xl font-bold">Connexion admin</h2>
           <p className="mt-2 text-sm text-muted-foreground">Utilisez <code className="text-xs bg-muted px-1 rounded">admin@stafprint.com</code> / <code className="text-xs bg-muted px-1 rounded">admin123</code></p>
           <form onSubmit={onSubmit} className="mt-8 space-y-4">

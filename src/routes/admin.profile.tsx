@@ -83,7 +83,7 @@ function ProfilePage() {
   const handleLogout = async () => {
     await logout();
     toast.success("Déconnecté");
-    navigate({ to: "/login" });
+    navigate({ to: "/auth/login" });
   };
 
   return (

@@ -18,13 +18,13 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: "Contenu",
     items: [
-      { to: "/admin/services", label: "Services", icon: Wrench },
-      { to: "/admin/formations", label: "Formations", icon: GraduationCap },
-      { to: "/admin/projects", label: "Projets", icon: FolderKanban },
-      { to: "/admin/articles", label: "Articles", icon: FileText },
-      { to: "/admin/testimonials", label: "Témoignages", icon: MessagesSquare },
       { to: "/admin/categories", label: "Catégories", icon: Tags },
+      { to: "/admin/services", label: "Services", icon: Wrench },
+      { to: "/admin/projects", label: "Projets", icon: FolderKanban },
+      { to: "/admin/formations", label: "Formations", icon: GraduationCap },
+      { to: "/admin/articles", label: "Articles", icon: FileText },
       { to: "/admin/faqs", label: "FAQ", icon: HelpCircle },
+      { to: "/admin/testimonials", label: "Témoignages", icon: MessagesSquare },
       { to: "/admin/stats", label: "Statistiques", icon: BarChart3 },
     ],
   },

@@ -26,6 +26,7 @@ const schema = z.object({
   is_project_category: z.boolean(),
   is_article_category: z.boolean(),
 });
+
 type FormValues = z.infer<typeof schema>;
 const empty: FormValues = {
   name: "", slug: "", color_class: "bg-slate-100 text-slate-700",

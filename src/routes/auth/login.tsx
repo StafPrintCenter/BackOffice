@@ -70,7 +70,7 @@ function LoginPage() {
         </div>
       </div>
 
-      {/* SECTION DROITE : Formulaire de connexion */}
+      {/* Colonne droite */}
       <div className="flex items-center justify-center p-8 bg-grain">
         <div className="w-full max-w-md">
           {/* Logo sur mobile */}

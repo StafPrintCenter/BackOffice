@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, TrendingUp } from "lucide-react";
-import { AdminShell } from "@/layouts/AdminShell";
+import { AdminShell } from "@/components/site/AdminShell";
 import { Button } from "@/components/ui/button";
 import { statsApi } from "@/api/extra.api";
 

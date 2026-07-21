@@ -12,6 +12,7 @@ export async function loginAdmin(email: string, password: string): Promise<APILo
   if (!response.ok) {
     throw new AdminAuthApiError("Email ou mot de passe incorrect.");
   }
+
   return response.json();
 }
 

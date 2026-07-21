@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { AdminShell } from "@/layouts/AdminShell";
-import { PageHeader, ConfirmDelete } from "@/components/admin/AdminBits";
+import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
 import { DataTable } from "@/components/admin/DataTable";
 import { reportsApi } from "@/api/extra.api";
 import type { Report, ReportStatus } from "@/types";

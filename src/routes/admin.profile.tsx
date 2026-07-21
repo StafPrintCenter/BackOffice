@@ -35,7 +35,7 @@ function ProfilePage() {
 
   const [name, setName] = useState(user?.name ?? "Administrateur");
   const [email, setEmail] = useState(user?.email ?? "");
-  const [role] = useState("Super Admin");
+  const [role] = useState(user?.level ?? "");
   const [bio, setBio] = useState("Responsable du studio STAF PRINT CENTER — supervision des projets créatifs, formations et opérations.");
   const [phone, setPhone] = useState("+229 01 00 00 00");
   const [location, setLocation] = useState("Cotonou, Bénin");

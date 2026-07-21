@@ -11,11 +11,6 @@ export interface APIAdminCategory {
   updatedAt: string;
 };
 
-/**
- * ⚠️ Aucun curl de création/modification de catégorie n'a été fourni —
- * ce payload suit la convention snake_case observée partout ailleurs
- * (articles, projets...) mais reste à confirmer/ajuster côté backend.
- */
 export interface AdminCategoryPayload {
   name: string;
   slug?: string;

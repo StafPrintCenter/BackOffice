@@ -128,5 +128,16 @@ export function createAdminResourceStore<T extends { id: string }, TPayload = Re
     });
   }
 
-  return { fetchList, fetchById, createItem, updateItem, removeItem, useList, useDetail, useCreate, useUpdate, useRemove };
+  return {
+    fetchList,
+    fetchById,
+    createItem,
+    updateItem,
+    removeItem,
+    useList,
+    useDetail,
+    useCreate,
+    useUpdate,
+    useRemove
+  };
 }

@@ -15,7 +15,6 @@ interface DetailResponse<T> {
 
 interface CreateAdminResourceStoreOptions {
   resourceKey: string;
-  /** Segment de route admin (ex: "articles", "categories") */
   basePath: string;
 }
 

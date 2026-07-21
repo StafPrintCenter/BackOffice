@@ -1,8 +1,8 @@
 import { createAdminResourceStore } from "./createAdminResourceStore";
-import type { APIAdminArticleDetail, AdminArticlePayload } from "@/data/admin-articles";
+import type { APIAdminArticleDetail, AdminArticlePayload } from "@/data/articles";
 
 const store = createAdminResourceStore<APIAdminArticleDetail, AdminArticlePayload>({
-  resourceKey: "admin-articles",
+  resourceKey: "articles",
   basePath: "articles",
 });
 

@@ -157,8 +157,12 @@ function AdminCategories() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button>
-            <Button onClick={submit} disabled={createMutation.isPending}>Créer</Button>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Annuler
+            </Button>
+            <Button onClick={submit} disabled={createMutation.isPending}>
+              Créer
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

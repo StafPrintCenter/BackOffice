@@ -32,9 +32,7 @@ function LoginPage() {
 
   // Redirection automatique si l'utilisateur est déjà connecté
   useEffect(() => {
-    if (ready && isAuthenticated) {
-      navigate({ to: "/admin" });
-    }
+    if (ready && isAuthenticated) navigate({ to: "/admin" });
   }, [ready, isAuthenticated, navigate]);
 
   // Traitement de la soumission du formulaire

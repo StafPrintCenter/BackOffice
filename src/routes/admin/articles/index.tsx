@@ -7,7 +7,6 @@ import { PageHeader, ConfirmDelete } from "@/components/admin/AdminBits";
 import { DataTable } from "@/components/admin/DataTable";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAdminArticlesList, useCreateAdminArticle, useDeleteAdminArticle } from "@/stores/useAdminArticlesStore";

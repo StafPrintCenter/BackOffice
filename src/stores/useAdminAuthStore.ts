@@ -35,10 +35,6 @@ export async function fetchAdminMe(): Promise<APIAdminUser | null> {
 }
 
 export async function logoutAdmin(): Promise<void> {
-  try {
-    await adminFetch(`/api/admin/auth/logout`, { method: "POST" });
-  } finally {
-    // Le nettoyage local doit toujours avoir lieu, même si l'appel réseau échoue
-    clearAdminToken();
-  }
+  await adminFetch(`/api/admin/auth/logout`, { method: "POST" });
+  // Le backend renvoie un Set-Cookie qui expire "admin_token" — rien à nettoyer côté front.
 }

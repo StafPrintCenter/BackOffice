@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
@@ -16,8 +16,8 @@ export const Route = createFileRoute("/auth/login")({
 function LoginPage() {
   const { login, isAuthenticated, ready } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@stafprint.com");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ function LoginPage() {
           </div>
 
           <h2 className="font-display text-3xl font-bold">Connexion admin</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Utilisez <code className="text-xs bg-muted px-1 rounded">admin@stafprint.com</code> / <code className="text-xs bg-muted px-1 rounded">admin123</code></p>
+          <p className="mt-2 text-sm text-muted-foreground">Connectez-vous avec vos identifiants administrateur.</p>
           <form onSubmit={onSubmit} className="mt-8 space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
@@ -73,9 +73,8 @@ function LoginPage() {
               {loading ? "Connexion..." : "Se connecter"}
             </Button>
           </form>
-
         </div>
       </div>
-    </div >
+    </div>
   );
 }

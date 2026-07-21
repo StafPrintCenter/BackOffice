@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2 } from "lucide-react";
 import { AdminShell } from "@/layouts/AdminShell";
-import { ConfirmDelete } from "@/components/admin/AdminBits";
+import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

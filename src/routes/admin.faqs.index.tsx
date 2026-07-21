@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { AdminShell } from "@/layouts/AdminShell";
 import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
-import { DataTable } from "@/components/admin/DataTable";
+import { DataTable } from "@/components/site/DataTable";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

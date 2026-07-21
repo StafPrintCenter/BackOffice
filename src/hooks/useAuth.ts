@@ -25,9 +25,22 @@ export interface AuthUser {
 function toAuthUser(admin: APIAdminUser): AuthUser {
   return {
     id: admin.id,
+    first_name: admin.first_name,
+    last_name: admin.last_name,
     name: `${admin.first_name} ${admin.last_name}`.trim(),
     email: admin.email,
+    photo: admin.photo,
+    bio: admin.bio,
+    email_verified_at: admin.email_verified_at,
     level: admin.level,
+    invited_by: admin.invited_by,
+    invited_at: admin.invited_at,
+    accepted_at: admin.accepted_at,
+    is_active: admin.is_active,
+    blocked_at: admin.blocked_at,
+    blocked_reason: admin.blocked_reason,
+    created_at: admin.created_at,
+    updated_at: admin.updated_at,
   };
 }
 

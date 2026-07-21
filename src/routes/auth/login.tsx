@@ -23,7 +23,6 @@ function LoginPage() {
   const { login, isAuthenticated, ready } = useAuth();
   const navigate = useNavigate();
 
-  // États locaux du formulaire
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAdminCategoriesList, useCreateAdminCategory, useUpdateAdminCategory, useDeleteAdminCategory } from "@/stores/useCategoriesStore";
-import type { APIAdminCategory, AdminCategoryPayload } from "@/data/admin-categories";
+import type { APIAdminCategory, AdminCategoryPayload } from "@/data/categories";
 
 export const Route = createFileRoute("/admin/categories/")({
   head: () => ({ meta: [{ title: "Catégories — Admin" }, { name: "robots", content: "noindex" }] }),

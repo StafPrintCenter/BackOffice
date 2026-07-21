@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAdminArticleDetail, useUpdateAdminArticle, useDeleteAdminArticle } from "@/stores/useArticlesStore";
-import { useAdminCategoriesList } from "@/stores/useAdminCategoriesStore";
+import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import type { AdminArticlePayload } from "@/data/articles";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 

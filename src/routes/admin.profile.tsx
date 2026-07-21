@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { AdminShell } from "@/layouts/AdminShell";
-import { PageHeader } from "@/components/admin/AdminBits";
+import { PageHeader } from "@/components/site/AdminBits";
 import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

@@ -90,7 +90,7 @@ function AdminCategories() {
       is_project_category: parsed.data.isProjectCategory,
       is_article_category: parsed.data.isArticleCategory,
       is_newsletter_category: parsed.data.isNewsletterCategory,
-    } as unknown as AdminCategoryPayload; // Cast de sécurité si l'interface est stricte
+    } as unknown as AdminCategoryPayload;
 
     if (dialog.row) {
       updateMutation.mutate(
@@ -131,9 +131,8 @@ function AdminCategories() {
             key: "name",
             label: "Nom",
             render: (r) => (
-              <Link to="/admin/categories/$id" params={{ id: r.id }} className="font-medium hover:underline">
-                {r.name}
-              </Link>
+              className = "font-medium hover:underline" >
+              { r.name }
             ),
           },
           {

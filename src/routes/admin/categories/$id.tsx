@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useAdminCategoryDetail, useUpdateAdminCategory, useDeleteAdminCategory } from "@/stores/useAdminCategoriesStore";
+import { useAdminCategoryDetail, useUpdateAdminCategory, useDeleteAdminCategory } from "@/stores/useCategoriesStore";
 import type { AdminCategoryPayload } from "@/data/admin-categories";
 
 export const Route = createFileRoute("/admin/categories/$id")({

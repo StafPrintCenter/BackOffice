@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useAdminCategoryDetail, useUpdateAdminCategory, useDeleteAdminCategory } from "@/stores/useCategoriesStore";
-import type { AdminCategoryPayload } from "@/data/admin-categories";
+import type { AdminCategoryPayload } from "@/data/categories";
 
 export const Route = createFileRoute("/admin/categories/$id")({
   head: () => ({ meta: [{ title: "Catégorie — Admin" }, { name: "robots", content: "noindex" }] }),

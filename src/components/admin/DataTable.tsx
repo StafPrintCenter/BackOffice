@@ -92,9 +92,9 @@ export function DataTable<T extends { id: string }>({
 
                     {(onView || onEdit || onDelete) && (
                       <td className="px-4 py-3 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
-                        {onView && <button onClick={() => onView(row)} className="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-accent" aria-label="Voir"><Eye className="h-4 w-4" /></button>}
-                        {onEdit && <button onClick={() => onEdit(row)} className="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-accent" aria-label="Modifier"><Pencil className="h-4 w-4" /></button>}
-                        {onDelete && <button onClick={() => onDelete(row)} className="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-md text-destructive hover:bg-destructive/10" aria-label="Supprimer"><Trash2 className="h-4 w-4" /></button>}
+                        {onView && <button onClick={() => onView(row)} className="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-accent cursor-pointer" aria-label="Voir" title="Consulter"><Eye className="h-4 w-4" /></button>}
+                        {onEdit && <button onClick={() => onEdit(row)} className="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-accent cursor-pointer" aria-label="Modifier" title="Modifier"><Pencil className="h-4 w-4" /></button>}
+                        {onDelete && <button onClick={() => onDelete(row)} className="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-md text-destructive hover:bg-destructive/10 cursor-pointer" aria-label="Supprimer" title="Suppprimer"><Trash2 className="h-4 w-4" /></button>}
                       </td>
                     )}
 

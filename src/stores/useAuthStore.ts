@@ -1,5 +1,5 @@
 import { adminFetch } from "@/lib/api-url";
-import type { APIAdminUser, APILoginResponse } from "@/data/admin-auth";
+import type { APIAdminUser, APILoginResponse } from "@/data/auth";
 
 export class AdminAuthApiError extends Error { }
 

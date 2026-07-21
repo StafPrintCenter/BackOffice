@@ -9,8 +9,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useAdminArticlesList, useCreateAdminArticle, useDeleteAdminArticle } from "@/stores/useArticlesStore";
-import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
+import {
+  useAdminArticlesList, useCreateAdminArticle, useDeleteAdminArticle,
+  useAdminCategoriesList
+} from "@/stores";
 import type { APIAdminArticleListItem, AdminArticlePayload } from "@/data/articles";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 

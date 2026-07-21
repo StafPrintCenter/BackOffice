@@ -1,28 +1,95 @@
-import { useEffect, useState } from "react";
-import { authApi } from "@/api/auth.api";
-import type { User } from "@/types";
+import { useEffect, useState, useCallback } from "react";
+import { loginAdmin, fetchAdminMe, logoutAdmin } from "@/stores/useAdminAuthStore";
+import type { APIAdminUser } from "@/data/admin-auth";
+
+export interface AuthUser {
+  id: string;
+  first_name: string;
+  last_name: string;
+  name: string;
+  email: string;
+  photo: string | null;
+  bio: string | null;
+  email_verified_at: string | null;
+  level: string;
+  invited_by: string | null;
+  invited_at: string | null;
+  accepted_at: string | null;
+  is_active: boolean;
+  blocked_at: string | null;
+  blocked_reason: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+function toAuthUser(admin: APIAdminUser): AuthUser {
+  return {
+    id: admin.id,
+    name: `${admin.first_name} ${admin.last_name}`.trim(),
+    email: admin.email,
+    level: admin.level,
+  };
+}
+
+// État partagé en dehors du hook pour que tous les composants qui l'utilisent
+// restent synchronisés sans avoir besoin d'un vrai Context/Provider.
+let sharedUser: AuthUser | null = null;
+let sharedReady = false;
+const listeners = new Set<() => void>();
+
+function notify() {
+  listeners.forEach((l) => l());
+}
+
+async function bootstrap() {
+  try {
+    const admin = await fetchAdminMe();
+    sharedUser = admin ? toAuthUser(admin) : null;
+  } catch {
+    sharedUser = null;
+  } finally {
+    sharedReady = true;
+    notify();
+  }
+}
+
+let bootstrapped = false;
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [ready, setReady] = useState(false);
+  const [, forceRender] = useState(0);
 
   useEffect(() => {
-    setUser(authApi.current());
-    setReady(true);
-    const onStorage = () => setUser(authApi.current());
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    const listener = () => forceRender((n) => n + 1);
+    listeners.add(listener);
+
+    if (!bootstrapped) {
+      bootstrapped = true;
+      bootstrap();
+    }
+
+    return () => {
+      listeners.delete(listener);
+    };
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const u = await authApi.login(email, password);
-    setUser(u);
-    return u;
-  };
-  const logout = async () => {
-    await authApi.logout();
-    setUser(null);
-  };
+  const login = useCallback(async (email: string, password: string) => {
+    const { admin } = await loginAdmin(email, password);
+    sharedUser = toAuthUser(admin);
+    sharedReady = true;
+    notify();
+  }, []);
 
-  return { user, ready, login, logout, isAuthenticated: !!user };
+  const logout = useCallback(async () => {
+    await logoutAdmin();
+    sharedUser = null;
+    notify();
+  }, []);
+
+  return {
+    user: sharedUser,
+    isAuthenticated: !!sharedUser,
+    ready: sharedReady,
+    login,
+    logout,
+  };
 }

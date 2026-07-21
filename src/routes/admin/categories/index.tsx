@@ -124,7 +124,9 @@ function AdminCategories() {
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
-          <DialogHeader><DialogTitle>Nouvelle catégorie</DialogTitle></DialogHeader>
+          <DialogHeader>
+            <DialogTitle>Nouvelle catégorie</DialogTitle>
+          </DialogHeader>
           <div className="space-y-4">
             <div>
               <Label>Nom</Label>

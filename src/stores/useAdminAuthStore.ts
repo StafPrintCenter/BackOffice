@@ -12,9 +12,9 @@ export async function loginAdmin(email: string, password: string): Promise<APILo
   if (!response.ok) {
     throw new AdminAuthApiError("Email ou mot de passe incorrect.");
   }
-  const json: APILoginResponse = await response.json();
-  setAdminToken(json.token);
-  return json;
+  // Le cookie httpOnly "admin_token" est posé automatiquement par le Set-Cookie
+  // de cette réponse — rien à stocker manuellement côté front.
+  return response.json();
 }
 
 /**

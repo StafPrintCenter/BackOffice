@@ -12,7 +12,7 @@ import {
   useAdminCategoriesList
 } from "@/stores";
 import type { AdminArticlePayload } from "@/data/articles";
-import { RichTextEditor } from "@/components/admin/RichTextEditor";
+import { RichTextEditor } from "@/components/site/RichTextEditor";
 
 export const Route = createFileRoute("/admin/articles/$id")({
   head: () => ({ meta: [{ title: "Article — Admin" }, { name: "robots", content: "noindex" }] }),

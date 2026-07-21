@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 
-// Définition de la route et de ses métadonnées SEO/robots
 export const Route = createFileRoute("/auth/login")({
   head: () => ({
     meta: [

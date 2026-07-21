@@ -14,7 +14,6 @@ interface DetailResponse<T> {
 }
 
 interface CreateAdminResourceStoreOptions {
-  /** Clé utilisée pour les query keys React Query (ex: "admin-articles") */
   resourceKey: string;
   /** Segment de route admin (ex: "articles", "categories") */
   basePath: string;

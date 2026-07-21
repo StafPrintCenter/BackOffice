@@ -108,11 +108,14 @@ function AdminCategories() {
             ),
           },
           {
-            key: "flags", label: "Type", render: (r) => (
-              <div className="flex flex-wrap gap-1 text-[10px]">
-                {r.isTrainingTheme && <span className="rounded bg-primary/10 px-1.5 py-0.5">Formation</span>}
-                {r.isProjectCategory && <span className="rounded bg-primary/10 px-1.5 py-0.5">Projet</span>}
-                {r.isArticleCategory && <span className="rounded bg-primary/10 px-1.5 py-0.5">Article</span>}
+            key: "flags",
+            label: "Type",
+            render: (r) => (
+              <div className="flex flex-wrap gap-1 text-[10px] font-medium">
+                {r.isTrainingTheme && <span className="rounded bg-indigo-500/10 text-indigo-600 px-1.5 py-0.5">Formation</span>}
+                {r.isProjectCategory && <span className="rounded bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5">Projet</span>}
+                {r.isArticleCategory && <span className="rounded bg-sky-500/10 text-sky-600 px-1.5 py-0.5">Article</span>}
+                {r.isNewsletterCategory && <span className="rounded bg-amber-500/10 text-amber-600 px-1.5 py-0.5">Newsletter</span>}
               </div>
             )
           },

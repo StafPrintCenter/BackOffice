@@ -20,7 +20,6 @@ export const Route = createFileRoute("/auth/login")({
 });
 
 function LoginPage() {
-  // Hooks d'authentification et de navigation
   const { login, isAuthenticated, ready } = useAuth();
   const navigate = useNavigate();
 

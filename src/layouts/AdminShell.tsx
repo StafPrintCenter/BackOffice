@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, LogOut, Printer, ChevronLeft, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Inbox, ShieldAlert, Users, CalendarClock, } from "lucide-react";
+import { LayoutDashboard, Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, LogOut, ChevronLeft, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Inbox, ShieldAlert, Users, CalendarClock, } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";

@@ -13,7 +13,7 @@ interface DetailResponse<T> {
   data: T;
 }
 
-interface CreateAdminResourceStoreOptions {
+interface createResourceStoreOptions {
   resourceKey: string;
   basePath: string;
 }
@@ -32,10 +32,10 @@ function buildFormData(payload: Record<string, unknown>): FormData {
   return fd;
 }
 
-export function createAdminResourceStore<T extends { id: string }, TPayload = Record<string, unknown>>({
+export function createResourceStore<T extends { id: string }, TPayload = Record<string, unknown>>({
   resourceKey,
   basePath,
-}: CreateAdminResourceStoreOptions) {
+}: createResourceStoreOptions) {
   async function fetchList(params: AdminListParams = {}): Promise<ListResponse<T>> {
     const qp = new URLSearchParams();
     for (const [key, value] of Object.entries(params)) {

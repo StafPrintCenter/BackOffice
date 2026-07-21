@@ -9,8 +9,16 @@ export function ConfirmDelete({ open, onOpenChange, onConfirm, title = "Supprime
           <AlertDialogDescription>Cette action est irréversible.</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Supprimer</AlertDialogAction>
+          <AlertDialogCancel>
+            Annuler
+          </AlertDialogCancel>
+
+          <AlertDialogAction
+            onClick={onConfirm}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
+            Supprimer
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAdminArticlesList, useCreateAdminArticle, useDeleteAdminArticle } from "@/stores/useAdminArticlesStore";
 import { useAdminCategoriesList } from "@/stores/useAdminCategoriesStore";
-import type { APIAdminArticleListItem, AdminArticlePayload } from "@/data/admin-articles";
+import type { APIAdminArticleListItem, AdminArticlePayload } from "@/data/articles";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
 export const Route = createFileRoute("/admin/articles/")({

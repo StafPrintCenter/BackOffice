@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Mail, Shield, GraduationCap, User as UserIcon } from "lucide-react";
 import { toast } from "sonner";
-import { AdminShell } from "@/layouts/AdminShell";
+import { AdminShell } from "@/components/site/AdminShell";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { usersApi } from "@/api/extra.api";

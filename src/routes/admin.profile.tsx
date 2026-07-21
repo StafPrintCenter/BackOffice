@@ -1,7 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { User as UserIcon, Mail, Shield, Calendar, KeyRound, Save, LogOut, Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare } from "lucide-react";
+import {
+  User as UserIcon,
+  Mail,
+  Shield,
+  Calendar,
+  KeyRound,
+  Save,
+  LogOut,
+  Wrench,
+  GraduationCap,
+  FolderKanban,
+  FileText,
+  MessagesSquare,
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { AdminShell } from "@/layouts/AdminShell";
 import { PageHeader } from "@/components/admin/AdminBits";
@@ -16,10 +29,14 @@ import { formationsApi } from "@/api/formations.api";
 import { projectsApi } from "@/api/projects.api";
 import { articlesApi } from "@/api/articles.api";
 import { testimonialsApi } from "@/api/testimonials.api";
-import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/profile")({
-  head: () => ({ meta: [{ title: "Profil — Admin Staf Print" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: "Profil — Admin Staf Print" },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   component: ProfilePage,
 });
 
@@ -33,23 +50,49 @@ function ProfilePage() {
   const articles = useQuery({ queryKey: ["articles"], queryFn: articlesApi.list });
   const testimonials = useQuery({ queryKey: ["testimonials"], queryFn: testimonialsApi.list });
 
+  // États éditables initialisés avec le profil utilisateur
   const [name, setName] = useState(user?.name ?? "Administrateur");
   const [email, setEmail] = useState(user?.email ?? "");
-  const [role] = useState(user?.level ?? "");
-  const [bio, setBio] = useState("Responsable du studio STAF PRINT CENTER — supervision des projets créatifs, formations et opérations.");
+  const [bio, setBio] = useState(
+    user?.bio ??
+    "Responsable du studio STAF PRINT CENTER — supervision des projets créatifs, formations et opérations."
+  );
   const [phone, setPhone] = useState("+229 01 00 00 00");
   const [location, setLocation] = useState("Cotonou, Bénin");
 
+  // Synchronisation si les données `user` chargent après le premier rendu
+  useEffect(() => {
+    if (user) {
+      if (user.name) setName(user.name);
+      if (user.email) setEmail(user.email);
+      if (user.bio) setBio(user.bio);
+    }
+  }, [user]);
+
+  // Mot de passe
   const [currentPw, setCurrentPw] = useState("");
   const [newPw, setNewPw] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
 
+  // Notifications
   const [notifEmail, setNotifEmail] = useState(true);
   const [notifPush, setNotifPush] = useState(false);
   const [notifWeekly, setNotifWeekly] = useState(true);
 
   const initials = (name || email || "A")
-    .split(/\s+/).map((s) => s[0]).filter(Boolean).slice(0, 2).join("").toUpperCase();
+    .split(/\s+/)
+    .map((s) => s[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+  const formattedDate = user?.created_at
+    ? new Date(user.created_at).toLocaleDateString("fr-FR", {
+      month: "long",
+      year: "numeric",
+    })
+    : "Date inconnue";
 
   const stats = [
     { label: "Services", value: services.data?.length ?? 0, icon: Wrench },
@@ -74,9 +117,12 @@ function ProfilePage() {
   const onChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentPw || !newPw) return toast.error("Veuillez remplir tous les champs");
-    if (newPw.length < 6) return toast.error("Le mot de passe doit contenir au moins 6 caractères");
+    if (newPw.length < 6)
+      return toast.error("Le mot de passe doit contenir au moins 6 caractères");
     if (newPw !== confirmPw) return toast.error("Les mots de passe ne correspondent pas");
-    setCurrentPw(""); setNewPw(""); setConfirmPw("");
+    setCurrentPw("");
+    setNewPw("");
+    setConfirmPw("");
     toast.success("Mot de passe changé");
   };
 
@@ -94,32 +140,40 @@ function ProfilePage() {
       <div className="relative overflow-hidden rounded-2xl border bg-card shadow-elegant">
         <div className="h-32 bg-gradient-hero" />
         <div className="p-6 pt-0">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between -mt-12">
+          <div className="-mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-4">
-              <div className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl border-4 border-card bg-primary text-primary-foreground font-display text-3xl font-bold shadow-elegant">
+              <div className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl border-4 border-card bg-primary font-display text-3xl font-bold text-primary-foreground shadow-elegant">
                 {initials}
               </div>
               <div className="min-w-0 pb-1">
-                <h2 className="font-display text-2xl font-bold truncate">{name}</h2>
+                <h2 className="truncate font-display text-2xl font-bold">{name}</h2>
                 <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-                  <span className="inline-flex items-center gap-1"><Mail className="h-3.5 w-3.5" /> {email}</span>
-                  <span className="inline-flex items-center gap-1"><Shield className="h-3.5 w-3.5" /> {role}</span>
-                  <span className="inline-flex items-center gap-1"><Calendar className="h-3.5 w-3.5" /> Membre depuis 2024</span>
+                  <span className="inline-flex items-center gap-1">
+                    <Mail className="h-3.5 w-3.5" /> {email}
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <Shield className="h-3.5 w-3.5" /> {user?.level ?? "Admin"}
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <Calendar className="h-3.5 w-3.5" /> Membre depuis {formattedDate}
+                  </span>
                 </div>
               </div>
             </div>
             <Button variant="outline" onClick={handleLogout} className="self-start sm:self-auto">
-              <LogOut className="h-4 w-4 mr-2" /> Déconnexion
+              <LogOut className="mr-2 h-4 w-4" /> Déconnexion
             </Button>
           </div>
 
-          <div className="mt-6 grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {stats.map((s) => {
               const Icon = s.icon;
               return (
                 <div key={s.label} className="rounded-xl border bg-muted/30 p-3">
                   <div className="flex items-center justify-between">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{s.label}</div>
+                    <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      {s.label}
+                    </div>
                     <Icon className="h-4 w-4 text-primary" />
                   </div>
                   <div className="mt-1 font-display text-2xl font-bold">{s.value}</div>
@@ -132,7 +186,10 @@ function ProfilePage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {/* Personal info form */}
-        <form onSubmit={onSaveProfile} className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2 space-y-4">
+        <form
+          onSubmit={onSaveProfile}
+          className="space-y-4 rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2"
+        >
           <div className="flex items-center gap-2">
             <UserIcon className="h-4 w-4 text-primary" />
             <h3 className="font-display text-lg font-semibold">Informations personnelles</h3>
@@ -160,12 +217,14 @@ function ProfilePage() {
             <Textarea id="bio" rows={4} value={bio} onChange={(e) => setBio(e.target.value)} />
           </div>
           <div className="flex justify-end">
-            <Button type="submit"><Save className="h-4 w-4 mr-2" /> Enregistrer</Button>
+            <Button type="submit">
+              <Save className="mr-2 h-4 w-4" /> Enregistrer
+            </Button>
           </div>
         </form>
 
         {/* Notifications */}
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant space-y-5">
+        <div className="space-y-5 rounded-2xl border bg-card p-6 shadow-elegant">
           <h3 className="font-display text-lg font-semibold">Notifications</h3>
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -191,7 +250,10 @@ function ProfilePage() {
         </div>
 
         {/* Password */}
-        <form onSubmit={onChangePassword} className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2 space-y-4">
+        <form
+          onSubmit={onChangePassword}
+          className="space-y-4 rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2"
+        >
           <div className="flex items-center gap-2">
             <KeyRound className="h-4 w-4 text-primary" />
             <h3 className="font-display text-lg font-semibold">Sécurité</h3>
@@ -211,7 +273,9 @@ function ProfilePage() {
             </div>
           </div>
           <div className="flex justify-end">
-            <Button type="submit" variant="secondary"><Save className="h-4 w-4 mr-2" /> Changer</Button>
+            <Button type="submit" variant="secondary">
+              <Save className="mr-2 h-4 w-4" /> Changer
+            </Button>
           </div>
         </form>
 

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/admin-api-fetch";
+import { adminFetch } from "@/lib/api-url";
 
 export type AdminListParams = Record<string, string | number | undefined>;
 

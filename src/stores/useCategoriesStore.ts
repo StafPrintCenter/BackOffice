@@ -1,5 +1,5 @@
 import { createResourceStore } from "./createResourceStore";
-import type { APIAdminCategory, AdminCategoryPayload } from "@/data/admin-categories";
+import type { APIAdminCategory, AdminCategoryPayload } from "@/data/categories";
 
 const store = createResourceStore<APIAdminCategory, AdminCategoryPayload>({
   resourceKey: "categories",

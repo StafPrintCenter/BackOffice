@@ -7,7 +7,7 @@ import { ConfirmDelete } from "@/components/admin/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAdminArticleDetail, useUpdateAdminArticle, useDeleteAdminArticle } from "@/stores/useAdminArticlesStore";
+import { useAdminArticleDetail, useUpdateAdminArticle, useDeleteAdminArticle } from "@/stores/useArticlesStore";
 import { useAdminCategoriesList } from "@/stores/useAdminCategoriesStore";
 import type { AdminArticlePayload } from "@/data/articles";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";

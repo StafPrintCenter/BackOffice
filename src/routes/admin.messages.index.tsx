@@ -2,9 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { AdminShell } from "@/components/site/AdminShell";
-import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
-import { DataTable } from "@/components/site/DataTable";
+import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { messagesApi } from "@/api/extra.api";
 import type { Message, MessageStatus } from "@/types";
 

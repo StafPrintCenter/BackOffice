@@ -1,25 +1,20 @@
 import { resolveApiUrl } from "@/lib/api-url";
+import { getCookie, setCookie, deleteCookie } from "@/lib/cookies";
 
-const TOKEN_KEY = "admin_auth_token";
+const TOKEN_COOKIE = "admin_auth_token";
 
 export function getAdminToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return window.localStorage.getItem(TOKEN_KEY);
+  return getCookie(TOKEN_COOKIE);
 }
 
 export function setAdminToken(token: string): void {
-  window.localStorage.setItem(TOKEN_KEY, token);
+  setCookie(TOKEN_COOKIE, token, 7);
 }
 
 export function clearAdminToken(): void {
-  window.localStorage.removeItem(TOKEN_KEY);
+  deleteCookie(TOKEN_COOKIE);
 }
 
-/**
- * fetch() authentifié pour les routes /admin/... — ajoute automatiquement
- * le Bearer token stocké. Distinct du fetch public (createResourceStore)
- * qui n'a jamais besoin d'Authorization.
- */
 export async function adminFetch(path: string, init: RequestInit = {}): Promise<Response> {
   const token = getAdminToken();
   const headers = new Headers(init.headers);

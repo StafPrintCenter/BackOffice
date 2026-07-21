@@ -3,7 +3,7 @@
  * et côté serveur (SSR / loaders exécutés sur Node).
  */
 
-export function resolveApiUrl(path: string): string {
+function resolveApiUrl(path: string): string {
   const versionedPath = path.replace(/^\/api\//, "/api/v1/");
 
   if (typeof window !== "undefined") {

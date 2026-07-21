@@ -169,7 +169,10 @@ function AdminCategories() {
         onConfirm={() => {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
-            onSuccess: () => { toast.success("Catégorie supprimée"); setToDelete(null); },
+            onSuccess: () => {
+              toast.success("Catégorie supprimée");
+              setToDelete(null);
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

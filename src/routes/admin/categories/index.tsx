@@ -130,9 +130,7 @@ function AdminCategories() {
           {
             key: "name",
             label: "Nom",
-            render: (r) => (
-              className = "font-medium hover:underline" >
-              { r.name }
+            render: (r) => (<span className="font-medium">{r.name}</span>
             ),
           },
           {

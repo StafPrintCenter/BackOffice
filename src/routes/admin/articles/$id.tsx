@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useAdminArticleDetail, useUpdateAdminArticle, useDeleteAdminArticle } from "@/stores/useAdminArticlesStore";
 import { useAdminCategoriesList } from "@/stores/useAdminCategoriesStore";
 import type { AdminArticlePayload } from "@/data/admin-articles";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
 export const Route = createFileRoute("/admin/articles/$id")({
   head: () => ({ meta: [{ title: "Article — Admin" }, { name: "robots", content: "noindex" }] }),
@@ -162,8 +163,8 @@ function ArticleDetail() {
               <Input value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} />
             </div>
             <div>
-              <Label>Contenu HTML</Label>
-              <Textarea rows={14} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} className="font-mono text-xs" />
+              <Label>Contenu</Label>
+              <RichTextEditor value={form.body} onChange={(html) => setForm({ ...form, body: html })} placeholder="Rédigez votre article..." />
             </div>
           </div>
         ) : (

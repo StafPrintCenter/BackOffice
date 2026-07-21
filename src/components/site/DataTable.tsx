@@ -2,9 +2,8 @@ import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { Search, Plus, Pencil, Trash2, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
-
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/shared/States";
+import { EmptyState } from "@/components/site/States";
 
 export interface Column<T> {
   key: keyof T | string;

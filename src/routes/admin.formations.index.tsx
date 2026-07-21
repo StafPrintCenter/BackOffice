@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Plus, Trash2 } from "lucide-react";
-import { AdminShell } from "@/layouts/AdminShell";
+import { AdminShell } from "@/components/site/AdminShell";
 import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
 import { DataTable } from "@/components/site/DataTable";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";

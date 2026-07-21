@@ -73,7 +73,6 @@ function LoginPage() {
       {/* Colonne droite */}
       <div className="flex items-center justify-center p-8 bg-grain">
         <div className="w-full max-w-md">
-          {/* Logo sur mobile */}
           <div className="lg:hidden mb-8">
             <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
           </div>
@@ -84,40 +83,41 @@ function LoginPage() {
           </p>
 
           <form onSubmit={onSubmit} className="mt-8 space-y-4">
-            {/* Champ Email */}
-            <div className="space-y-1.5">
+            <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
                 required
-                placeholder="admin@stafprint.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-card shadow-sm"
+                placeholder="vous@stafprintcenter.com"
+                autoComplete="email"
+                className="mt-1 bg-card"
+                disabled={loading}
               />
             </div>
 
-            {/* Champ Mot de passe */}
-            <div className="space-y-1.5">
+            <div>
               <Label htmlFor="pw">Mot de passe</Label>
               <div className="relative mt-1">
                 <Input
                   id="pw"
                   type={showPassword ? "text" : "password"}
                   required
-                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pr-10 bg-card shadow-sm"
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  className="bg-card pr-10"
+                  disabled={loading}
                 />
-
-                {/* Bouton pour basculer la visibilité du mot de passe */}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50"
                   aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                  disabled={loading}
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -128,12 +128,11 @@ function LoginPage() {
               </div>
             </div>
 
-            {/* Bouton de soumission avec icône de chargement */}
-            <Button type="submit" disabled={loading} className="w-full cursor-pointer mt-2">
+            <Button type="submit" disabled={loading} className="w-full">
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Connexion en cours...
+                  Connexion...
                 </>
               ) : (
                 "Se connecter"

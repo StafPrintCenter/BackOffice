@@ -100,7 +100,7 @@ function LoginPage() {
                 placeholder="admin@stafprint.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-background shadow-sm" // Background blanc/thème appliqué
+                className="bg-card shadow-sm"
               />
             </div>
 
@@ -115,7 +115,7 @@ function LoginPage() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pr-10 bg-background shadow-sm" // Background blanc/thème appliqué
+                  className="pr-10 bg-card shadow-sm"
                 />
 
                 {/* Bouton pour basculer la visibilité du mot de passe */}

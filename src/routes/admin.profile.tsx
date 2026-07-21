@@ -16,7 +16,7 @@ import {
   MessagesSquare,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { AdminShell } from "@/layouts/AdminShell";
+import { AdminShell } from "@/components/site/AdminShell";
 import { PageHeader } from "@/components/site/AdminBits";
 import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";

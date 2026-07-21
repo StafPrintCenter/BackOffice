@@ -28,6 +28,7 @@ const schema = z.object({
 });
 
 type FormValues = z.infer<typeof schema>;
+
 const empty: FormValues = {
   name: "", slug: "", color_class: "bg-slate-100 text-slate-700",
   is_training_theme: false, is_project_category: false, is_article_category: false,

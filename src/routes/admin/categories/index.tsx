@@ -117,7 +117,7 @@ function AdminCategories() {
                 {r.isArticleCategory && <span className="rounded bg-sky-500/10 text-sky-600 px-1.5 py-0.5">Article</span>}
                 {r.isNewsletterCategory && <span className="rounded bg-amber-500/10 text-amber-600 px-1.5 py-0.5">Newsletter</span>}
               </div>
-            )
+            ),
           },
         ]}
       />

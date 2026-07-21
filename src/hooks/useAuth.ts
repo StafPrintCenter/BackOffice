@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { loginAdmin, fetchAdminMe, logoutAdmin } from "@/stores/useAuthStore";
+import { loginAdmin, fetchAdminMe, logoutAdmin, AdminAuthApiError } from "@/stores/useAuthStore";
 import type { APIAdminUser } from "@/data/auth";
 
 export interface AuthUser {

@@ -89,6 +89,7 @@ export function DataTable<T extends { id: string }>({
                         {c.render ? c.render(row) : String((row as Record<string, unknown>)[c.key as string] ?? "")}
                       </td>
                     ))}
+
                     {(onView || onEdit || onDelete) && (
                       <td className="px-4 py-3 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                         {onView && <button onClick={() => onView(row)} className="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-accent" aria-label="Voir"><Eye className="h-4 w-4" /></button>}

@@ -94,7 +94,7 @@ function AdminCategories() {
 
     if (dialog.row) {
       updateMutation.mutate(
-        { id: dialog.row.id, data: payload },
+        { id: dialog.row.id, payload: payload },
         {
           onSuccess: () => {
             toast.success("Catégorie modifiée");

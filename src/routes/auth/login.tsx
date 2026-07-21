@@ -12,9 +12,9 @@ import { SITE } from "@/data/site";
 export const Route = createFileRoute("/auth/login")({
   head: () => ({
     meta: [
-      { title: "Connexion admin — Staf Print" },
-      { name: "robots", content: "noindex" },
-    ],
+      { title: `Connexion | ${SITE.name}` },
+      { name: "robots", content: "noindex" }
+    ]
   }),
   component: LoginPage,
 });

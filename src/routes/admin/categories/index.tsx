@@ -74,7 +74,8 @@ function AdminCategories() {
 
   return (
     <AdminShell>
-      <PageHeader title="Catégories" description="Utilisées par formations, projets, articles et FAQ." />
+      <PageHeader title="Catégories" description="Utilisées par formations, projets, articles, newsletter et FAQ." />
+
       <DataTable<APIAdminCategory>
         data={items}
         isLoading={isLoading}

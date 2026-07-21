@@ -84,9 +84,29 @@ function AdminCategories() {
         onDelete={(r) => setToDelete(r)}
         onView={(r) => navigate({ to: "/admin/categories/$id", params: { id: r.id } })}
         columns={[
-          { key: "name", label: "Nom", render: (r) => <Link to="/admin/categories/$id" params={{ id: r.id }} className="font-medium hover:underline">{r.name}</Link> },
-          { key: "slug", label: "Slug", render: (r) => <code className="text-xs">{r.slug}</code> },
-          { key: "colorClass", label: "Couleur", render: (r) => <span className={"inline-flex px-2 py-1 rounded text-xs " + r.colorClass}>{r.name}</span> },
+          {
+            key: "name",
+            label: "Nom",
+            render: (r) => (
+              <Link to="/admin/categories/$id" params={{ id: r.id }} className="font-medium hover:underline">
+                {r.name}
+              </Link>
+            ),
+          },
+          {
+            key: "slug",
+            label: "Slug",
+            render: (r) => <code className="text-xs">{r.slug}</code>,
+          },
+          {
+            key: "colorClass",
+            label: "Couleur",
+            render: (r) => (
+              <span className={`inline-flex px-2 py-1 rounded text-xs font-medium ${r.colorClass || "bg-slate-100 text-slate-700"}`}>
+                {r.name}
+              </span>
+            ),
+          },
           {
             key: "flags", label: "Type", render: (r) => (
               <div className="flex flex-wrap gap-1 text-[10px]">

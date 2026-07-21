@@ -6,7 +6,7 @@ import {
   AreaChart, Area, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Legend,
 } from "recharts";
 import { AdminShell } from "@/layouts/AdminShell";
-import { PageHeader, StatCard } from "@/components/admin/AdminBits";
+import { PageHeader, StatCard } from "@/components/site/AdminBits";
 import { servicesApi } from "@/api/services.api";
 import { formationsApi } from "@/api/formations.api";
 import { projectsApi } from "@/api/projects.api";

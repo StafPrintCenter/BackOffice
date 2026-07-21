@@ -1,7 +1,7 @@
 import { resolveApiUrl } from "@/lib/api-url";
 import { getCookie, setCookie, deleteCookie } from "@/lib/cookies";
 
-const TOKEN_COOKIE = "admin_auth_token";
+const TOKEN_COOKIE = "admin_token";
 
 export function getAdminToken(): string | null {
   return getCookie(TOKEN_COOKIE);

@@ -5,7 +5,7 @@ import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
   AreaChart, Area, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Legend,
 } from "recharts";
-import { AdminShell } from "@/layouts/AdminShell";
+import { AdminShell } from "@/components/site/AdminShell";
 import { PageHeader, StatCard } from "@/components/site/AdminBits";
 import { servicesApi } from "@/api/services.api";
 import { formationsApi } from "@/api/formations.api";

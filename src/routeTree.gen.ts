@@ -16,9 +16,9 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AdminAppointmentsIndexRouteImport } from './routes/admin.appointments.index'
 import { Route as AdminAppointmentsIdRouteImport } from './routes/admin.appointments.$id'
 import { Route as AdminArticlesIndexRouteImport } from './routes/admin/articles/index'
-import { Route as AdminArticlesSlugRouteImport } from './routes/admin/articles/$slug'
+import { Route as AdminArticlesIdRouteImport } from './routes/admin/articles/$id'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/admin/categories/index'
-import { Route as AdminCategoriesSlugRouteImport } from './routes/admin/categories/$slug'
+import { Route as AdminCategoriesIdRouteImport } from './routes/admin/categories/$id'
 import { Route as AdminFaqsIndexRouteImport } from './routes/admin.faqs.index'
 import { Route as AdminFaqsIdRouteImport } from './routes/admin.faqs.$id'
 import { Route as AdminFormationsIndexRouteImport } from './routes/admin.formations.index'
@@ -75,9 +75,9 @@ const AdminArticlesIndexRoute = AdminArticlesIndexRouteImport.update({
   path: '/admin/articles/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminArticlesSlugRoute = AdminArticlesSlugRouteImport.update({
-  id: '/admin/articles/$slug',
-  path: '/admin/articles/$slug',
+const AdminArticlesIdRoute = AdminArticlesIdRouteImport.update({
+  id: '/admin/articles/$id',
+  path: '/admin/articles/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
@@ -85,9 +85,9 @@ const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
   path: '/admin/categories/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminCategoriesSlugRoute = AdminCategoriesSlugRouteImport.update({
-  id: '/admin/categories/$slug',
-  path: '/admin/categories/$slug',
+const AdminCategoriesIdRoute = AdminCategoriesIdRouteImport.update({
+  id: '/admin/categories/$id',
+  path: '/admin/categories/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminFaqsIndexRoute = AdminFaqsIndexRouteImport.update({
@@ -197,8 +197,8 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
-  '/admin/articles/$slug': typeof AdminArticlesSlugRoute
-  '/admin/categories/$slug': typeof AdminCategoriesSlugRoute
+  '/admin/articles/$id': typeof AdminArticlesIdRoute
+  '/admin/categories/$id': typeof AdminCategoriesIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/formations/$id': typeof AdminFormationsIdRoute
   '/admin/messages/$id': typeof AdminMessagesIdRoute
@@ -229,8 +229,8 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/admin': typeof AdminIndexRoute
   '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
-  '/admin/articles/$slug': typeof AdminArticlesSlugRoute
-  '/admin/categories/$slug': typeof AdminCategoriesSlugRoute
+  '/admin/articles/$id': typeof AdminArticlesIdRoute
+  '/admin/categories/$id': typeof AdminCategoriesIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/formations/$id': typeof AdminFormationsIdRoute
   '/admin/messages/$id': typeof AdminMessagesIdRoute
@@ -262,8 +262,8 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
-  '/admin/articles/$slug': typeof AdminArticlesSlugRoute
-  '/admin/categories/$slug': typeof AdminCategoriesSlugRoute
+  '/admin/articles/$id': typeof AdminArticlesIdRoute
+  '/admin/categories/$id': typeof AdminCategoriesIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/formations/$id': typeof AdminFormationsIdRoute
   '/admin/messages/$id': typeof AdminMessagesIdRoute
@@ -296,8 +296,8 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/admin/'
     | '/admin/appointments/$id'
-    | '/admin/articles/$slug'
-    | '/admin/categories/$slug'
+    | '/admin/articles/$id'
+    | '/admin/categories/$id'
     | '/admin/faqs/$id'
     | '/admin/formations/$id'
     | '/admin/messages/$id'
@@ -328,8 +328,8 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/admin'
     | '/admin/appointments/$id'
-    | '/admin/articles/$slug'
-    | '/admin/categories/$slug'
+    | '/admin/articles/$id'
+    | '/admin/categories/$id'
     | '/admin/faqs/$id'
     | '/admin/formations/$id'
     | '/admin/messages/$id'
@@ -360,8 +360,8 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/admin/'
     | '/admin/appointments/$id'
-    | '/admin/articles/$slug'
-    | '/admin/categories/$slug'
+    | '/admin/articles/$id'
+    | '/admin/categories/$id'
     | '/admin/faqs/$id'
     | '/admin/formations/$id'
     | '/admin/messages/$id'
@@ -393,8 +393,8 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
-  AdminArticlesSlugRoute: typeof AdminArticlesSlugRoute
-  AdminCategoriesSlugRoute: typeof AdminCategoriesSlugRoute
+  AdminArticlesIdRoute: typeof AdminArticlesIdRoute
+  AdminCategoriesIdRoute: typeof AdminCategoriesIdRoute
   AdminFaqsIdRoute: typeof AdminFaqsIdRoute
   AdminFormationsIdRoute: typeof AdminFormationsIdRoute
   AdminMessagesIdRoute: typeof AdminMessagesIdRoute
@@ -471,11 +471,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminArticlesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/articles/$slug': {
-      id: '/admin/articles/$slug'
-      path: '/admin/articles/$slug'
-      fullPath: '/admin/articles/$slug'
-      preLoaderRoute: typeof AdminArticlesSlugRouteImport
+    '/admin/articles/$id': {
+      id: '/admin/articles/$id'
+      path: '/admin/articles/$id'
+      fullPath: '/admin/articles/$id'
+      preLoaderRoute: typeof AdminArticlesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/categories/': {
@@ -485,11 +485,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCategoriesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/categories/$slug': {
-      id: '/admin/categories/$slug'
-      path: '/admin/categories/$slug'
-      fullPath: '/admin/categories/$slug'
-      preLoaderRoute: typeof AdminCategoriesSlugRouteImport
+    '/admin/categories/$id': {
+      id: '/admin/categories/$id'
+      path: '/admin/categories/$id'
+      fullPath: '/admin/categories/$id'
+      preLoaderRoute: typeof AdminCategoriesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/faqs/': {
@@ -641,8 +641,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
-  AdminArticlesSlugRoute: AdminArticlesSlugRoute,
-  AdminCategoriesSlugRoute: AdminCategoriesSlugRoute,
+  AdminArticlesIdRoute: AdminArticlesIdRoute,
+  AdminCategoriesIdRoute: AdminCategoriesIdRoute,
   AdminFaqsIdRoute: AdminFaqsIdRoute,
   AdminFormationsIdRoute: AdminFormationsIdRoute,
   AdminMessagesIdRoute: AdminMessagesIdRoute,

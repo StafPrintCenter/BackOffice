@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { useAdminCategoriesList, useCreateAdminCategory, useDeleteAdminCategory } from "@/stores/useAdminCategoriesStore";
+import { useAdminCategoriesList, useCreateAdminCategory, useUpdateAdminCategory, useDeleteAdminCategory } from "@/stores/useAdminCategoriesStore";
 import type { APIAdminCategory, AdminCategoryPayload } from "@/data/admin-categories";
 
 export const Route = createFileRoute("/admin/categories/")({
@@ -44,9 +44,10 @@ function AdminCategories() {
   const navigate = useNavigate();
   const { items, isLoading } = useAdminCategoriesList({ perPage: 100 });
   const createMutation = useCreateAdminCategory();
+  const updateMutation = useUpdateAdminCategory();
   const removeMutation = useDeleteAdminCategory();
 
-  const [open, setOpen] = useState(false);
+  const [dialog, setDialog] = useState<{ open: boolean; row?: APIAdminCategory }>({ open: false });
   const [form, setForm] = useState<FormValues>(empty);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [toDelete, setToDelete] = useState<APIAdminCategory | null>(null);
@@ -54,23 +55,63 @@ function AdminCategories() {
   const openCreate = () => {
     setForm(empty);
     setErrors({});
-    setOpen(true);
+    setDialog({ open: true });
+  };
+
+  const openEdit = (row: APIAdminCategory) => {
+    setForm({
+      name: row.name,
+      slug: row.slug ?? "",
+      colorClass: row.colorClass ?? "bg-slate-100 text-slate-700",
+      isTrainingTheme: !!row.isTrainingTheme,
+      isProjectCategory: !!row.isProjectCategory,
+      isArticleCategory: !!row.isArticleCategory,
+      isNewsletterCategory: !!row.isNewsletterCategory,
+    });
+    setErrors({});
+    setDialog({ open: true, row });
   };
 
   const submit = () => {
     const parsed = schema.safeParse(form);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
-      parsed.error.issues.forEach((i) => {
-        errs[i.path[0] as string] = i.message;
-      });
+      parsed.error.issues.forEach((i) => { errs[i.path[0] as string] = i.message; });
       setErrors(errs);
       return;
     }
-    createMutation.mutate(parsed.data as AdminCategoryPayload, {
-      onSuccess: () => { toast.success("Catégorie créée"); setOpen(false); },
-      onError: () => toast.error("Erreur lors de la création"),
-    });
+
+    // Mapper les champs de la vue vers le type AdminCategoryPayload (si votre backend attend du snake_case)
+    const payload: AdminCategoryPayload = {
+      name: parsed.data.name,
+      slug: parsed.data.slug,
+      color_class: parsed.data.colorClass,
+      is_training_theme: parsed.data.isTrainingTheme,
+      is_project_category: parsed.data.isProjectCategory,
+      is_article_category: parsed.data.isArticleCategory,
+      is_newsletter_category: parsed.data.isNewsletterCategory,
+    } as unknown as AdminCategoryPayload; // Cast de sécurité si l'interface est stricte
+
+    if (dialog.row) {
+      updateMutation.mutate(
+        { id: dialog.row.id, data: payload },
+        {
+          onSuccess: () => {
+            toast.success("Catégorie modifiée");
+            setDialog({ open: false });
+          },
+          onError: () => toast.error("Erreur lors de la modification"),
+        }
+      );
+    } else {
+      createMutation.mutate(payload, {
+        onSuccess: () => {
+          toast.success("Catégorie créée");
+          setDialog({ open: false });
+        },
+        onError: () => toast.error("Erreur lors de la création"),
+      });
+    }
   };
 
   return (
@@ -82,6 +123,7 @@ function AdminCategories() {
         isLoading={isLoading}
         searchKeys={["name", "slug"]}
         onCreate={openCreate}
+        onEdit={openEdit}
         onDelete={(r) => setToDelete(r)}
         onView={(r) => navigate({ to: "/admin/categories/$id", params: { id: r.id } })}
         columns={[
@@ -123,10 +165,10 @@ function AdminCategories() {
         ]}
       />
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={dialog.open} onOpenChange={(v) => setDialog({ open: v, row: dialog.row })}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Nouvelle catégorie</DialogTitle>
+            <DialogTitle>{dialog.row ? "Modifier la catégorie" : "Nouvelle catégorie"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
@@ -179,11 +221,11 @@ function AdminCategories() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>
+            <Button variant="outline" onClick={() => setDialog({ open: false })}>
               Annuler
             </Button>
-            <Button onClick={submit} disabled={createMutation.isPending}>
-              Créer
+            <Button onClick={submit} disabled={createMutation.isPending || updateMutation.isPending}>
+              {dialog.row ? "Enregistrer" : "Créer"}
             </Button>
           </DialogFooter>
         </DialogContent>

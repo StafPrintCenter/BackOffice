@@ -86,7 +86,13 @@ export function useAuth() {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const { admin } = await loginAdmin(email, password);
+    await loginAdmin(email, password);
+    const admin = await fetchAdminMe();
+    if (!admin) {
+      throw new AdminAuthApiError(
+        "La session n'a pas pu être établie."
+      );
+    }
     sharedUser = toAuthUser(admin);
     sharedReady = true;
     notify();

@@ -43,7 +43,11 @@ function AdminCategories() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [toDelete, setToDelete] = useState<APIAdminCategory | null>(null);
 
-  const openCreate = () => { setForm(empty); setErrors({}); setOpen(true); };
+  const openCreate = () => {
+    setForm(empty);
+    setErrors({});
+    setOpen(true);
+  };
 
   const submit = () => {
     const parsed = schema.safeParse(form);

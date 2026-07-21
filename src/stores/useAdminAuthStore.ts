@@ -17,17 +17,12 @@ export async function loginAdmin(email: string, password: string): Promise<APILo
 }
 
 /**
- * Revalide le token stocké et récupère l'utilisateur à jour.
- * Retourne null si aucun token n'est présent ou si le token est invalide/expiré.
+ * Revalide la session via le cookie httpOnly envoyé automatiquement.
+ * Retourne null si aucune session valide n'est active (401).
  */
 export async function fetchAdminMe(): Promise<APIAdminUser | null> {
-  if (!getAdminToken()) return null;
-
   const response = await adminFetch(`/api/admin/auth/me`);
-  if (response.status === 401) {
-    clearAdminToken();
-    return null;
-  }
+  if (response.status === 401) return null;
   if (!response.ok) {
     throw new AdminAuthApiError("Erreur lors de la vérification de la session.");
   }
@@ -36,5 +31,4 @@ export async function fetchAdminMe(): Promise<APIAdminUser | null> {
 
 export async function logoutAdmin(): Promise<void> {
   await adminFetch(`/api/admin/auth/logout`, { method: "POST" });
-  // Le backend renvoie un Set-Cookie qui expire "admin_token" — rien à nettoyer côté front.
 }

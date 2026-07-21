@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { AdminShell } from "@/layouts/AdminShell";
 import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
-import { DataTable } from "@/components/admin/DataTable";
+import { DataTable } from "@/components/site/DataTable";
 import { reportsApi } from "@/api/extra.api";
 import type { Report, ReportStatus } from "@/types";
 

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, MousePointerClick, Globe, Smartphone, Copy } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { AdminShell } from "@/layouts/AdminShell";
+import { AdminShell } from "@/components/site/AdminShell";
 import { StatCard } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { shortLinksApi, shortLinkClicksApi } from "@/api/extra.api";

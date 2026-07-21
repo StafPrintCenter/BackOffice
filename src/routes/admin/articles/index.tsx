@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useAdminArticlesList, useCreateAdminArticle, useDeleteAdminArticle } from "@/stores/useAdminArticlesStore";
 import { useAdminCategoriesList } from "@/stores/useAdminCategoriesStore";
 import type { APIAdminArticleListItem, AdminArticlePayload } from "@/data/admin-articles";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
 export const Route = createFileRoute("/admin/articles/")({
   head: () => ({ meta: [{ title: "Articles — Admin" }, { name: "robots", content: "noindex" }] }),
@@ -130,8 +131,8 @@ function AdminArticles() {
               {errors.excerpt && <p className="text-xs text-destructive mt-1">{errors.excerpt}</p>}
             </div>
             <div>
-              <Label>Contenu HTML</Label>
-              <Textarea rows={12} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} className="font-mono text-xs" placeholder="<p>Votre article...</p>" />
+              <Label>Contenu</Label>
+              <RichTextEditor value={form.body} onChange={(html) => setForm({ ...form, body: html })} placeholder="Rédigez votre article..." />
               {errors.body && <p className="text-xs text-destructive mt-1">{errors.body}</p>}
             </div>
           </div>

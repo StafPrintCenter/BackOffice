@@ -2,9 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { AdminShell } from "@/components/site/AdminShell";
-import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
-import { DataTable } from "@/components/site/DataTable";
+import { AdminShell, PageHeader, ConfirmDelete, DataTable, RichTextEditor } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +12,6 @@ import {
   useAdminCategoriesList
 } from "@/stores";
 import type { APIAdminArticleListItem, AdminArticlePayload } from "@/data/articles";
-import { RichTextEditor } from "@/components/site/RichTextEditor";
 
 export const Route = createFileRoute("/admin/articles/")({
   head: () => ({ meta: [{ title: "Articles — Admin" }, { name: "robots", content: "noindex" }] }),

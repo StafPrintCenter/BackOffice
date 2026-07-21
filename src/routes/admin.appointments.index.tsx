@@ -3,9 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Video, Phone, MessageCircle, MapPin } from "lucide-react";
-import { AdminShell } from "@/components/site/AdminShell";
-import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
-import { DataTable } from "@/components/site/DataTable";
+import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { appointmentsApi } from "@/api/appointments.api";
 import type { Appointment, AppointmentMode, AppointmentStatus } from "@/types";
 

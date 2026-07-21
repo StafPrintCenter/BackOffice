@@ -1,4 +1,4 @@
-export type APIAdminCategory = {
+export interface APIAdminCategory {
   id: string;
   slug: string;
   name: string;

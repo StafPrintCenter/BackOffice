@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { UserPlus, Shield, GraduationCap, User as UserIcon } from "lucide-react";
 import { AdminShell } from "@/layouts/AdminShell";
-import { PageHeader, ConfirmDelete } from "@/components/admin/AdminBits";
+import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -111,7 +111,7 @@ function AdminUsers() {
           <tbody>
             {isLoading ? <tr><td colSpan={4} className="px-4 py-6 text-center text-muted-foreground">Chargement...</td></tr>
               : list(role).length === 0 ? <tr><td colSpan={4} className="px-4 py-6 text-center text-muted-foreground">Aucun utilisateur</td></tr>
-              : list(role).map(renderRow)}
+                : list(role).map(renderRow)}
           </tbody>
         </table>
       </div>

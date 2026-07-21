@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Video, Phone, MessageCircle, MapPin } from "lucide-react";
 import { AdminShell } from "@/layouts/AdminShell";
 import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
-import { DataTable } from "@/components/admin/DataTable";
+import { DataTable } from "@/components/site/DataTable";
 import { appointmentsApi } from "@/api/appointments.api";
 import type { Appointment, AppointmentMode, AppointmentStatus } from "@/types";
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { AdminShell } from "@/layouts/AdminShell";
-import { PageHeader, ConfirmDelete } from "@/components/admin/AdminBits";
+import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
 import { DataTable } from "@/components/admin/DataTable";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";

@@ -19,12 +19,13 @@ export const Route = createFileRoute("/admin/categories/")({
 });
 
 const schema = z.object({
-  name: z.string().trim().min(2).max(50),
+  name: z.string().trim().min(2, "Le nom doit faire au moins 2 caractères").max(50),
   slug: z.string().trim().max(50).optional(),
-  color_class: z.string().trim().min(1).max(80),
-  is_training_theme: z.boolean(),
-  is_project_category: z.boolean(),
-  is_article_category: z.boolean(),
+  colorClass: z.string().trim().min(1, "La classe couleur est requise").max(80),
+  isTrainingTheme: z.boolean(),
+  isProjectCategory: z.boolean(),
+  isArticleCategory: z.boolean(),
+  isNewsletterCategory: z.boolean(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -131,7 +132,7 @@ function AdminCategories() {
             <div>
               <Label>Nom</Label>
               <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-              {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
+              {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
             </div>
             <div>
               <Label>Slug (optionnel)</Label>
@@ -139,20 +140,41 @@ function AdminCategories() {
             </div>
             <div>
               <Label>Classe couleur (Tailwind)</Label>
-              <Input value={form.color_class} onChange={(e) => setForm({ ...form, color_class: e.target.value })} />
+              <Input
+                value={form.colorClass}
+                onChange={(e) => setForm({ ...form, colorClass: e.target.value })}
+                placeholder="ex: bg-indigo-500/10 text-indigo-600"
+              />
+              {errors.colorClass && <p className="mt-1 text-xs text-destructive">{errors.colorClass}</p>}
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between rounded-lg border p-3">
                 <Label className="cursor-pointer">Thème de formation</Label>
-                <Switch checked={form.is_training_theme} onCheckedChange={(v) => setForm({ ...form, is_training_theme: v })} />
+                <Switch
+                  checked={form.isTrainingTheme}
+                  onCheckedChange={(v) => setForm({ ...form, isTrainingTheme: v })}
+                />
               </div>
               <div className="flex items-center justify-between rounded-lg border p-3">
                 <Label className="cursor-pointer">Catégorie de projet</Label>
-                <Switch checked={form.is_project_category} onCheckedChange={(v) => setForm({ ...form, is_project_category: v })} />
+                <Switch
+                  checked={form.isProjectCategory}
+                  onCheckedChange={(v) => setForm({ ...form, isProjectCategory: v })}
+                />
               </div>
               <div className="flex items-center justify-between rounded-lg border p-3">
                 <Label className="cursor-pointer">Catégorie d'article</Label>
-                <Switch checked={form.is_article_category} onCheckedChange={(v) => setForm({ ...form, is_article_category: v })} />
+                <Switch
+                  checked={form.isArticleCategory}
+                  onCheckedChange={(v) => setForm({ ...form, isArticleCategory: v })}
+                />
+              </div>
+              <div className="flex items-center justify-between rounded-lg border p-3">
+                <Label className="cursor-pointer">Catégorie de newsletter</Label>
+                <Switch
+                  checked={form.isNewsletterCategory}
+                  onCheckedChange={(v) => setForm({ ...form, isNewsletterCategory: v })}
+                />
               </div>
             </div>
           </div>

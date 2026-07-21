@@ -76,6 +76,7 @@ export function DataTable<T extends { id: string }>({
                   {(onView || onEdit || onDelete) && <th className="px-4 py-3 text-right font-semibold">Actions</th>}
                 </tr>
               </thead>
+
               <tbody>
                 {paged.map((row) => (
                   <tr

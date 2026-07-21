@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { useAdminCategoriesList, useCreateAdminCategory, useUpdateAdminCategory, useDeleteAdminCategory } from "@/stores/useAdminCategoriesStore";
+import { useAdminCategoriesList, useCreateAdminCategory, useUpdateAdminCategory, useDeleteAdminCategory } from "@/stores/useCategoriesStore";
 import type { APIAdminCategory, AdminCategoryPayload } from "@/data/admin-categories";
 
 export const Route = createFileRoute("/admin/categories/")({

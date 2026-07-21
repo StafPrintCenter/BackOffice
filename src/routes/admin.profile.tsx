@@ -1,23 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import {
-  User as UserIcon,
-  Mail,
-  Shield,
-  Calendar,
-  KeyRound,
-  Save,
-  LogOut,
-  Wrench,
-  GraduationCap,
-  FolderKanban,
-  FileText,
-  MessagesSquare,
-} from "lucide-react";
+import { User as UserIcon, Mail, Shield, Calendar, KeyRound, Save, LogOut, Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { AdminShell } from "@/components/site/AdminShell";
-import { PageHeader } from "@/components/site/AdminBits";
+import { AdminShell, PageHeader } from "@/components/site";
 import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

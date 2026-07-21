@@ -52,7 +52,7 @@ function LoginPage() {
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      {/* SECTION GAUCHE : Visuel d'accueil & Présentation (visible uniquement sur écran large) */}
+      {/* Colonne gauche */}
       <div className="hidden lg:flex bg-gradient-hero p-12 text-primary-foreground flex-col justify-between">
         <div className="flex items-center">
           <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />

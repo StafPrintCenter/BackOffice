@@ -35,7 +35,6 @@ function LoginPage() {
     if (ready && isAuthenticated) navigate({ to: "/admin" });
   }, [ready, isAuthenticated, navigate]);
 
-  // Traitement de la soumission du formulaire
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);

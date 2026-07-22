@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Star } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Star, Sparkles } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -115,7 +115,7 @@ function TestimonialDetail() {
         </div>
       </div>
 
-      <div className="max-w-2xl">
+      <div className="max-w-2xl space-y-4">
         {isEditing ? (
           <div className="space-y-4 rounded-2xl border bg-card p-6">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -131,8 +131,8 @@ function TestimonialDetail() {
                 <Label>Note (1-5)</Label>
                 <Input type="number" min={1} max={5} value={form.rating} onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })} />
               </div>
-              <div className="flex items-end gap-3">
-                <Label className="mb-2">En vedette</Label>
+              <div className="flex items-center justify-between rounded-lg border p-3">
+                <Label className="cursor-pointer">En vedette</Label>
                 <Switch checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
               </div>
             </div>
@@ -142,21 +142,44 @@ function TestimonialDetail() {
             </div>
           </div>
         ) : (
-          <div className="rounded-2xl border bg-card p-8">
-            <div className="flex gap-0.5">
-              {Array.from({ length: testimonial.rating }).map((_, i) => <Star key={i} className="h-4 w-4 fill-primary text-primary" />)}
-            </div>
-            <blockquote className="mt-4 text-xl italic font-display leading-relaxed">"{testimonial.quote}"</blockquote>
-            <div className="mt-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold">
-                {testimonial.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
+          <>
+            <div className="rounded-2xl border bg-card p-8 space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex gap-0.5">
+                  {Array.from({ length: testimonial.rating }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                  ))}
+                </div>
+                {testimonial.featured ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
+                    <Sparkles className="h-3 w-3" /> En vedette
+                  </span>
+                ) : (
+                  <span className="text-xs text-muted-foreground font-medium">Standard</span>
+                )}
               </div>
-              <div>
-                <div className="font-semibold">{testimonial.name}</div>
-                <div className="text-xs text-muted-foreground">{testimonial.role}</div>
+
+              <blockquote className="text-xl italic font-display leading-relaxed text-foreground">
+                "{testimonial.quote}"
+              </blockquote>
+
+              <div className="flex items-center gap-3 pt-2 border-t border-border/50">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-bold">
+                  {testimonial.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
+                </div>
+                <div>
+                  <div className="font-semibold">{testimonial.name}</div>
+                  <div className="text-xs text-muted-foreground">{testimonial.role}</div>
+                </div>
               </div>
             </div>
-          </div>
+
+            {/* Encadré des métadonnées de dates */}
+            <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex items-center justify-between">
+              <div>Créé le : {new Date(testimonial.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}</div>
+              <div>Modifié le : {new Date(testimonial.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}</div>
+            </div>
+          </>
         )}
       </div>
 

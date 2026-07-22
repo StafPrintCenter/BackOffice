@@ -37,10 +37,8 @@ function AdminReports() {
             key: "reportableType",
             label: "Cible",
             render: (r) => (
-              <div>
-                <div className="text-xs font-medium text-foreground">
-                  {getReportableTypeLabel(r.reportableType)}
-                </div>
+              <div className="text-xs font-medium text-foreground">
+                {getReportableTypeLabel(r.reportableType)}
               </div>
             ),
           },

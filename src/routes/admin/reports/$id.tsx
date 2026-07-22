@@ -110,7 +110,7 @@ function ReportDetail() {
                     <Tag className="h-4 w-4 text-primary" />
                     <span>
                       Cible : <b className="text-foreground">{getReportableTypeLabel(rep.reportableType)}</b>{" "}
-                      <code className="text-[11px]">#{rep.reportableId.slice(0, 8)}</code>
+                      <code className="text-[11px]">#{rep.reportableId}</code>
                     </span>
                   </div>
                   <div className="flex items-center gap-2">

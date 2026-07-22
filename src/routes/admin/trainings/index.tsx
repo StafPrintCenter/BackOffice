@@ -104,7 +104,25 @@ function AdminTrainings() {
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "title", label: "Titre", render: (r) => <div className="font-medium">{r.title}</div> },
-          { key: "theme", label: "Thème" },
+          {
+            key: "theme",
+            label: "Thème",
+            render: (r) => {
+              // Match avec la liste des thèmes par themeId ou par nom
+              const match = themes.find(
+                (t) => t.id === r.themeId || t.name.toLowerCase() === (typeof r.theme === "string" ? r.theme.toLowerCase() : "")
+              );
+
+              const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";
+              const themeName = typeof r.theme === "string" ? r.theme : match?.name || "Sans thème";
+
+              return (
+                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${colorClass}`}>
+                  {themeName}
+                </span>
+              );
+            },
+          },
           { key: "level", label: "Niveau" },
           { key: "duration", label: "Durée" },
           { key: "price", label: "Prix", render: (r) => <span className="font-semibold">{r.price.toLocaleString()} FCFA</span> },

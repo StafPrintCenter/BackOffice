@@ -7,14 +7,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  useAdminArticlesList, useCreateAdminArticle, useDeleteAdminArticle,
-  useAdminCategoriesList
-} from "@/stores";
+import { useAdminArticlesList, useCreateAdminArticle, useDeleteAdminArticle, useAdminCategoriesList } from "@/stores";
 import type { APIAdminArticleListItem, AdminArticlePayload } from "@/data/articles";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/articles/")({
-  head: () => ({ meta: [{ title: "Articles — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Articles | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: AdminArticles,
 });
 

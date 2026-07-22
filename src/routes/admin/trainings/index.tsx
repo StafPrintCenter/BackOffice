@@ -11,10 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  useAdminTrainingsList, useCreateAdminTraining, useUpdateAdminTraining, useDeleteAdminTraining,
-} from "@/stores/useTrainingsStore";
-import type { APIAdminTrainingListItem, AdminTrainingPayload, TrainingLevel } from "@/data/trainings";
+import { useAdminTrainingsList, useCreateAdminTraining, useUpdateAdminTraining, useDeleteAdminTraining, } from "@/stores/useTrainingsStore";
+import type { APIAdminTrainingListItem, AdminTrainingPayload, TrainingLevel, TRAINING_LEVEL_BADGES, getTrainingLevelBadgeClass } from "@/data/trainings";
 
 export const Route = createFileRoute("/admin/trainings/")({
   head: () => ({ meta: [{ title: "Formations — Admin" }, { name: "robots", content: "noindex" }] }),
@@ -123,7 +121,15 @@ function AdminTrainings() {
               );
             },
           },
-          { key: "level", label: "Niveau" },
+          {
+            key: "level",
+            label: "Niveau",
+            render: (r) => (
+              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors ${getTrainingLevelBadgeClass(r.level)}`}>
+                {r.level}
+              </span>
+            ),
+          },
           { key: "duration", label: "Durée" },
           { key: "price", label: "Prix", render: (r) => <span className="font-semibold">{r.price.toLocaleString()} FCFA</span> },
         ]}

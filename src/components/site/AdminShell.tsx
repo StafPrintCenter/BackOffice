@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, LogOut, ChevronLeft, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Inbox, ShieldAlert, Users, CalendarClock, } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, ChevronLeft, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Inbox, ShieldAlert, CalendarClock, NotebookPen, UserRoundPen, UserCheck, UserStar, Mailbox } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/admin/categories", label: "Catégories", icon: Tags },
       { to: "/admin/services", label: "Services", icon: Wrench },
       { to: "/admin/projects", label: "Projets", icon: FolderKanban },
-      { to: "/admin/formations", label: "Formations", icon: GraduationCap },
+      { to: "/admin/formations", label: "Formations", icon: NotebookPen },
       { to: "/admin/articles", label: "Articles", icon: FileText },
       { to: "/admin/faqs", label: "FAQ", icon: HelpCircle },
       { to: "/admin/testimonials", label: "Témoignages", icon: MessagesSquare },
@@ -33,14 +33,21 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: "/admin/messages", label: "Messages", icon: Inbox },
       { to: "/admin/appointments", label: "Rendez-vous", icon: CalendarClock },
+      { to: "/admin/reports", label: "Newsletter", icon: Mailbox },
       { to: "/admin/reports", label: "Signalements", icon: ShieldAlert },
-      { to: "/admin/users", label: "Utilisateurs", icon: Users },
     ],
   },
-
   {
     label: "Outils",
     items: [{ to: "/admin/short-links", label: "Liens courts", icon: Link2 }],
+  },
+  {
+    label: "Membre",
+    items: [
+      { to: "/admin/messages", label: "Utilisateurs", icon: UserCheck },
+      { to: "/admin/appointments", label: "Apprenants", icon: UserRoundPen },
+      { to: "/admin/reports", label: "Administrateurs", icon: UserStar },
+    ],
   },
 ];
 
@@ -156,7 +163,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
           onClick={handleLogout}
           title={collapsed ? "Déconnexion" : undefined}
           className={
-            "flex items-center gap-2 rounded-lg text-sm text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground " +
+            "flex items-center gap-2 rounded-lg text-sm text-sidebar-foreground/80 hover:bg-destructive cursor-pointer hover:text-sidebar-accent-foreground " +
             (collapsed ? "justify-center h-10 w-10 mx-auto" : "w-full px-3 py-2")
           }
         >

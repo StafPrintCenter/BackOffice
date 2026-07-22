@@ -6,15 +6,17 @@ import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  useAdminArticleDetail, useUpdateAdminArticle, useDeleteAdminArticle,
-  useAdminCategoriesList
-} from "@/stores";
+import { useAdminArticleDetail, useUpdateAdminArticle, useDeleteAdminArticle, useAdminCategoriesList } from "@/stores";
 import type { AdminArticlePayload } from "@/data/articles";
 import { RichTextEditor } from "@/components/site/RichTextEditor";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/articles/$id")({
-  head: () => ({ meta: [{ title: "Article — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Articles | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: ArticleDetail,
 });
 

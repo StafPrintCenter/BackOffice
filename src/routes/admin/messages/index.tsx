@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { useAdminContactsList } from "@/stores/useContactsStore";
 import type { APIAdminContactListItem, ContactStatus } from "@/data/contact";
@@ -20,6 +20,7 @@ const statusLabel = (s: ContactStatus) =>
   ({ new: "Nouveau", in_progress: "En cours", resolved: "Résolu", closed: "Fermé" }[s]);
 
 function AdminMessages() {
+  const navigate = useNavigate();
   const { items, isLoading } = useAdminContactsList({ perPage: 100 });
 
   return (
@@ -29,26 +30,19 @@ function AdminMessages() {
         data={items}
         isLoading={isLoading}
         searchKeys={["name", "email", "ticketNumber", "service"]}
+        onView={(r) => navigate({ to: "/admin/messages/$id", params: { id: r.id } })}
         columns={[
           {
             key: "ticketNumber",
             label: "Ticket",
-            render: (r) => (
-              <Link
-                to="/admin/messages/$id"
-                params={{ id: r.id }}
-                className="font-mono text-xs font-medium text-primary hover:underline"
-              >
-                {r.ticketNumber}
-              </Link>
-            ),
+            render: (r) => <span className="font-mono text-xs font-medium text-primary hover:underline">{r.ticketNumber}</span>,
           },
           {
             key: "name",
             label: "Expéditeur",
             render: (r) => (
               <div>
-                <div className="font-medium">{r.name}</div>
+                <div className="font-medium text-foreground">{r.name}</div>
                 <div className="text-xs text-muted-foreground">{r.email}</div>
               </div>
             ),
@@ -56,14 +50,17 @@ function AdminMessages() {
           {
             key: "service",
             label: "Service",
-            render: (r) => <span className="text-xs">{r.customService || r.service}</span>,
+            render: (r) => <span className="text-xs font-medium">{r.customService || r.service}</span>,
           },
           {
             key: "createdAt",
             label: "Reçu le",
             render: (r) => (
               <span className="text-xs text-muted-foreground">
-                {new Date(r.createdAt).toLocaleString()}
+                {new Date(r.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
+                  dateStyle: "short",
+                  timeStyle: "short",
+                })}
               </span>
             ),
           },
@@ -71,7 +68,7 @@ function AdminMessages() {
             key: "status",
             label: "Statut",
             render: (r) => (
-              <span className={"rounded-full px-2 py-0.5 text-xs " + statusBadge(r.status)}>
+              <span className={"inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium " + statusBadge(r.status)}>
                 {statusLabel(r.status)}
               </span>
             ),

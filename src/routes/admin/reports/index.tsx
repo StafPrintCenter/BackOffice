@@ -32,7 +32,7 @@ function AdminReports() {
             label: "ID",
             render: (r) => (
               <code className="rounded bg-muted px-2 py-0.5 font-mono text-xs font-semibold">
-                #{r.id.slice(0, 6)}
+                {r.id}
               </code>
             ),
           },

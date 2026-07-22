@@ -73,7 +73,7 @@ function AdminFaqs() {
         onView={(r) => navigate({ to: "/admin/faqs/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
-          { key: "order", label: "#", render: (r) => <span className="text-muted-foreground">{r.order}</span> },
+          { key: "order", label: "#", render: (r) => <span className="font-mono text-xs font-medium text-primary">{r.order}</span> },
           { key: "question", label: "Question", render: (r) => <div className="font-medium max-w-md">{r.question}</div> },
           {
             key: "category",

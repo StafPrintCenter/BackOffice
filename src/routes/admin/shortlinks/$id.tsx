@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, MousePointerClick, Globe, Smartphone, Copy } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, MousePointerClick, Globe, Smartphone, Copy, Check } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { AdminShell } from "@/components/site/AdminShell";
 import { ConfirmDelete } from "@/components/site/AdminBits";
@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import {
   useAdminShortLinkDetail, useUpdateAdminShortLink, useDeleteAdminShortLink, useAdminShortLinkStats,
 } from "@/stores/useShortLinksStore";
+import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { SHORT_LINK_CATEGORIES } from "@/data/shortlinks";
 import type { AdminShortLinkPayload } from "@/data/shortlinks";
 
@@ -28,12 +29,14 @@ function ShortLinkDetail() {
 
   const { item: link, isLoading } = useAdminShortLinkDetail(id);
   const { stats } = useAdminShortLinkStats(id);
+  const { items: categories } = useAdminCategoriesList({ perPage: 100 });
   const updateMutation = useUpdateAdminShortLink();
   const removeMutation = useDeleteAdminShortLink();
 
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState<AdminShortLinkPayload | null>(null);
   const [toDelete, setToDelete] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const startEdit = () => {
     if (!link) return;
@@ -81,7 +84,9 @@ function ShortLinkDetail() {
 
   const copy = () => {
     navigator.clipboard.writeText(link.shortUrl);
+    setCopied(true);
     toast.success("Lien copié");
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const byDay = (stats?.byDay ?? []).map((d) => ({ day: d.day.slice(5), value: d.total }));
@@ -91,7 +96,13 @@ function ShortLinkDetail() {
   const byBrowser = (stats?.byBrowser ?? []).map((d) => ({ name: d.browser, value: d.total }));
   const history = stats?.history ?? [];
 
-  const categoryLabel = SHORT_LINK_CATEGORIES.find((c) => c.value === link.category)?.label ?? link.category;
+  // Correspondance catégorie + couleur
+  const matchedCategory = categories.find(
+    (c) => c.slug === link.category || c.id === link.category || c.name.toLowerCase() === link.category.toLowerCase()
+  );
+  const categoryFallback = SHORT_LINK_CATEGORIES.find((c) => c.value === link.category)?.label ?? link.category;
+  const categoryColorClass = matchedCategory?.colorClass || "bg-slate-100 text-slate-700";
+  const categoryLabel = matchedCategory?.name || categoryFallback;
 
   return (
     <AdminShell>
@@ -170,17 +181,38 @@ function ShortLinkDetail() {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <div className="text-xs uppercase text-muted-foreground">Alias</div>
-                <div className="font-display text-2xl font-bold">/{link.alias}</div>
+                {/* L'alias est maintenant un lien qui ouvre shortUrl */}
+                <a
+                  href={link.shortUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-display text-2xl font-bold text-primary hover:underline"
+                >
+                  /{link.alias}
+                </a>
                 <a href={link.longUrl} target="_blank" rel="noreferrer" className="mt-1 block text-xs text-muted-foreground hover:underline break-all">
                   ↳ {link.longUrl}
                 </a>
-                <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                  <span>Catégorie <b className="text-foreground">{categoryLabel}</b></span>
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                  <span>Catégorie</span>
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${categoryColorClass}`}>
+                    {categoryLabel}
+                  </span>
                   <span>· Actif <b className="text-foreground">{link.isActive ? "Oui" : "Non"}</b></span>
                   {link.expiresAt && <span>· Expire le <b className="text-foreground">{link.expiresAt.slice(0, 10)}</b></span>}
                 </div>
               </div>
-              <Button onClick={copy}><Copy className="h-4 w-4 mr-1" /> Copier</Button>
+              <Button onClick={copy} variant={copied ? "outline" : "default"}>
+                {copied ? (
+                  <>
+                    <Check className="h-4 w-4 mr-1 text-emerald-600" /> Copié !
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-4 w-4 mr-1" /> Copier
+                  </>
+                )}
+              </Button>
             </div>
           )}
         </div>

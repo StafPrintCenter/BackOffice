@@ -1,15 +1,19 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus, Target, ListChecks, BookOpen, Clock, Signal, Users, Award, CalendarClock, } from "lucide-react";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import {
+  ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus,
+  Target, BookOpen, Clock, Signal, Users, Award, CalendarClock, ListChecks,
+} from "lucide-react";
+import { AdminShell } from "@/components/site/AdminShell";
+import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminTrainingDetail, useUpdateAdminTraining, useDeleteAdminTraining } from "@/stores/useTrainingsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import type { AdminTrainingPayload, TrainingLevel } from "@/data/trainings";
+import type { AdminTrainingPayload, TrainingLevel, TrainingProgramModule } from "@/data/trainings";
 
 export const Route = createFileRoute("/admin/trainings/$id")({
   head: () => ({ meta: [{ title: "Formation — Admin" }, { name: "robots", content: "noindex" }] }),
@@ -172,10 +176,10 @@ function TrainingDetail() {
           <div>
             <Label>Objectifs</Label>
             <div className="mt-2 space-y-2">
-              {form.objectives.map((o, i) => (
+              {form.objectives.map((o: string, i: number) => (
                 <div key={i} className="flex gap-2">
                   <Input value={o} onChange={(e) => { const arr = [...form.objectives]; arr[i] = e.target.value; setForm({ ...form, objectives: arr }); }} />
-                  <Button variant="outline" size="icon" onClick={() => setForm({ ...form, objectives: form.objectives.filter((_, idx) => idx !== i) })}>
+                  <Button variant="outline" size="icon" onClick={() => setForm({ ...form, objectives: form.objectives.filter((_: string, idx: number) => idx !== i) })}>
                     <Trash2 className="h-3 w-3" />
                   </Button>
                 </div>
@@ -189,10 +193,10 @@ function TrainingDetail() {
           <div>
             <Label>Prérequis</Label>
             <div className="mt-2 space-y-2">
-              {form.prerequisites.map((p, i) => (
+              {form.prerequisites.map((p: string, i: number) => (
                 <div key={i} className="flex gap-2">
                   <Input value={p} onChange={(e) => { const arr = [...form.prerequisites]; arr[i] = e.target.value; setForm({ ...form, prerequisites: arr }); }} />
-                  <Button variant="outline" size="icon" onClick={() => setForm({ ...form, prerequisites: form.prerequisites.filter((_, idx) => idx !== i) })}>
+                  <Button variant="outline" size="icon" onClick={() => setForm({ ...form, prerequisites: form.prerequisites.filter((_: string, idx: number) => idx !== i) })}>
                     <Trash2 className="h-3 w-3" />
                   </Button>
                 </div>
@@ -206,7 +210,7 @@ function TrainingDetail() {
           <div>
             <Label>Programme (modules)</Label>
             <div className="mt-2 space-y-3">
-              {form.program.map((m, mi) => (
+              {form.program.map((m: TrainingProgramModule, mi: number) => (
                 <div key={mi} className="rounded-lg border p-3 space-y-2">
                   <div className="flex gap-2">
                     <Input
@@ -214,18 +218,18 @@ function TrainingDetail() {
                       value={m.title}
                       onChange={(e) => { const arr = [...form.program]; arr[mi] = { ...arr[mi], title: e.target.value }; setForm({ ...form, program: arr }); }}
                     />
-                    <Button variant="outline" size="icon" onClick={() => setForm({ ...form, program: form.program.filter((_, idx) => idx !== mi) })}>
+                    <Button variant="outline" size="icon" onClick={() => setForm({ ...form, program: form.program.filter((_: TrainingProgramModule, idx: number) => idx !== mi) })}>
                       <Trash2 className="h-3 w-3" />
                     </Button>
                   </div>
                   <div className="space-y-1 pl-3 border-l-2">
-                    {m.items.map((it, li) => (
+                    {m.items.map((it: string, li: number) => (
                       <div key={li} className="flex gap-2">
                         <Input
                           value={it}
                           onChange={(e) => { const arr = [...form.program]; arr[mi].items[li] = e.target.value; setForm({ ...form, program: arr }); }}
                         />
-                        <Button variant="ghost" size="icon" onClick={() => { const arr = [...form.program]; arr[mi].items = arr[mi].items.filter((_, x) => x !== li); setForm({ ...form, program: arr }); }}>
+                        <Button variant="ghost" size="icon" onClick={() => { const arr = [...form.program]; arr[mi].items = arr[mi].items.filter((_: string, x: number) => x !== li); setForm({ ...form, program: arr }); }}>
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
@@ -265,7 +269,7 @@ function TrainingDetail() {
                 <Target className="h-4 w-4 text-primary" /> Objectifs
               </div>
               <ul className="space-y-1.5 text-sm">
-                {training.objectives.map((o, i) => (
+                {training.objectives.map((o: string, i: number) => (
                   <li key={i} className="flex gap-2">
                     <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" /> {o}
                   </li>
@@ -273,27 +277,12 @@ function TrainingDetail() {
               </ul>
             </div>
 
-            {training.prerequisites.length > 0 && (
-              <div className="rounded-2xl border bg-card p-6">
-                <div className="mb-3 flex items-center gap-2 font-semibold">
-                  <ListChecks className="h-4 w-4 text-primary" /> Prérequis
-                </div>
-                <ul className="space-y-1.5 text-sm text-muted-foreground">
-                  {training.prerequisites.map((p, i) => (
-                    <li key={i} className="flex gap-2">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/50" /> {p}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
             <div className="rounded-2xl border bg-card p-6">
               <div className="mb-4 flex items-center gap-2 font-semibold">
                 <BookOpen className="h-4 w-4 text-primary" /> Programme
               </div>
               <div className="space-y-5">
-                {training.program.map((m, i) => (
+                {training.program.map((m: TrainingProgramModule, i: number) => (
                   <div key={i} className="flex gap-3">
                     <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
                       {i + 1}
@@ -301,7 +290,7 @@ function TrainingDetail() {
                     <div className="flex-1">
                       <div className="text-sm font-medium">{m.title}</div>
                       <ul className="mt-1 space-y-0.5 text-xs text-muted-foreground">
-                        {m.items.map((it, j) => <li key={j}>{it}</li>)}
+                        {m.items.map((it: string, j: number) => <li key={j}>{it}</li>)}
                       </ul>
                     </div>
                   </div>
@@ -314,18 +303,38 @@ function TrainingDetail() {
           <div className="lg:sticky lg:top-6 h-fit space-y-4">
             <div className="rounded-2xl border bg-card p-6">
               <div className="font-display text-3xl font-bold text-primary">{training.price.toLocaleString()} FCFA</div>
+
               <div className="mt-4 space-y-3 text-sm">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Users className="h-4 w-4 shrink-0" /> {training.audience || "—"}
+                <div className="flex items-start gap-2 text-muted-foreground">
+                  <Users className="h-4 w-4 shrink-0 mt-0.5" />
+                  <span>{training.audience || "—"}</span>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Award className="h-4 w-4 shrink-0" /> {training.certification || "—"}
+                <div className="flex items-start gap-2 text-muted-foreground">
+                  <Award className="h-4 w-4 shrink-0 mt-0.5" />
+                  <span>{training.certification || "—"}</span>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <CalendarClock className="h-4 w-4 shrink-0" /> {training.schedule || "—"}
+                <div className="flex items-start gap-2 text-muted-foreground">
+                  <CalendarClock className="h-4 w-4 shrink-0 mt-0.5" />
+                  <span>{training.schedule || "—"}</span>
                 </div>
               </div>
+
+              {training.prerequisites.length > 0 && (
+                <div className="mt-4 border-t pt-4">
+                  <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <ListChecks className="h-3.5 w-3.5" /> Prérequis
+                  </div>
+                  <ul className="space-y-1 text-sm">
+                    {training.prerequisites.map((p: string, i: number) => (
+                      <li key={i} className="flex gap-2">
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/50" /> {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
+
             <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground">
               <div>Créée le {new Date(training.createdAt).toLocaleDateString("fr-FR")}</div>
               <div>Modifiée le {new Date(training.updatedAt).toLocaleDateString("fr-FR")}</div>

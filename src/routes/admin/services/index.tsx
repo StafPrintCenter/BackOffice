@@ -151,7 +151,7 @@ function AdminServices() {
             key: "title",
             label: "Titre",
             render: (r) => (
-              <div className="max-w-[180px] sm:max-w-xs md:max-w-md">
+              <div className="max-w-45 sm:max-w-xs md:max-w-md">
                 <div className="sm:hidden flex items-baseline gap-1.5 truncate text-sm">
                   <span className="font-medium truncate">{r.title}</span>
                   {r.slug && <span className="text-xs text-muted-foreground truncate">({r.slug})</span>}

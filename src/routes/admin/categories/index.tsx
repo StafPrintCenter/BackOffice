@@ -10,9 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAdminCategoriesList, useCreateAdminCategory, useUpdateAdminCategory, useDeleteAdminCategory } from "@/stores/useCategoriesStore";
 import type { APIAdminCategory, AdminCategoryPayload } from "@/data/categories";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/categories/")({
-  head: () => ({ meta: [{ title: "Catégories — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Catégories | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: AdminCategories,
 });
 

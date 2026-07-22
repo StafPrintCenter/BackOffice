@@ -3,10 +3,6 @@ import { adminFetch } from "@/lib/api-url";
 import { createResourceStore } from "./createResourceStore";
 import type { APIAdminContactDetail, AdminContactStatusPayload } from "@/data/contact";
 
-// Ressource "contact" : l'API n'expose ni création ni suppression, et la mise à jour
-// se fait via PUT /api/admin/contact/{id}/status (payload restreint), pas via
-// PUT /api/admin/contact/{id}. On réutilise le store générique uniquement pour
-// fetchList/fetchById/useList/useDetail, et on écrit une mutation dédiée pour le statut.
 const store = createResourceStore<APIAdminContactDetail, AdminContactStatusPayload>({
   resourceKey: "contacts",
   basePath: "contact",

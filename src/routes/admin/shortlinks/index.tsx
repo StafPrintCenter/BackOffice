@@ -112,7 +112,7 @@ function AdminShortLinks() {
             key: "longUrl",
             label: "URL cible",
             render: (r) => (
-              <span className="text-xs text-muted-foreground line-clamp-1 max-w-xs block select-all">
+              <span className="text-xs text-muted-foreground line-clamp-1 max-w-xs troncate">
                 {r.longUrl}
               </span>
             ),

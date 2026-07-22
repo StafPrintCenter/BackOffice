@@ -82,16 +82,9 @@ function AdminArticles() {
             label: "Titre",
             render: (r) => (
               <div className="max-w-45 sm:max-w-xs md:max-w-md">
-                {/* Mobile : 1 seule ligne tronquée si trop long */}
-                <div className="sm:hidden flex items-baseline gap-1.5 truncate text-sm">
-                  <span className="font-medium truncate">{r.title}</span>
-                  {r.slug && <span className="text-xs text-muted-foreground truncate">({r.slug})</span>}
-                </div>
-
-                {/* Desktop (sm+) : Disposition classique sur 2 lignes */}
-                <div className="hidden sm:block">
+                <div className="sm:block truncate">
                   <div className="font-medium leading-snug">{r.title}</div>
-                  {r.slug && <div className="text-xs text-muted-foreground mt-0.5">{r.slug}</div>}
+                  {r.slug && <span className="font-mono text-xs font-medium text-primary">{r.slug}</span>}
                 </div>
               </div>
             ),

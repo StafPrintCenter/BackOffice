@@ -41,9 +41,6 @@ function AdminReports() {
                 <div className="text-xs font-medium text-foreground">
                   {getReportableTypeLabel(r.reportableType)}
                 </div>
-                <div className="font-mono text-[10px] text-muted-foreground">
-                  #{r.reportableId.slice(0, 8)}
-                </div>
               </div>
             ),
           },

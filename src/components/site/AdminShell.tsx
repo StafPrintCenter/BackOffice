@@ -195,7 +195,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         <header className="flex items-center gap-3 bg-card/80 backdrop-blur border-b px-4 h-14 shrink-0">
           <button
-            className="hidden md:inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted"
+            className="hidden md:inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted cursor-pointer"
             onClick={() => setCollapsed((c) => !c)}
             title={collapsed ? "Étendre" : "Réduire"}
           >

@@ -39,7 +39,7 @@ const NAV_GROUPS: NavGroup[] = [
   },
   {
     label: "Outils",
-    items: [{ to: "/admin/short-links", label: "Liens courts", icon: Link2 }],
+    items: [{ to: "/admin/shortlinks", label: "Liens courts", icon: Link2 }],
   },
   {
     label: "Membre",

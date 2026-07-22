@@ -30,10 +30,7 @@ function AdminReports() {
           {
             key: "id",
             label: "ID",
-            render: (r) => (
-              <code className="rounded bg-muted px-2 py-0.5 font-mono text-xs font-semibold">
-                {r.id}
-              </code>
+            render: (r) => (<span className="font-mono text-xs font-medium text-primary">                {r.id}              </span>
             ),
           },
           {

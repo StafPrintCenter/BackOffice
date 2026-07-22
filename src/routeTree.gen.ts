@@ -31,8 +31,8 @@ import { Route as AdminReportsIndexRouteImport } from './routes/admin.reports.in
 import { Route as AdminReportsIdRouteImport } from './routes/admin.reports.$id'
 import { Route as AdminServicesIndexRouteImport } from './routes/admin.services.index'
 import { Route as AdminServicesSlugRouteImport } from './routes/admin.services.$slug'
-import { Route as AdminShortLinksIndexRouteImport } from './routes/admin.short-links.index'
-import { Route as AdminShortLinksIdRouteImport } from './routes/admin.short-links.$id'
+import { Route as AdminShortlinksIndexRouteImport } from './routes/admin/shortlinks/index'
+import { Route as AdminShortlinksIdRouteImport } from './routes/admin/shortlinks/$id'
 import { Route as AdminStatsIndexRouteImport } from './routes/admin.stats.index'
 import { Route as AdminStatsIdRouteImport } from './routes/admin.stats.$id'
 import { Route as AdminTestimonialsIndexRouteImport } from './routes/admin.testimonials.index'
@@ -150,14 +150,14 @@ const AdminServicesSlugRoute = AdminServicesSlugRouteImport.update({
   path: '/admin/services/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminShortLinksIndexRoute = AdminShortLinksIndexRouteImport.update({
-  id: '/admin/short-links/',
-  path: '/admin/short-links/',
+const AdminShortlinksIndexRoute = AdminShortlinksIndexRouteImport.update({
+  id: '/admin/shortlinks/',
+  path: '/admin/shortlinks/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminShortLinksIdRoute = AdminShortLinksIdRouteImport.update({
-  id: '/admin/short-links/$id',
-  path: '/admin/short-links/$id',
+const AdminShortlinksIdRoute = AdminShortlinksIdRouteImport.update({
+  id: '/admin/shortlinks/$id',
+  path: '/admin/shortlinks/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminStatsIndexRoute = AdminStatsIndexRouteImport.update({
@@ -205,7 +205,7 @@ export interface FileRoutesByFullPath {
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/admin/reports/$id': typeof AdminReportsIdRoute
   '/admin/services/$slug': typeof AdminServicesSlugRoute
-  '/admin/short-links/$id': typeof AdminShortLinksIdRoute
+  '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/admin/users/$id': typeof AdminUsersIdRoute
@@ -218,7 +218,7 @@ export interface FileRoutesByFullPath {
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/reports/': typeof AdminReportsIndexRoute
   '/admin/services/': typeof AdminServicesIndexRoute
-  '/admin/short-links/': typeof AdminShortLinksIndexRoute
+  '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
@@ -237,7 +237,7 @@ export interface FileRoutesByTo {
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/admin/reports/$id': typeof AdminReportsIdRoute
   '/admin/services/$slug': typeof AdminServicesSlugRoute
-  '/admin/short-links/$id': typeof AdminShortLinksIdRoute
+  '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/admin/users/$id': typeof AdminUsersIdRoute
@@ -250,7 +250,7 @@ export interface FileRoutesByTo {
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/reports': typeof AdminReportsIndexRoute
   '/admin/services': typeof AdminServicesIndexRoute
-  '/admin/short-links': typeof AdminShortLinksIndexRoute
+  '/admin/shortlinks': typeof AdminShortlinksIndexRoute
   '/admin/stats': typeof AdminStatsIndexRoute
   '/admin/testimonials': typeof AdminTestimonialsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
@@ -270,7 +270,7 @@ export interface FileRoutesById {
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/admin/reports/$id': typeof AdminReportsIdRoute
   '/admin/services/$slug': typeof AdminServicesSlugRoute
-  '/admin/short-links/$id': typeof AdminShortLinksIdRoute
+  '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/admin/users/$id': typeof AdminUsersIdRoute
@@ -283,7 +283,7 @@ export interface FileRoutesById {
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/reports/': typeof AdminReportsIndexRoute
   '/admin/services/': typeof AdminServicesIndexRoute
-  '/admin/short-links/': typeof AdminShortLinksIndexRoute
+  '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
@@ -304,7 +304,7 @@ export interface FileRouteTypes {
     | '/admin/projects/$id'
     | '/admin/reports/$id'
     | '/admin/services/$slug'
-    | '/admin/short-links/$id'
+    | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/admin/users/$id'
@@ -317,7 +317,7 @@ export interface FileRouteTypes {
     | '/admin/projects/'
     | '/admin/reports/'
     | '/admin/services/'
-    | '/admin/short-links/'
+    | '/admin/shortlinks/'
     | '/admin/stats/'
     | '/admin/testimonials/'
     | '/admin/users/'
@@ -336,7 +336,7 @@ export interface FileRouteTypes {
     | '/admin/projects/$id'
     | '/admin/reports/$id'
     | '/admin/services/$slug'
-    | '/admin/short-links/$id'
+    | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/admin/users/$id'
@@ -349,7 +349,7 @@ export interface FileRouteTypes {
     | '/admin/projects'
     | '/admin/reports'
     | '/admin/services'
-    | '/admin/short-links'
+    | '/admin/shortlinks'
     | '/admin/stats'
     | '/admin/testimonials'
     | '/admin/users'
@@ -368,7 +368,7 @@ export interface FileRouteTypes {
     | '/admin/projects/$id'
     | '/admin/reports/$id'
     | '/admin/services/$slug'
-    | '/admin/short-links/$id'
+    | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/admin/users/$id'
@@ -381,7 +381,7 @@ export interface FileRouteTypes {
     | '/admin/projects/'
     | '/admin/reports/'
     | '/admin/services/'
-    | '/admin/short-links/'
+    | '/admin/shortlinks/'
     | '/admin/stats/'
     | '/admin/testimonials/'
     | '/admin/users/'
@@ -401,7 +401,7 @@ export interface RootRouteChildren {
   AdminProjectsIdRoute: typeof AdminProjectsIdRoute
   AdminReportsIdRoute: typeof AdminReportsIdRoute
   AdminServicesSlugRoute: typeof AdminServicesSlugRoute
-  AdminShortLinksIdRoute: typeof AdminShortLinksIdRoute
+  AdminShortlinksIdRoute: typeof AdminShortlinksIdRoute
   AdminStatsIdRoute: typeof AdminStatsIdRoute
   AdminTestimonialsIdRoute: typeof AdminTestimonialsIdRoute
   AdminUsersIdRoute: typeof AdminUsersIdRoute
@@ -414,7 +414,7 @@ export interface RootRouteChildren {
   AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
   AdminReportsIndexRoute: typeof AdminReportsIndexRoute
   AdminServicesIndexRoute: typeof AdminServicesIndexRoute
-  AdminShortLinksIndexRoute: typeof AdminShortLinksIndexRoute
+  AdminShortlinksIndexRoute: typeof AdminShortlinksIndexRoute
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
@@ -576,18 +576,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminServicesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/short-links/': {
-      id: '/admin/short-links/'
-      path: '/admin/short-links'
-      fullPath: '/admin/short-links/'
-      preLoaderRoute: typeof AdminShortLinksIndexRouteImport
+    '/admin/shortlinks/': {
+      id: '/admin/shortlinks/'
+      path: '/admin/shortlinks'
+      fullPath: '/admin/shortlinks/'
+      preLoaderRoute: typeof AdminShortlinksIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/short-links/$id': {
-      id: '/admin/short-links/$id'
-      path: '/admin/short-links/$id'
-      fullPath: '/admin/short-links/$id'
-      preLoaderRoute: typeof AdminShortLinksIdRouteImport
+    '/admin/shortlinks/$id': {
+      id: '/admin/shortlinks/$id'
+      path: '/admin/shortlinks/$id'
+      fullPath: '/admin/shortlinks/$id'
+      preLoaderRoute: typeof AdminShortlinksIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/stats/': {
@@ -649,7 +649,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminProjectsIdRoute: AdminProjectsIdRoute,
   AdminReportsIdRoute: AdminReportsIdRoute,
   AdminServicesSlugRoute: AdminServicesSlugRoute,
-  AdminShortLinksIdRoute: AdminShortLinksIdRoute,
+  AdminShortlinksIdRoute: AdminShortlinksIdRoute,
   AdminStatsIdRoute: AdminStatsIdRoute,
   AdminTestimonialsIdRoute: AdminTestimonialsIdRoute,
   AdminUsersIdRoute: AdminUsersIdRoute,
@@ -662,7 +662,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminProjectsIndexRoute: AdminProjectsIndexRoute,
   AdminReportsIndexRoute: AdminReportsIndexRoute,
   AdminServicesIndexRoute: AdminServicesIndexRoute,
-  AdminShortLinksIndexRoute: AdminShortLinksIndexRoute,
+  AdminShortlinksIndexRoute: AdminShortlinksIndexRoute,
   AdminStatsIndexRoute: AdminStatsIndexRoute,
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,

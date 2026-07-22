@@ -28,7 +28,7 @@ import { Route as AdminProjectsIdRouteImport } from './routes/admin/projects/$id
 import { Route as AdminReportsIndexRouteImport } from './routes/admin.reports.index'
 import { Route as AdminReportsIdRouteImport } from './routes/admin.reports.$id'
 import { Route as AdminServicesIndexRouteImport } from './routes/admin/services/index'
-import { Route as AdminServicesSlugRouteImport } from './routes/admin/services/$slug'
+import { Route as AdminServicesIdRouteImport } from './routes/admin/services/$id'
 import { Route as AdminShortlinksIndexRouteImport } from './routes/admin/shortlinks/index'
 import { Route as AdminShortlinksIdRouteImport } from './routes/admin/shortlinks/$id'
 import { Route as AdminStatsIndexRouteImport } from './routes/admin.stats.index'
@@ -135,9 +135,9 @@ const AdminServicesIndexRoute = AdminServicesIndexRouteImport.update({
   path: '/admin/services/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminServicesSlugRoute = AdminServicesSlugRouteImport.update({
-  id: '/admin/services/$slug',
-  path: '/admin/services/$slug',
+const AdminServicesIdRoute = AdminServicesIdRouteImport.update({
+  id: '/admin/services/$id',
+  path: '/admin/services/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminShortlinksIndexRoute = AdminShortlinksIndexRouteImport.update({
@@ -203,7 +203,7 @@ export interface FileRoutesByFullPath {
   '/admin/messages/$id': typeof AdminMessagesIdRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/admin/reports/$id': typeof AdminReportsIdRoute
-  '/admin/services/$slug': typeof AdminServicesSlugRoute
+  '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
@@ -235,7 +235,7 @@ export interface FileRoutesByTo {
   '/admin/messages/$id': typeof AdminMessagesIdRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/admin/reports/$id': typeof AdminReportsIdRoute
-  '/admin/services/$slug': typeof AdminServicesSlugRoute
+  '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
@@ -268,7 +268,7 @@ export interface FileRoutesById {
   '/admin/messages/$id': typeof AdminMessagesIdRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/admin/reports/$id': typeof AdminReportsIdRoute
-  '/admin/services/$slug': typeof AdminServicesSlugRoute
+  '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
@@ -302,7 +302,7 @@ export interface FileRouteTypes {
     | '/admin/messages/$id'
     | '/admin/projects/$id'
     | '/admin/reports/$id'
-    | '/admin/services/$slug'
+    | '/admin/services/$id'
     | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
@@ -334,7 +334,7 @@ export interface FileRouteTypes {
     | '/admin/messages/$id'
     | '/admin/projects/$id'
     | '/admin/reports/$id'
-    | '/admin/services/$slug'
+    | '/admin/services/$id'
     | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
@@ -366,7 +366,7 @@ export interface FileRouteTypes {
     | '/admin/messages/$id'
     | '/admin/projects/$id'
     | '/admin/reports/$id'
-    | '/admin/services/$slug'
+    | '/admin/services/$id'
     | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
@@ -399,7 +399,7 @@ export interface RootRouteChildren {
   AdminMessagesIdRoute: typeof AdminMessagesIdRoute
   AdminProjectsIdRoute: typeof AdminProjectsIdRoute
   AdminReportsIdRoute: typeof AdminReportsIdRoute
-  AdminServicesSlugRoute: typeof AdminServicesSlugRoute
+  AdminServicesIdRoute: typeof AdminServicesIdRoute
   AdminShortlinksIdRoute: typeof AdminShortlinksIdRoute
   AdminStatsIdRoute: typeof AdminStatsIdRoute
   AdminTestimonialsIdRoute: typeof AdminTestimonialsIdRoute
@@ -555,11 +555,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminServicesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/services/$slug': {
-      id: '/admin/services/$slug'
-      path: '/admin/services/$slug'
-      fullPath: '/admin/services/$slug'
-      preLoaderRoute: typeof AdminServicesSlugRouteImport
+    '/admin/services/$id': {
+      id: '/admin/services/$id'
+      path: '/admin/services/$id'
+      fullPath: '/admin/services/$id'
+      preLoaderRoute: typeof AdminServicesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/shortlinks/': {
@@ -647,7 +647,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminMessagesIdRoute: AdminMessagesIdRoute,
   AdminProjectsIdRoute: AdminProjectsIdRoute,
   AdminReportsIdRoute: AdminReportsIdRoute,
-  AdminServicesSlugRoute: AdminServicesSlugRoute,
+  AdminServicesIdRoute: AdminServicesIdRoute,
   AdminShortlinksIdRoute: AdminShortlinksIdRoute,
   AdminStatsIdRoute: AdminStatsIdRoute,
   AdminTestimonialsIdRoute: AdminTestimonialsIdRoute,

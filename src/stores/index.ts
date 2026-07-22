@@ -4,4 +4,5 @@ export * from "./useArticlesStore";
 export * from "./useCategoriesStore";
 export * from "./useProjectsStore";
 export * from "./useShortLinksStore";
+export * from "./useServicesStore";
 export * from "./useTrainingsStore";

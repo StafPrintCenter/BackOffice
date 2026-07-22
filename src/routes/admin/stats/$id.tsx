@@ -1,37 +1,166 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, TrendingUp } from "lucide-react";
-import { AdminShell } from "@/components/site/AdminShell";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, TrendingUp } from "lucide-react";
+import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { statsApi } from "@/api/extra.api";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAdminStatDetail, useUpdateAdminStat, useDeleteAdminStat } from "@/stores/useStatsStore";
+import type { AdminStatPayload } from "@/data/stats";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/stats/$id")({
-  head: () => ({ meta: [{ title: "Statistique — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Statistique | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: StatDetail,
 });
 
 function StatDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const { data } = useQuery({ queryKey: ["stats"], queryFn: statsApi.list });
-  const s = data?.find((x) => x.id === id);
+
+  const { item: stat, isLoading } = useAdminStatDetail(id);
+  const updateMutation = useUpdateAdminStat();
+  const removeMutation = useDeleteAdminStat();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [form, setForm] = useState<AdminStatPayload | null>(null);
+  const [toDelete, setToDelete] = useState(false);
+
+  useEffect(() => {
+    if (stat && !form) {
+      setForm({
+        key: stat.key,
+        value: stat.value,
+        suffix: stat.suffix,
+        label: stat.label,
+      });
+    }
+  }, [stat, form]);
+
+  if (isLoading) {
+    return (
+      <AdminShell>
+        <div className="flex items-center justify-center py-24 text-muted-foreground">
+          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
+        </div>
+      </AdminShell>
+    );
+  }
+
+  if (!stat || !form) {
+    return (
+      <AdminShell>
+        <div className="mb-6">
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/stats" })}>
+            <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+          </Button>
+        </div>
+        <p className="text-muted-foreground">Statistique introuvable.</p>
+      </AdminShell>
+    );
+  }
+
+  const handleSave = () => {
+    updateMutation.mutate({ id: stat.id, payload: form }, {
+      onSuccess: () => { toast.success("Statistique modifiée"); setIsEditing(false); },
+      onError: () => toast.error("Erreur lors de la modification"),
+    });
+  };
+
+  const handleCancel = () => {
+    setForm({
+      key: stat.key,
+      value: stat.value,
+      suffix: stat.suffix,
+      label: stat.label,
+    });
+    setIsEditing(false);
+  };
+
   return (
     <AdminShell>
-      <div className="mb-6"><Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/stats" })}><ArrowLeft className="h-4 w-4 mr-1" /> Retour</Button></div>
-      {!s ? <p className="text-muted-foreground">Statistique introuvable.</p> : (
-        <div className="max-w-2xl space-y-6">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/stats" })}>
+          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+        </Button>
+        <div className="flex gap-2">
+          {isEditing ? (
+            <>
+              <Button variant="outline" size="sm" onClick={handleCancel}>
+                <X className="h-4 w-4 mr-1" /> Annuler
+              </Button>
+              <Button size="sm" onClick={handleSave} disabled={updateMutation.isPending}>
+                <Save className="h-4 w-4 mr-1" /> Enregistrer
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                <Pencil className="h-4 w-4 mr-1" /> Modifier
+              </Button>
+              <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => setToDelete(true)}>
+                <Trash2 className="h-4 w-4 mr-1" /> Supprimer
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className="max-w-2xl space-y-6">
+        {isEditing ? (
+          <div className="space-y-4 rounded-2xl border bg-card p-6">
+            <div>
+              <Label>Libellé</Label>
+              <Input value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div>
+                <Label>Valeur</Label>
+                <Input type="number" value={form.value} onChange={(e) => setForm({ ...form, value: Number(e.target.value) })} />
+              </div>
+              <div>
+                <Label>Suffixe</Label>
+                <Input value={form.suffix} onChange={(e) => setForm({ ...form, suffix: e.target.value })} />
+              </div>
+              <div>
+                <Label>Clé (unique)</Label>
+                <Input value={form.key} onChange={(e) => setForm({ ...form, key: e.target.value })} />
+              </div>
+            </div>
+          </div>
+        ) : (
           <div className="rounded-2xl border bg-card p-8 text-center">
             <TrendingUp className="mx-auto h-8 w-8 text-primary" />
-            <div className="mt-4 font-display text-6xl font-bold text-primary">{s.value}{s.suffix}</div>
-            <div className="mt-2 text-lg font-medium">{s.label}</div>
-            <code className="mt-3 inline-block text-xs text-muted-foreground">{s.key}</code>
+            <div className="mt-4 font-display text-6xl font-bold text-primary">{stat.value}{stat.suffix}</div>
+            <div className="mt-2 text-lg font-medium">{stat.label}</div>
+            <code className="mt-3 inline-block text-xs text-muted-foreground">{stat.key}</code>
           </div>
+        )}
+
+        {!isEditing && (
           <div className="grid gap-4 sm:grid-cols-2 text-sm">
-            <div className="rounded-xl border p-4"><div className="text-xs text-muted-foreground">Clé</div><code>{s.key}</code></div>
-            <div className="rounded-xl border p-4"><div className="text-xs text-muted-foreground">Créé le</div>{new Date(s.createdAt).toLocaleDateString()}</div>
+            <div className="rounded-xl border p-4"><div className="text-xs text-muted-foreground">Clé</div><code>{stat.key}</code></div>
+            <div className="rounded-xl border p-4"><div className="text-xs text-muted-foreground">Créé le</div>{new Date(stat.createdAt).toLocaleDateString("fr-FR")}</div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
+      <ConfirmDelete
+        open={toDelete}
+        onOpenChange={setToDelete}
+        onConfirm={() => {
+          removeMutation.mutate(stat.id, {
+            onSuccess: () => { toast.success("Statistique supprimée"); navigate({ to: "/admin/stats" }); },
+            onError: () => toast.error("Erreur lors de la suppression"),
+          });
+        }}
+        title={`Supprimer "${stat.label}" ?`}
+      />
     </AdminShell>
   );
 }

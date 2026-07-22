@@ -87,6 +87,7 @@ function ShortLinkDetail() {
   const byDay = (stats?.byDay ?? []).map((d) => ({ day: d.day.slice(5), value: d.total }));
   const byDevice = (stats?.byDevice ?? []).map((d) => ({ name: d.device, value: d.total }));
   const byCountry = (stats?.byCountry ?? []).map((d) => ({ name: d.country, value: d.total }));
+  const byCity = (stats?.byCity ?? []).map((d) => ({ name: d.city, value: d.total }));
   const byBrowser = (stats?.byBrowser ?? []).map((d) => ({ name: d.browser, value: d.total }));
   const history = stats?.history ?? [];
 
@@ -208,8 +209,8 @@ function ShortLinkDetail() {
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="rounded-2xl border bg-card p-6 lg:col-span-2">
+        <div className="grid gap-6">
+          <div className="rounded-2xl border bg-card p-6">
             <div className="font-display text-lg font-semibold">Clics par jour</div>
             <div className="mt-4 h-64">
               <ResponsiveContainer>
@@ -223,7 +224,9 @@ function ShortLinkDetail() {
               </ResponsiveContainer>
             </div>
           </div>
+        </div>
 
+        <div className="grid gap-6 lg:grid-cols-2">
           <div className="rounded-2xl border bg-card p-6">
             <div className="font-display text-lg font-semibold">Par appareil</div>
             <div className="mt-4 h-64">
@@ -237,9 +240,22 @@ function ShortLinkDetail() {
               </ResponsiveContainer>
             </div>
           </div>
-        </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-2xl border bg-card p-6">
+            <div className="font-display text-lg font-semibold">Par navigateur</div>
+            <div className="mt-4 h-56">
+              <ResponsiveContainer>
+                <BarChart data={byBrowser}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                  <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
+                  <YAxis stroke="var(--muted-foreground)" fontSize={11} />
+                  <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                  <Bar dataKey="value" fill="#5A9B6E" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
           <div className="rounded-2xl border bg-card p-6">
             <div className="font-display text-lg font-semibold">Par pays</div>
             <div className="mt-4 h-56">
@@ -256,15 +272,15 @@ function ShortLinkDetail() {
           </div>
 
           <div className="rounded-2xl border bg-card p-6">
-            <div className="font-display text-lg font-semibold">Par navigateur</div>
+            <div className="font-display text-lg font-semibold">Top villes</div>
             <div className="mt-4 h-56">
               <ResponsiveContainer>
-                <BarChart data={byBrowser}>
+                <BarChart data={byCity} layout="vertical" margin={{ left: 24 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
-                  <YAxis stroke="var(--muted-foreground)" fontSize={11} />
+                  <XAxis type="number" stroke="var(--muted-foreground)" fontSize={11} />
+                  <YAxis type="category" dataKey="name" stroke="var(--muted-foreground)" fontSize={11} width={100} />
                   <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                  <Bar dataKey="value" fill="#5A9B6E" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="value" fill="#C89A3E" radius={[0, 6, 6, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

@@ -126,7 +126,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
         )}
       </div>
 
-      <nav className="flex-1 p-2 space-y-4 overflow-y-auto">
+      <nav className="flex-1 p-2 space-y-4 overflow-y-auto no-scrollbar">
         {NAV_GROUPS.map((g) => (
           <div key={g.label} className="space-y-1">
             {!collapsed && (

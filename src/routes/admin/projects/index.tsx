@@ -74,7 +74,26 @@ function AdminProjects() {
         columns={[
           { key: "cover", label: "", render: (r) => <img src={r.cover} alt="" className="h-10 w-14 rounded object-cover" /> },
           { key: "title", label: "Titre", render: (r) => <div className="font-medium">{r.title}</div> },
-          { key: "category", label: "Catégorie" },
+          {
+            key: "category",
+            label: "Catégorie",
+            render: (r) => {
+              // 1. On cherche d'abord la catégorie correspondante dans le store par ID ou par nom/slug
+              const match = categories.find(
+                (c) => c.id === r.category_id || c.name.toLowerCase() === (typeof r.category === 'string' ? r.category.toLowerCase() : '')
+              );
+
+              // 2. Récupération de la classe couleur (ou fallback par défaut)
+              const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";
+              const categoryName = typeof r.category === "string" ? r.category : match?.name || "Sans catégorie";
+
+              return (
+                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${colorClass}`}>
+                  {categoryName}
+                </span>
+              );
+            },
+          },
           { key: "client", label: "Client" },
         ]}
       />

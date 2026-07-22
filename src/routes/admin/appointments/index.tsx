@@ -44,18 +44,29 @@ function AdminAppointments() {
           {
             key: "scheduledAt",
             label: "Créneau",
-            render: (r) => (
-              <div>
-                <span className="text-xs text-muted-foreground">
-                  {new Date(r.scheduledAt.replace("Z", "")).toLocaleString("fr-FR", {
-                    dateStyle: "short", timeStyle: "short",
-                  })}
+            render: (r) => {
+              const dateObj = new Date(r.scheduledAt.replace("Z", ""));
+              const dateFormatted = dateObj.toLocaleDateString("fr-FR", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              });
+              const timeFormatted = dateObj.toLocaleTimeString("fr-FR", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
 
-                  · {r.duration} min
-                </span>
-
-              </div>
-            ),
+              return (
+                <div className="text-xs">
+                  {/* Date en haut */}
+                  <div className="font-medium text-foreground">{dateFormatted}</div>
+                  {/* Heure · Durée en dessous */}
+                  <div className="text-muted-foreground mt-0.5">
+                    {timeFormatted} · {r.duration} min
+                  </div>
+                </div>
+              );
+            },
           },
           {
             key: "firstName",

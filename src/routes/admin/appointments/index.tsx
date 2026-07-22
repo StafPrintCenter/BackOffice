@@ -9,10 +9,7 @@ export const Route = createFileRoute("/admin/appointments/")({
   component: AdminAppointments,
 });
 
-export const modeLabel = (m: AppointmentMode) =>
-  ({ presentiel: "Présentiel", en_ligne: "En ligne" }[m]);
-
-export const modeIcon = (m: AppointmentMode) =>
+const modeIcon = (m: AppointmentMode) =>
   ({ presentiel: MapPin, en_ligne: Video }[m]);
 
 const statusBadge = (s: AppointmentStatus) =>

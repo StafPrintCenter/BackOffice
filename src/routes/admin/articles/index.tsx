@@ -77,8 +77,43 @@ function AdminArticles() {
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "cover", label: "", render: (r) => <img src={r.cover} alt="" className="h-10 w-14 rounded object-cover" /> },
-          { key: "title", label: "Titre", render: (r) => <div><div className="font-medium">{r.title}</div><div className="text-xs text-muted-foreground">{r.slug}</div></div> },
-          { key: "category", label: "Catégorie" },
+          {
+            key: "title",
+            label: "Titre",
+            render: (r) => (
+              <div className="max-w-45 sm:max-w-xs md:max-w-md">
+                {/* Mobile : 1 seule ligne tronquée si trop long */}
+                <div className="sm:hidden flex items-baseline gap-1.5 truncate text-sm">
+                  <span className="font-medium truncate">{r.title}</span>
+                  {r.slug && <span className="text-xs text-muted-foreground truncate">({r.slug})</span>}
+                </div>
+
+                {/* Desktop (sm+) : Disposition classique sur 2 lignes */}
+                <div className="hidden sm:block">
+                  <div className="font-medium leading-snug">{r.title}</div>
+                  {r.slug && <div className="text-xs text-muted-foreground mt-0.5">{r.slug}</div>}
+                </div>
+              </div>
+            ),
+          },
+          {
+            key: "category",
+            label: "Catégorie",
+            render: (r) => {
+              const match = categories.find(
+                (c) => c.id === r.categoryId || c.name.toLowerCase() === (typeof r.category === "string" ? r.category.toLowerCase() : "")
+              );
+
+              const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";
+              const categoryName = typeof r.category === "string" ? r.category : match?.name || "Sans catégorie";
+
+              return (
+                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${colorClass}`}>
+                  {categoryName}
+                </span>
+              );
+            },
+          },
           { key: "author", label: "Auteur" },
           { key: "date", label: "Publié", render: (r) => new Date(r.date).toLocaleDateString("fr-FR") },
         ]}

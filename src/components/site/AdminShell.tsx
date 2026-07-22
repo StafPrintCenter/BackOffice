@@ -199,7 +199,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
             onClick={() => setCollapsed((c) => !c)}
             title={collapsed ? "Étendre" : "Réduire"}
           >
-            <ChevronLeft className={"h-4 w-4 transition-transform " + (collapsed ? "rotate-180" : "")} />
+            <PanelLeftClose className={"h-4 w-4 transition-transform " + (collapsed ? "rotate-180" : "")} />
           </button>
           <button
             className="md:hidden inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted"

@@ -35,10 +35,10 @@ import { Route as AdminStatsIndexRouteImport } from './routes/admin.stats.index'
 import { Route as AdminStatsIdRouteImport } from './routes/admin.stats.$id'
 import { Route as AdminTestimonialsIndexRouteImport } from './routes/admin.testimonials.index'
 import { Route as AdminTestimonialsIdRouteImport } from './routes/admin.testimonials.$id'
+import { Route as AdminTrainingsIndexRouteImport } from './routes/admin/trainings/index'
+import { Route as AdminTrainingsIdRouteImport } from './routes/admin/trainings/$id'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin.users.index'
 import { Route as AdminUsersIdRouteImport } from './routes/admin.users.$id'
-import { Route as AdminTrainingsAdminFormationsIndexRouteImport } from './routes/admin/trainings/admin.formations.index'
-import { Route as AdminTrainingsAdminFormationsIdRouteImport } from './routes/admin/trainings/admin.formations.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -170,6 +170,16 @@ const AdminTestimonialsIdRoute = AdminTestimonialsIdRouteImport.update({
   path: '/admin/testimonials/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminTrainingsIndexRoute = AdminTrainingsIndexRouteImport.update({
+  id: '/admin/trainings/',
+  path: '/admin/trainings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTrainingsIdRoute = AdminTrainingsIdRouteImport.update({
+  id: '/admin/trainings/$id',
+  path: '/admin/trainings/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
   id: '/admin/users/',
   path: '/admin/users/',
@@ -180,18 +190,6 @@ const AdminUsersIdRoute = AdminUsersIdRouteImport.update({
   path: '/admin/users/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminTrainingsAdminFormationsIndexRoute =
-  AdminTrainingsAdminFormationsIndexRouteImport.update({
-    id: '/admin/trainings/admin/formations/',
-    path: '/admin/trainings/admin/formations/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AdminTrainingsAdminFormationsIdRoute =
-  AdminTrainingsAdminFormationsIdRouteImport.update({
-    id: '/admin/trainings/admin/formations/$id',
-    path: '/admin/trainings/admin/formations/$id',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -209,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/admin/trainings/$id': typeof AdminTrainingsIdRoute
   '/admin/users/$id': typeof AdminUsersIdRoute
   '/admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
@@ -221,9 +220,8 @@ export interface FileRoutesByFullPath {
   '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/admin/trainings/': typeof AdminTrainingsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
-  '/admin/trainings/admin/formations/$id': typeof AdminTrainingsAdminFormationsIdRoute
-  '/admin/trainings/admin/formations/': typeof AdminTrainingsAdminFormationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -241,6 +239,7 @@ export interface FileRoutesByTo {
   '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/admin/trainings/$id': typeof AdminTrainingsIdRoute
   '/admin/users/$id': typeof AdminUsersIdRoute
   '/admin/appointments': typeof AdminAppointmentsIndexRoute
   '/admin/articles': typeof AdminArticlesIndexRoute
@@ -253,9 +252,8 @@ export interface FileRoutesByTo {
   '/admin/shortlinks': typeof AdminShortlinksIndexRoute
   '/admin/stats': typeof AdminStatsIndexRoute
   '/admin/testimonials': typeof AdminTestimonialsIndexRoute
+  '/admin/trainings': typeof AdminTrainingsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
-  '/admin/trainings/admin/formations/$id': typeof AdminTrainingsAdminFormationsIdRoute
-  '/admin/trainings/admin/formations': typeof AdminTrainingsAdminFormationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -274,6 +272,7 @@ export interface FileRoutesById {
   '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/admin/trainings/$id': typeof AdminTrainingsIdRoute
   '/admin/users/$id': typeof AdminUsersIdRoute
   '/admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
@@ -286,9 +285,8 @@ export interface FileRoutesById {
   '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/admin/trainings/': typeof AdminTrainingsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
-  '/admin/trainings/admin/formations/$id': typeof AdminTrainingsAdminFormationsIdRoute
-  '/admin/trainings/admin/formations/': typeof AdminTrainingsAdminFormationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -308,6 +306,7 @@ export interface FileRouteTypes {
     | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
+    | '/admin/trainings/$id'
     | '/admin/users/$id'
     | '/admin/appointments/'
     | '/admin/articles/'
@@ -320,9 +319,8 @@ export interface FileRouteTypes {
     | '/admin/shortlinks/'
     | '/admin/stats/'
     | '/admin/testimonials/'
+    | '/admin/trainings/'
     | '/admin/users/'
-    | '/admin/trainings/admin/formations/$id'
-    | '/admin/trainings/admin/formations/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -340,6 +338,7 @@ export interface FileRouteTypes {
     | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
+    | '/admin/trainings/$id'
     | '/admin/users/$id'
     | '/admin/appointments'
     | '/admin/articles'
@@ -352,9 +351,8 @@ export interface FileRouteTypes {
     | '/admin/shortlinks'
     | '/admin/stats'
     | '/admin/testimonials'
+    | '/admin/trainings'
     | '/admin/users'
-    | '/admin/trainings/admin/formations/$id'
-    | '/admin/trainings/admin/formations'
   id:
     | '__root__'
     | '/'
@@ -372,6 +370,7 @@ export interface FileRouteTypes {
     | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
+    | '/admin/trainings/$id'
     | '/admin/users/$id'
     | '/admin/appointments/'
     | '/admin/articles/'
@@ -384,9 +383,8 @@ export interface FileRouteTypes {
     | '/admin/shortlinks/'
     | '/admin/stats/'
     | '/admin/testimonials/'
+    | '/admin/trainings/'
     | '/admin/users/'
-    | '/admin/trainings/admin/formations/$id'
-    | '/admin/trainings/admin/formations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -405,6 +403,7 @@ export interface RootRouteChildren {
   AdminShortlinksIdRoute: typeof AdminShortlinksIdRoute
   AdminStatsIdRoute: typeof AdminStatsIdRoute
   AdminTestimonialsIdRoute: typeof AdminTestimonialsIdRoute
+  AdminTrainingsIdRoute: typeof AdminTrainingsIdRoute
   AdminUsersIdRoute: typeof AdminUsersIdRoute
   AdminAppointmentsIndexRoute: typeof AdminAppointmentsIndexRoute
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
@@ -417,9 +416,8 @@ export interface RootRouteChildren {
   AdminShortlinksIndexRoute: typeof AdminShortlinksIndexRoute
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
+  AdminTrainingsIndexRoute: typeof AdminTrainingsIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
-  AdminTrainingsAdminFormationsIdRoute: typeof AdminTrainingsAdminFormationsIdRoute
-  AdminTrainingsAdminFormationsIndexRoute: typeof AdminTrainingsAdminFormationsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -606,6 +604,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTestimonialsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/trainings/': {
+      id: '/admin/trainings/'
+      path: '/admin/trainings'
+      fullPath: '/admin/trainings/'
+      preLoaderRoute: typeof AdminTrainingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/trainings/$id': {
+      id: '/admin/trainings/$id'
+      path: '/admin/trainings/$id'
+      fullPath: '/admin/trainings/$id'
+      preLoaderRoute: typeof AdminTrainingsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/users/': {
       id: '/admin/users/'
       path: '/admin/users'
@@ -618,20 +630,6 @@ declare module '@tanstack/react-router' {
       path: '/admin/users/$id'
       fullPath: '/admin/users/$id'
       preLoaderRoute: typeof AdminUsersIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/trainings/admin/formations/': {
-      id: '/admin/trainings/admin/formations/'
-      path: '/admin/trainings/admin/formations'
-      fullPath: '/admin/trainings/admin/formations/'
-      preLoaderRoute: typeof AdminTrainingsAdminFormationsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/trainings/admin/formations/$id': {
-      id: '/admin/trainings/admin/formations/$id'
-      path: '/admin/trainings/admin/formations/$id'
-      fullPath: '/admin/trainings/admin/formations/$id'
-      preLoaderRoute: typeof AdminTrainingsAdminFormationsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -653,6 +651,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminShortlinksIdRoute: AdminShortlinksIdRoute,
   AdminStatsIdRoute: AdminStatsIdRoute,
   AdminTestimonialsIdRoute: AdminTestimonialsIdRoute,
+  AdminTrainingsIdRoute: AdminTrainingsIdRoute,
   AdminUsersIdRoute: AdminUsersIdRoute,
   AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
@@ -665,10 +664,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminShortlinksIndexRoute: AdminShortlinksIndexRoute,
   AdminStatsIndexRoute: AdminStatsIndexRoute,
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
+  AdminTrainingsIndexRoute: AdminTrainingsIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,
-  AdminTrainingsAdminFormationsIdRoute: AdminTrainingsAdminFormationsIdRoute,
-  AdminTrainingsAdminFormationsIndexRoute:
-    AdminTrainingsAdminFormationsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

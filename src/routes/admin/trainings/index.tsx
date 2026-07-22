@@ -3,8 +3,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Plus, Trash2 } from "lucide-react";
-import { AdminShell } from "@/components/site/AdminShell";
-import { PageHeader, ConfirmDelete } from "@/components/site/AdminBits";
+import { AdminShell, PageHeader, ConfirmDelete } from "@/components/site";
+import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { DataTable } from "@/components/site/DataTable";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -47,6 +47,7 @@ const empty: FormValues = {
 function AdminTrainings() {
   const navigate = useNavigate();
   const { items, isLoading } = useAdminTrainingsList({ perPage: 100 });
+  const { items: themes } = useAdminCategoriesList({ perPage: 100, context: "formation" });
 
   const createMutation = useCreateAdminTraining();
   const updateMutation = useUpdateAdminTraining();
@@ -121,9 +122,13 @@ function AdminTrainings() {
                 {errors.title && <p className="text-xs text-destructive mt-1">{errors.title}</p>}
               </div>
               <div>
-                {/* TODO: remplacer par un <select> alimenté par l'API des thèmes, dès qu'elle est fournie */}
-                <Label>Thème (ID)</Label>
-                <Input value={form.theme_id} onChange={(e) => setForm({ ...form, theme_id: e.target.value })} />
+                <Label>Thème</Label>
+                <Select value={form.theme_id} onValueChange={(v) => setForm({ ...form, theme_id: v })}>
+                  <SelectTrigger><SelectValue placeholder="Choisir un thème" /></SelectTrigger>
+                  <SelectContent>
+                    {themes.map((t) => (<SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>))}
+                  </SelectContent>
+                </Select>
                 {errors.theme_id && <p className="text-xs text-destructive mt-1">{errors.theme_id}</p>}
               </div>
               <div>

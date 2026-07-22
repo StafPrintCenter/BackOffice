@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { MapPin, Video } from "lucide-react";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { useAdminAppointmentsList } from "@/stores/useAppointmentsStore";
-import type { APIAdminAppointment, AppointmentMode, AppointmentStatus } from "@/data/appointments";
+import { APPOINTMENT_MODE_LABELS, APPOINTMENT_STATUS_BADGES, APPOINTMENT_STATUS_LABELS, type APIAdminAppointment, type AppointmentMode, } from "@/data/appointments";
 
 export const Route = createFileRoute("/admin/appointments/")({
   head: () => ({ meta: [{ title: "Rendez-vous — Admin" }, { name: "robots", content: "noindex" }] }),

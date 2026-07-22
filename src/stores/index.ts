@@ -6,5 +6,6 @@ export * from "./useFaqsStore";
 export * from "./useProjectsStore";
 export * from "./useShortLinksStore";
 export * from "./useServicesStore";
+export * from "./useStatsStore";
 export * from "./useTestimonialsStore";
 export * from "./useTrainingsStore";

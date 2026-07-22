@@ -79,7 +79,7 @@ function ReportDetail() {
             <div>
               <div className="flex items-center gap-2">
                 <code className="rounded bg-muted px-2.5 py-1 font-mono text-xs font-semibold">
-                  #{rep.id.slice(0, 6)}
+                  #{rep.id}
                 </code>
                 <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${REPORT_STATUS_BADGES[rep.status]}`}>
                   {REPORT_STATUS_LABELS[rep.status]}

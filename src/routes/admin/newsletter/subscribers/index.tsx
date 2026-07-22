@@ -1,54 +1,77 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Users, Megaphone, ArrowRight } from "lucide-react";
-import { AdminShell, PageHeader } from "@/components/site";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
+import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { Button } from "@/components/ui/button";
+import { useAdminNewsletterSubscribersList, useDeleteAdminNewsletterSubscriber } from "@/stores/useNewsletterSubscribersStore";
+import type { APIAdminNewsletterSubscriberListItem } from "@/data/newsletter";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/newsletter/subscribers/")({
   head: () => ({
     meta: [
-      { title: `Newsletter | ${SITE.name}` },
+      { title: `Abonnés newsletter | ${SITE.name}` },
       { name: "robots", content: "noindex" }]
   }),
-  component: AdminNewsletter,
+  component: AdminNewsletterSubscribers,
 });
 
-function AdminNewsletter() {
+function statusBadge(row: APIAdminNewsletterSubscriberListItem) {
+  if (row.isBlocked) return <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive">Bloqué</span>;
+  if (!row.isActive) return <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">Désabonné</span>;
+  return <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-600">Actif</span>;
+}
+
+function AdminNewsletterSubscribers() {
+  const navigate = useNavigate();
+  const { items, isLoading } = useAdminNewsletterSubscribersList({ perPage: 100 });
+  const removeMutation = useDeleteAdminNewsletterSubscriber();
+
+  const [toDelete, setToDelete] = useState<APIAdminNewsletterSubscriberListItem | null>(null);
+
   return (
     <AdminShell>
-      <PageHeader title="Newsletter" description="Gérez vos abonnés et vos campagnes d'emailing." />
-      <div className="grid gap-6 sm:grid-cols-2">
-        <Link
-          to="/admin/newsletter/subscribers"
-          className="group flex flex-col rounded-2xl border bg-card p-6 transition hover:border-primary/40 hover:shadow-sm"
-        >
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <Users className="h-6 w-6" />
-          </div>
-          <div className="mt-4 font-display text-xl font-bold">Abonnés</div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Consultez, bloquez, réactivez ou supprimez les abonnés à la newsletter.
-          </p>
-          <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary">
-            Gérer les abonnés <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-          </div>
-        </Link>
-
-        <Link
-          to="/admin/newsletter/campaigns"
-          className="group flex flex-col rounded-2xl border bg-card p-6 transition hover:border-primary/40 hover:shadow-sm"
-        >
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <Megaphone className="h-6 w-6" />
-          </div>
-          <div className="mt-4 font-display text-xl font-bold">Campagnes</div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Créez et envoyez des campagnes d'emailing à vos abonnés.
-          </p>
-          <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary">
-            Gérer les campagnes <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-          </div>
-        </Link>
+      <div className="mb-4">
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter" })}>
+          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+        </Button>
       </div>
+      <PageHeader title="Abonnés newsletter" description="Consultez, bloquez, réactivez ou supprimez les abonnés." />
+      <DataTable<APIAdminNewsletterSubscriberListItem>
+        data={items}
+        isLoading={isLoading}
+        searchKeys={["email", "firstName", "lastName"]}
+        onView={(r) => navigate({ to: "/admin/newsletter/subscribers/$id", params: { id: r.id } })}
+        onDelete={(r) => setToDelete(r)}
+        columns={[
+          { key: "email", label: "Email", render: (r) => <div><div className="font-medium">{r.firstName} {r.lastName}</div><div className="text-xs text-muted-foreground">{r.email}</div></div> },
+          {
+            key: "categories", label: "Catégories", render: (r) => (
+              <div className="flex flex-wrap gap-1">
+                {r.categories.length === 0
+                  ? <span className="text-xs text-muted-foreground">—</span>
+                  : r.categories.map((c) => <span key={c.id} className="rounded-full bg-muted px-2 py-0.5 text-[10px]">{c.name}</span>)}
+              </div>
+            )
+          },
+          { key: "status", label: "Statut", render: (r) => statusBadge(r) },
+          { key: "subscribedAt", label: "Abonné le", render: (r) => new Date(r.subscribedAt).toLocaleDateString("fr-FR") },
+        ]}
+      />
+
+      <ConfirmDelete
+        open={!!toDelete}
+        onOpenChange={(v) => !v && setToDelete(null)}
+        onConfirm={() => {
+          if (!toDelete) return;
+          removeMutation.mutate(toDelete.id, {
+            onSuccess: () => { toast.success("Abonné supprimé"); setToDelete(null); },
+            onError: () => toast.error("Erreur lors de la suppression"),
+          });
+        }}
+        title={`Supprimer l'abonné "${toDelete?.email}" ?`}
+      />
     </AdminShell>
   );
 }

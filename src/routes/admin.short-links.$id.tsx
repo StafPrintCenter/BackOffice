@@ -42,7 +42,7 @@ function ShortLinkDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex items-center gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/short-links" })}><ArrowLeft className="h-4 w-4 mr-1" /> Retour</Button>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/shortlinks" })}><ArrowLeft className="h-4 w-4 mr-1" /> Retour</Button>
       </div>
       {!link ? (
         <div className="rounded-xl border p-8 text-center text-muted-foreground">Lien introuvable.</div>

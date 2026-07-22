@@ -46,21 +46,12 @@ function AdminAppointments() {
             label: "Créneau",
             render: (r) => {
               const dateObj = new Date(r.scheduledAt.replace("Z", ""));
-              const dateFormatted = dateObj.toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              });
-              const timeFormatted = dateObj.toLocaleTimeString("fr-FR", {
-                hour: "2-digit",
-                minute: "2-digit",
-              });
+              const dateFormatted = dateObj.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric", });
+              const timeFormatted = dateObj.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", });
 
               return (
                 <div className="text-xs">
-                  {/* Date en haut */}
                   <div className="font-medium text-foreground">{dateFormatted}</div>
-                  {/* Heure · Durée en dessous */}
                   <div className="text-muted-foreground mt-0.5">
                     {timeFormatted} · {r.duration} min
                   </div>

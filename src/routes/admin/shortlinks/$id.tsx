@@ -181,7 +181,6 @@ function ShortLinkDetail() {
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <div className="text-xs uppercase text-muted-foreground">Alias</div>
-                {/* L'alias est maintenant un lien qui ouvre shortUrl */}
                 <a
                   href={link.shortUrl}
                   target="_blank"

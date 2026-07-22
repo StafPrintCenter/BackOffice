@@ -58,8 +58,7 @@ function AdminMessages() {
             render: (r) => (
               <span className="text-xs text-muted-foreground">
                 {new Date(r.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
-                  dateStyle: "short",
-                  timeStyle: "short",
+                  dateStyle: "short", timeStyle: "short",
                 })}
               </span>
             ),

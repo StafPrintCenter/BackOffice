@@ -133,7 +133,7 @@ function AdminCategories() {
           {
             key: "slug",
             label: "Slug",
-            render: (r) => <code className="text-xs">{r.slug}</code>,
+            render: (r) => <span className="font-mono text-xs font-medium text-primary">{r.slug}</span>,
           },
           {
             key: "name",

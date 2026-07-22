@@ -1,47 +1,77 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { toast } from "sonner";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
-import { reportsApi } from "@/api/extra.api";
-import type { Report, ReportStatus } from "@/types";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { useAdminReportsList } from "@/stores/useReportsStore";
+import type { APIAdminReport, ReportStatus } from "@/data/reports";
 
 export const Route = createFileRoute("/admin/reports/")({
   head: () => ({ meta: [{ title: "Signalements — Admin" }, { name: "robots", content: "noindex" }] }),
   component: AdminReports,
 });
 
-const badge = (s: ReportStatus) => ({
-  ouvert: "bg-red-100 text-red-700",
-  en_cours: "bg-amber-100 text-amber-700",
-  resolu: "bg-emerald-100 text-emerald-700",
-  rejete: "bg-muted text-muted-foreground",
+const statusBadge = (s: ReportStatus) =>
+({
+  pending: "bg-red-100 text-red-700",
+  in_review: "bg-amber-100 text-amber-700",
+  resolved: "bg-emerald-100 text-emerald-700",
+  dismissed: "bg-muted text-muted-foreground",
 }[s]);
-const label = (s: ReportStatus) => ({ ouvert: "Ouvert", en_cours: "En cours", resolu: "Résolu", rejete: "Rejeté" }[s]);
+
+const statusLabel = (s: ReportStatus) =>
+  ({ pending: "Ouvert", in_review: "En cours", resolved: "Résolu", dismissed: "Rejeté" }[s]);
 
 function AdminReports() {
-  const qc = useQueryClient();
-  const { data, isLoading } = useQuery({ queryKey: ["reports"], queryFn: reportsApi.list });
-  const [toDelete, setToDelete] = useState<Report | null>(null);
-  const remove = useMutation({ mutationFn: (id: string) => reportsApi.remove(id), onSuccess: () => { qc.invalidateQueries({ queryKey: ["reports"] }); toast.success("Supprimé"); setToDelete(null); } });
+  const navigate = useNavigate();
+  const { items, isLoading } = useAdminReportsList({ perPage: 100 });
 
   return (
     <AdminShell>
       <PageHeader title="Signalements" description="Contenus signalés par les visiteurs." />
-      <DataTable<Report>
-        data={data ?? []}
+      <DataTable<APIAdminReport>
+        data={items}
         isLoading={isLoading}
         searchKeys={["reason", "reportableType", "reporterEmail"]}
-        onDelete={(r) => setToDelete(r)}
+        onView={(r) => navigate({ to: "/admin/reports/$id", params: { id: r.id } })}
         columns={[
-          { key: "id", label: "ID", render: (r) => <Link to="/admin/reports/$id" params={{ id: r.id }} className="font-mono text-xs text-primary hover:underline">#{r.id.slice(0, 6)}</Link> },
-          { key: "reportableType", label: "Type", render: (r) => <div><div className="font-medium text-xs">{r.reportableType}</div><div className="text-[10px] text-muted-foreground">{r.reportableId}</div></div> },
-          { key: "reason", label: "Motif", render: (r) => <div className="max-w-xs line-clamp-2">{r.reason}</div> },
-          { key: "reporterEmail", label: "Signalé par", render: (r) => <span className="text-xs">{r.reporterEmail}</span> },
-          { key: "status", label: "Statut", render: (r) => <span className={"rounded-full px-2 py-0.5 text-xs " + badge(r.status)}>{label(r.status)}</span> },
+          {
+            key: "id",
+            label: "ID",
+            render: (r) => (
+              <span className="font-mono text-xs font-medium text-primary hover:underline">
+                #{r.id.slice(0, 6)}
+              </span>
+            ),
+          },
+          {
+            key: "reportableType",
+            label: "Type",
+            render: (r) => (
+              <div>
+                <div className="text-xs font-medium">{r.reportableType}</div>
+                <div className="text-[10px] text-muted-foreground">{r.reportableId}</div>
+              </div>
+            ),
+          },
+          {
+            key: "reason",
+            label: "Motif",
+            render: (r) => <div className="max-w-xs line-clamp-2 text-xs">{r.reason}</div>,
+          },
+          {
+            key: "reporterEmail",
+            label: "Signalé par",
+            render: (r) => <span className="text-xs">{r.reporterEmail || "—"}</span>,
+          },
+          {
+            key: "status",
+            label: "Statut",
+            render: (r) => (
+              <span className={"inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium " + statusBadge(r.status)}>
+                {statusLabel(r.status)}
+              </span>
+            ),
+          },
         ]}
       />
-      <ConfirmDelete open={!!toDelete} onOpenChange={(v) => !v && setToDelete(null)} onConfirm={() => toDelete && remove.mutate(toDelete.id)} title="Supprimer ce signalement ?" />
     </AdminShell>
   );
 }

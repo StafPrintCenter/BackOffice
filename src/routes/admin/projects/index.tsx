@@ -79,12 +79,10 @@ function AdminProjects() {
             key: "category",
             label: "Catégorie",
             render: (r) => {
-              // 1. On cherche d'abord la catégorie correspondante dans le store par ID ou par nom/slug
               const match = categories.find(
                 (c) => c.id === r.category_id || c.name.toLowerCase() === (typeof r.category === 'string' ? r.category.toLowerCase() : '')
               );
 
-              // 2. Récupération de la classe couleur (ou fallback par défaut)
               const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";
               const categoryName = typeof r.category === "string" ? r.category : match?.name || "Sans catégorie";
 

@@ -23,7 +23,7 @@ export const Route = createFileRoute("/admin/shortlinks/")({
 
 const schema = z.object({
   long_url: z.string().trim().url(),
-  alias: z.string().trim().min(2).max(30).optional(),
+  alias: z.string().trim().min(2).max(30).optional().or(z.literal("")),
   category: z.string().trim().min(1, "Choisissez une catégorie"),
   is_active: z.boolean(),
   activate_at: z.string().trim().optional(),

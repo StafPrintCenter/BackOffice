@@ -1,29 +1,24 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { ArrowLeft, Loader2, Mail, Tag, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare } from "lucide-react";
+import { ArrowLeft, Loader2, Mail, Tag, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { AdminShell } from "@/components/site/AdminShell";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminReportDetail, useUpdateAdminReportStatus } from "@/stores/useReportsStore";
-import type { ReportStatus } from "@/data/reports";
+import {
+  REPORT_STATUS_BADGES,
+  REPORT_STATUS_LABELS,
+  getReportReasonLabel,
+  getReportableTypeLabel,
+  type ReportStatus,
+} from "@/data/reports";
 
 export const Route = createFileRoute("/admin/reports/$id")({
   head: () => ({ meta: [{ title: "Signalement — Admin" }, { name: "robots", content: "noindex" }] }),
   component: ReportDetail,
 });
-
-const statusBadge = (s: ReportStatus) =>
-({
-  pending: "bg-red-100 text-red-700 border-red-200",
-  in_review: "bg-amber-100 text-amber-700 border-amber-200",
-  resolved: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  dismissed: "bg-muted text-muted-foreground border-border",
-}[s]);
-
-const statusLabel = (s: ReportStatus) =>
-  ({ pending: "Ouvert", in_review: "En cours", resolved: "Résolu", dismissed: "Rejeté" }[s]);
 
 function ReportDetail() {
   const { id } = Route.useParams();
@@ -87,11 +82,13 @@ function ReportDetail() {
                 <code className="rounded bg-muted px-2.5 py-1 font-mono text-xs font-semibold">
                   #{rep.id.slice(0, 6)}
                 </code>
-                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(rep.status)}`}>
-                  {statusLabel(rep.status)}
+                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${REPORT_STATUS_BADGES[rep.status]}`}>
+                  {REPORT_STATUS_LABELS[rep.status]}
                 </span>
               </div>
-              <h1 className="font-display text-2xl font-bold mt-2">{rep.reason}</h1>
+              <h1 className="font-display text-2xl font-bold mt-2">
+                {getReportReasonLabel(rep.reason)}
+              </h1>
               {rep.reporterEmail && (
                 <a href={`mailto:${rep.reporterEmail}`} className="text-sm text-primary hover:underline inline-flex items-center gap-1.5 mt-0.5">
                   <Mail className="h-3.5 w-3.5" /> {rep.reporterEmail}
@@ -111,7 +108,10 @@ function ReportDetail() {
                 <div className="grid gap-3 text-xs sm:grid-cols-2 text-muted-foreground bg-muted/30 p-3 rounded-xl border">
                   <div className="flex items-center gap-2">
                     <Tag className="h-4 w-4 text-primary" />
-                    <span>Cible : <b className="text-foreground">{rep.reportableType} #{rep.reportableId.slice(0, 8)}</b></span>
+                    <span>
+                      Cible : <b className="text-foreground">{getReportableTypeLabel(rep.reportableType)}</b>{" "}
+                      <code className="text-[11px]">#{rep.reportableId.slice(0, 8)}</code>
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-primary" />
@@ -120,7 +120,7 @@ function ReportDetail() {
                 </div>
 
                 <div className="rounded-xl bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap border">
-                  {rep.message || "Aucun message fourni."}
+                  {rep.message || "Aucun message complémentaire fourni."}
                 </div>
               </div>
 
@@ -172,8 +172,8 @@ function ReportDetail() {
                       </Select>
                     ) : (
                       <div className="mt-1">
-                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(rep.status)}`}>
-                          {statusLabel(rep.status)}
+                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${REPORT_STATUS_BADGES[rep.status]}`}>
+                          {REPORT_STATUS_LABELS[rep.status]}
                         </span>
                       </div>
                     )}

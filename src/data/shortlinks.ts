@@ -17,6 +17,7 @@ export interface ShortLinkStats {
   byCountry: { country: string; total: number }[];
   byDevice: { device: string; total: number }[];
   byBrowser: { browser: string; total: number }[];
+  byCity: { city: string; total: number }[];
   byDay: { day: string; total: number }[];
   history: {
     country: string | null;

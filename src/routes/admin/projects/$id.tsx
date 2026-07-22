@@ -38,7 +38,7 @@ function ProjectDetail() {
     if (project && !form) {
       setForm({
         title: project.title,
-        category_id: project.categoryId,
+        category_id: project.categoryId ?? "",
         client: project.client,
         cover: project.cover,
         description: project.description,
@@ -69,6 +69,13 @@ function ProjectDetail() {
     );
   }
 
+  // Trouver la catégorie correspondante pour extraire colorClass et nom
+  const matchedCategory = categories.find(
+    (c) => c.id === project.categoryId || c.name.toLowerCase() === (typeof project.category === "string" ? project.category.toLowerCase() : "")
+  );
+  const categoryColorClass = matchedCategory?.colorClass || "bg-slate-100 text-slate-700";
+  const categoryName = typeof project.category === "string" ? project.category : matchedCategory?.name || "Sans catégorie";
+
   const handleSave = () => {
     updateMutation.mutate({ id: project.id, payload: form }, {
       onSuccess: () => { toast.success("Projet modifié"); setIsEditing(false); },
@@ -79,7 +86,7 @@ function ProjectDetail() {
   const handleCancel = () => {
     setForm({
       title: project.title,
-      category_id: project.categoryId,
+      category_id: project.categoryId ?? "",
       client: project.client,
       cover: project.cover,
       description: project.description,
@@ -134,6 +141,7 @@ function ProjectDetail() {
                 onChange={(e) => setForm({ ...form, category_id: e.target.value })}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
+                <option value="">— Choisir —</option>
                 {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
             </div>
@@ -156,7 +164,9 @@ function ProjectDetail() {
           <>
             <div>
               <div className="flex flex-wrap items-center gap-2 text-xs">
-                <span className="rounded-full bg-muted px-2 py-0.5">{project.category}</span>
+                <span className={`inline-flex px-2.5 py-1 rounded-full font-medium ${categoryColorClass}`}>
+                  {categoryName}
+                </span>
               </div>
               <h1 className="mt-3 font-display text-4xl font-bold">{project.title}</h1>
               <div className="mt-1 text-muted-foreground">Client : <b className="text-foreground">{project.client}</b></div>

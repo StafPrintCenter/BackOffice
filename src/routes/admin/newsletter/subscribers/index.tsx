@@ -56,7 +56,11 @@ function AdminNewsletterSubscribers() {
             )
           },
           { key: "status", label: "Statut", render: (r) => statusBadge(r) },
-          { key: "subscribedAt", label: "Abonné le", render: (r) => new Date(r.subscribedAt).toLocaleDateString("fr-FR") },
+          {
+            key: "subscribedAt",
+            label: "Abonné le",
+            render: (r) => new Date(r.subscribedAt).toLocaleDateString("fr-FR")
+          },
         ]}
       />
 

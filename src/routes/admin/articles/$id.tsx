@@ -71,6 +71,13 @@ function ArticleDetail() {
     );
   }
 
+  // Trouver la catégorie correspondante pour appliquer la couleur dynamique
+  const match = categories.find(
+    (c) => c.id === article.categoryId || c.name.toLowerCase() === (typeof article.category === "string" ? article.category.toLowerCase() : "")
+  );
+  const categoryColorClass = match?.colorClass || "bg-slate-100 text-slate-700";
+  const categoryName = typeof article.category === "string" ? article.category : match?.name || "Sans catégorie";
+
   const handleSave = () => {
     updateMutation.mutate({ id: article.id, payload: form }, {
       onSuccess: () => { toast.success("Article modifié"); setIsEditing(false); },
@@ -173,7 +180,9 @@ function ArticleDetail() {
           <>
             <div>
               <div className="flex flex-wrap items-center gap-2 text-xs">
-                <span className="rounded-full bg-muted px-2 py-0.5">{article.category}</span>
+                <span className={`inline-flex px-2.5 py-0.5 rounded-full font-medium ${categoryColorClass}`}>
+                  {categoryName}
+                </span>
                 <span className="text-muted-foreground">par {article.author}</span>
                 <span className="text-muted-foreground">· {new Date(article.date).toLocaleDateString("fr-FR")}</span>
               </div>

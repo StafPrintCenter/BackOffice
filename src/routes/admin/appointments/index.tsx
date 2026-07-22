@@ -90,8 +90,8 @@ function AdminAppointments() {
             key: "status",
             label: "Statut",
             render: (r) => (
-              <span className={"inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium " + statusBadge(r.status)}>
-                {statusLabel(r.status)}
+              <span className={"inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium " + APPOINTMENT_STATUS_BADGES[r.status]}>
+                {APPOINTMENT_STATUS_LABELS[r.status]}
               </span>
             ),
           },

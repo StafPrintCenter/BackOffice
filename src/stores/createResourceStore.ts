@@ -129,15 +129,7 @@ export function createResourceStore<T extends { id: string }, TPayload = Record<
   }
 
   return {
-    fetchList,
-    fetchById,
-    createItem,
-    updateItem,
-    removeItem,
-    useList,
-    useDetail,
-    useCreate,
-    useUpdate,
-    useRemove
+    fetchList, fetchById, createItem, updateItem, removeItem,
+    useList, useDetail, useCreate, useUpdate, useRemove
   };
 }

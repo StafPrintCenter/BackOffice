@@ -75,7 +75,10 @@ function AdminTestimonials() {
           {
             key: "name",
             label: "Nom",
-            render: (r) => <div><div className="font-medium">{r.name}</div><div className="text-xs text-muted-foreground">{r.role}</div></div>
+            render: (r) => <div>
+              <div className="font-medium">{r.name}</div>
+              <div className="font-mono text-xs font-medium text-primary">{r.role}</div>
+            </div>
           },
           { key: "rating", label: "Note", render: (r) => <div className="flex gap-0.5">{Array.from({ length: r.rating }).map((_, i) => <Star key={i} className="h-3 w-3 fill-primary text-primary" />)}</div> },
           { key: "quote", label: "Citation", render: (r) => <div className="max-w-md text-muted-foreground line-clamp-1 italic">"{r.quote}"</div> },

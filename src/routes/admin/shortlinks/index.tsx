@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import {
   useAdminShortLinksList, useCreateAdminShortLink, useUpdateAdminShortLink, useDeleteAdminShortLink,
 } from "@/stores/useShortLinksStore";
+import { SHORT_LINK_CATEGORIES } from "@/data/shortlinks";
 import type { APIAdminShortLinkListItem, AdminShortLinkPayload } from "@/data/shortlinks";
 
 export const Route = createFileRoute("/admin/shortlinks/")({
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/admin/shortlinks/")({
 const schema = z.object({
   long_url: z.string().trim().url(),
   alias: z.string().trim().min(2).max(30).optional(),
-  category: z.string().trim().min(1, "La catégorie est requise"),
+  category: z.string().trim().min(1, "Choisissez une catégorie"),
   is_active: z.boolean(),
   activate_at: z.string().trim().optional(),
   expires_at: z.string().trim().optional(),
@@ -101,11 +102,35 @@ function AdminShortLinks() {
         onDelete={(r) => setToDelete(r)}
         onView={(r) => navigate({ to: "/admin/shortlinks/$id", params: { id: r.id } })}
         columns={[
-          { key: "alias", label: "Alias", render: (r) => <span className="font-mono text-xs font-medium text-primary">/{r.alias}</span> },
-          { key: "longUrl", label: "URL cible", render: (r) => <a href={r.longUrl} target="_blank" rel="noreferrer" className="text-xs text-muted-foreground line-clamp-1 max-w-xs hover:underline">{r.longUrl}</a> },
-          { key: "category", label: "Catégorie" },
+          {
+            key: "alias",
+            label: "Alias",
+            render: (r) => <span className="font-mono text-xs font-medium text-primary">/{r.alias}</span>,
+          },
+          {
+            key: "longUrl",
+            label: "URL cible",
+            render: (r) => (
+              <a href={r.longUrl} target="_blank" rel="noreferrer" className="text-xs text-muted-foreground line-clamp-1 max-w-xs hover:underline">
+                {r.longUrl}
+              </a>
+            ),
+          },
+          {
+            key: "category",
+            label: "Catégorie",
+            render: (r) => SHORT_LINK_CATEGORIES.find((c) => c.value === r.category)?.label ?? r.category,
+          },
           { key: "clicksCount", label: "Clics", render: (r) => <b>{r.clicksCount}</b> },
-          { key: "isActive", label: "Statut", render: (r) => <span className={"text-xs rounded-full px-2 py-0.5 " + (r.isActive ? "bg-emerald-100 text-emerald-700" : "bg-muted text-muted-foreground")}>{r.isActive ? "Actif" : "Inactif"}</span> },
+          {
+            key: "isActive",
+            label: "Statut",
+            render: (r) => (
+              <span className={"text-xs rounded-full px-2 py-0.5 " + (r.isActive ? "bg-emerald-100 text-emerald-700" : "bg-muted text-muted-foreground")}>
+                {r.isActive ? "Actif" : "Inactif"}
+              </span>
+            ),
+          },
         ]}
       />
 
@@ -118,25 +143,39 @@ function AdminShortLinks() {
               <Input value={form.long_url} onChange={(e) => setForm({ ...form, long_url: e.target.value })} />
               {errors.long_url && <p className="text-xs text-destructive mt-1">{errors.long_url}</p>}
             </div>
+
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <Label>Alias (optionnel — auto-généré sinon)</Label>
                 <Input value={form.alias} onChange={(e) => setForm({ ...form, alias: e.target.value })} />
               </div>
+
               <div>
                 <Label>Catégorie</Label>
-                <Input value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} />
+                <select
+                  value={form.category}
+                  onChange={(e) => setForm({ ...form, category: e.target.value })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">— Choisir —</option>
+                  {SHORT_LINK_CATEGORIES.map((c) => (
+                    <option key={c.value} value={c.value}>{c.label}</option>
+                  ))}
+                </select>
                 {errors.category && <p className="text-xs text-destructive mt-1">{errors.category}</p>}
               </div>
+
               <div>
                 <Label>Activation</Label>
                 <Input type="date" value={form.activate_at} onChange={(e) => setForm({ ...form, activate_at: e.target.value })} />
               </div>
+
               <div>
                 <Label>Expiration</Label>
                 <Input type="date" value={form.expires_at} onChange={(e) => setForm({ ...form, expires_at: e.target.value })} />
               </div>
             </div>
+
             <div className="flex items-center justify-between rounded-lg border p-3">
               <Label className="cursor-pointer">Actif</Label>
               <Switch checked={form.is_active} onCheckedChange={(v) => setForm({ ...form, is_active: v })} />

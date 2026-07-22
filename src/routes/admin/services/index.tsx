@@ -158,7 +158,7 @@ function AdminServices() {
                 </div>
                 <div className="hidden sm:block">
                   <div className="font-medium leading-snug">{r.title}</div>
-                  {r.slug && <div className="text-xs text-muted-foreground mt-0.5">{r.slug}</div>}
+                  {r.slug && <span className="font-mono text-xs font-medium text-primary">{r.slug}</span>}
                 </div>
               </div>
             ),

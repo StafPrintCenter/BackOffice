@@ -128,14 +128,14 @@ export function createResourceStore<T extends { id: string }, TPayload = Record<
     });
   }
 
-  /** Convertit un payload (déjà en snake_case) en FormData, en omettant les valeurs undefined */
+  /** Convertit un payload */
   function buildFormData(payload: Record<string, unknown>): FormData {
     const fd = new FormData();
     for (const [key, value] of Object.entries(payload)) {
       if (value === undefined) continue;
       if (typeof value === "boolean") {
         fd.append(key, value ? "1" : "0");
-      } else if (Array.isArray(value) && value.some((v) => typeof v === "object" && v !== null)) {
+      } else if (Array.isArray(value)) {
         fd.append(key, JSON.stringify(value));
       } else if (value === null) {
         fd.append(key, "");

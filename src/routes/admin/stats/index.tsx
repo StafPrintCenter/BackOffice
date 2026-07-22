@@ -7,8 +7,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminStatsList, useCreateAdminStat, useDeleteAdminStat } from "@/stores/useStatsStore";
-import type { APIAdminStat, AdminStatPayload } from "@/data/stats";
+import { STAT_KEYS, type APIAdminStat, type AdminStatPayload, type StatKeyType } from "@/data/stats";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/stats/")({
@@ -21,13 +22,16 @@ export const Route = createFileRoute("/admin/stats/")({
 });
 
 const schema = z.object({
-  key: z.string().trim().min(2).max(50),
+  key: z.enum(["projects", "clients", "experience", "trainings"], {
+    message: "Choisissez une clé valide",
+  }),
   value: z.number().min(0),
   suffix: z.string().max(10),
   label: z.string().trim().min(2).max(80),
 });
+
 type FormValues = z.infer<typeof schema>;
-const empty: FormValues = { key: "", value: 0, suffix: "", label: "" };
+const empty: FormValues = { key: "projects", value: 0, suffix: "", label: "" };
 
 function AdminStats() {
   const navigate = useNavigate();
@@ -70,7 +74,7 @@ function AdminStats() {
         columns={[
           { key: "label", label: "Libellé", render: (r) => <div className="font-medium">{r.label}</div> },
           { key: "value", label: "Valeur", render: (r) => <span className="font-display text-lg font-bold text-primary">{r.value}{r.suffix}</span> },
-          { key: "key", label: "Clé", render: (r) => <code className="text-xs">{r.key}</code> },
+          { key: "key", label: "Clé", render: (r) => <code className="text-xs rounded bg-muted px-2 py-0.5 font-mono">{r.key}</code> },
         ]}
       />
 
@@ -80,23 +84,32 @@ function AdminStats() {
           <div className="space-y-4">
             <div>
               <Label>Libellé</Label>
-              <Input value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} />
+              <Input value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} placeholder="ex: Projets réalisés" />
               {errors.label && <p className="text-xs text-destructive mt-1">{errors.label}</p>}
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="sm:col-span-1">
+
+            <div>
+              <Label>Clé de statistique</Label>
+              <Select value={form.key} onValueChange={(v) => setForm({ ...form, key: v as StatKeyType })}>
+                <SelectTrigger><SelectValue placeholder="Choisir une clé" /></SelectTrigger>
+                <SelectContent>
+                  {STAT_KEYS.map((k) => (
+                    <SelectItem key={k.value} value={k.value}>{k.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.key && <p className="text-xs text-destructive mt-1">{errors.key}</p>}
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
                 <Label>Valeur</Label>
                 <Input type="number" value={form.value} onChange={(e) => setForm({ ...form, value: Number(e.target.value) })} />
                 {errors.value && <p className="text-xs text-destructive mt-1">{errors.value}</p>}
               </div>
-              <div className="sm:col-span-1">
+              <div>
                 <Label>Suffixe</Label>
-                <Input value={form.suffix} onChange={(e) => setForm({ ...form, suffix: e.target.value })} placeholder="+" />
-              </div>
-              <div className="sm:col-span-1">
-                <Label>Clé (unique)</Label>
-                <Input value={form.key} onChange={(e) => setForm({ ...form, key: e.target.value })} />
-                {errors.key && <p className="text-xs text-destructive mt-1">{errors.key}</p>}
+                <Input value={form.suffix} onChange={(e) => setForm({ ...form, suffix: e.target.value })} placeholder="ex: +, %, ans" />
               </div>
             </div>
           </div>

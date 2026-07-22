@@ -39,7 +39,7 @@ export interface AdminTrainingPayload {
   audience: string;
   objectives: string[];
   prerequisites: string[];
-  program: TrainingProgramModule[]; // ⚠️ format à confirmer avec le back-end (voir ta remarque)
+  program: TrainingProgramModule[];
   certification: string;
   schedule: string;
 }

@@ -72,9 +72,10 @@ function AdminStats() {
         onView={(r) => navigate({ to: "/admin/stats/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
+          { key: "key", label: "Clé", render: (r) => <code className="font-mono text-xs font-medium text-primary">{r.key}</code> },
           { key: "label", label: "Libellé", render: (r) => <div className="font-medium">{r.label}</div> },
           { key: "value", label: "Valeur", render: (r) => <span className="font-display text-lg font-bold text-primary">{r.value}{r.suffix}</span> },
-          { key: "key", label: "Clé", render: (r) => <code className="font-mono text-xs font-medium text-primary">{r.key}</code> },
+
         ]}
       />
 

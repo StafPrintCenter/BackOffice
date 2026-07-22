@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { useAdminShortLinksList, useCreateAdminShortLink, useUpdateAdminShortLink, useDeleteAdminShortLink, } from "@/stores/useShortLinksStore";
+import { useAdminShortLinksList, useCreateAdminShortLink, useUpdateAdminShortLink, useDeleteAdminShortLink } from "@/stores/useShortLinksStore";
+import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { SHORT_LINK_CATEGORIES } from "@/data/shortlinks";
 import type { APIAdminShortLinkListItem, AdminShortLinkPayload } from "@/data/shortlinks";
 
@@ -39,6 +40,7 @@ const empty: FormValues = {
 function AdminShortLinks() {
   const navigate = useNavigate();
   const { items, isLoading } = useAdminShortLinksList({ perPage: 100 });
+  const { items: categories } = useAdminCategoriesList({ perPage: 100 });
 
   const createMutation = useCreateAdminShortLink();
   const updateMutation = useUpdateAdminShortLink();
@@ -110,15 +112,28 @@ function AdminShortLinks() {
             key: "longUrl",
             label: "URL cible",
             render: (r) => (
-              <a href={r.longUrl} target="_blank" rel="noreferrer" className="text-xs text-muted-foreground line-clamp-1 max-w-xs hover:underline">
+              <span className="text-xs text-muted-foreground line-clamp-1 max-w-xs block select-all">
                 {r.longUrl}
-              </a>
+              </span>
             ),
           },
           {
             key: "category",
             label: "Catégorie",
-            render: (r) => SHORT_LINK_CATEGORIES.find((c) => c.value === r.category)?.label ?? r.category,
+            render: (r) => {
+              const match = categories.find(
+                (c) => c.slug === r.category || c.id === r.category || c.name.toLowerCase() === r.category.toLowerCase()
+              );
+              const fallbackLabel = SHORT_LINK_CATEGORIES.find((c) => c.value === r.category)?.label ?? r.category;
+              const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";
+              const label = match?.name || fallbackLabel;
+
+              return (
+                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${colorClass}`}>
+                  {label}
+                </span>
+              );
+            },
           },
           { key: "clicksCount", label: "Clics", render: (r) => <b>{r.clicksCount}</b> },
           {

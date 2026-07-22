@@ -1,11 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import type { AdminListParams } from "./createResourceStore";
-import type {
-  APIAdminNewsletterSubscriberListItem,
-  APIAdminNewsletterSubscriberDetail,
-  AdminNewsletterBlockPayload,
-} from "@/data/newsletter";
+import type { APIAdminNewsletterSubscriberListItem, APIAdminNewsletterSubscriberDetail, AdminNewsletterBlockPayload, } from "@/data/newsletter";
 
 const resourceKey = "newsletter-subscribers";
 const basePath = "newsletter/subscribers";

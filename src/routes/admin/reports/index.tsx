@@ -1,23 +1,18 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { useAdminReportsList } from "@/stores/useReportsStore";
-import type { APIAdminReport, ReportStatus } from "@/data/reports";
+import {
+  REPORT_STATUS_BADGES,
+  REPORT_STATUS_LABELS,
+  getReportReasonLabel,
+  getReportableTypeLabel,
+  type APIAdminReport,
+} from "@/data/reports";
 
 export const Route = createFileRoute("/admin/reports/")({
   head: () => ({ meta: [{ title: "Signalements — Admin" }, { name: "robots", content: "noindex" }] }),
   component: AdminReports,
 });
-
-const statusBadge = (s: ReportStatus) =>
-({
-  pending: "bg-red-100 text-red-700",
-  in_review: "bg-amber-100 text-amber-700",
-  resolved: "bg-emerald-100 text-emerald-700",
-  dismissed: "bg-muted text-muted-foreground",
-}[s]);
-
-const statusLabel = (s: ReportStatus) =>
-  ({ pending: "Ouvert", in_review: "En cours", resolved: "Résolu", dismissed: "Rejeté" }[s]);
 
 function AdminReports() {
   const navigate = useNavigate();
@@ -36,25 +31,33 @@ function AdminReports() {
             key: "id",
             label: "ID",
             render: (r) => (
-              <span className="font-mono text-xs font-medium text-primary hover:underline">
+              <code className="rounded bg-muted px-2 py-0.5 font-mono text-xs font-semibold">
                 #{r.id.slice(0, 6)}
-              </span>
+              </code>
             ),
           },
           {
             key: "reportableType",
-            label: "Type",
+            label: "Cible",
             render: (r) => (
               <div>
-                <div className="text-xs font-medium">{r.reportableType}</div>
-                <div className="text-[10px] text-muted-foreground">{r.reportableId}</div>
+                <div className="text-xs font-medium text-foreground">
+                  {getReportableTypeLabel(r.reportableType)}
+                </div>
+                <div className="font-mono text-[10px] text-muted-foreground">
+                  #{r.reportableId.slice(0, 8)}
+                </div>
               </div>
             ),
           },
           {
             key: "reason",
             label: "Motif",
-            render: (r) => <div className="max-w-xs line-clamp-2 text-xs">{r.reason}</div>,
+            render: (r) => (
+              <span className="text-xs font-medium">
+                {getReportReasonLabel(r.reason)}
+              </span>
+            ),
           },
           {
             key: "reporterEmail",
@@ -62,11 +65,23 @@ function AdminReports() {
             render: (r) => <span className="text-xs">{r.reporterEmail || "—"}</span>,
           },
           {
+            key: "createdAt",
+            label: "Reçu le",
+            render: (r) => (
+              <span className="text-xs text-muted-foreground">
+                {new Date(r.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
+                  dateStyle: "short",
+                  timeStyle: "short",
+                })}
+              </span>
+            ),
+          },
+          {
             key: "status",
             label: "Statut",
             render: (r) => (
-              <span className={"inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium " + statusBadge(r.status)}>
-                {statusLabel(r.status)}
+              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${REPORT_STATUS_BADGES[r.status]}`}>
+                {REPORT_STATUS_LABELS[r.status]}
               </span>
             ),
           },

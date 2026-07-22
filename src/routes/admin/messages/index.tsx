@@ -35,7 +35,7 @@ function AdminMessages() {
           {
             key: "ticketNumber",
             label: "Ticket",
-            render: (r) => <span className="font-mono text-xs font-medium text-primary hover:underline">{r.ticketNumber}</span>,
+            render: (r) => <span className="font-mono text-xs font-medium text-primary">{r.ticketNumber}</span>,
           },
           {
             key: "name",

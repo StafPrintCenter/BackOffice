@@ -1,68 +1,197 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2, Mail, Tag, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { AdminShell } from "@/components/site/AdminShell";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { reportsApi } from "@/api/extra.api";
-import type { Report, ReportStatus } from "@/types";
+import { useAdminReportDetail, useUpdateAdminReportStatus } from "@/stores/useReportsStore";
+import type { ReportStatus } from "@/data/reports";
 
 export const Route = createFileRoute("/admin/reports/$id")({
   head: () => ({ meta: [{ title: "Signalement — Admin" }, { name: "robots", content: "noindex" }] }),
   component: ReportDetail,
 });
 
+const statusBadge = (s: ReportStatus) =>
+({
+  pending: "bg-red-100 text-red-700 border-red-200",
+  in_review: "bg-amber-100 text-amber-700 border-amber-200",
+  resolved: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  dismissed: "bg-muted text-muted-foreground border-border",
+}[s]);
+
+const statusLabel = (s: ReportStatus) =>
+  ({ pending: "Ouvert", in_review: "En cours", resolved: "Résolu", dismissed: "Rejeté" }[s]);
+
 function ReportDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const qc = useQueryClient();
-  const { data } = useQuery({ queryKey: ["reports"], queryFn: reportsApi.list });
-  const rep = data?.find((r) => r.id === id);
-  const [status, setStatus] = useState<ReportStatus>("ouvert");
-  useEffect(() => { if (rep) setStatus(rep.status); }, [rep]);
+  const { item: rep, isLoading } = useAdminReportDetail(id);
+  const updateStatus = useUpdateAdminReportStatus();
 
-  const update = useMutation({
-    mutationFn: (v: Partial<Report>) => reportsApi.update(id, v),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["reports"] }); toast.success("Signalement mis à jour"); },
-  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [status, setStatus] = useState<ReportStatus>("pending");
+
+  useEffect(() => {
+    if (rep) setStatus(rep.status);
+  }, [rep]);
+
+  const handleCancel = () => {
+    if (rep) setStatus(rep.status);
+    setIsEditing(false);
+  };
+
+  const handleSave = () => {
+    updateStatus.mutate(
+      { id, payload: { status } },
+      {
+        onSuccess: () => {
+          toast.success("Statut mis à jour");
+          setIsEditing(false);
+        },
+        onError: () => toast.error("Erreur lors de la mise à jour"),
+      }
+    );
+  };
+
+  const formatDate = (dateStr?: string | null) => {
+    if (!dateStr) return "—";
+    return new Date(dateStr.replace("Z", "")).toLocaleString("fr-FR", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  };
 
   return (
     <AdminShell>
-      <div className="mb-6 flex items-center gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reports" })}><ArrowLeft className="h-4 w-4 mr-1" /> Retour</Button>
+      <div className="mb-6 flex items-center justify-between">
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reports" })}>
+          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+        </Button>
       </div>
-      {!rep ? <p className="text-muted-foreground">Signalement introuvable.</p> : (
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-4">
-            <div className="rounded-2xl border bg-card p-6">
-              <div className="text-xs uppercase tracking-wider text-muted-foreground">Signalement</div>
-              <h1 className="font-display text-2xl font-bold mt-1">{rep.reason}</h1>
-              <div className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
-                <div><span className="text-muted-foreground">Cible : </span><b>{rep.reportableType} #{rep.reportableId}</b></div>
-                <div><span className="text-muted-foreground">Signalé par : </span><b>{rep.reporterEmail}</b></div>
-                <div><span className="text-muted-foreground">Reçu le : </span><b>{new Date(rep.createdAt).toLocaleString()}</b></div>
-                {rep.resolvedAt && <div><span className="text-muted-foreground">Résolu le : </span><b>{new Date(rep.resolvedAt).toLocaleString()}</b></div>}
+
+      {isLoading ? (
+        <div className="flex items-center justify-center py-24 text-muted-foreground">
+          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
+        </div>
+      ) : !rep ? (
+        <p className="text-muted-foreground">Signalement introuvable.</p>
+      ) : (
+        <div className="max-w-5xl space-y-6">
+          {/* En-tête principal */}
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border bg-card p-6">
+            <div>
+              <div className="flex items-center gap-2">
+                <code className="rounded bg-muted px-2.5 py-1 font-mono text-xs font-semibold">
+                  #{rep.id.slice(0, 6)}
+                </code>
+                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(rep.status)}`}>
+                  {statusLabel(rep.status)}
+                </span>
               </div>
-              <div className="mt-4 rounded-lg bg-muted/50 p-4 whitespace-pre-wrap text-sm">{rep.message}</div>
+              <h1 className="font-display text-2xl font-bold mt-2">{rep.reason}</h1>
+              {rep.reporterEmail && (
+                <a href={`mailto:${rep.reporterEmail}`} className="text-sm text-primary hover:underline inline-flex items-center gap-1.5 mt-0.5">
+                  <Mail className="h-3.5 w-3.5" /> {rep.reporterEmail}
+                </a>
+              )}
             </div>
           </div>
-          <div className="rounded-2xl border bg-card p-6 space-y-4">
-            <div>
-              <Label>Statut</Label>
-              <Select value={status} onValueChange={(v) => setStatus(v as ReportStatus)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ouvert">Ouvert</SelectItem>
-                  <SelectItem value="en_cours">En cours</SelectItem>
-                  <SelectItem value="resolu">Résolu</SelectItem>
-                  <SelectItem value="rejete">Rejeté</SelectItem>
-                </SelectContent>
-              </Select>
+
+          <div className="grid gap-6 lg:grid-cols-3">
+            {/* Contenu principal */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="rounded-2xl border bg-card p-6 space-y-4">
+                <div className="flex items-center gap-2 font-display text-lg font-semibold border-b pb-3">
+                  <MessageSquare className="h-5 w-5 text-primary" /> Détails du signalement
+                </div>
+
+                <div className="grid gap-3 text-xs sm:grid-cols-2 text-muted-foreground bg-muted/30 p-3 rounded-xl border">
+                  <div className="flex items-center gap-2">
+                    <Tag className="h-4 w-4 text-primary" />
+                    <span>Cible : <b className="text-foreground">{rep.reportableType} #{rep.reportableId.slice(0, 8)}</b></span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    <span>Reçu le : <b className="text-foreground">{formatDate(rep.createdAt)}</b></span>
+                  </div>
+                </div>
+
+                <div className="rounded-xl bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap border">
+                  {rep.message || "Aucun message fourni."}
+                </div>
+              </div>
+
+              {/* Résolution */}
+              {(rep.resolvedBy || rep.resolvedAt) && (
+                <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
+                  {rep.resolvedBy && (
+                    <div className="flex items-center gap-1.5">
+                      <UserCheck className="h-4 w-4 text-primary" />
+                      <span>Résolu par : <b className="text-foreground">{rep.resolvedBy}</b></span>
+                    </div>
+                  )}
+                  {rep.resolvedAt && (
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-4 w-4 text-primary" />
+                      <span>Le : <b className="text-foreground">{formatDate(rep.resolvedAt)}</b></span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-            <Button className="w-full" onClick={() => update.mutate({ status, resolvedBy: "admin@stafprint.com", resolvedAt: new Date().toISOString() })}>Enregistrer</Button>
+
+            {/* Panneau latéral : Gestion du statut */}
+            <div className="space-y-6">
+              <div className="rounded-2xl border bg-card p-6 space-y-4">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <span className="font-display font-semibold">Suivi du signalement</span>
+                  {!isEditing && (
+                    <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
+                      <Pencil className="h-4 w-4 mr-1" /> Modifier
+                    </Button>
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-xs text-muted-foreground">Statut actuel</Label>
+                    {isEditing ? (
+                      <Select value={status} onValueChange={(v) => setStatus(v as ReportStatus)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Ouvert</SelectItem>
+                          <SelectItem value="in_review">En cours</SelectItem>
+                          <SelectItem value="resolved">Résolu</SelectItem>
+                          <SelectItem value="dismissed">Rejeté</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <div className="mt-1">
+                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(rep.status)}`}>
+                          {statusLabel(rep.status)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {isEditing && (
+                    <div className="flex gap-2 pt-2">
+                      <Button size="sm" className="flex-1" onClick={handleSave} disabled={updateStatus.isPending}>
+                        {updateStatus.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-1" /> Enregistrer</>}
+                      </Button>
+                      <Button size="sm" variant="outline" className="flex-1" onClick={handleCancel}>
+                        <X className="h-4 w-4 mr-1" /> Annuler
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}

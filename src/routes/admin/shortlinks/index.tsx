@@ -32,9 +32,12 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const empty: FormValues = {
-  long_url: "", alias: "", category: "", is_active: true,
-  activate_at: new Date().toISOString().slice(0, 10),
-  expires_at: new Date(Date.now() + 365 * 864e5).toISOString().slice(0, 10),
+  long_url: "",
+  alias: "",
+  category: "",
+  is_active: true,
+  activate_at: "",
+  expires_at: "",
 };
 
 function AdminShortLinks() {

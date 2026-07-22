@@ -6,8 +6,9 @@ import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminStatDetail, useUpdateAdminStat, useDeleteAdminStat } from "@/stores/useStatsStore";
-import type { AdminStatPayload } from "@/data/stats";
+import { STAT_KEYS, type AdminStatPayload, type StatKeyType } from "@/data/stats";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/stats/$id")({
@@ -118,7 +119,20 @@ function StatDetail() {
               <Label>Libellé</Label>
               <Input value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} />
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
+
+            <div>
+              <Label>Clé de statistique</Label>
+              <Select value={form.key} onValueChange={(v) => setForm({ ...form, key: v as StatKeyType })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {STAT_KEYS.map((k) => (
+                    <SelectItem key={k.value} value={k.value}>{k.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <Label>Valeur</Label>
                 <Input type="number" value={form.value} onChange={(e) => setForm({ ...form, value: Number(e.target.value) })} />
@@ -127,26 +141,27 @@ function StatDetail() {
                 <Label>Suffixe</Label>
                 <Input value={form.suffix} onChange={(e) => setForm({ ...form, suffix: e.target.value })} />
               </div>
-              <div>
-                <Label>Clé (unique)</Label>
-                <Input value={form.key} onChange={(e) => setForm({ ...form, key: e.target.value })} />
-              </div>
             </div>
           </div>
         ) : (
-          <div className="rounded-2xl border bg-card p-8 text-center">
-            <TrendingUp className="mx-auto h-8 w-8 text-primary" />
-            <div className="mt-4 font-display text-6xl font-bold text-primary">{stat.value}{stat.suffix}</div>
-            <div className="mt-2 text-lg font-medium">{stat.label}</div>
-            <code className="mt-3 inline-block text-xs text-muted-foreground">{stat.key}</code>
-          </div>
-        )}
+          <>
+            <div className="rounded-2xl border bg-card p-8 text-center">
+              <TrendingUp className="mx-auto h-8 w-8 text-primary" />
+              <div className="mt-4 font-display text-6xl font-bold text-primary">{stat.value}{stat.suffix}</div>
+              <div className="mt-2 text-lg font-medium">{stat.label}</div>
+              <code className="mt-3 inline-block rounded bg-muted px-2.5 py-1 text-xs font-mono">{stat.key}</code>
+            </div>
 
-        {!isEditing && (
-          <div className="grid gap-4 sm:grid-cols-2 text-sm">
-            <div className="rounded-xl border p-4"><div className="text-xs text-muted-foreground">Clé</div><code>{stat.key}</code></div>
-            <div className="rounded-xl border p-4"><div className="text-xs text-muted-foreground">Créé le</div>{new Date(stat.createdAt).toLocaleDateString("fr-FR")}</div>
-          </div>
+            {/* Encadré des métadonnées de dates */}
+            <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex items-center justify-between">
+              <div>
+                Créée le : {new Date(stat.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+              </div>
+              <div>
+                Modifiée le : {new Date(stat.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+              </div>
+            </div>
+          </>
         )}
       </div>
 

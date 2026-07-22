@@ -1,128 +1,242 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  ArrowLeft, Loader2, Mail, MessageCircle, Calendar, Clock,
+  User, Pencil, Save, X, UserCheck,
+} from "lucide-react";
 import { toast } from "sonner";
-import { ArrowLeft, Mail, MessageCircle, Calendar, Clock, User, CheckCircle2, XCircle, Ban, CheckCheck } from "lucide-react";
 import { AdminShell } from "@/components/site/AdminShell";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { appointmentsApi } from "@/api/appointments.api";
-import { useAuth } from "@/hooks/useAuth";
-import type { Appointment, AppointmentStatus } from "@/types";
-import { modeLabel, modeIcon, statusLabel, statusBadge } from ".";
+import { useAdminAppointmentDetail, useUpdateAdminAppointmentStatus } from "@/stores/useAppointmentsStore";
+import type { AppointmentStatus } from "@/data/appointments";
+import { modeLabel, modeIcon } from ".";
 
 export const Route = createFileRoute("/admin/appointments/$id")({
   head: () => ({ meta: [{ title: "Rendez-vous — Admin" }, { name: "robots", content: "noindex" }] }),
   component: AppointmentDetail,
 });
 
+const statusBadge = (s: AppointmentStatus) =>
+({
+  pending: "bg-amber-100 text-amber-700 border-amber-200",
+  confirmed: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  cancelled: "bg-rose-100 text-rose-700 border-rose-200",
+  completed: "bg-blue-100 text-blue-700 border-blue-200",
+}[s]);
+
+const statusLabel = (s: AppointmentStatus) =>
+  ({ pending: "En attente", confirmed: "Confirmé", cancelled: "Annulé", completed: "Terminé" }[s]);
+
 function AppointmentDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const qc = useQueryClient();
-  const { user } = useAuth();
-  const { data } = useQuery({ queryKey: ["appointments"], queryFn: appointmentsApi.list });
-  const a = data?.find((x) => x.id === id);
+  const { item: a, isLoading } = useAdminAppointmentDetail(id);
+  const updateStatus = useUpdateAdminAppointmentStatus();
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [status, setStatus] = useState<AppointmentStatus>("pending");
   const [notes, setNotes] = useState("");
-  useEffect(() => { setNotes(a?.adminNotes ?? ""); }, [a?.id, a?.adminNotes]);
 
-  const update = useMutation({
-    mutationFn: (patch: Partial<Appointment>) => appointmentsApi.update(id, patch),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["appointments"] }); toast.success("Rendez-vous mis à jour"); },
-  });
+  useEffect(() => {
+    if (a) {
+      setStatus(a.status);
+      setNotes(a.adminNotes ?? "");
+    }
+  }, [a]);
 
-  if (!a) {
-    return (
-      <AdminShell>
-        <div className="mb-6"><Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/appointments" })}><ArrowLeft className="h-4 w-4 mr-1" /> Retour</Button></div>
-        <p className="text-muted-foreground">Rendez-vous introuvable.</p>
-      </AdminShell>
+  const handleCancel = () => {
+    if (a) {
+      setStatus(a.status);
+      setNotes(a.adminNotes ?? "");
+    }
+    setIsEditing(false);
+  };
+
+  const handleSave = () => {
+    updateStatus.mutate(
+      { id, payload: { status, admin_notes: notes } },
+      {
+        onSuccess: () => {
+          toast.success("Statut et notes mis à jour");
+          setIsEditing(false);
+        },
+        onError: () => toast.error("Erreur lors de la mise à jour"),
+      }
     );
-  }
+  };
 
-  const Icon = modeIcon(a.mode);
-  const d = new Date(a.scheduledAt);
-  const setStatus = (status: AppointmentStatus) => update.mutate({ status, handledBy: user?.email, handledAt: new Date().toISOString() });
+  const formatDate = (dateStr?: string | null) => {
+    if (!dateStr) return "—";
+    return new Date(dateStr.replace("Z", "")).toLocaleString("fr-FR", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  };
 
   return (
     <AdminShell>
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/appointments" })}><ArrowLeft className="h-4 w-4 mr-1" /> Retour</Button>
-        <span className={"rounded-full px-3 py-1 text-xs font-medium " + statusBadge(a.status)}>{statusLabel(a.status)}</span>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/appointments" })}>
+          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+        </Button>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-6">
-          <div className="rounded-2xl border bg-card p-6">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Icon className="h-3.5 w-3.5" /> {modeLabel(a.mode)} · {a.duration} min
+      {isLoading ? (
+        <div className="flex items-center justify-center py-24 text-muted-foreground">
+          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
+        </div>
+      ) : !a ? (
+        <p className="text-muted-foreground">Rendez-vous introuvable.</p>
+      ) : (
+        <div className="max-w-5xl space-y-6">
+          {/* En-tête principal */}
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border bg-card p-6">
+            <div>
+              <div className="flex items-center gap-2">
+                {(() => {
+                  const Icon = modeIcon(a.mode);
+                  return (
+                    <span className="inline-flex items-center gap-1.5 rounded bg-muted px-2.5 py-1 text-xs font-semibold">
+                      <Icon className="h-3.5 w-3.5" /> {modeLabel(a.mode)} · {a.duration} min
+                    </span>
+                  );
+                })()}
+                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(a.status)}`}>
+                  {statusLabel(a.status)}
+                </span>
+              </div>
+              <h1 className="font-display text-2xl font-bold mt-2">{a.subject}</h1>
+              <a href={`mailto:${a.email}`} className="text-sm text-primary hover:underline inline-flex items-center gap-1.5 mt-0.5">
+                <Mail className="h-3.5 w-3.5" /> {a.email}
+              </a>
+            </div>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-3">
+            {/* Contenu principal */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="rounded-2xl border bg-card p-6 space-y-4">
+                <div className="flex items-center gap-2 font-display text-lg font-semibold border-b pb-3">
+                  <MessageCircle className="h-5 w-5 text-primary" /> Détails du rendez-vous
                 </div>
-                <h1 className="mt-2 font-display text-2xl font-bold">{a.subject}</h1>
-                <div className="mt-3 flex flex-wrap items-center gap-4 text-sm">
-                  <span className="inline-flex items-center gap-1.5"><Calendar className="h-4 w-4 text-primary" />{d.toLocaleDateString("fr-FR", { weekday: "long", day: "2-digit", month: "long", year: "numeric" })}</span>
-                  <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4 text-primary" />{d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}</span>
+
+                <div className="grid gap-3 text-xs sm:grid-cols-2 text-muted-foreground bg-muted/30 p-3 rounded-xl border">
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4 text-primary" />
+                    <span>Contact : <b className="text-foreground">{a.firstName} {a.lastName}</b></span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    <span>Créneau : <b className="text-foreground">{formatDate(a.scheduledAt)}</b></span>
+                  </div>
+                  {a.whatsapp && (
+                    <div className="flex items-center gap-2">
+                      <MessageCircle className="h-4 w-4 text-primary" />
+                      <span>WhatsApp : <b className="text-foreground">{a.whatsapp}</b></span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-primary" />
+                    <span>Reçu le : <b className="text-foreground">{formatDate(a.createdAt)}</b></span>
+                  </div>
+                </div>
+
+                <div className="rounded-xl bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap border">
+                  {a.message || "Aucun message."}
+                </div>
+              </div>
+
+              {/* Traitement Admin */}
+              {(a.handledBy || a.handledAt) && (
+                <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
+                  {a.handledBy && (
+                    <div className="flex items-center gap-1.5">
+                      <UserCheck className="h-4 w-4 text-primary" />
+                      <span>Traité par : <b className="text-foreground">{a.handledBy}</b></span>
+                    </div>
+                  )}
+                  {a.handledAt && (
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-4 w-4 text-primary" />
+                      <span>Le : <b className="text-foreground">{formatDate(a.handledAt)}</b></span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Panneau latéral : Gestion du statut et Notes */}
+            <div className="space-y-6">
+              <div className="rounded-2xl border bg-card p-6 space-y-4">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <span className="font-display font-semibold">Suivi du rendez-vous</span>
+                  {!isEditing && (
+                    <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
+                      <Pencil className="h-4 w-4 mr-1" /> Modifier
+                    </Button>
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-xs text-muted-foreground">Statut actuel</Label>
+                    {isEditing ? (
+                      <Select value={status} onValueChange={(v) => setStatus(v as AppointmentStatus)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">En attente</SelectItem>
+                          <SelectItem value="confirmed">Confirmé</SelectItem>
+                          <SelectItem value="cancelled">Annulé</SelectItem>
+                          <SelectItem value="completed">Terminé</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <div className="mt-1">
+                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(a.status)}`}>
+                          {statusLabel(a.status)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label className="text-xs text-muted-foreground">Notes internes admin</Label>
+                    {isEditing ? (
+                      <Textarea
+                        rows={6}
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        placeholder="Ajouter des notes privées sur le traitement..."
+                        className="mt-1 text-xs"
+                      />
+                    ) : (
+                      <div className="mt-1 rounded-xl bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground whitespace-pre-wrap border">
+                        {a.adminNotes || "Aucune note enregistrée."}
+                      </div>
+                    )}
+                  </div>
+
+                  {isEditing && (
+                    <div className="flex gap-2 pt-2">
+                      <Button size="sm" className="flex-1" onClick={handleSave} disabled={updateStatus.isPending}>
+                        {updateStatus.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-1" /> Enregistrer</>}
+                      </Button>
+                      <Button size="sm" variant="outline" className="flex-1" onClick={handleCancel}>
+                        <X className="h-4 w-4 mr-1" /> Annuler
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="rounded-2xl border bg-card p-6">
-            <div className="font-semibold mb-3">Message</div>
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">{a.message}</p>
-          </div>
-
-          <div className="rounded-2xl border bg-card p-6">
-            <Label htmlFor="notes" className="font-semibold">Notes administratives</Label>
-            <Textarea id="notes" className="mt-2" rows={5} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Ajoutez des notes internes..." />
-            <div className="mt-3 flex justify-end">
-              <Button size="sm" onClick={() => update.mutate({ adminNotes: notes })} disabled={update.isPending}>Enregistrer les notes</Button>
-            </div>
-          </div>
         </div>
-
-        <div className="space-y-6">
-          <div className="rounded-2xl border bg-card p-6">
-            <div className="font-semibold mb-4">Contact</div>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center gap-2"><User className="h-4 w-4 text-muted-foreground" /><span>{a.firstName} {a.lastName}</span></div>
-              <a className="flex items-center gap-2 hover:text-primary" href={`mailto:${a.email}`}><Mail className="h-4 w-4 text-muted-foreground" />{a.email}</a>
-              <a className="flex items-center gap-2 hover:text-primary" href={`https://wa.me/${a.whatsapp.replace(/[^0-9]/g, "")}`} target="_blank" rel="noreferrer"><MessageCircle className="h-4 w-4 text-muted-foreground" />{a.whatsapp}</a>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border bg-card p-6">
-            <div className="font-semibold mb-4">Statut</div>
-            <Select value={a.status} onValueChange={(v) => setStatus(v as AppointmentStatus)}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="en_attente">En attente</SelectItem>
-                <SelectItem value="confirme">Confirmé</SelectItem>
-                <SelectItem value="refuse">Refusé</SelectItem>
-                <SelectItem value="annule">Annulé</SelectItem>
-                <SelectItem value="termine">Terminé</SelectItem>
-              </SelectContent>
-            </Select>
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              <Button size="sm" variant="outline" onClick={() => setStatus("confirme")}><CheckCircle2 className="h-4 w-4 mr-1" />Confirmer</Button>
-              <Button size="sm" variant="outline" onClick={() => setStatus("refuse")}><XCircle className="h-4 w-4 mr-1" />Refuser</Button>
-              <Button size="sm" variant="outline" onClick={() => setStatus("annule")}><Ban className="h-4 w-4 mr-1" />Annuler</Button>
-              <Button size="sm" variant="outline" onClick={() => setStatus("termine")}><CheckCheck className="h-4 w-4 mr-1" />Terminé</Button>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border bg-card p-6 text-xs text-muted-foreground space-y-1.5">
-            <div>Créé le {new Date(a.createdAt).toLocaleString("fr-FR")}</div>
-            <div>CGU acceptées : {a.acceptedTerms ? "Oui" : "Non"}</div>
-            {a.handledBy && <div>Traité par {a.handledBy}</div>}
-            {a.handledAt && <div>Le {new Date(a.handledAt).toLocaleString("fr-FR")}</div>}
-          </div>
-        </div>
-      </div>
+      )}
     </AdminShell>
   );
 }

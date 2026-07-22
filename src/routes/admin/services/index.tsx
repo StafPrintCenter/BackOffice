@@ -187,7 +187,7 @@ function AdminServices() {
               r.featured ? (
                 <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">Oui</span>
               ) : (
-                <span className="rounded-full bg-muted-foreground/10 px-2 py-0.5 text-xs font-semibold text-muted-foreground">Non</span>
+                <span className="text-xs text-muted-foreground">-</span>
               ),
           },
           {

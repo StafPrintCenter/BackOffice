@@ -15,7 +15,6 @@ export type APIAdminContactListItem = {
   updatedAt: string;
 };
 
-
 export type APIAdminContactDetail = APIAdminContactListItem & {
   message: string;
 };

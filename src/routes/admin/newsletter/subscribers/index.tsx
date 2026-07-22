@@ -59,7 +59,13 @@ function AdminNewsletterSubscribers() {
           {
             key: "subscribedAt",
             label: "Abonné le",
-            render: (r) => new Date(r.subscribedAt).toLocaleDateString("fr-FR")
+            render: (r) => (
+              <span className="text-xs text-muted-foreground">
+                {new Date(r.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
+                  dateStyle: "short", timeStyle: "medium",
+                })}
+              </span>
+            ),
           },
         ]}
       />

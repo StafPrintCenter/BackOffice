@@ -131,15 +131,15 @@ function AdminCategories() {
         onView={(r) => navigate({ to: "/admin/categories/$id", params: { id: r.id } })}
         columns={[
           {
+            key: "slug",
+            label: "Slug",
+            render: (r) => <code className="text-xs">{r.slug}</code>,
+          },
+          {
             key: "name",
             label: "Nom",
             render: (r) => (<span className="font-medium">{r.name}</span>
             ),
-          },
-          {
-            key: "slug",
-            label: "Slug",
-            render: (r) => <code className="text-xs">{r.slug}</code>,
           },
           {
             key: "colorClass",

@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, MousePointerClick, Globe, Smartphone, Copy, Check } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, MousePointerClick, Globe, MonitorSmartphone, Copy, Check } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { AdminShell } from "@/components/site/AdminShell";
 import { ConfirmDelete } from "@/components/site/AdminBits";
@@ -233,7 +233,7 @@ function ShortLinkDetail() {
             </div>
           </div>
           <div className="rounded-2xl border bg-card p-4 flex items-center gap-3">
-            <Smartphone className="h-5 w-5 text-primary" />
+            <MonitorSmartphone className="h-5 w-5 text-primary" />
             <div>
               <div className="text-xs text-muted-foreground">Appareils</div>
               <div className="text-xl font-bold">{byDevice.length}</div>

@@ -13,6 +13,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminTrainingDetail, useUpdateAdminTraining, useDeleteAdminTraining } from "@/stores/useTrainingsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
+
+// 💡 Importation du helper de badge et des types
+import { getTrainingLevelBadgeClass } from "@/data/trainings";
 import type { AdminTrainingPayload, TrainingLevel, TrainingProgramModule } from "@/data/trainings";
 
 export const Route = createFileRoute("/admin/trainings/$id")({
@@ -253,9 +256,12 @@ function TrainingDetail() {
             <div>
               <div className="flex flex-wrap items-center gap-2 text-xs">
                 <span className={`inline-flex px-2 py-1 rounded-full font-medium ${themeColorClass}`}>{training.theme}</span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
+
+                {/* 💡 Badge de niveau stylisé avec getTrainingLevelBadgeClass */}
+                <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${getTrainingLevelBadgeClass(training.level)}`}>
                   <Signal className="h-3 w-3" /> {training.level}
                 </span>
+
                 <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
                   <Clock className="h-3 w-3" /> {training.duration}
                 </span>

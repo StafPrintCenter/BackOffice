@@ -80,7 +80,7 @@ function AdminProjects() {
             label: "Catégorie",
             render: (r) => {
               const match = categories.find(
-                (c) => c.id === r.category_id || c.name.toLowerCase() === (typeof r.category === 'string' ? r.category.toLowerCase() : '')
+                (c) => c.id === r.categoryId || c.name.toLowerCase() === (typeof r.category === 'string' ? r.category.toLowerCase() : '')
               );
 
               const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";

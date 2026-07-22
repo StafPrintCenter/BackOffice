@@ -54,8 +54,7 @@ function ReportDetail() {
   const formatDate = (dateStr?: string | null) => {
     if (!dateStr) return "—";
     return new Date(dateStr.replace("Z", "")).toLocaleString("fr-FR", {
-      dateStyle: "medium",
-      timeStyle: "short",
+      dateStyle: "medium", timeStyle: "short",
     });
   };
 
@@ -110,7 +109,6 @@ function ReportDetail() {
                     <Tag className="h-4 w-4 text-primary" />
                     <span>
                       Cible : <b className="text-foreground">{getReportableTypeLabel(rep.reportableType)}</b>{" "}
-                      <code className="text-[11px]">#{rep.reportableId}</code>
                     </span>
                   </div>
                   <div className="flex items-center gap-2">

@@ -7,13 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminReportDetail, useUpdateAdminReportStatus } from "@/stores/useReportsStore";
-import {
-  REPORT_STATUS_BADGES,
-  REPORT_STATUS_LABELS,
-  getReportReasonLabel,
-  getReportableTypeLabel,
-  type ReportStatus,
-} from "@/data/reports";
+import { REPORT_STATUS_BADGES, REPORT_STATUS_LABELS, getReportReasonLabel, getReportableTypeLabel, type ReportStatus, } from "@/data/reports";
 
 export const Route = createFileRoute("/admin/reports/$id")({
   head: () => ({ meta: [{ title: "Signalement — Admin" }, { name: "robots", content: "noindex" }] }),

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, MousePointerClick, Globe, MonitorSmartphone, Copy, Check } from "lucide-react";
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
 import { AdminShell } from "@/components/site/AdminShell";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
@@ -263,10 +263,11 @@ function ShortLinkDetail() {
             <div className="mt-4 h-64">
               <ResponsiveContainer>
                 <PieChart>
-                  <Pie data={byDevice} dataKey="value" nameKey="name" innerRadius={40} outerRadius={80}>
+                  <Pie data={byDevice} dataKey="value" nameKey="name" innerRadius={40} outerRadius={75} paddingAngle={2}>
                     {byDevice.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
                   </Pie>
                   <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                  <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: 12 }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -274,7 +275,7 @@ function ShortLinkDetail() {
 
           <div className="rounded-2xl border bg-card p-6">
             <div className="font-display text-lg font-semibold">Par navigateur</div>
-            <div className="mt-4 h-56">
+            <div className="mt-4 h-64">
               <ResponsiveContainer>
                 <BarChart data={byBrowser}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -338,11 +339,11 @@ function ShortLinkDetail() {
                 ) : (
                   history.map((c, i) => (
                     <tr key={i} className="border-t">
-                      <td className="px-3 py-2 text-xs">{
-                        new Date(c.clicked_at.replace("Z", "")).toLocaleString("fr-FR", {
+                      <td className="px-3 py-2 text-xs">
+                        {new Date(c.clicked_at.replace("Z", "")).toLocaleString("fr-FR", {
                           dateStyle: "short", timeStyle: "medium",
-                        })
-                      }</td>
+                        })}
+                      </td>
                       <td className="px-3 py-2">{c.country ?? "—"}</td>
                       <td className="px-3 py-2">{c.city ?? "—"}</td>
                       <td className="px-3 py-2">{c.device}</td>

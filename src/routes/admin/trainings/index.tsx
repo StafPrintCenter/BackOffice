@@ -11,8 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAdminTrainingsList, useCreateAdminTraining, useUpdateAdminTraining, useDeleteAdminTraining, } from "@/stores/useTrainingsStore";
-import type { APIAdminTrainingListItem, AdminTrainingPayload, TrainingLevel, TRAINING_LEVEL_BADGES, getTrainingLevelBadgeClass } from "@/data/trainings";
+import { useAdminTrainingsList, useCreateAdminTraining, useUpdateAdminTraining, useDeleteAdminTraining } from "@/stores/useTrainingsStore";
+import { getTrainingLevelBadgeClass } from "@/data/trainings";
+import type { APIAdminTrainingListItem, AdminTrainingPayload, TrainingLevel } from "@/data/trainings";
 
 export const Route = createFileRoute("/admin/trainings/")({
   head: () => ({ meta: [{ title: "Formations — Admin" }, { name: "robots", content: "noindex" }] }),
@@ -106,7 +107,6 @@ function AdminTrainings() {
             key: "theme",
             label: "Thème",
             render: (r) => {
-              // Match avec la liste des thèmes par themeId ou par nom
               const match = themes.find(
                 (t) => t.id === r.themeId || t.name.toLowerCase() === (typeof r.theme === "string" ? r.theme.toLowerCase() : "")
               );

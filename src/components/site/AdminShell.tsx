@@ -121,7 +121,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
           <div className="min-w-0">
             <div className="font-display font-bold text-sm truncate"> {SITE.name} </div>
 
-            <div className="text-[10px] opacity-60 truncate">Admin dashboard</div>
+            <div className="text-[10px] opacity-60 truncate">{user?.level}</div>
           </div>
         )}
       </div>

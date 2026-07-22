@@ -145,7 +145,7 @@ function AdminShortLinks() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <Label>Alias (optionnel — auto-généré sinon)</Label>
+                <Label>Alias (optionnel)</Label>
                 <Input value={form.alias} onChange={(e) => setForm({ ...form, alias: e.target.value })} />
               </div>
 

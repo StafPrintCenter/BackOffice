@@ -76,7 +76,7 @@ function AdminAppointments() {
               const Icon = modeIcon(r.mode);
               return (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2 py-0.5 text-xs font-medium">
-                  <Icon className="h-3 w-3" /> {modeLabel(r.mode)}
+                  <Icon className="h-3 w-3" /> {APPOINTMENT_MODE_LABELS[r.mode]}
                 </span>
               );
             },

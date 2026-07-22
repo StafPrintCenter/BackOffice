@@ -75,7 +75,25 @@ function AdminFaqs() {
         columns={[
           { key: "order", label: "#", render: (r) => <span className="text-muted-foreground">{r.order}</span> },
           { key: "question", label: "Question", render: (r) => <div className="font-medium max-w-md">{r.question}</div> },
-          { key: "category", label: "Catégorie", render: (r) => <span className="text-xs">{r.category}</span> },
+          {
+            key: "category",
+            label: "Catégorie",
+            render: (r) => {
+              // Recherche du match par id ou par nom de catégorie
+              const match = categories.find(
+                (c) => c.id === r.categoryId || c.name.toLowerCase() === (typeof r.category === "string" ? r.category.toLowerCase() : "")
+              );
+
+              const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";
+              const categoryName = typeof r.category === "string" ? r.category : match?.name || "Sans catégorie";
+
+              return (
+                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${colorClass}`}>
+                  {categoryName}
+                </span>
+              );
+            },
+          },
           { key: "answer", label: "Réponse", render: (r) => <div className="max-w-md line-clamp-2 text-muted-foreground text-xs">{r.answer}</div> },
         ]}
       />

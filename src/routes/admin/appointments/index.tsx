@@ -45,12 +45,16 @@ function AdminAppointments() {
             key: "scheduledAt",
             label: "Créneau",
             render: (r) => (
-              <span className="text-xs text-muted-foreground">
-                {new Date(r.scheduledAt.replace("Z", "")).toLocaleString("fr-FR", {
-                  dateStyle: "short",
-                  timeStyle: "short",
-                })}
-              </span>
+              <div>
+                <span className="text-xs text-muted-foreground">
+                  {new Date(r.scheduledAt.replace("Z", "")).toLocaleString("fr-FR", {
+                    dateStyle: "short", timeStyle: "short",
+                  })}
+
+                  · {r.duration} min
+                </span>
+
+              </div>
             ),
           },
           {

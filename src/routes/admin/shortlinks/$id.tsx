@@ -339,7 +339,11 @@ function ShortLinkDetail() {
                 ) : (
                   history.map((c, i) => (
                     <tr key={i} className="border-t">
-                      <td className="px-3 py-2 text-xs">{new Date(c.clicked_at).toLocaleString()}</td>
+                      <td className="px-3 py-2 text-xs">{
+                        new Date(c.clicked_at.replace("Z", "")).toLocaleString("fr-FR", {
+                          dateStyle: "short", timeStyle: "medium",
+                        })
+                      }</td>
                       <td className="px-3 py-2">{c.country ?? "—"}</td>
                       <td className="px-3 py-2">{c.city ?? "—"}</td>
                       <td className="px-3 py-2">{c.device}</td>

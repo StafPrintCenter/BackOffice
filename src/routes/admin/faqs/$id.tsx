@@ -68,6 +68,13 @@ function FaqDetail() {
     );
   }
 
+  // 💡 Récupération de la catégorie pour extraire sa couleur
+  const categoryMeta = categories.find(
+    (c) => c.id === faq.categoryId || c.name.toLowerCase() === (typeof faq.category === "string" ? faq.category.toLowerCase() : "")
+  );
+  const categoryColorClass = categoryMeta?.colorClass ?? "bg-slate-100 text-slate-700";
+  const categoryName = typeof faq.category === "string" ? faq.category : categoryMeta?.name ?? "Sans catégorie";
+
   const handleSave = () => {
     updateMutation.mutate({ id: faq.id, payload: form }, {
       onSuccess: () => { toast.success("FAQ modifiée"); setIsEditing(false); },
@@ -146,14 +153,30 @@ function FaqDetail() {
           <>
             <div>
               <div className="flex flex-wrap items-center gap-2 text-xs">
-                <span className="rounded-full bg-muted px-2 py-0.5">{faq.category}</span>
-                <span className="rounded-full bg-muted px-2 py-0.5">Ordre {faq.order}</span>
+                {/* Badge coloré pour la catégorie */}
+                <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${categoryColorClass}`}>
+                  {categoryName}
+                </span>
+                <span className="rounded-full bg-muted px-2 py-0.5 text-muted-foreground font-medium">
+                  Ordre {faq.order}
+                </span>
               </div>
               <h1 className="mt-3 font-display text-3xl font-bold">{faq.question}</h1>
             </div>
+
             <div className="rounded-2xl border bg-card p-6">
               <div className="font-semibold mb-2">Réponse</div>
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{faq.answer}</p>
+            </div>
+
+            {/* Encadré des métadonnées de dates */}
+            <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex items-center justify-between">
+              <div>
+                Créée le : {new Date(faq.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+              </div>
+              <div>
+                Modifiée le : {new Date(faq.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+              </div>
             </div>
           </>
         )}

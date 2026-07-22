@@ -72,7 +72,11 @@ function AdminTestimonials() {
         onView={(r) => navigate({ to: "/admin/testimonials/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
-          { key: "name", label: "Nom", render: (r) => <div><div className="font-medium">{r.name}</div><div className="text-xs text-muted-foreground">{r.role}</div></div> },
+          {
+            key: "name",
+            label: "Nom",
+            render: (r) => <div><div className="font-medium">{r.name}</div><div className="text-xs text-muted-foreground">{r.role}</div></div>
+          },
           { key: "rating", label: "Note", render: (r) => <div className="flex gap-0.5">{Array.from({ length: r.rating }).map((_, i) => <Star key={i} className="h-3 w-3 fill-primary text-primary" />)}</div> },
           { key: "quote", label: "Citation", render: (r) => <div className="max-w-md text-muted-foreground line-clamp-1 italic">"{r.quote}"</div> },
           { key: "featured", label: "En vedette", render: (r) => r.featured ? <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">Oui</span> : <span className="text-xs text-muted-foreground">-</span> },

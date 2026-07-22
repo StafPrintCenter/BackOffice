@@ -26,8 +26,8 @@ const schema = z.object({
   alias: z.string().trim().min(2).max(30).optional().or(z.literal("")),
   category: z.string().trim().min(1, "Choisissez une catégorie"),
   is_active: z.boolean(),
-  activate_at: z.string().trim().optional(),
-  expires_at: z.string().trim().optional(),
+  activate_at: z.string().trim().optional().or(z.literal("")),
+  expires_at: z.string().trim().optional().or(z.literal("")),
 });
 type FormValues = z.infer<typeof schema>;
 

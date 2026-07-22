@@ -62,7 +62,7 @@ function AdminShortLinks() {
         onEdit={openEdit}
         onDelete={(r) => setToDelete(r)}
         columns={[
-          { key: "alias", label: "Alias", render: (r) => <Link to="/admin/short-links/$id" params={{ id: r.id }} className="font-mono text-xs font-medium text-primary hover:underline">/{r.alias}</Link> },
+          { key: "alias", label: "Alias", render: (r) => <Link to="/admin/shortlinks/$id" params={{ id: r.id }} className="font-mono text-xs font-medium text-primary hover:underline">/{r.alias}</Link> },
           { key: "longUrl", label: "URL cible", render: (r) => <a href={r.longUrl} target="_blank" rel="noreferrer" className="text-xs text-muted-foreground line-clamp-1 max-w-xs hover:underline">{r.longUrl}</a> },
           { key: "category", label: "Catégorie" },
           { key: "clicksCount", label: "Clics", render: (r) => <b>{r.clicksCount}</b> },

@@ -79,7 +79,6 @@ function AdminFaqs() {
             key: "category",
             label: "Catégorie",
             render: (r) => {
-              // Recherche du match par id ou par nom de catégorie
               const match = categories.find(
                 (c) => c.id === r.categoryId || c.name.toLowerCase() === (typeof r.category === "string" ? r.category.toLowerCase() : "")
               );

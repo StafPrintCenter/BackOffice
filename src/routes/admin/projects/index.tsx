@@ -29,6 +29,7 @@ const schema = z.object({
   cover: z.string().trim().url("URL image invalide"),
   description: z.string().trim().min(10).max(2000),
 });
+
 type FormValues = z.infer<typeof schema>;
 const empty: FormValues = { title: "", category_id: "", client: "", cover: "", description: "" };
 

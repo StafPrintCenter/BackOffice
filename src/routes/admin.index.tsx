@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, TrendingUp, Users, Eye, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldCheck } from "lucide-react";
-import {
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
-  AreaChart, Area, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Legend,
-} from "recharts";
+import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, TrendingUp, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser } from "lucide-react";
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area, Legend, } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
 
 // --- Encore sur mock : aucune spec reçue pour les articles ---
@@ -58,7 +55,7 @@ function DashboardPage() {
   const activeShortLinks = shortLinks.filter((l) => l.isActive).length;
 
   const avgRating = testimonials.length
-    ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1)
+    ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length)
     : "…";
   const featuredTestimonials = testimonials.filter((t) => t.featured).length;
   const featuredServices = services.filter((s) => s.featured).length;
@@ -153,9 +150,9 @@ function DashboardPage() {
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Membres actifs" value={usersLoading || studentsLoading || adminsLoading ? "…" : activeUsers + activeStudents + activeAdmins} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total`} />
-        <StatCard label="Utilisateurs actifs" value={usersLoading ? "…" : activeUsers} icon={<Users className="h-5 w-5" />} hint={`${users.length} au total`} />
-        <StatCard label="Apprenants actifs" value={studentsLoading ? "…" : activeStudents} icon={<GraduationCap className="h-5 w-5" />} hint={`${students.length} au total`} />
-        <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldCheck className="h-5 w-5" />} hint={`${admins.length} au total`} />
+        <StatCard label="Utilisateurs actifs" value={usersLoading ? "…" : activeUsers} icon={<SquareUser className="h-5 w-5" />} hint={`${users.length} au total`} />
+        <StatCard label="Apprenants actifs" value={studentsLoading ? "…" : activeStudents} icon={<CircleUser className="h-5 w-5" />} hint={`${students.length} au total`} />
+        <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldUser className="h-5 w-5" />} hint={`${admins.length} au total`} />
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">

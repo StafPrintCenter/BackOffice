@@ -1,23 +1,22 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { useAdminContactsList } from "@/stores/useContactsStore";
-import type { APIAdminContactListItem, ContactStatus } from "@/data/contact";
+import {
+  type APIAdminContactListItem,
+  CONTACT_STATUS_BADGES,
+  CONTACT_STATUS_LABELS,
+} from "@/data/contact";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/messages/")({
-  head: () => ({ meta: [{ title: "Messages — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Messages | ${SITE.name}` },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   component: AdminMessages,
 });
-
-const statusBadge = (s: ContactStatus) =>
-({
-  new: "bg-blue-100 text-blue-700",
-  in_progress: "bg-amber-100 text-amber-700",
-  resolved: "bg-emerald-100 text-emerald-700",
-  closed: "bg-muted text-muted-foreground",
-}[s]);
-
-const statusLabel = (s: ContactStatus) =>
-  ({ new: "Nouveau", in_progress: "En cours", resolved: "Résolu", closed: "Fermé" }[s]);
 
 function AdminMessages() {
   const navigate = useNavigate();
@@ -58,7 +57,8 @@ function AdminMessages() {
             render: (r) => (
               <span className="text-xs text-muted-foreground">
                 {new Date(r.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
-                  dateStyle: "short", timeStyle: "short",
+                  dateStyle: "short",
+                  timeStyle: "short",
                 })}
               </span>
             ),
@@ -67,8 +67,8 @@ function AdminMessages() {
             key: "status",
             label: "Statut",
             render: (r) => (
-              <span className={"inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium " + statusBadge(r.status)}>
-                {statusLabel(r.status)}
+              <span className={"inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium " + CONTACT_STATUS_BADGES[r.status]}>
+                {CONTACT_STATUS_LABELS[r.status]}
               </span>
             ),
           },

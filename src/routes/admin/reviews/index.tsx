@@ -20,12 +20,6 @@ const sections = [
     description: "Créez, publiez, désactivez et dupliquez vos formulaires d'avis.",
   },
   {
-    to: "/admin/reviews/quizs" as const,
-    icon: ListChecks,
-    title: "Questions",
-    description: "Gérez les questions de chaque formulaire.",
-  },
-  {
     to: "/admin/reviews/invites" as const,
     icon: Send,
     title: "Invitations",
@@ -43,7 +37,7 @@ function AdminReviews() {
   return (
     <AdminShell>
       <PageHeader title="Avis & formulaires" description="Collectez et analysez les retours de vos clients." />
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-3">
         {sections.map((s) => (
           <Link
             key={s.to}

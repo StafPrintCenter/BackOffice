@@ -243,7 +243,7 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Formations par niveau</div>
           <div className="mt-4 h-64">

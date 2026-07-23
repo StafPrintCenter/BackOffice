@@ -14,9 +14,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAdminTrainingsList, useCreateAdminTraining, useUpdateAdminTraining, useDeleteAdminTraining } from "@/stores/useTrainingsStore";
 import { getTrainingLevelBadgeClass } from "@/data/trainings";
 import type { APIAdminTrainingListItem, AdminTrainingPayload, TrainingLevel } from "@/data/trainings";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/trainings/")({
-  head: () => ({ meta: [{ title: "Formations — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Formations | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: AdminTrainings,
 });
 

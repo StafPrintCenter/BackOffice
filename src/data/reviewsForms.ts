@@ -1,17 +1,32 @@
-export type ReviewFormStatus = "draft" | "published" | "disabled" | string;
+export type ReviewFormStatus = "draft" | "published" | "disabled";
 
-/** Le détail des règles (validationRules/options/settings) n'est pas entièrement documenté par les exemples
- *  fournis (aucune valeur peuplée observée pour `options`) — typé de façon permissive en attendant confirmation. */
+export interface ReviewQuestionOption {
+  label: string;
+  value: string;
+}
+
+export interface ReviewQuestionValidationRules {
+  max_length?: number;
+  min?: number;
+  max?: number;
+  [key: string]: unknown;
+}
+
+export interface ReviewQuestionSettings {
+  max_size_kb?: number;
+  [key: string]: unknown;
+}
+
 export interface AdminReviewFormQuestion {
   id: string;
-  type: string; // ex: "short_text", "long_text", "file"...
+  type: ReviewQuestionType | string;
   title: string;
   description: string | null;
   order: number;
   isRequired: boolean;
-  validationRules: Record<string, unknown> | null;
-  options: unknown[] | null;
-  settings: Record<string, unknown> | null;
+  validationRules: ReviewQuestionValidationRules | null;
+  options: ReviewQuestionOption[] | null;
+  settings: ReviewQuestionSettings | null;
 }
 
 export type APIAdminReviewFormListItem = {
@@ -21,7 +36,7 @@ export type APIAdminReviewFormListItem = {
   allowResponseEdit: boolean;
   categoryId: string | null;
   category: string | null;
-  status: ReviewFormStatus;
+  status: ReviewFormStatus | string;
   expiresAt: string | null;
   maxResponses: number | null;
   responsesCount: number;
@@ -43,34 +58,47 @@ export interface AdminReviewFormPayload {
   allow_response_edit: boolean;
 }
 
-export const REVIEW_FORM_STATUS_LABELS: Record<ReviewFormStatus | string, string> = {
+export const REVIEW_FORM_STATUS_LABELS: Record<string, string> = {
   draft: "Brouillon",
   published: "Publié",
   disabled: "Désactivé",
 };
 
-export const REVIEW_FORM_STATUS_BADGES: Record<ReviewFormStatus | string, string> = {
+export const REVIEW_FORM_STATUS_BADGES: Record<string, string> = {
   draft: "bg-muted text-muted-foreground border-transparent",
   published: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
   disabled: "bg-destructive/10 text-destructive border-destructive/20",
 };
 
-export type ReviewQuestionType =
-  | "short_text"
-  | "long_text"
-  | "email"
-  | "phone"
-  | "number"
-  | "date"
-  | "datetime"
-  | "single_choice"
-  | "multiple_choice"
-  | "select"
-  | "rating"
-  | "boolean"
-  | "file";
+export function getReviewFormStatusBadge(status: string): string {
+  return REVIEW_FORM_STATUS_BADGES[status] ?? "bg-muted text-muted-foreground border-transparent";
+}
 
-export const REVIEW_QUESTION_TYPE_LABELS: Record<ReviewQuestionType | string, string> = {
+export type ReviewQuestionType = | "short_text" | "long_text" | "email" | "phone" | "number" | "date" | "datetime" | "single_choice" | "multiple_choice" | "select" | "rating" | "boolean" | "file";
+
+export const REVIEW_QUESTION_TYPES: ReviewQuestionType[] = [
+  "short_text",
+  "long_text",
+  "email",
+  "phone",
+  "number",
+  "date",
+  "datetime",
+  "single_choice",
+  "multiple_choice",
+  "select",
+  "rating",
+  "boolean",
+  "file",
+];
+
+export const CHOICE_QUESTION_TYPES: ReviewQuestionType[] = [
+  "single_choice",
+  "multiple_choice",
+  "select",
+];
+
+export const REVIEW_QUESTION_TYPE_LABELS: Record<string, string> = {
   short_text: "Texte court",
   long_text: "Texte long",
   email: "Adresse e-mail",
@@ -86,7 +114,7 @@ export const REVIEW_QUESTION_TYPE_LABELS: Record<ReviewQuestionType | string, st
   file: "Fichier / Pièce jointe",
 };
 
-export const REVIEW_QUESTION_TYPE_BADGES: Record<ReviewQuestionType | string, string> = {
+export const REVIEW_QUESTION_TYPE_BADGES: Record<string, string> = {
   short_text: "bg-blue-500/10 text-blue-600 border-blue-500/20",
   long_text: "bg-indigo-500/10 text-indigo-600 border-indigo-500/20",
   email: "bg-sky-500/10 text-sky-600 border-sky-500/20",
@@ -101,6 +129,10 @@ export const REVIEW_QUESTION_TYPE_BADGES: Record<ReviewQuestionType | string, st
   boolean: "bg-zinc-500/10 text-zinc-600 border-zinc-500/20",
   file: "bg-rose-500/10 text-rose-600 border-rose-500/20",
 };
+
+export function getReviewQuestionTypeBadge(type: string): string {
+  return REVIEW_QUESTION_TYPE_BADGES[type] ?? "bg-muted text-muted-foreground border-transparent";
+}
 
 export interface AdminReviewQuestionPayload {
   type: ReviewQuestionType;

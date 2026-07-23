@@ -36,20 +36,15 @@ export function useRevokeAdminReviewInvitation() {
   });
 }
 
-// NOTE : pas encore câblé — le curl "renvoyer" fourni est identique à "révoquer".
-// Une fois l'endpoint réel confirmé (ex: /resend), décommenter et adapter :
-//
-// async function resendInvitation(id: string): Promise<APIAdminReviewInvitation> {
-//   const response = await adminFetch(`/api/admin/${basePath}/${id}/resend`, { method: "PUT" });
-//   if (!response.ok) throw new Error("Erreur lors du renvoi de l'invitation");
-//   const json = await response.json();
-//   return json.data;
-// }
-//
-// export function useResendAdminReviewInvitation() {
-//   const qc = useQueryClient();
-//   return useMutation({
-//     mutationFn: (id: string) => resendInvitation(id),
-//     onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
-//   });
-// }
+async function resendInvitation(id: string): Promise<void> {
+  const response = await adminFetch(`/api/admin/${basePath}/${id}/resend`, { method: "POST" });
+  if (!response.ok) throw new Error("Erreur lors du renvoi de l'invitation");
+}
+
+export function useResendAdminReviewInvitation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => resendInvitation(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
+  });
+}

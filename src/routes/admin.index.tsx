@@ -29,8 +29,8 @@ function DashboardPage() {
   const { items: trainings, isLoading: trainingsLoading } = useAdminTrainingsList({ perPage: 100 });
   const { items: reports, isLoading: reportsLoading } = useAdminReportsList({ perPage: 100 });
 
-  // --- Mock en attente ---
-  const articles = useQuery({ queryKey: ["articles"], queryFn: articlesApi.list });
+  // --- Branchement de l'API réelle pour les articles ---
+  const { items: articles, isLoading: articlesLoading } = useAdminArticlesList({ perPage: 100 });
 
   // --- KPIs réels ---
   const newMessages = contacts.filter((c) => c.status === "new").length;
@@ -83,7 +83,7 @@ function DashboardPage() {
   const recent = [
     ...projects.slice(0, 3).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
     ...trainings.slice(0, 2).map((t) => ({ type: "Formation", title: t.title, meta: t.theme, icon: GraduationCap })),
-    ...(articles.data ?? []).slice(0, 1).map((a) => ({ type: "Article", title: a.title, meta: a.author, icon: FileText })), // ⚠️ mock
+    ...articles.slice(0, 1).map((a) => ({ type: "Article", title: a.title, meta: a.author, icon: FileText })),
   ].slice(0, 6);
 
   return (
@@ -95,7 +95,7 @@ function DashboardPage() {
         <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
         <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
         <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint="Portfolio" />
-        <StatCard label="Articles" value={articles.data?.length ?? "…"} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
+        <StatCard label="Articles" value={articlesLoading ? "…" : articles.length} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -238,7 +238,6 @@ function DashboardPage() {
             <Activity className="h-4 w-4 text-primary" />
             <div className="font-display text-lg font-semibold">Activité récente</div>
           </div>
-          <div className="text-xs text-muted-foreground">Articles encore mock</div>
           <ul className="mt-4 divide-y">
             {recent.map((r, i) => {
               const Icon = r.icon;

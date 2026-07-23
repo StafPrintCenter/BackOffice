@@ -49,9 +49,7 @@ function DashboardPage() {
   const totalClicks = shortLinks.reduce((s, l) => s + l.clicksCount, 0);
   const activeShortLinks = shortLinks.filter((l) => l.isActive).length;
 
-  const avgRating = testimonials.length
-    ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length)
-    : "…";
+  const avgRating = testimonials.length ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length) : "…";
   const featuredTestimonials = testimonials.filter((t) => t.featured).length;
   const featuredServices = services.filter((s) => s.featured).length;
 
@@ -77,10 +75,6 @@ function DashboardPage() {
 
   const linksByCategory = Object.entries(
     shortLinks.reduce<Record<string, number>>((acc, l) => { acc[l.category] = (acc[l.category] ?? 0) + 1; return acc; }, {})
-  ).map(([name, value]) => ({ name, value }));
-
-  const trainingsByTheme = Object.entries(
-    trainings.reduce<Record<string, number>>((acc, t) => { acc[t.theme] = (acc[t.theme] ?? 0) + 1; return acc; }, {})
   ).map(([name, value]) => ({ name, value }));
 
   const trainingsByLevel = Object.entries(

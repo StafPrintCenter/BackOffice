@@ -190,7 +190,10 @@ function ProjectDetail() {
               </div>
             )}
           </div>
+        </div>
 
+        {/* Colonne Droite : Métadonnées & Paramètres (1/3) */}
+        <div className="space-y-6">
           {/* Bloc Description */}
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
             <h2 className="text-base font-semibold mb-4">À propos du projet</h2>
@@ -208,10 +211,7 @@ function ProjectDetail() {
               </p>
             )}
           </div>
-        </div>
 
-        {/* Colonne Droite : Métadonnées & Paramètres (1/3) */}
-        <div className="space-y-6">
           <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-5">
             <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">Informations clés</h3>
 

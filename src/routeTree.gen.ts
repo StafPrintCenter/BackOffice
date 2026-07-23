@@ -10,10 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminProfileRouteImport } from './routes/admin.profile'
 import { Route as AuthInviteRouteImport } from './routes/auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as AdminAdminIndexRouteImport } from './routes/admin/admin.index'
 import { Route as AdminAppointmentsIndexRouteImport } from './routes/admin/appointments/index'
 import { Route as AdminAppointmentsIdRouteImport } from './routes/admin/appointments/$id'
 import { Route as AdminArticlesIndexRouteImport } from './routes/admin/articles/index'
@@ -63,6 +63,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminProfileRoute = AdminProfileRouteImport.update({
   id: '/admin/profile',
   path: '/admin/profile',
@@ -76,11 +81,6 @@ const AuthInviteRoute = AuthInviteRouteImport.update({
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/auth/login',
   path: '/auth/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
-  id: '/admin/admin/',
-  path: '/admin/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAppointmentsIndexRoute = AdminAppointmentsIndexRouteImport.update({
@@ -311,6 +311,7 @@ export interface FileRoutesByFullPath {
   '/admin/profile': typeof AdminProfileRoute
   '/auth/invite': typeof AuthInviteRoute
   '/auth/login': typeof AuthLoginRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/admin/articles/$id': typeof AdminArticlesIdRoute
   '/admin/categories/$id': typeof AdminCategoriesIdRoute
@@ -323,7 +324,6 @@ export interface FileRoutesByFullPath {
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/admin/trainings/$id': typeof AdminTrainingsIdRoute
-  '/admin/admin/': typeof AdminAdminIndexRoute
   '/admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
@@ -361,6 +361,7 @@ export interface FileRoutesByTo {
   '/admin/profile': typeof AdminProfileRoute
   '/auth/invite': typeof AuthInviteRoute
   '/auth/login': typeof AuthLoginRoute
+  '/admin': typeof AdminIndexRoute
   '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/admin/articles/$id': typeof AdminArticlesIdRoute
   '/admin/categories/$id': typeof AdminCategoriesIdRoute
@@ -373,7 +374,6 @@ export interface FileRoutesByTo {
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/admin/trainings/$id': typeof AdminTrainingsIdRoute
-  '/admin/admin': typeof AdminAdminIndexRoute
   '/admin/appointments': typeof AdminAppointmentsIndexRoute
   '/admin/articles': typeof AdminArticlesIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
@@ -412,6 +412,7 @@ export interface FileRoutesById {
   '/admin/profile': typeof AdminProfileRoute
   '/auth/invite': typeof AuthInviteRoute
   '/auth/login': typeof AuthLoginRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/admin/articles/$id': typeof AdminArticlesIdRoute
   '/admin/categories/$id': typeof AdminCategoriesIdRoute
@@ -424,7 +425,6 @@ export interface FileRoutesById {
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/admin/trainings/$id': typeof AdminTrainingsIdRoute
-  '/admin/admin/': typeof AdminAdminIndexRoute
   '/admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
@@ -464,6 +464,7 @@ export interface FileRouteTypes {
     | '/admin/profile'
     | '/auth/invite'
     | '/auth/login'
+    | '/admin/'
     | '/admin/appointments/$id'
     | '/admin/articles/$id'
     | '/admin/categories/$id'
@@ -476,7 +477,6 @@ export interface FileRouteTypes {
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/admin/trainings/$id'
-    | '/admin/admin/'
     | '/admin/appointments/'
     | '/admin/articles/'
     | '/admin/categories/'
@@ -514,6 +514,7 @@ export interface FileRouteTypes {
     | '/admin/profile'
     | '/auth/invite'
     | '/auth/login'
+    | '/admin'
     | '/admin/appointments/$id'
     | '/admin/articles/$id'
     | '/admin/categories/$id'
@@ -526,7 +527,6 @@ export interface FileRouteTypes {
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/admin/trainings/$id'
-    | '/admin/admin'
     | '/admin/appointments'
     | '/admin/articles'
     | '/admin/categories'
@@ -564,6 +564,7 @@ export interface FileRouteTypes {
     | '/admin/profile'
     | '/auth/invite'
     | '/auth/login'
+    | '/admin/'
     | '/admin/appointments/$id'
     | '/admin/articles/$id'
     | '/admin/categories/$id'
@@ -576,7 +577,6 @@ export interface FileRouteTypes {
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'
     | '/admin/trainings/$id'
-    | '/admin/admin/'
     | '/admin/appointments/'
     | '/admin/articles/'
     | '/admin/categories/'
@@ -615,6 +615,7 @@ export interface RootRouteChildren {
   AdminProfileRoute: typeof AdminProfileRoute
   AuthInviteRoute: typeof AuthInviteRoute
   AuthLoginRoute: typeof AuthLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
   AdminCategoriesIdRoute: typeof AdminCategoriesIdRoute
@@ -627,7 +628,6 @@ export interface RootRouteChildren {
   AdminStatsIdRoute: typeof AdminStatsIdRoute
   AdminTestimonialsIdRoute: typeof AdminTestimonialsIdRoute
   AdminTrainingsIdRoute: typeof AdminTrainingsIdRoute
-  AdminAdminIndexRoute: typeof AdminAdminIndexRoute
   AdminAppointmentsIndexRoute: typeof AdminAppointmentsIndexRoute
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
@@ -670,6 +670,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/profile': {
       id: '/admin/profile'
       path: '/admin/profile'
@@ -689,13 +696,6 @@ declare module '@tanstack/react-router' {
       path: '/auth/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/admin/': {
-      id: '/admin/admin/'
-      path: '/admin/admin'
-      fullPath: '/admin/admin/'
-      preLoaderRoute: typeof AdminAdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/appointments/': {
@@ -1007,6 +1007,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminProfileRoute: AdminProfileRoute,
   AuthInviteRoute: AuthInviteRoute,
   AuthLoginRoute: AuthLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,
   AdminCategoriesIdRoute: AdminCategoriesIdRoute,
@@ -1019,7 +1020,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminStatsIdRoute: AdminStatsIdRoute,
   AdminTestimonialsIdRoute: AdminTestimonialsIdRoute,
   AdminTrainingsIdRoute: AdminTrainingsIdRoute,
-  AdminAdminIndexRoute: AdminAdminIndexRoute,
   AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,

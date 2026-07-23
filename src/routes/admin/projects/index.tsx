@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { useAdminProjectsList, useCreateAdminProject, useDeleteAdminProject } from "@/stores/useProjectsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import type { APIAdminProject, AdminProjectPayload } from "@/data/projects";
@@ -28,10 +29,11 @@ const schema = z.object({
   client: z.string().trim().min(1).max(100),
   cover: z.string().trim().url("URL image invalide"),
   description: z.string().trim().min(10).max(2000),
+  is_public: z.boolean(),
 });
 
 type FormValues = z.infer<typeof schema>;
-const empty: FormValues = { title: "", category_id: "", client: "", cover: "", description: "" };
+const empty: FormValues = { title: "", category_id: "", client: "", cover: "", description: "", is_public: true };
 
 function AdminProjects() {
   const navigate = useNavigate();
@@ -148,6 +150,20 @@ function AdminProjects() {
               <Label>Description</Label>
               <Textarea rows={5} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               {errors.description && <p className="text-xs text-destructive mt-1">{errors.description}</p>}
+            </div>
+            <div className="flex items-center justify-between rounded-lg border p-3 shadow-sm">
+              <div className="space-y-0.5">
+                <Label className="text-base font-medium">Visibilité publique</Label>
+                <p className="text-xs text-muted-foreground">
+                  Détermine si ce projet est visible sur la vitrine publique.
+                </p>
+              </div>
+              <input
+                type="checkbox"
+                checked={form.is_public}
+                onChange={(e) => setForm({ ...form, is_public: e.target.checked })}
+                className="h-5 w-5 rounded border-input accent-primary"
+              />
             </div>
           </div>
           <DialogFooter>

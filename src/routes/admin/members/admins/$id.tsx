@@ -133,6 +133,23 @@ function AdminDetail() {
     });
   };
 
+  const handleResendInvite = () => {
+    resendInviteMutation.mutate(admin.id, {
+      onSuccess: () => toast.success("Invitation renvoyée"),
+      onError: () => toast.error("Erreur lors du renvoi de l'invitation"),
+    });
+  };
+
+  const handleRevokeInvite = () => {
+    revokeInviteMutation.mutate(admin.id, {
+      onSuccess: () => {
+        toast.success("Invitation révoquée");
+        setRevokeInviteOpen(false);
+      },
+      onError: () => toast.error("Erreur lors de la révocation de l'invitation"),
+    });
+  };
+
   return (
     <AdminShell>
       {/* Top Bar */}

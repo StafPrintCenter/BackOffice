@@ -1,198 +1,261 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
-import { ArrowLeft, Loader2, Mail, Tag, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare, AlertTriangle } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { AdminShell } from "@/components/site/AdminShell";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, CalendarClock, Ban, Send } from "lucide-react";
+import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAdminReportDetail, useUpdateAdminReportStatus } from "@/stores/useReportsStore";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import {
-  REPORT_STATUS_BADGES,
-  REPORT_STATUS_LABELS,
-  getReportReasonLabel,
-  getReportableTypeLabel,
-  type ReportStatus,
-} from "@/data/reports";
+  useAdminNewsletterCampaignDetail,
+  useUpdateAdminNewsletterCampaign,
+  useDeleteAdminNewsletterCampaign,
+  useScheduleAdminNewsletterCampaign,
+  useCancelScheduleAdminNewsletterCampaign,
+  useSendAdminNewsletterCampaign,
+} from "@/stores/useNewsletterCampaignsStore";
+import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
+import type { AdminNewsletterCampaignPayload } from "@/data/newsletterCampaigns";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/newsletter/campaigns/$id")({
-  head: () => ({ meta: [{ title: "Signalement — Admin" }, { name: "robots", content: "noindex" }] }),
-  component: ReportDetail,
+  head: () => ({
+    meta: [
+      { title: `Campagne | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
+  component: CampaignDetail,
 });
 
-function ReportDetail() {
+function statusBadge(status: string) {
+  const map: Record<string, string> = {
+    draft: "bg-muted text-muted-foreground",
+    scheduled: "bg-amber-500/10 text-amber-600",
+    sent: "bg-emerald-500/10 text-emerald-600",
+  };
+  const label: Record<string, string> = { draft: "Brouillon", scheduled: "Programmée", sent: "Envoyée" };
+  return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${map[status] ?? "bg-muted text-muted-foreground"}`}>{label[status] ?? status}</span>;
+}
+
+function CampaignDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const { item: rep, isLoading } = useAdminReportDetail(id);
-  const updateStatus = useUpdateAdminReportStatus();
+
+  const { item: campaign, isLoading } = useAdminNewsletterCampaignDetail(id);
+  const { items: categories } = useAdminCategoriesList({ perPage: 100, context: "newsletter" });
+  const updateMutation = useUpdateAdminNewsletterCampaign();
+  const removeMutation = useDeleteAdminNewsletterCampaign();
+  const scheduleMutation = useScheduleAdminNewsletterCampaign();
+  const cancelScheduleMutation = useCancelScheduleAdminNewsletterCampaign();
+  const sendMutation = useSendAdminNewsletterCampaign();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [status, setStatus] = useState<ReportStatus>("pending");
+  const [form, setForm] = useState<AdminNewsletterCampaignPayload | null>(null);
+  const [toDelete, setToDelete] = useState(false);
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+  const [scheduledAt, setScheduledAt] = useState("");
+  const [categoryId, setCategoryId] = useState("");
 
   useEffect(() => {
-    if (rep) setStatus(rep.status);
-  }, [rep]);
+    if (campaign && !form) {
+      setForm({ subject: campaign.subject, body: campaign.body, category_id: "" });
+    }
+  }, [campaign, form]);
+
+  if (isLoading) {
+    return (
+      <AdminShell>
+        <div className="flex items-center justify-center py-24 text-muted-foreground">
+          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
+        </div>
+      </AdminShell>
+    );
+  }
+
+  if (!campaign || !form) {
+    return (
+      <AdminShell>
+        <div className="mb-6">
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/campaigns" })}>
+            <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+          </Button>
+        </div>
+        <p className="text-muted-foreground">Campagne introuvable.</p>
+      </AdminShell>
+    );
+  }
+
+  const isSent = campaign.status === "sent";
+  const isScheduled = campaign.status === "scheduled";
+
+  const handleSave = () => {
+    updateMutation.mutate({ id: campaign.id, payload: form }, {
+      onSuccess: () => { toast.success("Campagne modifiée"); setIsEditing(false); },
+      onError: () => toast.error("Erreur lors de la modification"),
+    });
+  };
 
   const handleCancel = () => {
-    if (rep) setStatus(rep.status);
+    setForm({ subject: campaign.subject, body: campaign.body, category_id: "" });
     setIsEditing(false);
   };
 
-  const handleSave = () => {
-    updateStatus.mutate(
-      { id, payload: { status } },
-      {
-        onSuccess: () => {
-          toast.success("Statut mis à jour");
-          setIsEditing(false);
-        },
-        onError: () => toast.error("Erreur lors de la mise à jour"),
-      }
-    );
+  const openScheduleDialog = () => { setScheduledAt(""); setScheduleDialogOpen(true); };
+
+  const submitSchedule = () => {
+    if (!scheduledAt) return;
+    scheduleMutation.mutate({ id: campaign.id, payload: { scheduled_at: new Date(scheduledAt).toISOString() } }, {
+      onSuccess: () => { toast.success("Campagne programmée"); setScheduleDialogOpen(false); },
+      onError: () => toast.error("Erreur lors de la programmation"),
+    });
   };
 
-  const formatDate = (dateStr?: string | null) => {
-    if (!dateStr) return "—";
-    return new Date(dateStr.replace("Z", "")).toLocaleString("fr-FR", {
-      dateStyle: "medium", timeStyle: "short",
+  const handleCancelSchedule = () => {
+    cancelScheduleMutation.mutate(campaign.id, {
+      onSuccess: () => toast.success("Programmation annulée"),
+      onError: () => toast.error("Erreur lors de l'annulation"),
+    });
+  };
+
+  const handleSend = () => {
+    sendMutation.mutate(campaign.id, {
+      onSuccess: () => toast.success("Campagne envoyée"),
+      onError: () => toast.error("Erreur lors de l'envoi"),
     });
   };
 
   return (
     <AdminShell>
-      <div className="mb-6 flex items-center justify-between">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reports" })}>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/campaigns" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
+        <div className="flex flex-wrap gap-2">
+          {isEditing ? (
+            <>
+              <Button variant="outline" size="sm" onClick={handleCancel}>
+                <X className="h-4 w-4 mr-1" /> Annuler
+              </Button>
+              <Button size="sm" onClick={handleSave} disabled={updateMutation.isPending}>
+                <Save className="h-4 w-4 mr-1" /> Enregistrer
+              </Button>
+            </>
+          ) : (
+            <>
+              {!isSent && (
+                <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                  <Pencil className="h-4 w-4 mr-1" /> Modifier
+                </Button>
+              )}
+              {!isSent && !isScheduled && (
+                <Button variant="outline" size="sm" onClick={openScheduleDialog}>
+                  <CalendarClock className="h-4 w-4 mr-1" /> Programmer
+                </Button>
+              )}
+              {isScheduled && (
+                <Button variant="outline" size="sm" onClick={handleCancelSchedule} disabled={cancelScheduleMutation.isPending}>
+                  <Ban className="h-4 w-4 mr-1" /> Annuler la programmation
+                </Button>
+              )}
+              {!isSent && (
+                <Button size="sm" onClick={handleSend} disabled={sendMutation.isPending}>
+                  <Send className="h-4 w-4 mr-1" /> Envoyer maintenant
+                </Button>
+              )}
+              {!isSent && (
+                <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => setToDelete(true)}>
+                  <Trash2 className="h-4 w-4 mr-1" /> Supprimer
+                </Button>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
-      {isLoading ? (
-        <div className="flex items-center justify-center py-24 text-muted-foreground">
-          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
+      <div className="max-w-3xl space-y-6">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          {statusBadge(campaign.status)}
+          {campaign.category && <span className="rounded-full bg-muted px-2 py-0.5">{campaign.category}</span>}
+          <span className="rounded-full bg-muted px-2 py-0.5">Par {campaign.sentBy}</span>
+          {campaign.recipientsCount !== null && <span className="rounded-full bg-muted px-2 py-0.5">{campaign.recipientsCount} destinataires</span>}
         </div>
-      ) : !rep ? (
-        <p className="text-muted-foreground">Signalement introuvable.</p>
-      ) : (
-        <div className="max-w-5xl space-y-6">
-          {/* En-tête principal */}
-          <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border bg-card p-6">
+
+        {isEditing ? (
+          <div className="space-y-4 rounded-2xl border bg-card p-6">
             <div>
-              <div className="flex items-center gap-2">
-                <code className="rounded bg-muted px-2.5 py-1 font-mono text-xs font-semibold">
-                  #{rep.id}
-                </code>
-                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${REPORT_STATUS_BADGES[rep.status]}`}>
-                  {REPORT_STATUS_LABELS[rep.status]}
-                </span>
-              </div>
-              <h1 className="font-display text-2xl font-bold mt-2">
-                {getReportReasonLabel(rep.reason)}
-              </h1>
-              {rep.reporterEmail && (
-                <a href={`mailto:${rep.reporterEmail}`} className="text-sm text-primary hover:underline inline-flex items-center gap-1.5 mt-0.5">
-                  <Mail className="h-3.5 w-3.5" /> {rep.reporterEmail}
-                </a>
-              )}
+              <Label>Sujet</Label>
+              <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
+            </div>
+            <div>
+              <Label>Catégorie</Label>
+              <select
+                value={categoryId}
+                onChange={(e) => { setCategoryId(e.target.value); setForm({ ...form, category_id: e.target.value }); }}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              >
+                <option value="">— Aucune / ne pas changer —</option>
+                {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
+              </select>
+            </div>
+            <div>
+              <Label>Contenu</Label>
+              <Textarea rows={10} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
             </div>
           </div>
+        ) : (
+          <>
+            <h1 className="font-display text-3xl font-bold">{campaign.subject}</h1>
+            <div className="rounded-2xl border bg-card p-6 whitespace-pre-wrap text-sm leading-relaxed">{campaign.body}</div>
+          </>
+        )}
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {/* Contenu principal */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="rounded-2xl border bg-card p-6 space-y-4">
-                <div className="flex items-center gap-2 font-display text-lg font-semibold border-b pb-3">
-                  <MessageSquare className="h-5 w-5 text-primary" /> Détails du signalement
-                </div>
-
-                <div className="grid gap-3 text-xs sm:grid-cols-2 text-muted-foreground bg-muted/30 p-3 rounded-xl border">
-                  <div className="flex items-center gap-2">
-                    <Tag className="h-4 w-4 text-primary" />
-                    <span>
-                      Cible : <b className="text-foreground">{getReportableTypeLabel(rep.reportableType)}</b>{" "}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-primary" />
-                    <span>Reçu le : <b className="text-foreground">{formatDate(rep.createdAt)}</b></span>
-                  </div>
-                </div>
-
-                <div className="rounded-xl bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap border">
-                  {rep.message || "Aucun message complémentaire fourni."}
-                </div>
+        {(campaign.scheduledAt || campaign.sentAt) && (
+          <div className="grid gap-4 sm:grid-cols-2 text-sm">
+            {campaign.scheduledAt && (
+              <div className="rounded-xl border p-4">
+                <div className="text-xs text-muted-foreground">Programmée pour le</div>
+                {new Date(campaign.scheduledAt).toLocaleString("fr-FR")}
               </div>
-
-              {/* Résolution */}
-              {(rep.resolvedBy || rep.resolvedAt) && (
-                <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
-                  {rep.resolvedBy && (
-                    <div className="flex items-center gap-1.5">
-                      <UserCheck className="h-4 w-4 text-primary" />
-                      <span>Résolu par : <b className="text-foreground">{rep.resolvedBy}</b></span>
-                    </div>
-                  )}
-                  {rep.resolvedAt && (
-                    <div className="flex items-center gap-1.5">
-                      <Clock className="h-4 w-4 text-primary" />
-                      <span>Le : <b className="text-foreground">{formatDate(rep.resolvedAt)}</b></span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Panneau latéral : Gestion du statut */}
-            <div className="space-y-6">
-              <div className="rounded-2xl border bg-card p-6 space-y-4">
-                <div className="flex items-center justify-between border-b pb-3">
-                  <span className="font-display font-semibold">Suivi du signalement</span>
-                  {!isEditing && (
-                    <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
-                      <Pencil className="h-4 w-4 mr-1" /> Modifier
-                    </Button>
-                  )}
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-xs text-muted-foreground">Statut actuel</Label>
-                    {isEditing ? (
-                      <Select value={status} onValueChange={(v) => setStatus(v as ReportStatus)}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="pending">Ouvert</SelectItem>
-                          <SelectItem value="in_review">En cours</SelectItem>
-                          <SelectItem value="resolved">Résolu</SelectItem>
-                          <SelectItem value="dismissed">Rejeté</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    ) : (
-                      <div className="mt-1">
-                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${REPORT_STATUS_BADGES[rep.status]}`}>
-                          {REPORT_STATUS_LABELS[rep.status]}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {isEditing && (
-                    <div className="flex gap-2 pt-2">
-                      <Button size="sm" className="flex-1" onClick={handleSave} disabled={updateStatus.isPending}>
-                        {updateStatus.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-1" /> Enregistrer</>}
-                      </Button>
-                      <Button size="sm" variant="outline" className="flex-1" onClick={handleCancel}>
-                        <X className="h-4 w-4 mr-1" /> Annuler
-                      </Button>
-                    </div>
-                  )}
-                </div>
+            )}
+            {campaign.sentAt && (
+              <div className="rounded-xl border p-4">
+                <div className="text-xs text-muted-foreground">Envoyée le</div>
+                {new Date(campaign.sentAt).toLocaleString("fr-FR")}
               </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <Dialog open={scheduleDialogOpen} onOpenChange={setScheduleDialogOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Programmer la campagne</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Date et heure d'envoi</Label>
+              <Input type="datetime-local" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} />
             </div>
           </div>
-        </div>
-      )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setScheduleDialogOpen(false)}>Annuler</Button>
+            <Button onClick={submitSchedule} disabled={!scheduledAt || scheduleMutation.isPending}>Programmer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <ConfirmDelete
+        open={toDelete}
+        onOpenChange={setToDelete}
+        onConfirm={() => {
+          removeMutation.mutate(campaign.id, {
+            onSuccess: () => { toast.success("Campagne supprimée"); navigate({ to: "/admin/newsletter/campaigns" }); },
+            onError: () => toast.error("Erreur lors de la suppression"),
+          });
+        }}
+        title={`Supprimer la campagne "${campaign.subject}" ?`}
+      />
     </AdminShell>
   );
 }

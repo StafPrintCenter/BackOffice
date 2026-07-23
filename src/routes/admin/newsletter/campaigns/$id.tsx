@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, CalendarClock, Ban, Send, Tag, User, Users, Calendar } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, CalendarClock, Ban, Send, User, Users, Calendar } from "lucide-react";
 import { AdminShell, ConfirmDelete, RichTextEditor } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,11 @@ import {
   useSendAdminNewsletterCampaign,
 } from "@/stores/useNewsletterCampaignsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import type { AdminNewsletterCampaignPayload } from "@/data/newsletterCampaigns";
+import {
+  type AdminNewsletterCampaignPayload,
+  NEWSLETTER_CAMPAIGN_STATUS_MAP,
+  NEWSLETTER_CAMPAIGN_STATUS_LABELS,
+} from "@/data/newsletterCampaigns";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/newsletter/campaigns/$id")({
@@ -29,15 +33,11 @@ export const Route = createFileRoute("/admin/newsletter/campaigns/$id")({
 });
 
 function statusBadge(status: string) {
-  const map: Record<string, string> = {
-    draft: "bg-muted text-muted-foreground border-border",
-    scheduled: "bg-amber-100 text-amber-700 border-amber-200",
-    sent: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  };
-  const label: Record<string, string> = { draft: "Brouillon", scheduled: "Programmée", sent: "Envoyée" };
+  const colorClass = NEWSLETTER_CAMPAIGN_STATUS_MAP[status] ?? "bg-muted text-muted-foreground border-border";
+  const label = NEWSLETTER_CAMPAIGN_STATUS_LABELS[status] ?? status;
   return (
-    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${map[status] ?? "bg-muted text-muted-foreground"}`}>
-      {label[status] ?? status}
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${colorClass}`}>
+      {label}
     </span>
   );
 }
@@ -65,7 +65,7 @@ function CampaignDetail() {
       setForm({
         subject: campaign.subject,
         body: campaign.body,
-        category_id: categories.find((c) => c.name === campaign.category)?.id ?? "",
+        category_id: categories.find((c) => c.name.toLowerCase() === campaign.category?.toLowerCase())?.id ?? "",
       });
     }
   }, [campaign, form, categories]);
@@ -107,7 +107,7 @@ function CampaignDetail() {
     setForm({
       subject: campaign.subject,
       body: campaign.body,
-      category_id: categories.find((c) => c.name === campaign.category)?.id ?? "",
+      category_id: categories.find((c) => c.name.toLowerCase() === campaign.category?.toLowerCase())?.id ?? "",
     });
     setIsEditing(false);
   };
@@ -143,6 +143,11 @@ function CampaignDetail() {
       timeStyle: "short",
     });
   };
+
+  const matchedCategory = categories.find(
+    (c) => c.name.toLowerCase() === campaign.category?.toLowerCase()
+  );
+  const categoryColorClass = matchedCategory?.colorClass || "bg-slate-100 text-slate-700";
 
   return (
     <AdminShell>
@@ -193,12 +198,11 @@ function CampaignDetail() {
       </div>
 
       <div className="max-w-4xl space-y-6">
-        {/* Metadonnées sous forme de badges */}
         <div className="flex flex-wrap items-center gap-2 text-xs">
           {statusBadge(campaign.status)}
           {campaign.category && (
-            <span className="inline-flex items-center gap-1 rounded-full border bg-primary/10 border-primary/20 px-2.5 py-0.5 font-medium text-primary">
-              <Tag className="h-3 w-3" /> {campaign.category}
+            <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${categoryColorClass}`}>
+              {campaign.category}
             </span>
           )}
           <span className="inline-flex items-center gap-1 rounded-full border bg-muted px-2.5 py-0.5 text-muted-foreground">
@@ -241,7 +245,6 @@ function CampaignDetail() {
           <>
             <h1 className="font-display text-2xl font-bold md:text-3xl">{campaign.subject}</h1>
 
-            {/* Rendu HTML sécurisé du contenu rédigé avec RichTextEditor */}
             <div
               className="prose prose-sm max-w-none rounded-2xl border bg-card p-6 leading-relaxed text-foreground"
               dangerouslySetInnerHTML={{ __html: campaign.body }}

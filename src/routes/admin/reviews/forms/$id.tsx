@@ -377,6 +377,15 @@ function ReviewFormDetail() {
             </>
           ) : (
             <>
+              {!isEditing && (
+                <div className="flex justify-end">
+                  <Button variant="ghost" size="sm" onClick={toggleAll}>
+                    <ListChecks className="mr-1 h-4 w-4" />
+                    {allOpen ? "Tout replier" : "Tout déplier"}
+                  </Button>
+                </div>
+              )}
+
               <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
                 <Pencil className="mr-1 h-4 w-4" /> Modifier
               </Button>
@@ -470,16 +479,6 @@ function ReviewFormDetail() {
             <h1 className="font-display text-3xl font-bold">{reviewForm.title}</h1>
             <p className="text-muted-foreground">{reviewForm.description}</p>
           </>
-        )}
-
-        {/* Bouton global de dépliage/repliage */}
-        {!isEditing && (
-          <div className="flex justify-end">
-            <Button variant="ghost" size="sm" onClick={toggleAll}>
-              <ListChecks className="mr-1 h-4 w-4" />
-              {allOpen ? "Tout replier" : "Tout déplier"}
-            </Button>
-          </div>
         )}
 
         {/* Questions — remontées en haut */}

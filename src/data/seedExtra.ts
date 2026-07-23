@@ -1,4 +1,4 @@
-import type { Category, Stat, Faq, ShortLink, ShortLinkClick, Message, Report, AppUser } from "@/types";
+import type { Category, Stat, ShortLink, ShortLinkClick, Report } from "@/types";
 
 export const seedCategories: Category[] = [
   { id: "c1", name: "Design", slug: "design", colorClass: "bg-orange-100 text-orange-700", isTrainingTheme: true, isProjectCategory: false, isArticleCategory: true, createdAt: "2024-01-01" },
@@ -51,25 +51,9 @@ export const seedShortLinkClicks: ShortLinkClick[] = Array.from({ length: 60 }).
   };
 });
 
-export const seedMessages: Message[] = [
-  { id: "m1", ticketNumber: "TKT-2024-0001", name: "Marie Kone", email: "marie@example.com", service: "Design", message: "Bonjour, j'aimerais un devis pour la refonte de mon logo.", status: "nouveau", createdAt: "2024-08-10" },
-  { id: "m2", ticketNumber: "TKT-2024-0002", name: "Paul Aho", email: "paul@example.com", service: "Impression", message: "Je souhaite imprimer 500 flyers A5 recto-verso.", status: "en_cours", handledBy: "admin@stafprint.com", createdAt: "2024-08-11" },
-  { id: "m3", ticketNumber: "TKT-2024-0003", name: "Sophie Dossou", email: "sophie@example.com", service: "Autre", customService: "Consulting SEO", message: "Besoin d'un audit SEO complet.", status: "traite", adminNotes: "Devis envoyé le 12/08", handledBy: "admin@stafprint.com", handledAt: "2024-08-12", createdAt: "2024-08-09" },
-  { id: "m4", ticketNumber: "TKT-2024-0004", name: "Yves Sagbo", email: "yves@example.com", service: "Formation", message: "Prochaine session UX/UI ?", status: "nouveau", createdAt: "2024-08-13" },
-];
-
 export const seedReports: Report[] = [
   { id: "r1", reportableType: "Article", reportableId: "a1", reason: "Contenu inapproprié", message: "Certaines images ne sont pas libres de droits.", reporterEmail: "veille@example.com", status: "ouvert", createdAt: "2024-08-01" },
   { id: "r2", reportableType: "Testimonial", reportableId: "t3", reason: "Faux témoignage", message: "Ce client n'existe pas selon mes recherches.", reporterEmail: "anonymous@example.com", status: "en_cours", createdAt: "2024-08-05" },
   { id: "r3", reportableType: "Project", reportableId: "p2", reason: "Copyright", message: "Image utilisée sans autorisation.", reporterEmail: "legal@modabenin.com", status: "resolu", resolvedBy: "admin@stafprint.com", resolvedAt: "2024-08-08", createdAt: "2024-08-03" },
 ];
 
-export const seedUsers: AppUser[] = [
-  { id: "u1", name: "Admin Staf", email: "admin@stafprint.com", role: "admin", status: "active", lastLoginAt: "2024-08-13", createdAt: "2024-01-01" },
-  { id: "u2", name: "Léa Codjo", email: "lea@stafprint.com", role: "admin", status: "active", invitedAt: "2024-05-10", lastLoginAt: "2024-08-12", createdAt: "2024-05-10" },
-  { id: "u3", name: "Jean Kponou", email: "jean.k@example.com", role: "learner", status: "active", lastLoginAt: "2024-08-10", createdAt: "2024-03-01" },
-  { id: "u4", name: "Aïcha Bello", email: "aicha@example.com", role: "learner", status: "suspended", createdAt: "2024-04-15" },
-  { id: "u5", name: "Karim Adjovi", email: "karim@example.com", role: "user", status: "active", lastLoginAt: "2024-08-13", createdAt: "2024-06-01" },
-  { id: "u6", name: "Fatou Sossa", email: "fatou@example.com", role: "user", status: "blocked", createdAt: "2024-07-20" },
-  { id: "u7", name: "Marc Dossou", email: "marc@example.com", role: "user", status: "active", lastLoginAt: "2024-08-11", createdAt: "2024-06-25" },
-];

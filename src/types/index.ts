@@ -100,15 +100,6 @@ export interface Stat {
   createdAt: string;
 }
 
-export interface Faq {
-  id: string;
-  categoryId: string;
-  question: string;
-  answer: string;
-  order: number;
-  createdAt: string;
-}
-
 export interface ShortLink {
   id: string;
   longUrl: string;
@@ -141,21 +132,6 @@ export interface ShortLinkClick {
 
 export type MessageStatus = "nouveau" | "en_cours" | "traite" | "archive";
 
-export interface Message {
-  id: string;
-  ticketNumber: string;
-  name: string;
-  email: string;
-  service: string;
-  customService?: string;
-  message: string;
-  status: MessageStatus;
-  adminNotes?: string;
-  handledBy?: string;
-  handledAt?: string;
-  createdAt: string;
-}
-
 export type ReportStatus = "ouvert" | "en_cours" | "resolu" | "rejete";
 
 export interface Report {
@@ -173,18 +149,6 @@ export interface Report {
 
 export type AppUserRole = "admin" | "learner" | "user";
 export type AppUserStatus = "active" | "suspended" | "blocked";
-
-export interface AppUser {
-  id: string;
-  name: string;
-  email: string;
-  role: AppUserRole;
-  status: AppUserStatus;
-  invitedAt?: string;
-  lastLoginAt?: string;
-  createdAt: string;
-}
-
 export type AppointmentMode = "presentiel" | "visio" | "telephone" | "whatsapp";
 export type AppointmentStatus = "en_attente" | "confirme" | "refuse" | "annule" | "termine";
 

@@ -8,9 +8,14 @@ import {
   getReportableTypeLabel,
   type APIAdminReport,
 } from "@/data/reports";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/reports/")({
-  head: () => ({ meta: [{ title: "Signalements — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Signalements | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: AdminReports,
 });
 

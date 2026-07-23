@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, PanelLeftClose, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Inbox, ShieldAlert, CalendarClock, NotebookPen, UserRoundPen, UserCheck, UserStar, Mailbox } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, PanelLeftClose, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, Mailbox } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/admin/categories", label: "Catégories", icon: Tags },
       { to: "/admin/services", label: "Services", icon: Wrench },
       { to: "/admin/projects", label: "Projets", icon: FolderKanban },
-      { to: "/admin/trainings", label: "Formations", icon: NotebookPen },
+      { to: "/admin/trainings", label: "Formations", icon: GraduationCap },
       { to: "/admin/articles", label: "Articles", icon: FileText },
       { to: "/admin/faqs", label: "FAQ", icon: HelpCircle },
       { to: "/admin/testimonials", label: "Témoignages", icon: MessagesSquare },

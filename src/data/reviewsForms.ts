@@ -1,19 +1,6 @@
 export type ReviewFormStatus = "draft" | "published" | "disabled" | string;
 
-export type ReviewQuestionType =
-  | "short_text"
-  | "long_text"
-  | "email"
-  | "phone"
-  | "number"
-  | "date"
-  | "datetime"
-  | "single_choice"
-  | "multiple_choice"
-  | "select"
-  | "rating"
-  | "boolean"
-  | "file";
+export type ReviewQuestionType = | "short_text" | "long_text" | "email" | "phone" | "number" | "date" | "datetime" | "single_choice" | "multiple_choice" | "select" | "rating" | "boolean" | "file";
 
 /** Le détail des règles (validationRules/options/settings) */
 export interface AdminReviewFormQuestion {

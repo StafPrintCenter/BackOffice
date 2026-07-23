@@ -1,37 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft,
-  Loader2,
-  AlertTriangle,
-  Ban,
-  ShieldCheck,
-  Mail,
-  Calendar,
-  Shield,
-  UserCheck,
-  Info,
-} from "lucide-react";
+import { ArrowLeft, Loader2, AlertTriangle, Ban, ShieldCheck, Mail, CalendarArrowUp, CalendarArrowDown, Shield, UserCheck, Info, CalendarPlus } from "lucide-react";
 import { AdminShell } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
-  useAdminAdminDetail,
-  useAlertAdminAdmin,
-  useBlockAdminAdmin,
-  useReactivateAdminAdmin,
-} from "@/stores/useAdminsStore";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, } from "@/components/ui/dialog";
+import { useAdminAdminDetail, useAlertAdminAdmin, useBlockAdminAdmin, useReactivateAdminAdmin, } from "@/stores/useAdminsStore";
 import { useCurrentAdmin } from "@/stores/useAuthStore";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS } from "@/data/admins";
 import { SITE } from "@/data/site";
@@ -284,7 +261,7 @@ function AdminDetail() {
 
               {admin.invitedAt && (
                 <div className="flex items-center gap-3 rounded-xl border p-4 bg-background/50">
-                  <Calendar className="h-5 w-5 text-muted-foreground shrink-0" />
+                  <CalendarArrowDown className="h-5 w-5 text-muted-foreground shrink-0" />
                   <div>
                     <div className="text-xs text-muted-foreground font-medium">Invité le</div>
                     <div className="text-sm font-semibold mt-0.5">
@@ -297,7 +274,7 @@ function AdminDetail() {
 
               {admin.acceptedAt && (
                 <div className="flex items-center gap-3 rounded-xl border p-4 bg-background/50">
-                  <Calendar className="h-5 w-5 text-muted-foreground shrink-0" />
+                  <CalendarArrowUp className="h-5 w-5 text-muted-foreground shrink-0" />
                   <div>
                     <div className="text-xs text-muted-foreground font-medium">Invitation acceptée le</div>
                     <div className="text-sm font-semibold mt-0.5">
@@ -308,8 +285,8 @@ function AdminDetail() {
                 </div>
               )}
 
-              <div className="flex items-center gap-3 rounded-xl border p-4 bg-background/50">
-                <Calendar className="h-5 w-5 text-muted-foreground shrink-0" />
+              <div className="flex items-center gap-3 rounded-xl border p-4 bg-background/50 sm:col-span-2">
+                <CalendarPlus className="h-5 w-5 text-muted-foreground shrink-0" />
                 <div>
                   <div className="text-xs text-muted-foreground font-medium">Ajouté le</div>
                   <div className="text-sm font-semibold mt-0.5">

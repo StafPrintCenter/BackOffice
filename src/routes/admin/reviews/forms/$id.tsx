@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import {
   ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3, CheckCircle,
   Plus, ArrowUp, ArrowDown, GripVertical, Mail, User, FolderOpen, Calendar, Eye, EyeOff,
+  ChevronDown, ChevronUp, ListChecks,
 } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -43,7 +44,6 @@ const emptyQuestionForm: QuestionFormValues = {
   options: [],
 };
 
-// ⚠️ Statuts observés dans le payload analytics (pas encore listés dans data/reviewsForms.ts)
 const publicationStatusLabel = (s: string) =>
   ({ pending: "En attente", approved: "Approuvé", rejected: "Rejeté" }[s] ?? s);
 
@@ -62,6 +62,36 @@ function slugifyOptionValue(label: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_+|_+$/g, "");
+}
+
+// Petit composant local pour un en-tête de section repliable
+function SectionHeader({
+  icon: Icon,
+  title,
+  isOpen,
+  onToggle,
+  action,
+}: {
+  icon: React.ElementType;
+  title: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  action?: React.ReactNode;
+}) {
+  return (
+    <div className="mb-4 flex items-center justify-between">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex items-center gap-2 font-display text-lg font-semibold"
+      >
+        <Icon className="h-5 w-5 text-primary" />
+        {title}
+        {isOpen ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+      </button>
+      {action}
+    </div>
+  );
 }
 
 function ReviewFormDetail() {
@@ -92,6 +122,19 @@ function ReviewFormDetail() {
   const [questionForm, setQuestionForm] = useState<QuestionFormValues>(emptyQuestionForm);
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
   const [questionToDelete, setQuestionToDelete] = useState<AdminReviewFormQuestion | null>(null);
+
+  // Toggles d'ouverture/fermeture des sections repliables
+  const [openQuestions, setOpenQuestions] = useState(true);
+  const [openAnalytics, setOpenAnalytics] = useState(true);
+  const [openResponses, setOpenResponses] = useState(true);
+
+  const allOpen = openQuestions && openAnalytics && openResponses;
+  const toggleAll = () => {
+    const next = !allOpen;
+    setOpenQuestions(next);
+    setOpenAnalytics(next);
+    setOpenResponses(next);
+  };
 
   useEffect(() => {
     if (reviewForm && !form) {
@@ -139,7 +182,6 @@ function ReviewFormDetail() {
 
   const sortedQuestions = [...reviewForm.questions].sort((a, b) => a.order - b.order);
 
-  // Utilisé pour afficher le titre de la question au lieu de son UUID dans chaque réponse
   const getQuestionTitle = (questionId: string) =>
     reviewForm.questions.find((q) => q.id === questionId)?.title ?? questionId;
 
@@ -234,7 +276,6 @@ function ReviewFormDetail() {
   const updateOptionRow = (index: number, patch: Partial<ReviewQuestionOption>) => {
     const next = [...questionForm.options];
     const current = { ...next[index], ...patch };
-    // Auto-génère la valeur technique à partir du libellé si l'éditeur ne l'a pas saisie manuellement.
     if (patch.label !== undefined && (next[index].value === "" || next[index].value === slugifyOptionValue(next[index].label))) {
       current.value = slugifyOptionValue(current.label);
     }
@@ -431,143 +472,172 @@ function ReviewFormDetail() {
           </>
         )}
 
+        {/* Bouton global de dépliage/repliage */}
+        {!isEditing && (
+          <div className="flex justify-end">
+            <Button variant="ghost" size="sm" onClick={toggleAll}>
+              <ListChecks className="mr-1 h-4 w-4" />
+              {allOpen ? "Tout replier" : "Tout déplier"}
+            </Button>
+          </div>
+        )}
+
+        {/* Questions — remontées en haut */}
         {!isEditing && (
           <div className="rounded-2xl border bg-card p-6">
-            <div className="mb-4 flex items-center gap-2 font-display text-lg font-semibold">
-              <BarChart3 className="h-5 w-5 text-primary" /> Analyses
-            </div>
-            {analytics ? (
-              <div className="space-y-2">
-                <div className="text-sm text-muted-foreground">{analytics.totalResponses} réponse{analytics.totalResponses > 1 ? "s" : ""} au total</div>
-                <div className="divide-y rounded-lg border">
-                  {analytics.questions.map((q) => (
-                    <div key={q.questionId} className="flex items-center justify-between p-3 text-sm">
-                      <div>
-                        <div className="font-medium">{q.title}</div>
-                        <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getReviewQuestionTypeBadge(q.type)}`}>
-                          {REVIEW_QUESTION_TYPE_LABELS[q.type] ?? q.type}
-                        </span>
+            <SectionHeader
+              icon={ListChecks}
+              title="Questions"
+              isOpen={openQuestions}
+              onToggle={() => setOpenQuestions((v) => !v)}
+              action={
+                <Button size="sm" variant="outline" onClick={openCreateQuestion}>
+                  <Plus className="mr-1 h-4 w-4" /> Ajouter une question
+                </Button>
+              }
+            />
+            {openQuestions && (
+              sortedQuestions.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Aucune question pour le moment.</p>
+              ) : (
+                <div className="space-y-2">
+                  {sortedQuestions.map((q, index) => (
+                    <div key={q.id} className="flex items-center gap-2 rounded-lg border p-3 text-sm">
+                      <div className="flex flex-col text-muted-foreground">
+                        <button
+                          type="button"
+                          onClick={() => moveQuestion(index, -1)}
+                          disabled={index === 0 || reorderQuestionsMutation.isPending}
+                          className="disabled:opacity-30"
+                        >
+                          <ArrowUp className="h-3.5 w-3.5" />
+                        </button>
+                        <GripVertical className="h-3.5 w-3.5" />
+                        <button
+                          type="button"
+                          onClick={() => moveQuestion(index, 1)}
+                          disabled={index === sortedQuestions.length - 1 || reorderQuestionsMutation.isPending}
+                          className="disabled:opacity-30"
+                        >
+                          <ArrowDown className="h-3.5 w-3.5" />
+                        </button>
                       </div>
-                      <span className="text-sm font-semibold text-primary">{q.responses}</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium truncate">{q.title}{q.isRequired && <span className="ml-1 text-destructive">*</span>}</span>
+                          <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getReviewQuestionTypeBadge(q.type)}`}>
+                            {REVIEW_QUESTION_TYPE_LABELS[q.type] ?? q.type}
+                          </span>
+                        </div>
+                        {q.description && <div className="mt-0.5 text-xs text-muted-foreground truncate">{q.description}</div>}
+                      </div>
+                      <div className="flex shrink-0 gap-1">
+                        <Button variant="ghost" size="sm" onClick={() => openEditQuestion(q)}>
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => setQuestionToDelete(q)}>
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
-            ) : (
-              <div className="text-sm text-muted-foreground">Chargement des analyses...</div>
+              )
             )}
           </div>
         )}
 
-        {/* Réponses détaillées des utilisateurs */}
+        {/* Analyses */}
         {!isEditing && (
           <div className="rounded-2xl border bg-card p-6">
-            <div className="mb-4 flex items-center gap-2 font-display text-lg font-semibold">
-              <User className="h-5 w-5 text-primary" /> Réponses
-            </div>
-            {!analytics ? (
-              <div className="text-sm text-muted-foreground">Chargement des réponses...</div>
-            ) : analytics.responses.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Aucune réponse pour le moment.</p>
-            ) : (
-              <div className="space-y-4">
-                {analytics.responses.map((r) => (
-                  <div key={r.id} className="rounded-xl border p-4">
-                    <div className="flex flex-wrap items-start justify-between gap-3 border-b pb-3">
-                      <div>
-                        <div className="flex items-center gap-1.5 font-medium">
-                          <User className="h-3.5 w-3.5 text-muted-foreground" /> {r.clientName}
+            <SectionHeader
+              icon={BarChart3}
+              title="Analyses"
+              isOpen={openAnalytics}
+              onToggle={() => setOpenAnalytics((v) => !v)}
+            />
+            {openAnalytics && (
+              analytics ? (
+                <div className="space-y-2">
+                  <div className="text-sm text-muted-foreground">{analytics.totalResponses} réponse{analytics.totalResponses > 1 ? "s" : ""} au total</div>
+                  <div className="divide-y rounded-lg border">
+                    {analytics.questions.map((q) => (
+                      <div key={q.questionId} className="flex items-center justify-between p-3 text-sm">
+                        <div>
+                          <div className="font-medium">{q.title}</div>
+                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getReviewQuestionTypeBadge(q.type)}`}>
+                            {REVIEW_QUESTION_TYPE_LABELS[q.type] ?? q.type}
+                          </span>
                         </div>
-                        <a href={`mailto:${r.clientEmail}`} className="mt-0.5 flex items-center gap-1.5 text-xs text-primary hover:underline">
-                          <Mail className="h-3.5 w-3.5" /> {r.clientEmail}
-                        </a>
-                        {r.projectName && (
-                          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <FolderOpen className="h-3.5 w-3.5" /> {r.projectName}
+                        <span className="text-sm font-semibold text-primary">{q.responses}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-sm text-muted-foreground">Chargement des analyses...</div>
+              )
+            )}
+          </div>
+        )}
+
+        {/* Réponses détaillées */}
+        {!isEditing && (
+          <div className="rounded-2xl border bg-card p-6">
+            <SectionHeader
+              icon={User}
+              title="Réponses"
+              isOpen={openResponses}
+              onToggle={() => setOpenResponses((v) => !v)}
+            />
+            {openResponses && (
+              !analytics ? (
+                <div className="text-sm text-muted-foreground">Chargement des réponses...</div>
+              ) : analytics.responses.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Aucune réponse pour le moment.</p>
+              ) : (
+                <div className="space-y-4">
+                  {analytics.responses.map((r) => (
+                    <div key={r.id} className="rounded-xl border p-4">
+                      <div className="flex flex-wrap items-start justify-between gap-3 border-b pb-3">
+                        <div>
+                          <div className="flex items-center gap-1.5 font-medium">
+                            <User className="h-3.5 w-3.5 text-muted-foreground" /> {r.clientName}
                           </div>
-                        )}
-                      </div>
-                      <div className="flex flex-col items-end gap-1.5">
-                        <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${publicationStatusBadge(r.publicationStatus)}`}>
-                          {publicationStatusLabel(r.publicationStatus)}
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
-                          {r.allowPublication ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                          {r.allowPublication ? "Publication autorisée" : "Publication refusée"}
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
-                          <Calendar className="h-3 w-3" /> {formatSubmittedAt(r.submittedAt)}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="mt-3 space-y-2">
-                      {Object.entries(r.answers).map(([questionId, answer]) => (
-                        <div key={questionId} className="rounded-lg bg-muted/40 p-3 text-sm">
-                          <div className="text-xs font-medium text-muted-foreground">{getQuestionTitle(questionId)}</div>
-                          <div className="mt-1 whitespace-pre-wrap">{answer}</div>
+                          <a href={`mailto:${r.clientEmail}`} className="mt-0.5 flex items-center gap-1.5 text-xs text-primary hover:underline">
+                            <Mail className="h-3.5 w-3.5" /> {r.clientEmail}
+                          </a>
+                          {r.projectName && (
+                            <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                              <FolderOpen className="h-3.5 w-3.5" /> {r.projectName}
+                            </div>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {!isEditing && (
-          <div className="rounded-2xl border bg-card p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="font-display text-lg font-semibold">Questions</div>
-              <Button size="sm" variant="outline" onClick={openCreateQuestion}>
-                <Plus className="mr-1 h-4 w-4" /> Ajouter une question
-              </Button>
-            </div>
-            {sortedQuestions.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Aucune question pour le moment.</p>
-            ) : (
-              <div className="space-y-2">
-                {sortedQuestions.map((q, index) => (
-                  <div key={q.id} className="flex items-center gap-2 rounded-lg border p-3 text-sm">
-                    <div className="flex flex-col text-muted-foreground">
-                      <button
-                        type="button"
-                        onClick={() => moveQuestion(index, -1)}
-                        disabled={index === 0 || reorderQuestionsMutation.isPending}
-                        className="disabled:opacity-30"
-                      >
-                        <ArrowUp className="h-3.5 w-3.5" />
-                      </button>
-                      <GripVertical className="h-3.5 w-3.5" />
-                      <button
-                        type="button"
-                        onClick={() => moveQuestion(index, 1)}
-                        disabled={index === sortedQuestions.length - 1 || reorderQuestionsMutation.isPending}
-                        className="disabled:opacity-30"
-                      >
-                        <ArrowDown className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium truncate">{q.title}{q.isRequired && <span className="ml-1 text-destructive">*</span>}</span>
-                        <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getReviewQuestionTypeBadge(q.type)}`}>
-                          {REVIEW_QUESTION_TYPE_LABELS[q.type] ?? q.type}
-                        </span>
+                        <div className="flex flex-col items-end gap-1.5">
+                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${publicationStatusBadge(r.publicationStatus)}`}>
+                            {publicationStatusLabel(r.publicationStatus)}
+                          </span>
+                          <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+                            {r.allowPublication ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+                            {r.allowPublication ? "Publication autorisée" : "Publication refusée"}
+                          </span>
+                          <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+                            <Calendar className="h-3 w-3" /> {formatSubmittedAt(r.submittedAt)}
+                          </span>
+                        </div>
                       </div>
-                      {q.description && <div className="mt-0.5 text-xs text-muted-foreground truncate">{q.description}</div>}
+                      <div className="mt-3 space-y-2">
+                        {Object.entries(r.answers).map(([questionId, answer]) => (
+                          <div key={questionId} className="rounded-lg bg-muted/40 p-3 text-sm">
+                            <div className="text-xs font-medium text-muted-foreground">{getQuestionTitle(questionId)}</div>
+                            <div className="mt-1 whitespace-pre-wrap">{String(answer)}</div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex shrink-0 gap-1">
-                      <Button variant="ghost" size="sm" onClick={() => openEditQuestion(q)}>
-                        <Pencil className="h-3.5 w-3.5" />
-                      </Button>
-                      <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => setQuestionToDelete(q)}>
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )
             )}
           </div>
         )}

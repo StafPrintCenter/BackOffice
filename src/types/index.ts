@@ -88,20 +88,6 @@ export interface Stat {
   createdAt: string;
 }
 
-export interface ShortLink {
-  id: string;
-  longUrl: string;
-  longUrlHash: string;
-  alias: string;
-  category: string;
-  createdBy: string;
-  clicksCount: number;
-  activateAt: string;
-  expiresAt: string;
-  isActive: boolean;
-  createdAt: string;
-}
-
 export type MessageStatus = "nouveau" | "en_cours" | "traite" | "archive";
 
 export type ReportStatus = "ouvert" | "en_cours" | "resolu" | "rejete";

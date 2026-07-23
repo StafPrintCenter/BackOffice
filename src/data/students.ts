@@ -1,12 +1,15 @@
-export type APIAdminUserListItem = {
+export type APIAdminStudentListItem = {
   id: string;
   firstName: string;
   lastName: string;
   fullname: string;
   email: string;
+  phone: string | null;
+  birthDate: string | null;
+  address: string | null;
+  occupation: string | null;
   photo: string | null;
   bio: string | null;
-  role: string;
   isActive: boolean;
   isBlocked: boolean;
   blockedAt: string | null;
@@ -14,15 +17,10 @@ export type APIAdminUserListItem = {
   updatedAt: string;
 };
 
-export type APIAdminUserDetail = APIAdminUserListItem & {
+export type APIAdminStudentDetail = APIAdminStudentListItem & {
   blockedReason: string | null;
 };
 
-export interface AdminUserAlertPayload {
-  subject: string;
-  message: string;
-}
-
-export interface AdminUserBlockPayload {
+export interface AdminStudentBlockPayload {
   reason: string;
 }

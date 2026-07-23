@@ -286,7 +286,9 @@ function AdminDetail() {
 
                 <span
                   className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${admin.isPending
-                    ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
+                    ? isInviteRevoked
+                      ? "bg-rose-500/10 text-rose-600 border-rose-500/20"
+                      : "bg-amber-500/10 text-amber-600 border-amber-500/20"
                     : admin.isBlocked
                       ? "bg-rose-500/10 text-rose-600 border-rose-500/20"
                       : admin.isActive
@@ -296,7 +298,9 @@ function AdminDetail() {
                 >
                   <span
                     className={`h-1.5 w-1.5 rounded-full ${admin.isPending
-                      ? "bg-amber-500"
+                      ? isInviteRevoked
+                        ? "bg-rose-500"
+                        : "bg-amber-500"
                       : admin.isBlocked
                         ? "bg-rose-500"
                         : admin.isActive
@@ -304,7 +308,12 @@ function AdminDetail() {
                           : "bg-muted-foreground"
                       }`}
                   />
-                  {admin.isPending ? "Invitation en attente" : admin.isBlocked ? "Bloqué" : admin.isActive ? "Actif" : "Inactif"}
+                  {admin.isPending
+                    ? isInviteRevoked
+                      ? "Invitation révoquée" : "Invitation en attente"
+                    : admin.isBlocked
+                      ? "Bloqué" : admin.isActive
+                        ? "Actif" : "Inactif"}
                 </span>
               </div>
             </div>
@@ -339,6 +348,19 @@ function AdminDetail() {
                     <div className="text-sm font-semibold mt-0.5">
                       {new Date(admin.invitedAt).toLocaleDateString("fr-FR")} à{" "}
                       {new Date(admin.invitedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {admin.invitationRevokedAt && (
+                <div className="flex items-center gap-3 rounded-xl border border-destructive/20 p-4 bg-destructive/5">
+                  <XCircle className="h-5 w-5 text-destructive shrink-0" />
+                  <div>
+                    <div className="text-xs text-destructive/80 font-medium">Invitation révoquée le</div>
+                    <div className="text-sm font-semibold mt-0.5 text-destructive">
+                      {new Date(admin.invitationRevokedAt).toLocaleDateString("fr-FR")} à{" "}
+                      {new Date(admin.invitationRevokedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </div>
                   </div>
                 </div>
@@ -457,6 +479,27 @@ function AdminDetail() {
                 <Button variant="destructive" onClick={submitBlock} disabled={blockMutation.isPending}>
                   {blockMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Confirmer le blocage
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          {/* Dialog Révocation d'invitation */}
+          <Dialog open={revokeInviteOpen} onOpenChange={setRevokeInviteOpen}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle className="text-destructive">Révoquer l'invitation</DialogTitle>
+                <DialogDescription>
+                  Le lien d'invitation envoyé à {admin.email} deviendra invalide. Vous pourrez le renvoyer plus tard si besoin.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setRevokeInviteOpen(false)}>
+                  Annuler
+                </Button>
+                <Button variant="destructive" onClick={handleRevokeInvite} disabled={revokeInviteMutation.isPending}>
+                  {revokeInviteMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Confirmer la révocation
                 </Button>
               </DialogFooter>
             </DialogContent>

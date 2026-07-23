@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, GraduationCap, FolderKanban, FileText, Mail, Tag } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, GraduationCap, FolderKanban, FileText, Mail, Tag, Calendar, Layers } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -101,6 +101,7 @@ function CategoryDetail() {
 
   return (
     <AdminShell>
+      {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/categories" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -128,97 +129,170 @@ function CategoryDetail() {
         </div>
       </div>
 
-      <div className="max-w-3xl space-y-6">
-        {/* En-tête visuel */}
-        <div className="overflow-hidden rounded-2xl border bg-card">
-          <div className="flex items-center gap-4 border-b bg-muted/30 p-6">
-            <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${cat.colorClass}`}>
-              <Tag className="h-6 w-6" />
+      {/* Disposition à 2 colonnes */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Colonne Principale (2/3) */}
+        <div className="space-y-6 lg:col-span-2">
+          {/* Informations Générales */}
+          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <div className="flex items-center gap-2 border-b pb-4">
+              <Tag className="h-5 w-5 text-primary" />
+              <h2 className="font-display text-lg font-semibold">Informations générales</h2>
             </div>
-            <div className="min-w-0 flex-1">
+
+            <div className="mt-6 space-y-4">
+              <div>
+                <Label htmlFor="name">Nom de la catégorie</Label>
+                {isEditing ? (
+                  <Input
+                    id="name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="mt-1.5"
+                  />
+                ) : (
+                  <div className="mt-1.5 text-lg font-medium">{cat.name}</div>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="slug">Slug</Label>
+                {isEditing ? (
+                  <Input
+                    id="slug"
+                    value={form.slug}
+                    onChange={(e) => setForm({ ...form, slug: e.target.value })}
+                    className="mt-1.5 font-mono text-sm"
+                  />
+                ) : (
+                  <div className="mt-1.5 font-mono text-sm text-muted-foreground">{cat.slug}</div>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="color_class">Classe couleur (Tailwind)</Label>
+                {isEditing ? (
+                  <Input
+                    id="color_class"
+                    value={form.color_class}
+                    onChange={(e) => setForm({ ...form, color_class: e.target.value })}
+                    placeholder="ex: bg-indigo-500/10 text-indigo-600"
+                    className="mt-1.5 font-mono text-sm"
+                  />
+                ) : (
+                  <div className="mt-1.5 font-mono text-sm text-muted-foreground">
+                    <code>{cat.colorClass || "Non spécifiée"}</code>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Configuration des usages */}
+          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <div className="flex items-center gap-2 border-b pb-4">
+              <Layers className="h-5 w-5 text-primary" />
+              <h2 className="font-display text-lg font-semibold">Affectation et Usages</h2>
+            </div>
+
+            <div className="mt-6">
               {isEditing ? (
-                <Input
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="font-display text-xl font-bold h-auto py-1.5"
-                />
-              ) : (
-                <h1 className="font-display text-2xl font-bold truncate">{cat.name}</h1>
-              )}
-              <div className="mt-1 text-sm text-muted-foreground">
-                Slug : <code className="text-xs">{cat.slug}</code>
-              </div>
-            </div>
-          </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between rounded-xl border p-4 hover:bg-muted/30 transition-colors">
+                    <Label htmlFor="is_training" className="flex items-center gap-3 cursor-pointer">
+                      <GraduationCap className="h-4 w-4 text-primary" />
+                      <span>Thème de formation</span>
+                    </Label>
+                    <Switch id="is_training" checked={form.is_training_theme} onCheckedChange={(v) => setForm({ ...form, is_training_theme: v })} />
+                  </div>
 
-          {isEditing && (
-            <div className="grid gap-4 p-6 sm:grid-cols-2">
-              <div>
-                <Label>Slug</Label>
-                <Input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
-              </div>
-              <div>
-                <Label>Classe couleur (Tailwind)</Label>
-                <Input
-                  value={form.color_class}
-                  onChange={(e) => setForm({ ...form, color_class: e.target.value })}
-                  placeholder="ex: bg-indigo-500/10 text-indigo-600"
-                />
-              </div>
-            </div>
-          )}
-        </div>
+                  <div className="flex items-center justify-between rounded-xl border p-4 hover:bg-muted/30 transition-colors">
+                    <Label htmlFor="is_project" className="flex items-center gap-3 cursor-pointer">
+                      <FolderKanban className="h-4 w-4 text-primary" />
+                      <span>Catégorie de projet</span>
+                    </Label>
+                    <Switch id="is_project" checked={form.is_project_category} onCheckedChange={(v) => setForm({ ...form, is_project_category: v })} />
+                  </div>
 
-        {/* Utilisation */}
-        <div className="rounded-2xl border bg-card p-6">
-          <div className="mb-4 font-display text-lg font-semibold">Utilisation</div>
+                  <div className="flex items-center justify-between rounded-xl border p-4 hover:bg-muted/30 transition-colors">
+                    <Label htmlFor="is_article" className="flex items-center gap-3 cursor-pointer">
+                      <FileText className="h-4 w-4 text-primary" />
+                      <span>Catégorie d'article</span>
+                    </Label>
+                    <Switch id="is_article" checked={form.is_article_category} onCheckedChange={(v) => setForm({ ...form, is_article_category: v })} />
+                  </div>
 
-          {isEditing ? (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between rounded-lg border p-3">
-                <Label className="flex items-center gap-2 cursor-pointer"><GraduationCap className="h-4 w-4" /> Thème de formation</Label>
-                <Switch checked={form.is_training_theme} onCheckedChange={(v) => setForm({ ...form, is_training_theme: v })} />
-              </div>
-              <div className="flex items-center justify-between rounded-lg border p-3">
-                <Label className="flex items-center gap-2 cursor-pointer"><FolderKanban className="h-4 w-4" /> Catégorie de projet</Label>
-                <Switch checked={form.is_project_category} onCheckedChange={(v) => setForm({ ...form, is_project_category: v })} />
-              </div>
-              <div className="flex items-center justify-between rounded-lg border p-3">
-                <Label className="flex items-center gap-2 cursor-pointer"><FileText className="h-4 w-4" /> Catégorie d'article</Label>
-                <Switch checked={form.is_article_category} onCheckedChange={(v) => setForm({ ...form, is_article_category: v })} />
-              </div>
-              <div className="flex items-center justify-between rounded-lg border p-3">
-                <Label className="flex items-center gap-2 cursor-pointer"><Mail className="h-4 w-4" /> Catégorie newsletter</Label>
-                <Switch checked={form.is_newsletter_category} onCheckedChange={(v) => setForm({ ...form, is_newsletter_category: v })} />
-              </div>
-            </div>
-          ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {usageBadges.map((b) => (
-                <div
-                  key={b.label}
-                  className={`flex items-center gap-3 rounded-lg border p-3 ${b.active ? "border-primary/30 bg-primary/5" : "border-border bg-muted/20 opacity-60"}`}
-                >
-                  <b.icon className={`h-4 w-4 ${b.active ? "text-primary" : "text-muted-foreground"}`} />
-                  <span className="text-sm font-medium">{b.label}</span>
-                  <span className={`ml-auto text-xs font-semibold ${b.active ? "text-primary" : "text-muted-foreground"}`}>
-                    {b.active ? "Actif" : "Inactif"}
-                  </span>
+                  <div className="flex items-center justify-between rounded-xl border p-4 hover:bg-muted/30 transition-colors">
+                    <Label htmlFor="is_newsletter" className="flex items-center gap-3 cursor-pointer">
+                      <Mail className="h-4 w-4 text-primary" />
+                      <span>Catégorie newsletter</span>
+                    </Label>
+                    <Switch id="is_newsletter" checked={form.is_newsletter_category} onCheckedChange={(v) => setForm({ ...form, is_newsletter_category: v })} />
+                  </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Métadonnées */}
-        {!isEditing && (
-          <div className="rounded-2xl border bg-card p-6 text-sm text-muted-foreground">
-            <div className="flex flex-wrap gap-x-6 gap-y-1">
-              <span>Créée le {new Date(cat.createdAt).toLocaleDateString("fr-FR")}</span>
-              <span>Modifiée le {new Date(cat.updatedAt).toLocaleDateString("fr-FR")}</span>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {usageBadges.map((b) => (
+                    <div
+                      key={b.label}
+                      className={`flex items-center gap-3 rounded-xl border p-3.5 ${b.active ? "border-primary/30 bg-primary/5" : "border-border bg-muted/20 opacity-60"
+                        }`}
+                    >
+                      <b.icon className={`h-4 w-4 ${b.active ? "text-primary" : "text-muted-foreground"}`} />
+                      <span className="text-sm font-medium">{b.label}</span>
+                      <span className={`ml-auto text-xs font-semibold ${b.active ? "text-primary" : "text-muted-foreground"}`}>
+                        {b.active ? "Actif" : "Inactif"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
+
+        {/* Barre Latérale (1/3) */}
+        <div className="space-y-6 lg:col-span-1">
+          {/* Aperçu Visuel du Badge */}
+          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <h3 className="font-display text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+              Aperçu du badge
+            </h3>
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed bg-muted/20 p-8 text-center">
+              <div className={`flex h-16 w-16 items-center justify-center rounded-2xl transition-all ${isEditing ? form.color_class : cat.colorClass}`}>
+                <Tag className="h-7 w-7" />
+              </div>
+              <div className="mt-4 font-display text-lg font-bold">
+                {isEditing ? form.name || "Titre" : cat.name}
+              </div>
+              <span className="mt-1 font-mono text-xs text-muted-foreground">
+                {isEditing ? form.slug || "slug" : cat.slug}
+              </span>
+            </div>
+          </div>
+
+          {/* Métadonnées & Statistiques */}
+          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <div className="flex items-center gap-2 border-b pb-3 mb-4">
+              <Calendar className="h-4 w-4 text-primary" />
+              <h3 className="font-display text-sm font-semibold">Métadonnées</h3>
+            </div>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">ID</span>
+                <span className="font-mono text-xs">{cat.id}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Créée le</span>
+                <span className="font-medium">{new Date(cat.createdAt).toLocaleDateString("fr-FR")}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Modifiée le</span>
+                <span className="font-medium">{new Date(cat.updatedAt).toLocaleDateString("fr-FR")}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <ConfirmDelete

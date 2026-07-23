@@ -1,28 +1,27 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import { createResourceStore } from "./createResourceStore";
-import type { APIAdminUserDetail, AdminUserBlockPayload } from "@/data/users";
+import type { APIAdminStudentDetail, AdminStudentBlockPayload } from "@/data/students";
 
-const resourceKey = "users";
-const basePath = "users";
+const resourceKey = "students";
+const basePath = "students";
 
-// Ressource "users" : pas de create/update/delete génériques. On ne réutilise
-// createResourceStore que pour fetchList/fetchById/useList/useDetail ; les actions
-// (alerter, bloquer, réactiver) passent par des endpoints dédiés hors factory.
-const store = createResourceStore<APIAdminUserDetail, AdminUserBlockPayload>({
+// Ressource "students" : même comportement que "users" (pas de create/update/delete
+// génériques), seul le basePath change.
+const store = createResourceStore<APIAdminStudentDetail, AdminStudentBlockPayload>({
   resourceKey,
   basePath,
 });
 
-export const fetchAdminUsers = store.fetchList;
-export const fetchAdminUserById = store.fetchById;
+export const fetchAdminStudents = store.fetchList;
+export const fetchAdminStudentById = store.fetchById;
 
-export const useAdminUsersList = store.useList;
-export const useAdminUserDetail = store.useDetail;
+export const useAdminStudentsList = store.useList;
+export const useAdminStudentDetail = store.useDetail;
 
 /* ---- Actions dédiées ---- */
 
-async function alertUser(id: string, subject: string, message: string): Promise<void> {
+async function alertStudent(id: string, subject: string, message: string): Promise<void> {
   const fd = new FormData();
   fd.append("subject", subject);
   fd.append("message", message);
@@ -30,20 +29,18 @@ async function alertUser(id: string, subject: string, message: string): Promise<
   if (!response.ok) throw new Error("Erreur lors de l'envoi de l'alerte");
 }
 
-async function blockUser(id: string, reason: string): Promise<APIAdminUserDetail> {
+async function blockStudent(id: string, reason: string): Promise<APIAdminStudentDetail> {
   const fd = new FormData();
   fd.append("reason", reason);
   const response = await adminFetch(`/api/admin/${basePath}/${id}/block`, { method: "PUT", body: fd });
-  if (!response.ok) throw new Error("Erreur lors du blocage de l'utilisateur");
+  if (!response.ok) throw new Error("Erreur lors du blocage de l'apprenant");
   const json = await response.json();
   return json.data;
 }
 
-// "reactivate" ne renvoie pas forcément { data: ... } dans votre exemple ; on
-// gère les deux cas et on invalide le cache dans tous les cas pour rafraîchir.
-async function reactivateUser(id: string): Promise<APIAdminUserDetail | null> {
+async function reactivateStudent(id: string): Promise<APIAdminStudentDetail | null> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/reactivate`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la réactivation de l'utilisateur");
+  if (!response.ok) throw new Error("Erreur lors de la réactivation de l'apprenant");
   try {
     const json = await response.json();
     return json?.data ?? null;
@@ -52,25 +49,25 @@ async function reactivateUser(id: string): Promise<APIAdminUserDetail | null> {
   }
 }
 
-export function useAlertAdminUser() {
+export function useAlertAdminStudent() {
   return useMutation({
     mutationFn: ({ id, subject, message }: { id: string; subject: string; message: string }) =>
-      alertUser(id, subject, message),
+      alertStudent(id, subject, message),
   });
 }
 
-export function useBlockAdminUser() {
+export function useBlockAdminStudent() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, reason }: { id: string; reason: string }) => blockUser(id, reason),
+    mutationFn: ({ id, reason }: { id: string; reason: string }) => blockStudent(id, reason),
     onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
   });
 }
 
-export function useReactivateAdminUser() {
+export function useReactivateAdminStudent() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => reactivateUser(id),
+    mutationFn: (id: string) => reactivateStudent(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
   });
 }

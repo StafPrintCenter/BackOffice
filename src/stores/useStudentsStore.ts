@@ -6,8 +6,6 @@ import type { APIAdminStudentDetail, AdminStudentBlockPayload } from "@/data/stu
 const resourceKey = "students";
 const basePath = "students";
 
-// Ressource "students" : même comportement que "users" (pas de create/update/delete
-// génériques), seul le basePath change.
 const store = createResourceStore<APIAdminStudentDetail, AdminStudentBlockPayload>({
   resourceKey,
   basePath,

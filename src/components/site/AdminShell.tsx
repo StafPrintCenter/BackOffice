@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, PanelLeftClose, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, Mailbox } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, PanelLeftClose, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, Mailbox } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Outils",
     items: [
       { to: "/admin/shortlinks", label: "Liens courts", icon: Link2 },
-      { to: "/admin/reviews", label: "Formulaires d'avis", icon: Link2 },
+      { to: "/admin/reviews", label: "Formulaires d'avis", icon: Form },
     ],
   },
   {

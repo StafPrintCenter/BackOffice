@@ -243,86 +243,8 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="font-display text-lg font-semibold">Revenus mensuels</div>
-              <div className="text-xs text-muted-foreground">Estimation en milliers FCFA — ⚠️ mock, en attente de specs</div>
-            </div>
-            <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-1 text-xs font-semibold text-primary">
-              <TrendingUp className="h-3 w-3" /> +18%
-            </div>
-          </div>
-          <div className="mt-4 h-64">
-            <ResponsiveContainer>
-              <AreaChart data={monthly}>
-                <defs>
-                  <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
-                    <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="month" stroke="var(--muted-foreground)" fontSize={12} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={12} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Area type="monotone" dataKey="revenus" stroke="var(--primary)" strokeWidth={2} fill="url(#rev)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
 
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Visites du site</div>
-          <div className="text-xs text-muted-foreground">7 derniers jours — ⚠️ mock</div>
-          <div className="mt-4 h-64">
-            <ResponsiveContainer>
-              <LineChart data={visits}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="day" stroke="var(--muted-foreground)" fontSize={12} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={12} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Line type="monotone" dataKey="visits" stroke="var(--primary)" strokeWidth={2} dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="uniques" stroke="var(--chart-2, #3C82AB)" strokeWidth={2} dot={{ r: 3 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
-          <div className="font-display text-lg font-semibold">Activité mensuelle</div>
-          <div className="text-xs text-muted-foreground">Projets livrés — ⚠️ mock</div>
-          <div className="mt-4 h-64">
-            <ResponsiveContainer>
-              <BarChart data={monthly}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="month" stroke="var(--muted-foreground)" fontSize={12} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={12} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Legend />
-                <Bar dataKey="projets" fill="var(--primary)" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Formations par thème</div>
-          <div className="mt-4 h-64">
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie data={trainingsByTheme} dataKey="value" nameKey="name" innerRadius={40} outerRadius={80} paddingAngle={2}>
-                  {trainingsByTheme.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
-                </Pie>
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">

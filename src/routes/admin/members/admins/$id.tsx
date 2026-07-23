@@ -217,6 +217,32 @@ function AdminDetail() {
           </div>
         )}
 
+        {/* Banner invitation en attente / révoquée */}
+        {admin.isPending && (
+          <div
+            className={
+              "flex items-start gap-3 rounded-xl border p-4 " +
+              (isInviteRevoked
+                ? "border-destructive/20 bg-destructive/10 text-destructive"
+                : "border-amber-500/20 bg-amber-500/10 text-amber-700 dark:text-amber-400")
+            }
+          >
+            <MailWarning className="h-5 w-5 shrink-0 mt-0.5" />
+            <div className="text-sm">
+              <p className="font-semibold">
+                {isInviteRevoked ? "Cette invitation a été révoquée." : "Cette invitation n'a pas encore été acceptée."}
+              </p>
+              <p className="mt-0.5 text-xs opacity-80">
+                Invitée le {admin.invitedAt ? new Date(admin.invitedAt).toLocaleString("fr-FR") : "-"} par {admin.invitedBy || "—"}.
+                {isInviteRevoked &&
+                  admin.invitationRevokedAt &&
+                  ` Révoquée le ${new Date(admin.invitationRevokedAt).toLocaleString("fr-FR")}.`}
+                {isInviteRevoked && " Vous pouvez la renvoyer pour réactiver le lien d'invitation."}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Banner de blocage si actif */}
         {admin.isBlocked && (
           <div className="flex items-start gap-3 rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-destructive">

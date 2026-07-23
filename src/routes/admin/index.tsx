@@ -46,6 +46,7 @@ function DashboardPage() {
   const avgRating = testimonials.length ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length) : "…";
   const featuredTestimonials = testimonials.filter((t) => t.featured).length;
   const featuredServices = services.filter((s) => s.featured).length;
+  const publicProjects = projects.filter((p) => p.isPublic).length;
 
   const msgByStatus = Object.entries(
     contacts.reduce<Record<string, number>>((a, c) => { a[c.status] = (a[c.status] ?? 0) + 1; return a; }, {})

@@ -37,41 +37,6 @@ export interface Formation {
   createdAt: string;
 }
 
-export interface Project {
-  id: string;
-  title: string;
-  imageUrl: string;
-  category: string;
-  client: string;
-  description: string;
-  year: number;
-  createdAt: string;
-}
-
-export interface Article {
-  id: string;
-  title: string;
-  slug: string;
-  htmlContent: string;
-  excerpt: string;
-  author: string;
-  category: string;
-  coverImage: string;
-  publishedAt: string;
-  createdAt: string;
-}
-
-export interface Testimonial {
-  id: string;
-  name: string;
-  role: string;
-  company: string;
-  quote: string;
-  avatar?: string;
-  rating: number;
-  createdAt: string;
-}
-
 export interface User {
   email: string;
   name: string;
@@ -90,27 +55,5 @@ export interface Report {
   status: ReportStatus;
   resolvedBy?: string;
   resolvedAt?: string;
-  createdAt: string;
-}
-
-export type AppointmentMode = "presentiel" | "visio" | "telephone" | "whatsapp";
-export type AppointmentStatus = "en_attente" | "confirme" | "refuse" | "annule" | "termine";
-
-export interface Appointment {
-  id: string;
-  mode: AppointmentMode;
-  duration: number; // minutes
-  scheduledAt: string; // ISO date-time
-  firstName: string;
-  lastName: string;
-  email: string;
-  whatsapp: string;
-  subject: string;
-  message: string;
-  acceptedTerms: boolean;
-  status: AppointmentStatus;
-  adminNotes?: string;
-  handledBy?: string;
-  handledAt?: string;
   createdAt: string;
 }

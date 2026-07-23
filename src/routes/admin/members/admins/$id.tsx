@@ -261,7 +261,7 @@ function AdminDetail() {
 
               {admin.invitedAt && (
                 <div className="flex items-center gap-3 rounded-xl border p-4 bg-background/50">
-                  <CalendarArrowDown className="h-5 w-5 text-muted-foreground shrink-0" />
+                  <CalendarArrowUp className="h-5 w-5 text-muted-foreground shrink-0" />
                   <div>
                     <div className="text-xs text-muted-foreground font-medium">Invité le</div>
                     <div className="text-sm font-semibold mt-0.5">
@@ -274,7 +274,7 @@ function AdminDetail() {
 
               {admin.acceptedAt && (
                 <div className="flex items-center gap-3 rounded-xl border p-4 bg-background/50">
-                  <CalendarArrowUp className="h-5 w-5 text-muted-foreground shrink-0" />
+                  <CalendarArrowDown className="h-5 w-5 text-muted-foreground shrink-0" />
                   <div>
                     <div className="text-xs text-muted-foreground font-medium">Invitation acceptée le</div>
                     <div className="text-sm font-semibold mt-0.5">

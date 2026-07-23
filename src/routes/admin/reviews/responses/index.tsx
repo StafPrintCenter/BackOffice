@@ -50,10 +50,10 @@ function AdminReviewResponses() {
           { key: "project", label: "Projet", render: (r) => <span className="text-xs">{r.project ?? r.projectName ?? "—"}</span> },
           {
             key: "allowPublication",
-            label: "Autorisation",
+            label: "Publication",
             render: (r) => (
               <span className={"text-xs " + (r.allowPublication ? "text-emerald-600" : "text-muted-foreground")}>
-                {r.allowPublication ? "Publication autorisée" : "Non autorisée"}
+                {r.allowPublication ? "Autorisée" : "Réfusée"}
               </span>
             ),
           },

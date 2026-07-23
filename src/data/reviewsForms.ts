@@ -55,3 +55,15 @@ export interface AdminReviewFormAnalytics {
   totalResponses: number;
   questions: AdminReviewFormAnalyticsQuestion[];
 }
+
+export const REVIEW_FORM_STATUS_BADGES: Record<string, string> = {
+  draft: "bg-muted text-muted-foreground border-border",
+  published: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+  disabled: "bg-rose-500/10 text-rose-600 border-rose-500/20",
+};
+
+export const REVIEW_FORM_STATUS_LABELS: Record<string, string> = {
+  draft: "Brouillon",
+  published: "Publié",
+  disabled: "Désactivé",
+};

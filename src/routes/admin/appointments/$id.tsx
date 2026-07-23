@@ -13,9 +13,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAdminAppointmentDetail, useUpdateAdminAppointmentStatus } from "@/stores/useAppointmentsStore";
 import type { AppointmentStatus } from "@/data/appointments";
 import { modeLabel, modeIcon } from ".";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/appointments/$id")({
-  head: () => ({ meta: [{ title: "Rendez-vous — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Rendez-vous | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: AppointmentDetail,
 });
 

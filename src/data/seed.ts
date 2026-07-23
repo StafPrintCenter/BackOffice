@@ -5,10 +5,3 @@ export const seedArticles: Article[] = [
   { id: "a3", title: "L'impression écologique : mythe ou réalité ?", slug: "impression-ecologique", htmlContent: "<p>Peut-on imprimer sans nuire à l'environnement ?</p><h2>Papiers recyclés</h2><p>Nous utilisons des papiers certifiés FSC.</p>", excerpt: "Explorons les pratiques d'impression durables.", author: "Staf Print", category: "Impression", coverImage: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=1200", publishedAt: "2024-05-20", createdAt: "2024-05-20" },
   { id: "a4", title: "Se former au numérique au Bénin en 2024", slug: "formation-numerique-benin", htmlContent: "<p>Le numérique offre des opportunités énormes au Bénin.</p><h2>Filières porteuses</h2><p>Développement web, design, marketing digital.</p>", excerpt: "Quelles compétences numériques développer aujourd'hui ?", author: "Staf Print", category: "Formation", coverImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200", publishedAt: "2024-06-10", createdAt: "2024-06-10" },
 ];
-
-export const seedTestimonials: Testimonial[] = [
-  { id: "t1", name: "Aïcha Bello", role: "CEO", company: "Le Baobab", quote: "Staf Print a transformé notre identité visuelle. Résultat au-delà de nos attentes, équipe très à l'écoute.", rating: 5, createdAt: "2024-03-20" },
-  { id: "t2", name: "Karim Adjovi", role: "Directeur", company: "Cabinet Adjovi & Associés", quote: "Un vrai partenaire stratégique. Notre nouvelle image nous ouvre des portes.", rating: 5, createdAt: "2024-03-05" },
-  { id: "t3", name: "Fatou Sossa", role: "Fondatrice", company: "ModaBenin", quote: "Notre site e-commerce fonctionne parfaitement. Les ventes ont doublé en 3 mois.", rating: 5, createdAt: "2024-05-15" },
-  { id: "t4", name: "Jean Kponou", role: "Étudiant", company: "Formation Web", quote: "La formation m'a permis de décrocher mon premier contrat freelance. Contenu très pratique.", rating: 5, createdAt: "2024-04-10" },
-];

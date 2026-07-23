@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, TrendingUp, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser } from "lucide-react";
+import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
 import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList } from "@/stores";
@@ -95,7 +95,7 @@ function DashboardPage() {
     <AdminShell>
       <PageHeader title="Dashboard" description="Vue d'ensemble de votre activité." />
 
-      {/* KPIs — Services/Formations/Projets réels, Articles encore mock */}
+      {/* KPIs */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
         <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />

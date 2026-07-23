@@ -9,15 +9,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  useAdminShortLinkDetail, useUpdateAdminShortLink, useDeleteAdminShortLink, useAdminShortLinkStats,
-} from "@/stores/useShortLinksStore";
+import { useAdminShortLinkDetail, useUpdateAdminShortLink, useDeleteAdminShortLink, useAdminShortLinkStats, } from "@/stores/useShortLinksStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { SHORT_LINK_CATEGORIES } from "@/data/shortlinks";
 import type { AdminShortLinkPayload } from "@/data/shortlinks";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/shortlinks/$id")({
-  head: () => ({ meta: [{ title: "Lien court — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Liens courts | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: ShortLinkDetail,
 });
 

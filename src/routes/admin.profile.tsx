@@ -10,11 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { servicesApi } from "@/api/services.api";
-import { formationsApi } from "@/api/formations.api";
-import { projectsApi } from "@/api/projects.api";
-import { articlesApi } from "@/api/articles.api";
-import { testimonialsApi } from "@/api/testimonials.api";
 
 export const Route = createFileRoute("/admin/profile")({
   head: () => ({
@@ -29,12 +24,6 @@ export const Route = createFileRoute("/admin/profile")({
 function ProfilePage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
-  const services = useQuery({ queryKey: ["services"], queryFn: servicesApi.list });
-  const formations = useQuery({ queryKey: ["formations"], queryFn: formationsApi.list });
-  const projects = useQuery({ queryKey: ["projects"], queryFn: projectsApi.list });
-  const articles = useQuery({ queryKey: ["articles"], queryFn: articlesApi.list });
-  const testimonials = useQuery({ queryKey: ["testimonials"], queryFn: testimonialsApi.list });
 
   // États éditables initialisés avec le profil utilisateur
   const [name, setName] = useState(user?.name ?? "Administrateur");
@@ -79,14 +68,6 @@ function ProfilePage() {
       year: "numeric",
     })
     : "Date inconnue";
-
-  const stats = [
-    { label: "Services", value: services.data?.length ?? 0, icon: Wrench },
-    { label: "Formations", value: formations.data?.length ?? 0, icon: GraduationCap },
-    { label: "Projets", value: projects.data?.length ?? 0, icon: FolderKanban },
-    { label: "Articles", value: articles.data?.length ?? 0, icon: FileText },
-    { label: "Témoignages", value: testimonials.data?.length ?? 0, icon: MessagesSquare },
-  ];
 
   const activity = [
     { when: "Il y a 2h", text: "Publication de l'article « Tendances design 2026 »" },
@@ -149,23 +130,6 @@ function ProfilePage() {
             <Button variant="outline" onClick={handleLogout} className="self-start sm:self-auto">
               <LogOut className="mr-2 h-4 w-4" /> Déconnexion
             </Button>
-          </div>
-
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            {stats.map((s) => {
-              const Icon = s.icon;
-              return (
-                <div key={s.label} className="rounded-xl border bg-muted/30 p-3">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      {s.label}
-                    </div>
-                    <Icon className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="mt-1 font-display text-2xl font-bold">{s.value}</div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </div>

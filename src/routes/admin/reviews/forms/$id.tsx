@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { useAdminReviewFormDetail, useUpdateAdminReviewForm, useDeleteAdminReviewForm, usePublishAdminReviewForm, useDisableAdminReviewForm, useDuplicateAdminReviewForm, useAdminReviewFormAnalytics, } from "@/stores/useReviewFormsStore";
 import { useCreateAdminReviewQuestion, useUpdateAdminReviewQuestion, useDeleteAdminReviewQuestion, useReorderAdminReviewQuestions, } from "@/stores/useReviewQuestionsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
+import { getReviewPublicationStatusBadge, getReviewPublicationStatusLabel, } from "@/data/reviewResponses";
 import {
   type AdminReviewFormPayload, type AdminReviewFormQuestion, type AdminReviewQuestionPayload, type ReviewQuestionType, type ReviewQuestionOption, type QuestionFormValues,
   REVIEW_QUESTION_TYPES, CHOICE_QUESTION_TYPES, REVIEW_FORM_STATUS_LABELS, REVIEW_QUESTION_TYPE_LABELS, getReviewFormStatusBadge, getReviewQuestionTypeBadge,
@@ -39,16 +40,6 @@ const emptyQuestionForm: QuestionFormValues = {
   maxSizeKb: "",
   options: [],
 };
-
-const publicationStatusLabel = (s: string) =>
-  ({ pending: "En attente", approved: "Approuvé", rejected: "Rejeté" }[s] ?? s);
-
-const publicationStatusBadge = (s: string) =>
-({
-  pending: "bg-amber-500/10 text-amber-600 border-amber-500/20",
-  approved: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
-  rejected: "bg-destructive/10 text-destructive border-destructive/20",
-}[s] ?? "bg-muted text-muted-foreground border-transparent");
 
 function slugifyOptionValue(label: string): string {
   return label
@@ -609,8 +600,8 @@ function ReviewFormDetail() {
                           )}
                         </div>
                         <div className="flex flex-col items-end gap-1.5">
-                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${publicationStatusBadge(r.publicationStatus)}`}>
-                            {publicationStatusLabel(r.publicationStatus)}
+                          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getReviewPublicationStatusBadge(r.publicationStatus)}`}>
+                            {getReviewPublicationStatusLabel(r.publicationStatus)}
                           </span>
                           <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
                             {r.allowPublication ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}

@@ -12,7 +12,10 @@ import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/reviews/responses/")({
   head: () => ({
-    meta: [{ title: `Réponses | ${SITE.name}` }, { name: "robots", content: "noindex" }],
+    meta: [
+      { title: `Réponses | ${SITE.name}` },
+      { name: "robots", content: "noindex" }
+    ],
   }),
   component: AdminReviewResponses,
 });

@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { UserPlus } from "lucide-react";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -55,16 +54,13 @@ function AdminAdmins() {
 
   return (
     <AdminShell>
-      <PageHeader
-        title="Administrateurs"
-        description="Gérez les comptes administrateurs et invitez de nouveaux membres."
-        action={<Button onClick={openInvite}><UserPlus className="mr-1 h-4 w-4" /> Inviter un admin</Button>}
-      />
+      <PageHeader title="Administrateurs" description="Gérez les comptes administrateurs et invitez de nouveaux membres." />
 
       <DataTable<APIAdminAdminListItem>
         data={items}
         isLoading={isLoading}
         searchKeys={["fullname", "email"]}
+        onCreate={openInvite}
         onView={(r) => navigate({ to: "/admin/members/admins/$id", params: { id: r.id } })}
         columns={[
           {
@@ -122,18 +118,18 @@ function AdminAdmins() {
               <div>
                 <Label>Prénom</Label>
                 <Input value={form.first_name} onChange={(e) => setForm({ ...form, first_name: e.target.value })} />
-                {errors.first_name && <p className="mt-1 text-xs text-destructive">{errors.first_name}</p>}
+                {errors.first_name && <p className="text-xs text-destructive mt-1">{errors.first_name}</p>}
               </div>
               <div>
                 <Label>Nom</Label>
                 <Input value={form.last_name} onChange={(e) => setForm({ ...form, last_name: e.target.value })} />
-                {errors.last_name && <p className="mt-1 text-xs text-destructive">{errors.last_name}</p>}
+                {errors.last_name && <p className="text-xs text-destructive mt-1">{errors.last_name}</p>}
               </div>
             </div>
             <div>
               <Label>E-mail</Label>
               <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-              {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
+              {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
             </div>
             <div>
               <Label>Niveau</Label>

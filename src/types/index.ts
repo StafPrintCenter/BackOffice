@@ -88,8 +88,6 @@ export interface Stat {
   createdAt: string;
 }
 
-export type MessageStatus = "nouveau" | "en_cours" | "traite" | "archive";
-
 export type ReportStatus = "ouvert" | "en_cours" | "resolu" | "rejete";
 
 export interface Report {
@@ -126,4 +124,3 @@ export interface Appointment {
   handledAt?: string;
   createdAt: string;
 }
-

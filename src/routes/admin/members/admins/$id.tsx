@@ -16,6 +16,8 @@ import {
 } from "@/stores/useAdminsStore";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS } from "@/data/admins";
 import { SITE } from "@/data/site";
+// ⚠️ À adapter : remplacez par le vrai hook d'authentification du projet.
+import { useCurrentAdmin } from "@/stores/useAuthStore";
 
 export const Route = createFileRoute("/admin/members/admins/$id")({
   head: () => ({
@@ -28,6 +30,7 @@ function AdminDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const { item: admin, isLoading } = useAdminAdminDetail(id);
+  const { admin: currentAdmin } = useCurrentAdmin();
 
   const alertMutation = useAlertAdminAdmin();
   const blockMutation = useBlockAdminAdmin();
@@ -63,6 +66,8 @@ function AdminDetail() {
       </AdminShell>
     );
   }
+
+  const isSelf = currentAdmin?.id === admin.id;
 
   const submitAlert = () => {
     if (!alertForm.subject.trim() || !alertForm.message.trim()) {
@@ -118,28 +123,36 @@ function AdminDetail() {
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/members/admins" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
-        <div className="flex flex-wrap gap-2">
-          <Button variant="outline" size="sm" onClick={() => setAlertOpen(true)}>
-            <AlertTriangle className="mr-1 h-4 w-4" /> Alerter
-          </Button>
-          {admin.isBlocked ? (
-            <Button size="sm" onClick={handleReactivate} disabled={reactivateMutation.isPending}>
-              <ShieldCheck className="mr-1 h-4 w-4" /> Débloquer
+        {!isSelf && (
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" size="sm" onClick={() => setAlertOpen(true)}>
+              <AlertTriangle className="mr-1 h-4 w-4" /> Alerter
             </Button>
-          ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-destructive hover:bg-destructive/10"
-              onClick={() => setBlockOpen(true)}
-            >
-              <Ban className="mr-1 h-4 w-4" /> Bloquer
-            </Button>
-          )}
-        </div>
+            {admin.isBlocked ? (
+              <Button size="sm" onClick={handleReactivate} disabled={reactivateMutation.isPending}>
+                <ShieldCheck className="mr-1 h-4 w-4" /> Débloquer
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-destructive hover:bg-destructive/10"
+                onClick={() => setBlockOpen(true)}
+              >
+                <Ban className="mr-1 h-4 w-4" /> Bloquer
+              </Button>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="max-w-2xl space-y-6">
+        {isSelf && (
+          <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-2 text-xs text-amber-700">
+            C'est votre propre compte : vous ne pouvez pas vous alerter ni vous bloquer vous-même.
+          </div>
+        )}
+
         <div className="rounded-2xl border bg-card p-6">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h1 className="font-display text-2xl font-bold">{admin.fullname}</h1>
@@ -181,42 +194,46 @@ function AdminDetail() {
         </div>
       </div>
 
-      <Dialog open={alertOpen} onOpenChange={setAlertOpen}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>Envoyer une alerte</DialogTitle></DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>Sujet</Label>
-              <Input value={alertForm.subject} onChange={(e) => setAlertForm({ ...alertForm, subject: e.target.value })} />
-              {alertErrors.subject && <p className="mt-1 text-xs text-destructive">{alertErrors.subject}</p>}
-            </div>
-            <div>
-              <Label>Message</Label>
-              <Textarea rows={4} value={alertForm.message} onChange={(e) => setAlertForm({ ...alertForm, message: e.target.value })} />
-              {alertErrors.message && <p className="mt-1 text-xs text-destructive">{alertErrors.message}</p>}
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setAlertOpen(false)}>Annuler</Button>
-            <Button onClick={submitAlert} disabled={alertMutation.isPending}>Envoyer</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {!isSelf && (
+        <>
+          <Dialog open={alertOpen} onOpenChange={setAlertOpen}>
+            <DialogContent>
+              <DialogHeader><DialogTitle>Envoyer une alerte</DialogTitle></DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <Label>Sujet</Label>
+                  <Input value={alertForm.subject} onChange={(e) => setAlertForm({ ...alertForm, subject: e.target.value })} />
+                  {alertErrors.subject && <p className="text-xs text-destructive mt-1">{alertErrors.subject}</p>}
+                </div>
+                <div>
+                  <Label>Message</Label>
+                  <Textarea rows={4} value={alertForm.message} onChange={(e) => setAlertForm({ ...alertForm, message: e.target.value })} />
+                  {alertErrors.message && <p className="text-xs text-destructive mt-1">{alertErrors.message}</p>}
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setAlertOpen(false)}>Annuler</Button>
+                <Button onClick={submitAlert} disabled={alertMutation.isPending}>Envoyer</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
 
-      <Dialog open={blockOpen} onOpenChange={setBlockOpen}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>Bloquer {admin.fullname}</DialogTitle></DialogHeader>
-          <div>
-            <Label>Motif du blocage</Label>
-            <Textarea rows={3} value={blockReason} onChange={(e) => setBlockReason(e.target.value)} />
-            {blockError && <p className="mt-1 text-xs text-destructive">{blockError}</p>}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setBlockOpen(false)}>Annuler</Button>
-            <Button variant="destructive" onClick={submitBlock} disabled={blockMutation.isPending}>Bloquer</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          <Dialog open={blockOpen} onOpenChange={setBlockOpen}>
+            <DialogContent>
+              <DialogHeader><DialogTitle>Bloquer {admin.fullname}</DialogTitle></DialogHeader>
+              <div>
+                <Label>Motif du blocage</Label>
+                <Textarea rows={3} value={blockReason} onChange={(e) => setBlockReason(e.target.value)} />
+                {blockError && <p className="text-xs text-destructive mt-1">{blockError}</p>}
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setBlockOpen(false)}>Annuler</Button>
+                <Button variant="destructive" onClick={submitBlock} disabled={blockMutation.isPending}>Bloquer</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
     </AdminShell>
   );
 }

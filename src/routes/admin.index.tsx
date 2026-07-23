@@ -1,23 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, TrendingUp, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser } from "lucide-react";
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area, Legend, } from "recharts";
+import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
+import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList } from "@/stores";
 
 // --- Encore sur mock : aucune spec reçue pour les articles ---
 import { articlesApi } from "@/api/articles.api";
 import { useQuery } from "@tanstack/react-query";
 
-// --- Réel ---
-import { useAdminContactsList } from "@/stores/useContactsStore";
-import { useAdminUsersList } from "@/stores/useUsersStore";
-import { useAdminStudentsList } from "@/stores/useStudentsStore";
-import { useAdminAdminsList } from "@/stores/useAdminsStore";
-import { useAdminProjectsList } from "@/stores/useProjectsStore";
-import { useAdminTestimonialsList } from "@/stores/useTestimonialsStore";
-import { useAdminShortLinksList } from "@/stores/useShortLinksStore";
-import { useAdminServicesList } from "@/stores/useServicesStore";
-import { useAdminTrainingsList } from "@/stores/useTrainingsStore";
-import { useAdminReportsList } from "@/stores/useReportsStore";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "Dashboard — Admin Staf Print" }, { name: "robots", content: "noindex" }] }),

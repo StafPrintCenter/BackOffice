@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, TrendingUp, Users, Eye, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldCheck } from "lucide-react";
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
@@ -7,11 +6,9 @@ import {
 } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
 
-// --- Encore sur mocks/anciennes API : pas de specs reçues pour ces ressources ---
-import { servicesApi } from "@/api/services.api";
-import { formationsApi } from "@/api/formations.api";
+// --- Encore sur mock : aucune spec reçue pour les articles ---
 import { articlesApi } from "@/api/articles.api";
-import { reportsApi } from "@/api/extra.api";
+import { useQuery } from "@tanstack/react-query";
 
 // --- Réel ---
 import { useAdminContactsList } from "@/stores/useContactsStore";
@@ -21,6 +18,9 @@ import { useAdminAdminsList } from "@/stores/useAdminsStore";
 import { useAdminProjectsList } from "@/stores/useProjectsStore";
 import { useAdminTestimonialsList } from "@/stores/useTestimonialsStore";
 import { useAdminShortLinksList } from "@/stores/useShortLinksStore";
+import { useAdminServicesList } from "@/stores/useServicesStore";
+import { useAdminTrainingsList } from "@/stores/useTrainingsStore";
+import { useAdminReportsList } from "@/stores/useReportsStore";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "Dashboard — Admin Staf Print" }, { name: "robots", content: "noindex" }] }),
@@ -30,11 +30,8 @@ export const Route = createFileRoute("/admin/")({
 const pieColors = ["#E07856", "#3C82AB", "#5A9B6E", "#C89A3E", "#8B5CF6", "#EC4899"];
 
 function DashboardPage() {
-  // --- Mocks/anciennes API en attente de specs ---
-  const services = useQuery({ queryKey: ["services"], queryFn: servicesApi.list });
-  const formations = useQuery({ queryKey: ["formations"], queryFn: formationsApi.list });
+  // --- Mock en attente ---
   const articles = useQuery({ queryKey: ["articles"], queryFn: articlesApi.list });
-  const reports = useQuery({ queryKey: ["reports"], queryFn: reportsApi.list });
 
   // --- Réel ---
   const { items: contacts, isLoading: contactsLoading } = useAdminContactsList({ perPage: 100 });
@@ -44,10 +41,13 @@ function DashboardPage() {
   const { items: projects, isLoading: projectsLoading } = useAdminProjectsList({ perPage: 100 });
   const { items: testimonials, isLoading: testimonialsLoading } = useAdminTestimonialsList({ perPage: 100 });
   const { items: shortLinks, isLoading: shortLinksLoading } = useAdminShortLinksList({ perPage: 100 });
+  const { items: services, isLoading: servicesLoading } = useAdminServicesList({ perPage: 100 });
+  const { items: trainings, isLoading: trainingsLoading } = useAdminTrainingsList({ perPage: 100 });
+  const { items: reports, isLoading: reportsLoading } = useAdminReportsList({ perPage: 100 });
 
   // --- KPIs réels ---
   const newMessages = contacts.filter((c) => c.status === "new").length;
-  const openReports = (reports.data ?? []).filter((r) => r.status === "ouvert" || r.status === "en_cours").length; // ⚠️ mock, statuts à confirmer
+  const openReports = reports.filter((r) => r.status === "pending" || r.status === "in_review").length;
 
   const activeUsers = users.filter((u) => u.isActive && !u.isBlocked).length;
   const activeStudents = students.filter((s) => s.isActive && !s.isBlocked).length;
@@ -61,9 +61,14 @@ function DashboardPage() {
     ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1)
     : "…";
   const featuredTestimonials = testimonials.filter((t) => t.featured).length;
+  const featuredServices = services.filter((s) => s.featured).length;
 
   const msgByStatus = Object.entries(
     contacts.reduce<Record<string, number>>((a, c) => { a[c.status] = (a[c.status] ?? 0) + 1; return a; }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  const reportsByStatus = Object.entries(
+    reports.reduce<Record<string, number>>((a, r) => { a[r.status] = (a[r.status] ?? 0) + 1; return a; }, {})
   ).map(([name, value]) => ({ name, value }));
 
   const membersByType = [
@@ -82,20 +87,28 @@ function DashboardPage() {
     shortLinks.reduce<Record<string, number>>((acc, l) => { acc[l.category] = (acc[l.category] ?? 0) + 1; return acc; }, {})
   ).map(([name, value]) => ({ name, value }));
 
-  const formationsByTheme = Object.entries(
-    (formations.data ?? []).reduce<Record<string, number>>((acc, f) => { acc[f.theme] = (acc[f.theme] ?? 0) + 1; return acc; }, {})
-  ).map(([name, value]) => ({ name, value })); // ⚠️ mock
+  const trainingsByTheme = Object.entries(
+    trainings.reduce<Record<string, number>>((acc, t) => { acc[t.theme] = (acc[t.theme] ?? 0) + 1; return acc; }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  const trainingsByLevel = Object.entries(
+    trainings.reduce<Record<string, number>>((acc, t) => { acc[t.level] = (acc[t.level] ?? 0) + 1; return acc; }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  const servicesByCategory = Object.entries(
+    services.reduce<Record<string, number>>((acc, s) => { const key = s.category || "Sans catégorie"; acc[key] = (acc[key] ?? 0) + 1; return acc; }, {})
+  ).map(([name, value]) => ({ name, value }));
 
   // --- Données 100% fictives, en attente de specs analytics/tracking/revenus ---
   const monthly = [
-    { month: "Jan", projets: 4, formations: 2, revenus: 1200 },
-    { month: "Fév", projets: 6, formations: 3, revenus: 1800 },
-    { month: "Mar", projets: 8, formations: 5, revenus: 2400 },
-    { month: "Avr", projets: 5, formations: 4, revenus: 2100 },
-    { month: "Mai", projets: 9, formations: 6, revenus: 3200 },
-    { month: "Juin", projets: 12, formations: 7, revenus: 4100 },
-    { month: "Juil", projets: 10, formations: 8, revenus: 3800 },
-    { month: "Août", projets: 14, formations: 9, revenus: 4600 },
+    { month: "Jan", projets: 4, revenus: 1200 },
+    { month: "Fév", projets: 6, revenus: 1800 },
+    { month: "Mar", projets: 8, revenus: 2400 },
+    { month: "Avr", projets: 5, revenus: 2100 },
+    { month: "Mai", projets: 9, revenus: 3200 },
+    { month: "Juin", projets: 12, revenus: 4100 },
+    { month: "Juil", projets: 10, revenus: 3800 },
+    { month: "Août", projets: 14, revenus: 4600 },
   ];
   const visits = [
     { day: "Lun", visits: 240, uniques: 180 },
@@ -106,14 +119,6 @@ function DashboardPage() {
     { day: "Sam", visits: 380, uniques: 290 },
     { day: "Dim", visits: 300, uniques: 220 },
   ];
-  const perf = [
-    { axis: "Design", score: 92 },
-    { axis: "Impression", score: 85 },
-    { axis: "Web", score: 88 },
-    { axis: "Formation", score: 78 },
-    { axis: "Support", score: 90 },
-    { axis: "Livraison", score: 82 },
-  ];
   const funnel = [
     { stage: "Visiteurs", value: 4820 },
     { stage: "Leads", value: 1240 },
@@ -123,36 +128,34 @@ function DashboardPage() {
 
   const recent = [
     ...projects.slice(0, 3).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
-    ...(articles.data ?? []).slice(0, 2).map((a) => ({ type: "Article", title: a.title, meta: a.author, icon: FileText })), // ⚠️ mock
-    ...(formations.data ?? []).slice(0, 1).map((f) => ({ type: "Formation", title: f.title, meta: f.theme, icon: GraduationCap })), // ⚠️ mock
+    ...trainings.slice(0, 2).map((t) => ({ type: "Formation", title: t.title, meta: t.theme, icon: GraduationCap })),
+    ...(articles.data ?? []).slice(0, 1).map((a) => ({ type: "Article", title: a.title, meta: a.author, icon: FileText })), // ⚠️ mock
   ].slice(0, 6);
 
   return (
     <AdminShell>
       <PageHeader title="Dashboard" description="Vue d'ensemble de votre activité." />
 
-      {/* KPIs — Services/Formations/Articles encore sur ancienne API, Projets réel */}
+      {/* KPIs — Services/Formations/Projets réels, Articles encore mock */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Services" value={services.data?.length ?? "…"} icon={<Wrench className="h-5 w-5" />} hint={`${services.data?.filter((s) => s.featured).length ?? 0} en vedette`} />
-        <StatCard label="Formations" value={formations.data?.length ?? "…"} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
-        <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint="Portfolio (réel)" />
+        <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
+        <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
+        <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint="Portfolio" />
         <StatCard label="Articles" value={articles.data?.length ?? "…"} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
       </div>
 
-      {/* Note moyenne réelle, reste mock en attente d'analytics */}
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Visites 7j" value="2 450" icon={<Eye className="h-5 w-5" />} hint="+12% vs sem. précédente" />
         <StatCard label="Leads mois" value="1 240" icon={<Users className="h-5 w-5" />} hint="+8% ce mois" />
         <StatCard label="Taux conversion" value="14.5%" icon={<TrendingUp className="h-5 w-5" />} hint="Objectif 15%" />
-        <StatCard label="Note moyenne" value={testimonialsLoading ? "…" : avgRating + " / 5"} icon={<Star className="h-5 w-5" />} hint={`${testimonials.length} témoignages (réel)`} />
+        <StatCard label="Note moyenne" value={testimonialsLoading ? "…" : avgRating + " / 5"} icon={<Star className="h-5 w-5" />} hint={`${testimonials.length} témoignages`} />
       </div>
 
-      {/* Messages, clics et membres réels ; signalements encore mock */}
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total (réel)`} />
-        <StatCard label="Signalements ouverts" value={openReports} icon={<ShieldAlert className="h-5 w-5" />} hint="À traiter" />
-        <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${shortLinks.length} liens (réel)`} />
-        <StatCard label="Membres actifs" value={usersLoading || studentsLoading || adminsLoading ? "…" : activeUsers + activeStudents + activeAdmins} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total (réel)`} />
+        <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
+        <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
+        <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${shortLinks.length} liens`} />
+        <StatCard label="Membres actifs" value={usersLoading || studentsLoading || adminsLoading ? "…" : activeUsers + activeStudents + activeAdmins} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total`} />
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-3">
@@ -163,8 +166,7 @@ function DashboardPage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
-          <div className="font-display text-lg font-semibold">Répartition des liens courts par catégorie</div>
-          <div className="text-xs text-muted-foreground">Réel</div>
+          <div className="font-display text-lg font-semibold">Liens courts par catégorie</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
               <BarChart data={linksByCategory}>
@@ -193,7 +195,7 @@ function DashboardPage() {
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="flex items-center gap-2"><Link2 className="h-4 w-4 text-primary" /><div className="font-display text-lg font-semibold">Top 5 liens courts</div></div>
-          <div className="text-xs text-muted-foreground">Réel · {activeShortLinks} liens actifs</div>
+          <div className="text-xs text-muted-foreground">{activeShortLinks} liens actifs</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
               <BarChart data={topLinks} layout="vertical">
@@ -207,8 +209,21 @@ function DashboardPage() {
           </div>
         </div>
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="font-display text-lg font-semibold">Signalements par statut</div>
+          <div className="mt-4 h-56">
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie data={reportsByStatus} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>{reportsByStatus.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}</Pie>
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Répartition des membres</div>
-          <div className="text-xs text-muted-foreground">Réel</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
               <BarChart data={membersByType}>
@@ -217,6 +232,20 @@ function DashboardPage() {
                 <YAxis stroke="var(--muted-foreground)" fontSize={11} />
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
                 <Bar dataKey="value" fill="#5A9B6E" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="font-display text-lg font-semibold">Services par catégorie</div>
+          <div className="mt-4 h-56">
+            <ResponsiveContainer>
+              <BarChart data={servicesByCategory}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                <Bar dataKey="value" fill="#C89A3E" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -274,7 +303,7 @@ function DashboardPage() {
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="font-display text-lg font-semibold">Activité mensuelle</div>
-          <div className="text-xs text-muted-foreground">Projets & formations livrés — ⚠️ mock</div>
+          <div className="text-xs text-muted-foreground">Projets livrés — ⚠️ mock</div>
           <div className="mt-4 h-64">
             <ResponsiveContainer>
               <BarChart data={monthly}>
@@ -284,7 +313,6 @@ function DashboardPage() {
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
                 <Legend />
                 <Bar dataKey="projets" fill="var(--primary)" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="formations" fill="#3C82AB" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -292,12 +320,11 @@ function DashboardPage() {
 
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Formations par thème</div>
-          <div className="text-xs text-muted-foreground">⚠️ mock</div>
           <div className="mt-4 h-64">
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={formationsByTheme} dataKey="value" nameKey="name" innerRadius={40} outerRadius={80} paddingAngle={2}>
-                  {formationsByTheme.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
+                <Pie data={trainingsByTheme} dataKey="value" nameKey="name" innerRadius={40} outerRadius={80} paddingAngle={2}>
+                  {trainingsByTheme.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
                 </Pie>
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
               </PieChart>
@@ -308,23 +335,22 @@ function DashboardPage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Performance par domaine</div>
-          <div className="text-xs text-muted-foreground">Score interne /100 — ⚠️ mock</div>
+          <div className="font-display text-lg font-semibold">Formations par niveau</div>
           <div className="mt-4 h-64">
             <ResponsiveContainer>
-              <RadarChart data={perf}>
-                <PolarGrid stroke="var(--border)" />
-                <PolarAngleAxis dataKey="axis" tick={{ fill: "var(--muted-foreground)", fontSize: 11 }} />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: "var(--muted-foreground)", fontSize: 10 }} />
-                <Radar dataKey="score" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.4} />
-              </RadarChart>
+              <BarChart data={trainingsByLevel}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={12} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                <Bar dataKey="value" fill="var(--primary)" radius={[6, 6, 0, 0]} />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Projets par catégorie</div>
-          <div className="text-xs text-muted-foreground">Réel</div>
           <div className="mt-4 h-64">
             <ResponsiveContainer>
               <BarChart data={projectsByCategory} layout="vertical">
@@ -366,7 +392,7 @@ function DashboardPage() {
             <Activity className="h-4 w-4 text-primary" />
             <div className="font-display text-lg font-semibold">Activité récente</div>
           </div>
-          <div className="text-xs text-muted-foreground">Projets réel · Articles/Formations mock</div>
+          <div className="text-xs text-muted-foreground">Articles encore mock</div>
           <ul className="mt-4 divide-y">
             {recent.map((r, i) => {
               const Icon = r.icon;
@@ -392,7 +418,7 @@ function DashboardPage() {
             <MessagesSquare className="h-4 w-4 text-primary" />
             <div className="font-display text-lg font-semibold">Derniers témoignages</div>
           </div>
-          <div className="text-xs text-muted-foreground">Réel · {featuredTestimonials} en vedette</div>
+          <div className="text-xs text-muted-foreground">{featuredTestimonials} en vedette</div>
           <ul className="mt-4 space-y-4">
             {testimonialsLoading && <li className="text-center text-sm text-muted-foreground">Chargement...</li>}
             {[...testimonials]

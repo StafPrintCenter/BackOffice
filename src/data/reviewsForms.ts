@@ -17,6 +17,21 @@ export interface ReviewQuestionSettings {
   [key: string]: unknown;
 }
 
+export type ReviewQuestionType =
+  | "short_text"
+  | "long_text"
+  | "email"
+  | "phone"
+  | "number"
+  | "date"
+  | "datetime"
+  | "single_choice"
+  | "multiple_choice"
+  | "select"
+  | "rating"
+  | "boolean"
+  | "file";
+
 export interface AdminReviewFormQuestion {
   id: string;
   type: ReviewQuestionType | string;
@@ -27,6 +42,18 @@ export interface AdminReviewFormQuestion {
   validationRules: ReviewQuestionValidationRules | null;
   options: ReviewQuestionOption[] | null;
   settings: ReviewQuestionSettings | null;
+}
+
+export interface QuestionFormValues {
+  type: ReviewQuestionType;
+  title: string;
+  description: string;
+  is_required: boolean;
+  maxLength: string;
+  min: string;
+  max: string;
+  maxSizeKb: string;
+  options: ReviewQuestionOption[];
 }
 
 export type APIAdminReviewFormListItem = {
@@ -73,8 +100,6 @@ export const REVIEW_FORM_STATUS_BADGES: Record<string, string> = {
 export function getReviewFormStatusBadge(status: string): string {
   return REVIEW_FORM_STATUS_BADGES[status] ?? "bg-muted text-muted-foreground border-transparent";
 }
-
-export type ReviewQuestionType = | "short_text" | "long_text" | "email" | "phone" | "number" | "date" | "datetime" | "single_choice" | "multiple_choice" | "select" | "rating" | "boolean" | "file";
 
 export const REVIEW_QUESTION_TYPES: ReviewQuestionType[] = [
   "short_text",

@@ -6,6 +6,7 @@ export interface APIAdminProject {
   client: string;
   cover: string;
   description: string;
+  isPublic: string;
   createdAt: string;
   updatedAt: string;
 }

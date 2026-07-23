@@ -16,6 +16,7 @@ export * from "./useReviewResponsesStore";
 export * from "./useShortLinksStore";
 export * from "./useServicesStore";
 export * from "./useStatsStore";
+export * from "./useStudentsStore";
 export * from "./useTestimonialsStore";
 export * from "./useTrainingsStore";
 export * from "./useUsersStore";

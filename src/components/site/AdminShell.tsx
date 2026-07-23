@@ -49,7 +49,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: "/admin/members/users", label: "Utilisateurs", icon: UserCheck },
       { to: "/admin/members/students", label: "Apprenants", icon: UserRoundPen },
-      { to: "/admin/reports", label: "Administrateurs", icon: UserStar },
+      { to: "/admin/member/admins", label: "Administrateurs", icon: UserStar },
     ],
   },
 ];

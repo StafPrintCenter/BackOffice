@@ -44,6 +44,8 @@ function AdminDetail() {
   const alertMutation = useAlertAdminAdmin();
   const blockMutation = useBlockAdminAdmin();
   const reactivateMutation = useReactivateAdminAdmin();
+  const revokeInviteMutation = useRevokeAdminAdminInvite();
+  const resendInviteMutation = useResendAdminAdminInvite();
 
   // États des modales
   const [alertOpen, setAlertOpen] = useState(false);

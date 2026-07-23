@@ -1,58 +1,74 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft,
-  Trash2,
-  Ban,
-  RotateCcw,
-  Loader2,
-  Mail,
-  User,
-  Calendar,
-  ShieldAlert,
-  FileText,
-  Tag,
-  Clock,
-  UserX,
-  UserCheck,
-} from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3 } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
-  useAdminNewsletterSubscriberDetail,
-  useDeleteAdminNewsletterSubscriber,
-  useBlockAdminNewsletterSubscriber,
-  useReactivateAdminNewsletterSubscriber,
-} from "@/stores/useNewsletterSubscribersStore";
+  useAdminReviewFormDetail,
+  useUpdateAdminReviewForm,
+  useDeleteAdminReviewForm,
+  usePublishAdminReviewForm,
+  useDisableAdminReviewForm,
+  useDuplicateAdminReviewForm,
+  useAdminReviewFormAnalytics,
+} from "@/stores/userReviewFormsStore";
+import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
+import type { AdminReviewFormPayload } from "@/data/reviewsForms";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/reviews/forms/$id")({
   head: () => ({
     meta: [
-      { title: `Abonné — Admin | ${SITE.name}` },
-      { name: "robots", content: "noindex" },
-    ],
+      { title: `Formulaire d'avis | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
   }),
-  component: SubscriberDetail,
+  component: ReviewFormDetail,
 });
 
-function SubscriberDetail() {
+function statusBadge(status: string) {
+  const map: Record<string, string> = {
+    draft: "bg-muted text-muted-foreground",
+    published: "bg-emerald-500/10 text-emerald-600",
+    disabled: "bg-destructive/10 text-destructive",
+  };
+  const label: Record<string, string> = { draft: "Brouillon", published: "Publié", disabled: "Désactivé" };
+  return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${map[status] ?? "bg-muted text-muted-foreground"}`}>{label[status] ?? status}</span>;
+}
+
+function ReviewFormDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
-  const { item: subscriber, isLoading } = useAdminNewsletterSubscriberDetail(id);
-  const removeMutation = useDeleteAdminNewsletterSubscriber();
-  const blockMutation = useBlockAdminNewsletterSubscriber();
-  const reactivateMutation = useReactivateAdminNewsletterSubscriber();
+  const { item: reviewForm, isLoading } = useAdminReviewFormDetail(id);
+  const { items: categories } = useAdminCategoriesList({ perPage: 100 });
+  const { analytics } = useAdminReviewFormAnalytics(id);
+  const updateMutation = useUpdateAdminReviewForm();
+  const removeMutation = useDeleteAdminReviewForm();
+  const publishMutation = usePublishAdminReviewForm();
+  const disableMutation = useDisableAdminReviewForm();
+  const duplicateMutation = useDuplicateAdminReviewForm();
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [form, setForm] = useState<AdminReviewFormPayload | null>(null);
   const [toDelete, setToDelete] = useState(false);
-  const [blockDialogOpen, setBlockDialogOpen] = useState(false);
-  const [reason, setReason] = useState("");
-  const [reasonError, setReasonError] = useState("");
+
+  useEffect(() => {
+    if (reviewForm && !form) {
+      setForm({
+        title: reviewForm.title,
+        description: reviewForm.description,
+        category_id: reviewForm.categoryId ?? "",
+        expires_at: reviewForm.expiresAt ?? "",
+        max_responses: reviewForm.maxResponses ?? undefined,
+        allow_response_edit: reviewForm.allowResponseEdit,
+      });
+    }
+  }, [reviewForm, form]);
 
   if (isLoading) {
     return (
@@ -64,296 +80,230 @@ function SubscriberDetail() {
     );
   }
 
-  if (!subscriber) {
+  if (!reviewForm || !form) {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/subscribers" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews/forms" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
-        <p className="text-muted-foreground">Abonné introuvable.</p>
+        <p className="text-muted-foreground">Formulaire introuvable.</p>
       </AdminShell>
     );
   }
 
-  const openBlockDialog = () => {
-    setReason("");
-    setReasonError("");
-    setBlockDialogOpen(true);
-  };
+  const isDraft = reviewForm.status === "draft";
+  const isPublished = reviewForm.status === "published";
 
-  const submitBlock = () => {
-    if (reason.trim().length < 2) {
-      setReasonError("La raison est obligatoire.");
-      return;
-    }
-    blockMutation.mutate(
-      { id: subscriber.id, payload: { reason: reason.trim() } },
-      {
-        onSuccess: () => {
-          toast.success("Abonné bloqué");
-          setBlockDialogOpen(false);
-        },
-        onError: () => toast.error("Erreur lors du blocage"),
-      }
-    );
-  };
-
-  const handleReactivate = () => {
-    reactivateMutation.mutate(subscriber.id, {
-      onSuccess: () => toast.success("Abonné réactivé"),
-      onError: () => toast.error("Erreur lors de la réactivation"),
+  const handleSave = () => {
+    const payload: AdminReviewFormPayload = {
+      ...form,
+      category_id: form.category_id || undefined,
+      expires_at: form.expires_at ? new Date(form.expires_at).toISOString() : undefined,
+    };
+    updateMutation.mutate({ id: reviewForm.id, payload }, {
+      onSuccess: () => { toast.success("Formulaire modifié"); setIsEditing(false); },
+      onError: () => toast.error("Erreur lors de la modification"),
     });
   };
 
-  const formatDate = (dateStr?: string | null) => {
-    if (!dateStr) return "—";
-    const cleaned = dateStr.includes("T") ? dateStr.replace("Z", "") : dateStr;
-    return new Date(cleaned).toLocaleString("fr-FR", {
-      dateStyle: "medium",
-      timeStyle: "short",
+  const handleCancel = () => {
+    setForm({
+      title: reviewForm.title,
+      description: reviewForm.description,
+      category_id: reviewForm.categoryId ?? "",
+      expires_at: reviewForm.expiresAt ?? "",
+      max_responses: reviewForm.maxResponses ?? undefined,
+      allow_response_edit: reviewForm.allowResponseEdit,
+    });
+    setIsEditing(false);
+  };
+
+  const handlePublish = () => {
+    publishMutation.mutate(reviewForm.id, {
+      onSuccess: () => toast.success("Formulaire publié"),
+      onError: () => toast.error("Erreur lors de la publication"),
     });
   };
 
-  const getInitials = (firstName?: string | null, lastName?: string | null, email?: string) => {
-    if (firstName || lastName) {
-      return `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
-    }
-    return email ? email[0].toUpperCase() : "A";
+  const handleDisable = () => {
+    disableMutation.mutate(reviewForm.id, {
+      onSuccess: () => toast.success("Formulaire désactivé"),
+      onError: () => toast.error("Erreur lors de la désactivation"),
+    });
   };
 
-  const categories = subscriber.categories ?? [];
+  const handleDuplicate = () => {
+    duplicateMutation.mutate(reviewForm.id, {
+      onSuccess: (dup) => {
+        toast.success("Formulaire dupliqué");
+        navigate({ to: "/admin/reviews/forms/$id", params: { id: dup.id } });
+      },
+      onError: () => toast.error("Erreur lors de la duplication"),
+    });
+  };
 
   return (
     <AdminShell>
-      {/* Barre d'actions */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/subscribers" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews/forms" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
-
-        <div className="flex items-center gap-2">
-          {subscriber.isBlocked ? (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleReactivate}
-              disabled={reactivateMutation.isPending}
-            >
-              {reactivateMutation.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-1" />
-              ) : (
-                <RotateCcw className="h-4 w-4 mr-1 text-emerald-600" />
-              )}
-              Réactiver
-            </Button>
+        <div className="flex flex-wrap gap-2">
+          {isEditing ? (
+            <>
+              <Button variant="outline" size="sm" onClick={handleCancel}>
+                <X className="h-4 w-4 mr-1" /> Annuler
+              </Button>
+              <Button size="sm" onClick={handleSave} disabled={updateMutation.isPending}>
+                <Save className="h-4 w-4 mr-1" /> Enregistrer
+              </Button>
+            </>
           ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-              onClick={openBlockDialog}
-            >
-              <Ban className="h-4 w-4 mr-1" /> Bloquer
-            </Button>
+            <>
+              <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                <Pencil className="h-4 w-4 mr-1" /> Modifier
+              </Button>
+              {isDraft && (
+                <Button size="sm" onClick={handlePublish} disabled={publishMutation.isPending}>
+                  <Rocket className="h-4 w-4 mr-1" /> Publier
+                </Button>
+              )}
+              {isPublished && (
+                <Button variant="outline" size="sm" onClick={handleDisable} disabled={disableMutation.isPending}>
+                  <Ban className="h-4 w-4 mr-1" /> Désactiver
+                </Button>
+              )}
+              <Button variant="outline" size="sm" onClick={handleDuplicate} disabled={duplicateMutation.isPending}>
+                <Copy className="h-4 w-4 mr-1" /> Dupliquer
+              </Button>
+              <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => setToDelete(true)}>
+                <Trash2 className="h-4 w-4 mr-1" /> Supprimer
+              </Button>
+            </>
           )}
-
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-            onClick={() => setToDelete(true)}
-          >
-            <Trash2 className="h-4 w-4 mr-1" /> Supprimer
-          </Button>
         </div>
       </div>
 
       <div className="max-w-4xl space-y-6">
-        {/* Carte Profil Abonné */}
-        <div className="rounded-2xl border bg-card p-6 md:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-6">
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary font-display text-xl font-bold">
-                {getInitials(subscriber.firstName, subscriber.lastName, subscriber.email)}
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          {statusBadge(reviewForm.status)}
+          {reviewForm.category && <span className="rounded-full bg-muted px-2 py-0.5">{reviewForm.category}</span>}
+          <span className="rounded-full bg-muted px-2 py-0.5">Par {reviewForm.createdBy}</span>
+          <span className="rounded-full bg-muted px-2 py-0.5">{reviewForm.responsesCount} réponse{reviewForm.responsesCount > 1 ? "s" : ""}{reviewForm.maxResponses ? ` / ${reviewForm.maxResponses}` : ""}</span>
+        </div>
+
+        {isEditing ? (
+          <div className="space-y-4 rounded-2xl border bg-card p-6">
+            <div>
+              <Label>Titre</Label>
+              <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+            </div>
+            <div>
+              <Label>Description</Label>
+              <Textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Label>Catégorie</Label>
+                <select
+                  value={form.category_id}
+                  onChange={(e) => setForm({ ...form, category_id: e.target.value })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">— Aucune —</option>
+                  {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
+                </select>
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="font-display text-2xl font-bold text-foreground">
-                    {subscriber.firstName || subscriber.lastName
-                      ? `${subscriber.firstName ?? ""} ${subscriber.lastName ?? ""}`.trim()
-                      : "Abonné sans nom"}
-                  </h1>
-                </div>
-                <a
-                  href={`mailto:${subscriber.email}`}
-                  className="mt-0.5 inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
-                >
-                  <Mail className="h-3.5 w-3.5" />
-                  {subscriber.email}
-                </a>
+                <Label>Expire le</Label>
+                <Input
+                  type="datetime-local"
+                  value={form.expires_at ? form.expires_at.slice(0, 16) : ""}
+                  onChange={(e) => setForm({ ...form, expires_at: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label>Nombre max. de réponses</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={form.max_responses ?? ""}
+                  onChange={(e) => setForm({ ...form, max_responses: e.target.value === "" ? undefined : Number(e.target.value) })}
+                />
+              </div>
+              <div className="flex items-end gap-3">
+                <Label className="mb-2">Réponses modifiables</Label>
+                <Switch checked={form.allow_response_edit} onCheckedChange={(v) => setForm({ ...form, allow_response_edit: v })} />
               </div>
             </div>
-
-            {/* Badges de statut */}
-            <div>
-              {subscriber.isBlocked ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive">
-                  <Ban className="h-3.5 w-3.5" /> Bloqué
-                </span>
-              ) : subscriber.isActive ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600">
-                  <UserCheck className="h-3.5 w-3.5" /> Actif
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-                  <UserX className="h-3.5 w-3.5" /> Désabonné
-                </span>
-              )}
-            </div>
           </div>
+        ) : (
+          <>
+            <h1 className="font-display text-3xl font-bold">{reviewForm.title}</h1>
+            <p className="text-muted-foreground">{reviewForm.description}</p>
+          </>
+        )}
 
-          {/* Section Catégories d'intérêt */}
-          <div className="mt-6">
-            <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-              <Tag className="h-3.5 w-3.5 text-primary" /> Catégories d'intérêt
+        {!isEditing && (
+          <div className="rounded-2xl border bg-card p-6">
+            <div className="mb-4 flex items-center gap-2 font-display text-lg font-semibold">
+              <BarChart3 className="h-5 w-5 text-primary" /> Analyses
             </div>
-            {categories.length === 0 ? (
-              <p className="text-xs text-muted-foreground italic">Aucune catégorie sélectionnée</p>
+            {analytics ? (
+              <div className="space-y-2">
+                <div className="text-sm text-muted-foreground">{analytics.totalResponses} réponse{analytics.totalResponses > 1 ? "s" : ""} au total</div>
+                <div className="divide-y rounded-lg border">
+                  {analytics.questions.map((q) => (
+                    <div key={q.questionId} className="flex items-center justify-between p-3 text-sm">
+                      <div>
+                        <div className="font-medium">{q.title}</div>
+                        <div className="text-xs text-muted-foreground">{q.type}</div>
+                      </div>
+                      <span className="text-sm font-semibold text-primary">{q.responses}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ) : (
-              <div className="flex flex-wrap gap-1.5">
-                {categories.map((c) => (
-                  <span
-                    key={c.id}
-                    className="inline-flex items-center rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-foreground"
-                  >
-                    {c.name}
-                  </span>
+              <div className="text-sm text-muted-foreground">Chargement des analyses...</div>
+            )}
+          </div>
+        )}
+
+        {!isEditing && (
+          <div className="rounded-2xl border bg-card p-6">
+            <div className="mb-4 font-display text-lg font-semibold">Questions</div>
+            {reviewForm.questions.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Aucune question pour le moment.</p>
+            ) : (
+              <div className="space-y-2">
+                {[...reviewForm.questions].sort((a, b) => a.order - b.order).map((q) => (
+                  <div key={q.id} className="rounded-lg border p-3 text-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="font-medium">{q.title}{q.isRequired && <span className="ml-1 text-destructive">*</span>}</div>
+                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">{q.type}</span>
+                    </div>
+                    {q.description && <div className="mt-1 text-xs text-muted-foreground">{q.description}</div>}
+                  </div>
                 ))}
               </div>
             )}
           </div>
-        </div>
-
-        {/* Alerte si bloqué */}
-        {subscriber.isBlocked && subscriber.blockedReason && (
-          <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 space-y-2">
-            <div className="flex items-center gap-2 font-display text-base font-semibold text-destructive">
-              <ShieldAlert className="h-5 w-5" /> Raison du blocage
-            </div>
-            <p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap bg-background/60 p-3.5 rounded-xl border border-destructive/20">
-              {subscriber.blockedReason}
-            </p>
-          </div>
         )}
-
-        {/* Section Notes internes */}
-        {subscriber.notes && (
-          <div className="rounded-2xl border bg-card p-6 space-y-3">
-            <div className="flex items-center gap-2 font-display text-base font-semibold border-b pb-3">
-              <FileText className="h-4 w-4 text-primary" /> Notes internes
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap rounded-xl bg-muted/40 p-4 border">
-              {subscriber.notes}
-            </p>
-          </div>
-        )}
-
-        {/* Grille d'historique temporel */}
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-2xl border bg-card p-4 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Calendar className="h-3.5 w-3.5 text-primary" /> Abonné le
-            </div>
-            <div className="text-sm font-semibold text-foreground">
-              {formatDate(subscriber.subscribedAt)}
-            </div>
-          </div>
-
-          {subscriber.unsubscribedAt && (
-            <div className="rounded-2xl border bg-card p-4 space-y-1">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <UserX className="h-3.5 w-3.5 text-amber-600" /> Désabonné le
-              </div>
-              <div className="text-sm font-semibold text-foreground">
-                {formatDate(subscriber.unsubscribedAt)}
-              </div>
-            </div>
-          )}
-
-          {subscriber.blockedAt && (
-            <div className="rounded-2xl border bg-card p-4 space-y-1">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Ban className="h-3.5 w-3.5 text-destructive" /> Bloqué le
-              </div>
-              <div className="text-sm font-semibold text-foreground">
-                {formatDate(subscriber.blockedAt)}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Métadonnées de création / modification */}
-        <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5" />
-            <span>Créé le : <b className="text-foreground">{formatDate(subscriber.createdAt)}</b></span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5" />
-            <span>Dernière modification : <b className="text-foreground">{formatDate(subscriber.updatedAt)}</b></span>
-          </div>
-        </div>
       </div>
 
-      {/* Modal de blocage */}
-      <Dialog open={blockDialogOpen} onOpenChange={setBlockDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Ban className="h-5 w-5 text-destructive" /> Bloquer cet abonné
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 pt-2">
-            <div>
-              <Label className="text-xs">Raison du blocage *</Label>
-              <Textarea
-                rows={4}
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                placeholder="Ex : demande de désabonnement forcé, adresse invalide, comportement inapproprié..."
-                className="mt-1 text-sm"
-              />
-              {reasonError && <p className="text-xs text-destructive mt-1.5 font-medium">{reasonError}</p>}
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setBlockDialogOpen(false)}>
-              Annuler
-            </Button>
-            <Button variant="destructive" onClick={submitBlock} disabled={blockMutation.isPending}>
-              {blockMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
-              Confirmer le blocage
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Modal de confirmation de suppression */}
       <ConfirmDelete
         open={toDelete}
         onOpenChange={setToDelete}
         onConfirm={() => {
-          removeMutation.mutate(subscriber.id, {
-            onSuccess: () => {
-              toast.success("Abonné supprimé");
-              navigate({ to: "/admin/newsletter/subscribers" });
-            },
+          removeMutation.mutate(reviewForm.id, {
+            onSuccess: () => { toast.success("Formulaire supprimé"); navigate({ to: "/admin/reviews/forms" }); },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}
-        title={`Supprimer l'abonné "${subscriber.email}" ?`}
+        title={`Supprimer "${reviewForm.title}" ?`}
       />
     </AdminShell>
   );

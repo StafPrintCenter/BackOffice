@@ -1,4 +1,4 @@
-export type NewsletterCampaignStatus = "draft" | "scheduled" | "sent" | string;
+export type NewsletterCampaignStatus = "draft" | "scheduled" | "sent";
 
 export type APIAdminNewsletterCampaignListItem = {
   id: string;

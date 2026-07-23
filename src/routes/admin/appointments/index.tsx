@@ -2,15 +2,30 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { MapPin, Video } from "lucide-react";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { useAdminAppointmentsList } from "@/stores/useAppointmentsStore";
-import { APPOINTMENT_MODE_LABELS, APPOINTMENT_STATUS_BADGES, APPOINTMENT_STATUS_LABELS, type APIAdminAppointment, type AppointmentMode, } from "@/data/appointments";
+import {
+  APPOINTMENT_MODE_LABELS,
+  APPOINTMENT_STATUS_BADGES,
+  APPOINTMENT_STATUS_LABELS,
+  type APIAdminAppointment,
+  type AppointmentMode,
+} from "@/data/appointments";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/appointments/")({
-  head: () => ({ meta: [{ title: "Rendez-vous — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Rendez-vous | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: AdminAppointments,
 });
 
-const modeIcon = (m: AppointmentMode) =>
+// Export de modeIcon pour $id.tsx
+export const modeIcon = (m: AppointmentMode) =>
   ({ presentiel: MapPin, en_ligne: Video }[m]);
+
+// Export de modeLabel pour $id.tsx
+export const modeLabel = (m: AppointmentMode) => APPOINTMENT_MODE_LABELS[m];
 
 function AdminAppointments() {
   const navigate = useNavigate();
@@ -32,13 +47,13 @@ function AdminAppointments() {
             label: "Créneau",
             render: (r) => {
               const dateObj = new Date(r.scheduledAt.replace("Z", ""));
-              const dateFormatted = dateObj.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric", });
-              const timeFormatted = dateObj.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", });
+              const dateFormatted = dateObj.toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+              const timeFormatted = dateObj.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 
               return (
                 <div className="text-xs">
                   <div className="font-medium text-foreground">{dateFormatted}</div>
-                  <div className="text-muted-foreground mt-0.5">
+                  <div className="mt-0.5 text-muted-foreground">
                     {timeFormatted} · {r.duration} min
                   </div>
                 </div>
@@ -62,7 +77,7 @@ function AdminAppointments() {
               const Icon = modeIcon(r.mode);
               return (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2 py-0.5 text-xs font-medium">
-                  <Icon className="h-3 w-3" /> {APPOINTMENT_MODE_LABELS[r.mode]}
+                  <Icon className="h-3 w-3" /> {modeLabel(r.mode)}
                 </span>
               );
             },
@@ -70,7 +85,7 @@ function AdminAppointments() {
           {
             key: "subject",
             label: "Sujet",
-            render: (r) => <span className="text-xs font-medium line-clamp-1 max-w-md">{r.subject}</span>,
+            render: (r) => <span className="line-clamp-1 max-w-md text-xs font-medium">{r.subject}</span>,
           },
           {
             key: "status",

@@ -54,11 +54,3 @@ export interface AdminShortLinkPayload {
   activate_at?: string;
   expires_at?: string;
 }
-
-export interface ShortLinkStats {
-  alias: string;
-  totalClicks: number;
-  byCountry: { country: string; total: number }[];
-  byDevice: { device: string; total: number }[];
-  byDay: { day: string; total: number }[];
-}

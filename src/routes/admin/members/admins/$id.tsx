@@ -14,10 +14,9 @@ import {
   useBlockAdminAdmin,
   useReactivateAdminAdmin,
 } from "@/stores/useAdminsStore";
+import { useCurrentAdmin } from "@/stores/useAuthStore";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS } from "@/data/admins";
 import { SITE } from "@/data/site";
-// ⚠️ À adapter : remplacez par le vrai hook d'authentification du projet.
-import { useCurrentAdmin } from "@/stores/useAuthStore";
 
 export const Route = createFileRoute("/admin/members/admins/$id")({
   head: () => ({
@@ -29,13 +28,18 @@ export const Route = createFileRoute("/admin/members/admins/$id")({
 function AdminDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
+
+  // Données de l'administrateur consulté
   const { item: admin, isLoading } = useAdminAdminDetail(id);
+  // Administrateur actuellement connecté
   const { admin: currentAdmin } = useCurrentAdmin();
 
+  // Mutations
   const alertMutation = useAlertAdminAdmin();
   const blockMutation = useBlockAdminAdmin();
   const reactivateMutation = useReactivateAdminAdmin();
 
+  // Modales d'action
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertForm, setAlertForm] = useState({ subject: "", message: "" });
   const [alertErrors, setAlertErrors] = useState<Record<string, string>>({});
@@ -48,7 +52,7 @@ function AdminDetail() {
     return (
       <AdminShell>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
-          <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement...
+          <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement des détails...
         </div>
       </AdminShell>
     );
@@ -82,7 +86,7 @@ function AdminDetail() {
       { id: admin.id, subject: alertForm.subject, message: alertForm.message },
       {
         onSuccess: () => {
-          toast.success("Alerte envoyée");
+          toast.success("Alerte envoyée avec succès");
           setAlertOpen(false);
           setAlertForm({ subject: "", message: "" });
         },
@@ -119,10 +123,12 @@ function AdminDetail() {
 
   return (
     <AdminShell>
+      {/* Barre d'actions supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/members/admins" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
+
         {!isSelf && (
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" size="sm" onClick={() => setAlertOpen(true)}>
@@ -147,17 +153,22 @@ function AdminDetail() {
       </div>
 
       <div className="max-w-2xl space-y-6">
+        {/* Message d'avertissement compte personnel */}
         {isSelf && (
           <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-2 text-xs text-amber-700">
             C'est votre propre compte : vous ne pouvez pas vous alerter ni vous bloquer vous-même.
           </div>
         )}
 
-        <div className="rounded-2xl border bg-card p-6">
+        {/* Fiche d'informations principale */}
+        <div className="rounded-2xl border bg-card p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h1 className="font-display text-2xl font-bold">{admin.fullname}</h1>
-            <div className="flex gap-2">
-              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${ADMIN_LEVEL_BADGES[admin.level] ?? "bg-muted text-muted-foreground"}`}>
+            <div className="flex items-center gap-2">
+              <span
+                className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${ADMIN_LEVEL_BADGES[admin.level] ?? "bg-muted text-muted-foreground"
+                  }`}
+              >
                 {ADMIN_LEVEL_LABELS[admin.level] ?? admin.level}
               </span>
               <span
@@ -176,59 +187,123 @@ function AdminDetail() {
               </span>
             </div>
           </div>
-          <div className="text-sm text-muted-foreground">{admin.email}</div>
 
-          <div className="mt-4 grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
-            {admin.invitedBy && <div>Invité par : <b className="text-foreground">{admin.invitedBy}</b></div>}
-            {admin.invitedAt && <div>Invité le : <b className="text-foreground">{new Date(admin.invitedAt).toLocaleString()}</b></div>}
-            {admin.acceptedAt && <div>Invitation acceptée le : <b className="text-foreground">{new Date(admin.acceptedAt).toLocaleString()}</b></div>}
-            <div>Ajouté le : <b className="text-foreground">{new Date(admin.createdAt).toLocaleString()}</b></div>
-            {admin.bio && <div className="sm:col-span-2">Bio : <span className="text-foreground">{admin.bio}</span></div>}
+          <p className="mt-1 text-sm text-muted-foreground">{admin.email}</p>
+
+          {/* Grille de métadonnées */}
+          <div className="mt-6 grid gap-3 border-t pt-4 text-xs text-muted-foreground sm:grid-cols-2">
+            {admin.invitedBy && (
+              <div>
+                Invité par : <b className="font-medium text-foreground">{admin.invitedBy}</b>
+              </div>
+            )}
+            {admin.invitedAt && (
+              <div>
+                Invité le : <b className="font-medium text-foreground">{new Date(admin.invitedAt).toLocaleString()}</b>
+              </div>
+            )}
+            {admin.acceptedAt && (
+              <div>
+                Invitation acceptée le :{" "}
+                <b className="font-medium text-foreground">{new Date(admin.acceptedAt).toLocaleString()}</b>
+              </div>
+            )}
+            <div>
+              Ajouté le : <b className="font-medium text-foreground">{new Date(admin.createdAt).toLocaleString()}</b>
+            </div>
+
+            {admin.bio && (
+              <div className="sm:col-span-2 border-t pt-2 mt-1">
+                Bio : <span className="text-foreground">{admin.bio}</span>
+              </div>
+            )}
+
             {admin.isBlocked && (
-              <>
-                <div>Bloqué le : <b className="text-foreground">{admin.blockedAt ? new Date(admin.blockedAt).toLocaleString() : "—"}</b></div>
-                <div className="sm:col-span-2">Motif : <b className="text-foreground">{admin.blockedReason ?? "—"}</b></div>
-              </>
+              <div className="sm:col-span-2 rounded-md bg-rose-500/5 p-3 border border-rose-500/10 mt-2 space-y-1">
+                <div>
+                  Bloqué le :{" "}
+                  <b className="font-medium text-foreground">
+                    {admin.blockedAt ? new Date(admin.blockedAt).toLocaleString() : "—"}
+                  </b>
+                </div>
+                <div>
+                  Motif : <b className="font-medium text-foreground">{admin.blockedReason ?? "—"}</b>
+                </div>
+              </div>
             )}
           </div>
         </div>
       </div>
 
+      {/* Modales d'action */}
       {!isSelf && (
         <>
+          {/* Dialog d'alerte */}
           <Dialog open={alertOpen} onOpenChange={setAlertOpen}>
             <DialogContent>
-              <DialogHeader><DialogTitle>Envoyer une alerte</DialogTitle></DialogHeader>
-              <div className="space-y-4">
+              <DialogHeader>
+                <DialogTitle>Envoyer une alerte à {admin.fullname}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 py-2">
                 <div>
-                  <Label>Sujet</Label>
-                  <Input value={alertForm.subject} onChange={(e) => setAlertForm({ ...alertForm, subject: e.target.value })} />
-                  {alertErrors.subject && <p className="text-xs text-destructive mt-1">{alertErrors.subject}</p>}
+                  <Label htmlFor="alert-subject">Sujet</Label>
+                  <Input
+                    id="alert-subject"
+                    value={alertForm.subject}
+                    onChange={(e) => setAlertForm({ ...alertForm, subject: e.target.value })}
+                    placeholder="ex: Inactivité prolongée"
+                  />
+                  {alertErrors.subject && <p className="mt-1 text-xs text-destructive">{alertErrors.subject}</p>}
                 </div>
                 <div>
-                  <Label>Message</Label>
-                  <Textarea rows={4} value={alertForm.message} onChange={(e) => setAlertForm({ ...alertForm, message: e.target.value })} />
-                  {alertErrors.message && <p className="text-xs text-destructive mt-1">{alertErrors.message}</p>}
+                  <Label htmlFor="alert-message">Message</Label>
+                  <Textarea
+                    id="alert-message"
+                    rows={4}
+                    value={alertForm.message}
+                    onChange={(e) => setAlertForm({ ...alertForm, message: e.target.value })}
+                    placeholder="Précisez la raison de cet avertissement..."
+                  />
+                  {alertErrors.message && <p className="mt-1 text-xs text-destructive">{alertErrors.message}</p>}
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setAlertOpen(false)}>Annuler</Button>
-                <Button onClick={submitAlert} disabled={alertMutation.isPending}>Envoyer</Button>
+                <Button variant="outline" onClick={() => setAlertOpen(false)}>
+                  Annuler
+                </Button>
+                <Button onClick={submitAlert} disabled={alertMutation.isPending}>
+                  {alertMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Envoyer
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
 
+          {/* Dialog de blocage */}
           <Dialog open={blockOpen} onOpenChange={setBlockOpen}>
             <DialogContent>
-              <DialogHeader><DialogTitle>Bloquer {admin.fullname}</DialogTitle></DialogHeader>
-              <div>
-                <Label>Motif du blocage</Label>
-                <Textarea rows={3} value={blockReason} onChange={(e) => setBlockReason(e.target.value)} />
-                {blockError && <p className="text-xs text-destructive mt-1">{blockError}</p>}
+              <DialogHeader>
+                <DialogTitle>Bloquer {admin.fullname}</DialogTitle>
+              </DialogHeader>
+              <div className="py-2">
+                <Label htmlFor="block-reason">Motif du blocage</Label>
+                <Textarea
+                  id="block-reason"
+                  rows={3}
+                  value={blockReason}
+                  onChange={(e) => setBlockReason(e.target.value)}
+                  placeholder="Expliquez pourquoi cet administrateur est bloqué..."
+                />
+                {blockError && <p className="mt-1 text-xs text-destructive">{blockError}</p>}
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setBlockOpen(false)}>Annuler</Button>
-                <Button variant="destructive" onClick={submitBlock} disabled={blockMutation.isPending}>Bloquer</Button>
+                <Button variant="outline" onClick={() => setBlockOpen(false)}>
+                  Annuler
+                </Button>
+                <Button variant="destructive" onClick={submitBlock} disabled={blockMutation.isPending}>
+                  {blockMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Bloquer
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

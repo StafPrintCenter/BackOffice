@@ -1,74 +1,162 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { z } from "zod";
 import { ArrowLeft } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useAdminNewsletterSubscribersList, useDeleteAdminNewsletterSubscriber } from "@/stores/useNewsletterSubscribersStore";
-import type { APIAdminNewsletterSubscriberListItem } from "@/data/newsletterSubscriber";
+import { Switch } from "@/components/ui/switch";
+import { useAdminReviewFormsList, useCreateAdminReviewForm, useDeleteAdminReviewForm } from "@/stores/userReviewFormsStore";
+import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
+import type { APIAdminReviewFormListItem, AdminReviewFormPayload } from "@/data/reviewsForms";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/reviews/forms/")({
   head: () => ({
     meta: [
-      { title: `Abonnés newsletter | ${SITE.name}` },
+      { title: `Formulaires d'avis | ${SITE.name}` },
       { name: "robots", content: "noindex" }]
   }),
-  component: AdminNewsletterSubscribers,
+  component: AdminReviewForms,
 });
 
-function statusBadge(row: APIAdminNewsletterSubscriberListItem) {
-  if (row.isBlocked) return <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive">Bloqué</span>;
-  if (!row.isActive) return <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">Désabonné</span>;
-  return <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-600">Actif</span>;
+const schema = z.object({
+  title: z.string().trim().min(2).max(150),
+  description: z.string().trim().min(2).max(1000),
+  category_id: z.string().trim().optional(),
+  expires_at: z.string().trim().optional(),
+  max_responses: z.number().int().min(0).optional(),
+  allow_response_edit: z.boolean(),
+});
+type FormValues = z.infer<typeof schema>;
+const empty: FormValues = { title: "", description: "", category_id: "", expires_at: "", max_responses: undefined, allow_response_edit: true };
+
+function statusBadge(status: string) {
+  const map: Record<string, string> = {
+    draft: "bg-muted text-muted-foreground",
+    published: "bg-emerald-500/10 text-emerald-600",
+    disabled: "bg-destructive/10 text-destructive",
+  };
+  const label: Record<string, string> = { draft: "Brouillon", published: "Publié", disabled: "Désactivé" };
+  return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${map[status] ?? "bg-muted text-muted-foreground"}`}>{label[status] ?? status}</span>;
 }
 
-function AdminNewsletterSubscribers() {
+function AdminReviewForms() {
   const navigate = useNavigate();
-  const { items, isLoading } = useAdminNewsletterSubscribersList({ perPage: 100 });
-  const removeMutation = useDeleteAdminNewsletterSubscriber();
+  const { items, isLoading } = useAdminReviewFormsList({ perPage: 100 });
+  const { items: categories } = useAdminCategoriesList({ perPage: 100 });
 
-  const [toDelete, setToDelete] = useState<APIAdminNewsletterSubscriberListItem | null>(null);
+  const createMutation = useCreateAdminReviewForm();
+  const removeMutation = useDeleteAdminReviewForm();
+
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState<FormValues>(empty);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [toDelete, setToDelete] = useState<APIAdminReviewFormListItem | null>(null);
+
+  const openCreate = () => { setForm(empty); setErrors({}); setOpen(true); };
+
+  const submit = () => {
+    const parsed = schema.safeParse(form);
+    if (!parsed.success) {
+      const errs: Record<string, string> = {};
+      parsed.error.issues.forEach((i) => { errs[i.path[0] as string] = i.message; });
+      setErrors(errs);
+      return;
+    }
+    const payload: AdminReviewFormPayload = {
+      title: parsed.data.title,
+      description: parsed.data.description,
+      category_id: parsed.data.category_id || undefined,
+      expires_at: parsed.data.expires_at ? new Date(parsed.data.expires_at).toISOString() : undefined,
+      max_responses: parsed.data.max_responses,
+      allow_response_edit: parsed.data.allow_response_edit,
+    };
+    createMutation.mutate(payload, {
+      onSuccess: () => { toast.success("Formulaire créé en brouillon"); setOpen(false); },
+      onError: () => toast.error("Erreur lors de la création"),
+    });
+  };
 
   return (
     <AdminShell>
       <div className="mb-4">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
       </div>
-      <PageHeader title="Abonnés newsletter" description="Consultez, bloquez, réactivez ou supprimez les abonnés." />
-      <DataTable<APIAdminNewsletterSubscriberListItem>
+      <PageHeader title="Formulaires d'avis" description="Créez et gérez vos formulaires de collecte d'avis." />
+      <DataTable<APIAdminReviewFormListItem>
         data={items}
         isLoading={isLoading}
-        searchKeys={["email", "firstName", "lastName"]}
-        onView={(r) => navigate({ to: "/admin/newsletter/subscribers/$id", params: { id: r.id } })}
+        searchKeys={["title", "description"]}
+        onCreate={openCreate}
+        onView={(r) => navigate({ to: "/admin/reviews/forms/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
-          { key: "email", label: "Email", render: (r) => <div><div className="font-medium">{r.firstName} {r.lastName}</div><div className="text-xs text-muted-foreground">{r.email}</div></div> },
-          {
-            key: "categories", label: "Catégories", render: (r) => (
-              <div className="flex flex-wrap gap-1">
-                {r.categories.length === 0
-                  ? <span className="text-xs text-muted-foreground">—</span>
-                  : r.categories.map((c) => <span key={c.id} className="rounded-full bg-muted px-2 py-0.5 text-[10px]">{c.name}</span>)}
-              </div>
-            )
-          },
-          { key: "status", label: "Statut", render: (r) => statusBadge(r) },
-          {
-            key: "subscribedAt",
-            label: "Abonné le",
-            render: (r) => (
-              <span className="text-xs text-muted-foreground">
-                {new Date(r.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
-                  dateStyle: "short", timeStyle: "medium",
-                })}
-              </span>
-            ),
-          },
+          { key: "title", label: "Titre", render: (r) => <div><div className="font-medium">{r.title}</div><div className="text-xs text-muted-foreground line-clamp-1">{r.description}</div></div> },
+          { key: "category", label: "Catégorie", render: (r) => <span className="text-xs">{r.category ?? "—"}</span> },
+          { key: "status", label: "Statut", render: (r) => statusBadge(r.status) },
+          { key: "responsesCount", label: "Réponses", render: (r) => <span className="text-xs">{r.responsesCount}{r.maxResponses ? ` / ${r.maxResponses}` : ""}</span> },
+          { key: "expiresAt", label: "Expire le", render: (r) => r.expiresAt ? new Date(r.expiresAt).toLocaleDateString("fr-FR") : "—" },
         ]}
       />
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader><DialogTitle>Nouveau formulaire</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Titre</Label>
+              <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+              {errors.title && <p className="text-xs text-destructive mt-1">{errors.title}</p>}
+            </div>
+            <div>
+              <Label>Description</Label>
+              <Textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+              {errors.description && <p className="text-xs text-destructive mt-1">{errors.description}</p>}
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Label>Catégorie (optionnel)</Label>
+                <select
+                  value={form.category_id}
+                  onChange={(e) => setForm({ ...form, category_id: e.target.value })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">— Aucune —</option>
+                  {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
+                </select>
+              </div>
+              <div>
+                <Label>Expire le (optionnel)</Label>
+                <Input type="datetime-local" value={form.expires_at} onChange={(e) => setForm({ ...form, expires_at: e.target.value })} />
+              </div>
+              <div>
+                <Label>Nombre max. de réponses (optionnel)</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={form.max_responses ?? ""}
+                  onChange={(e) => setForm({ ...form, max_responses: e.target.value === "" ? undefined : Number(e.target.value) })}
+                />
+              </div>
+              <div className="flex items-end gap-3">
+                <Label className="mb-2">Réponses modifiables</Label>
+                <Switch checked={form.allow_response_edit} onCheckedChange={(v) => setForm({ ...form, allow_response_edit: v })} />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button>
+            <Button onClick={submit} disabled={createMutation.isPending}>Créer en brouillon</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <ConfirmDelete
         open={!!toDelete}
@@ -76,11 +164,11 @@ function AdminNewsletterSubscribers() {
         onConfirm={() => {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
-            onSuccess: () => { toast.success("Abonné supprimé"); setToDelete(null); },
+            onSuccess: () => { toast.success("Formulaire supprimé"); setToDelete(null); },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}
-        title={`Supprimer l'abonné "${toDelete?.email}" ?`}
+        title={`Supprimer "${toDelete?.title}" ?`}
       />
     </AdminShell>
   );

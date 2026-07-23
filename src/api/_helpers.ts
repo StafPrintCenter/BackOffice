@@ -1,5 +1,3 @@
-export const delay = (ms = 300) => new Promise<void>((r) => setTimeout(r, ms));
-
 export const uid = () => Math.random().toString(36).slice(2, 10);
 
 export const slugify = (s: string) =>

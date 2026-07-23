@@ -102,9 +102,6 @@ export const REVIEW_QUESTION_TYPE_BADGES: Record<ReviewQuestionType | string, st
   file: "bg-rose-500/10 text-rose-600 border-rose-500/20",
 };
 
-/** Payload d'écriture pour une question. `validation_rules`/`options`/`settings` doivent être
- *  pré-sérialisés en chaîne JSON par l'appelant (le multipart ne transporte pas d'objets bruts) —
- *  contrairement aux types de lecture (AdminReviewFormQuestion) où ce sont des objets/tableaux. */
 export interface AdminReviewQuestionPayload {
   type: ReviewQuestionType;
   title: string;

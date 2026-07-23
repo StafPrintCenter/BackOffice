@@ -1,11 +1,10 @@
 export type ReviewFormStatus = "draft" | "published" | "disabled" | string;
 
-export type ReviewQuestionType = | "short_text" | "long_text" | "email" | "phone" | "number" | "date" | "datetime" | "single_choice" | "multiple_choice" | "select" | "rating" | "boolean" | "file";
-
-/** Le détail des règles (validationRules/options/settings) */
+/** Le détail des règles (validationRules/options/settings) n'est pas entièrement documenté par les exemples
+ *  fournis (aucune valeur peuplée observée pour `options`) — typé de façon permissive en attendant confirmation. */
 export interface AdminReviewFormQuestion {
   id: string;
-  type: ReviewQuestionType | string;
+  type: string; // ex: "short_text", "long_text", "file"...
   title: string;
   description: string | null;
   order: number;
@@ -44,34 +43,33 @@ export interface AdminReviewFormPayload {
   allow_response_edit: boolean;
 }
 
-export interface AdminReviewFormAnalyticsQuestion {
-  questionId: string;
-  title: string;
-  type: ReviewQuestionType | string;
-  responses: number;
-}
-
-export interface AdminReviewFormAnalytics {
-  formId: string;
-  totalResponses: number;
-  questions: AdminReviewFormAnalyticsQuestion[];
-}
-
-export const REVIEW_FORM_STATUS_BADGES: Record<string, string> = {
-  draft: "bg-muted text-muted-foreground border-border",
-  published: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
-  disabled: "bg-rose-500/10 text-rose-600 border-rose-500/20",
-};
-
-export const REVIEW_FORM_STATUS_LABELS: Record<string, string> = {
+export const REVIEW_FORM_STATUS_LABELS: Record<ReviewFormStatus | string, string> = {
   draft: "Brouillon",
   published: "Publié",
   disabled: "Désactivé",
 };
 
-/**
- * Mapping FR pour les types de questions de formulaire
- */
+export const REVIEW_FORM_STATUS_BADGES: Record<ReviewFormStatus | string, string> = {
+  draft: "bg-muted text-muted-foreground border-transparent",
+  published: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+  disabled: "bg-destructive/10 text-destructive border-destructive/20",
+};
+
+export type ReviewQuestionType =
+  | "short_text"
+  | "long_text"
+  | "email"
+  | "phone"
+  | "number"
+  | "date"
+  | "datetime"
+  | "single_choice"
+  | "multiple_choice"
+  | "select"
+  | "rating"
+  | "boolean"
+  | "file";
+
 export const REVIEW_QUESTION_TYPE_LABELS: Record<ReviewQuestionType | string, string> = {
   short_text: "Texte court",
   long_text: "Texte long",
@@ -88,9 +86,6 @@ export const REVIEW_QUESTION_TYPE_LABELS: Record<ReviewQuestionType | string, st
   file: "Fichier / Pièce jointe",
 };
 
-/**
- * Configuration optionnelle pour afficher des badges ou icônes spécifiques aux types
- */
 export const REVIEW_QUESTION_TYPE_BADGES: Record<ReviewQuestionType | string, string> = {
   short_text: "bg-blue-500/10 text-blue-600 border-blue-500/20",
   long_text: "bg-indigo-500/10 text-indigo-600 border-indigo-500/20",
@@ -106,3 +101,30 @@ export const REVIEW_QUESTION_TYPE_BADGES: Record<ReviewQuestionType | string, st
   boolean: "bg-zinc-500/10 text-zinc-600 border-zinc-500/20",
   file: "bg-rose-500/10 text-rose-600 border-rose-500/20",
 };
+
+/** Payload d'écriture pour une question. `validation_rules`/`options`/`settings` doivent être
+ *  pré-sérialisés en chaîne JSON par l'appelant (le multipart ne transporte pas d'objets bruts) —
+ *  contrairement aux types de lecture (AdminReviewFormQuestion) où ce sont des objets/tableaux. */
+export interface AdminReviewQuestionPayload {
+  type: ReviewQuestionType;
+  title: string;
+  description?: string;
+  order: number;
+  is_required: boolean;
+  validation_rules?: string;
+  options?: string;
+  settings?: string;
+}
+
+export interface AdminReviewFormAnalyticsQuestion {
+  questionId: string;
+  title: string;
+  type: string;
+  responses: number;
+}
+
+export interface AdminReviewFormAnalytics {
+  formId: string;
+  totalResponses: number;
+  questions: AdminReviewFormAnalyticsQuestion[];
+}

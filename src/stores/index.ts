@@ -6,6 +6,7 @@ export * from "./useCategoriesStore";
 export * from "./useContactsStore";
 export * from "./useFaqsStore";
 export * from "./useNewsletterSubscribersStore";
+export * from "./useNewsletterSubscribersStore";
 export * from "./useProjectsStore";
 export * from "./useReportsStore";
 export * from "./useShortLinksStore";

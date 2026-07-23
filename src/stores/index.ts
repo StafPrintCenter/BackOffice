@@ -5,7 +5,7 @@ export * from "./useArticlesStore";
 export * from "./useCategoriesStore";
 export * from "./useContactsStore";
 export * from "./useFaqsStore";
-export * from "./useNewsletterCampaignsStore.ts";
+export * from "./useNewsletterCampaignsStore";
 export * from "./useNewsletterSubscribersStore";
 export * from "./useProjectsStore";
 export * from "./useReportsStore";

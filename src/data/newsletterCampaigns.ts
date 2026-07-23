@@ -1,29 +1,28 @@
-export interface APIAdminNewsletterCategoryRef {
-  id: string;
-  name: string;
-  slug: string;
-}
+export type NewsletterCampaignStatus = "draft" | "scheduled" | "sent" | string;
 
-export type APIAdminNewsletterSubscriberListItem = {
+export type APIAdminNewsletterCampaignListItem = {
   id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  notes: string | null;
-  categories: APIAdminNewsletterCategoryRef[];
-  isActive: boolean;
-  isBlocked: boolean;
-  subscribedAt: string;
-  unsubscribedAt: string | null;
-  blockedAt: string | null;
+  subject: string;
+  category: string | null;
+  sentBy: string;
+  recipientsCount: number | null;
+  status: NewsletterCampaignStatus;
+  scheduledAt: string | null;
+  sentAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
 
-export type APIAdminNewsletterSubscriberDetail = APIAdminNewsletterSubscriberListItem & {
-  blockedReason: string | null;
+export type APIAdminNewsletterCampaignDetail = APIAdminNewsletterCampaignListItem & {
+  body: string;
 };
 
-export interface AdminNewsletterBlockPayload {
-  reason: string;
+export interface AdminNewsletterCampaignPayload {
+  subject: string;
+  body: string;
+  category_id?: string;
+}
+
+export interface AdminNewsletterCampaignSchedulePayload {
+  scheduled_at: string; // ISO 8601
 }

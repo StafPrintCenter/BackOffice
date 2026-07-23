@@ -22,6 +22,8 @@ import {
   type AdminReviewFormPayload,
   REVIEW_FORM_STATUS_BADGES,
   REVIEW_FORM_STATUS_LABELS,
+  REVIEW_QUESTION_TYPE_LABELS,
+  REVIEW_QUESTION_TYPE_BADGES,
 } from "@/data/reviewsForms";
 import { SITE } from "@/data/site";
 
@@ -276,7 +278,9 @@ function ReviewFormDetail() {
                     <div key={q.questionId} className="flex items-center justify-between p-3 text-sm">
                       <div>
                         <div className="font-medium">{q.title}</div>
-                        <div className="text-xs text-muted-foreground">{q.type}</div>
+                        <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${REVIEW_QUESTION_TYPE_BADGES[q.type] ?? "bg-muted text-muted-foreground"}`}>
+                          {REVIEW_QUESTION_TYPE_LABELS[q.type] ?? q.type}
+                        </span>
                       </div>
                       <span className="text-sm font-semibold text-primary">{q.responses}</span>
                     </div>
@@ -300,7 +304,9 @@ function ReviewFormDetail() {
                   <div key={q.id} className="rounded-lg border p-3 text-sm">
                     <div className="flex items-center justify-between">
                       <div className="font-medium">{q.title}{q.isRequired && <span className="ml-1 text-destructive">*</span>}</div>
-                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">{q.type}</span>
+                      <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${REVIEW_QUESTION_TYPE_BADGES[q.type] ?? "bg-muted text-muted-foreground"}`}>
+                        {REVIEW_QUESTION_TYPE_LABELS[q.type] ?? q.type}
+                      </span>
                     </div>
                     {q.description && <div className="mt-1 text-xs text-muted-foreground">{q.description}</div>}
                   </div>

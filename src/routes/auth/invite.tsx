@@ -11,13 +11,16 @@ import { SITE } from "@/data/site";
 
 const searchSchema = z.object({
   admin: z.string(),
-  expires: z.string(),
+  expires: z.union([z.string(), z.number()]).transform(String),
   signature: z.string(),
 });
 
 export const Route = createFileRoute("/auth/invite")({
   head: () => ({
-    meta: [{ title: `Accepter l'invitation | ${SITE.name}` }, { name: "robots", content: "noindex" }],
+    meta: [
+      { title: `Accepter l'invitation | ${SITE.name}` },
+      { name: "robots", content: "noindex" }
+    ],
   }),
   validateSearch: searchSchema,
   component: InviteAcceptPage,

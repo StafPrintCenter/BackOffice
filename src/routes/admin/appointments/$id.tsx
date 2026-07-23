@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminAppointmentDetail, useUpdateAdminAppointmentStatus } from "@/stores/useAppointmentsStore";
-import type { AppointmentStatus } from "@/data/appointments";
+import { APPOINTMENT_STATUS_BADGES, APPOINTMENT_STATUS_LABELS, type AppointmentStatus } from "@/data/appointments";
 import { modeLabel, modeIcon } from ".";
 import { SITE } from "@/data/site";
 
@@ -23,17 +23,6 @@ export const Route = createFileRoute("/admin/appointments/$id")({
   }),
   component: AppointmentDetail,
 });
-
-const statusBadge = (s: AppointmentStatus) =>
-({
-  pending: "bg-amber-100 text-amber-700 border-amber-200",
-  confirmed: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  cancelled: "bg-rose-100 text-rose-700 border-rose-200",
-  completed: "bg-blue-100 text-blue-700 border-blue-200",
-}[s]);
-
-const statusLabel = (s: AppointmentStatus) =>
-  ({ pending: "En attente", confirmed: "Confirmé", cancelled: "Annulé", completed: "Terminé" }[s]);
 
 function AppointmentDetail() {
   const { id } = Route.useParams();
@@ -109,12 +98,12 @@ function AppointmentDetail() {
                     </span>
                   );
                 })()}
-                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(a.status)}`}>
-                  {statusLabel(a.status)}
+                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${APPOINTMENT_STATUS_BADGES[a.status]}`}>
+                  {APPOINTMENT_STATUS_LABELS[a.status]}
                 </span>
               </div>
-              <h1 className="font-display text-2xl font-bold mt-2">{a.subject}</h1>
-              <a href={`mailto:${a.email}`} className="text-sm text-primary hover:underline inline-flex items-center gap-1.5 mt-0.5">
+              <h1 className="mt-2 font-display text-2xl font-bold">{a.subject}</h1>
+              <a href={`mailto:${a.email}`} className="mt-0.5 inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
                 <Mail className="h-3.5 w-3.5" /> {a.email}
               </a>
             </div>
@@ -122,13 +111,13 @@ function AppointmentDetail() {
 
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Contenu principal */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="rounded-2xl border bg-card p-6 space-y-4">
-                <div className="flex items-center gap-2 font-display text-lg font-semibold border-b pb-3">
+            <div className="space-y-6 lg:col-span-2">
+              <div className="space-y-4 rounded-2xl border bg-card p-6">
+                <div className="flex items-center gap-2 border-b pb-3 font-display text-lg font-semibold">
                   <MessageCircle className="h-5 w-5 text-primary" /> Détails du rendez-vous
                 </div>
 
-                <div className="grid gap-3 text-xs sm:grid-cols-2 text-muted-foreground bg-muted/30 p-3 rounded-xl border">
+                <div className="grid gap-3 rounded-xl border bg-muted/30 p-3 text-xs text-muted-foreground sm:grid-cols-2">
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-primary" />
                     <span>Contact : <b className="text-foreground">{a.firstName} {a.lastName}</b></span>
@@ -149,14 +138,14 @@ function AppointmentDetail() {
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap border">
+                <div className="rounded-xl border bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap">
                   {a.message || "Aucun message."}
                 </div>
               </div>
 
               {/* Traitement Admin */}
               {(a.handledBy || a.handledAt) && (
-                <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-4 text-xs text-muted-foreground">
                   {a.handledBy && (
                     <div className="flex items-center gap-1.5">
                       <UserCheck className="h-4 w-4 text-primary" />
@@ -175,7 +164,7 @@ function AppointmentDetail() {
 
             {/* Panneau latéral : Gestion du statut et Notes */}
             <div className="space-y-6">
-              <div className="rounded-2xl border bg-card p-6 space-y-4">
+              <div className="space-y-4 rounded-2xl border bg-card p-6">
                 <div className="flex items-center justify-between border-b pb-3">
                   <span className="font-display font-semibold">Suivi du rendez-vous</span>
                   {!isEditing && (
@@ -202,8 +191,8 @@ function AppointmentDetail() {
                       </Select>
                     ) : (
                       <div className="mt-1">
-                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(a.status)}`}>
-                          {statusLabel(a.status)}
+                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${APPOINTMENT_STATUS_BADGES[a.status]}`}>
+                          {APPOINTMENT_STATUS_LABELS[a.status]}
                         </span>
                       </div>
                     )}
@@ -220,7 +209,7 @@ function AppointmentDetail() {
                         className="mt-1 text-xs"
                       />
                     ) : (
-                      <div className="mt-1 rounded-xl bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground whitespace-pre-wrap border">
+                      <div className="mt-1 rounded-xl border bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground whitespace-pre-wrap">
                         {a.adminNotes || "Aucune note enregistrée."}
                       </div>
                     )}

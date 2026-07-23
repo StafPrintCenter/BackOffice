@@ -12,9 +12,14 @@ import { useAdminShortLinksList, useCreateAdminShortLink, useUpdateAdminShortLin
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { SHORT_LINK_CATEGORIES } from "@/data/shortlinks";
 import type { APIAdminShortLinkListItem, AdminShortLinkPayload } from "@/data/shortlinks";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/shortlinks/")({
-  head: () => ({ meta: [{ title: "Liens courts — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Liens courts | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: AdminShortLinks,
 });
 

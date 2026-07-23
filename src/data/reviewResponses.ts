@@ -9,6 +9,7 @@ export type APIAdminReviewResponseListItem = {
   projectName: string | null;
   project: string | null;
   clientName: string;
+  answers: Record<string, string>;
   clientEmail: string;
   allowPublication: boolean;
   publicationStatus: ReviewPublicationStatus;

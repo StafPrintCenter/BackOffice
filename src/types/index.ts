@@ -147,8 +147,6 @@ export interface Report {
   createdAt: string;
 }
 
-export type AppUserRole = "admin" | "learner" | "user";
-export type AppUserStatus = "active" | "suspended" | "blocked";
 export type AppointmentMode = "presentiel" | "visio" | "telephone" | "whatsapp";
 export type AppointmentStatus = "en_attente" | "confirme" | "refuse" | "annule" | "termine";
 

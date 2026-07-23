@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, } from "@/components/ui/dialog";
-import { useAdminAdminDetail, useAlertAdminAdmin, useBlockAdminAdmin, useReactivateAdminAdmin, } from "@/stores/useAdminsStore";
+import { useAdminAdminDetail, useAlertAdminAdmin, useBlockAdminAdmin, useReactivateAdminAdmin, useRevokeAdminAdminInvite, useResendAdminAdminInvite, } from "@/stores/useAdminsStore";
 import { useCurrentAdmin } from "@/stores/useAuthStore";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS } from "@/data/admins";
 import { SITE } from "@/data/site";

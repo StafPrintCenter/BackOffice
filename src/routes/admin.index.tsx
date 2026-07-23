@@ -11,17 +11,18 @@ import { useQuery } from "@tanstack/react-query";
 
 
 export const Route = createFileRoute("/admin/")({
-  head: () => ({ meta: [{ title: "Dashboard — Admin Staf Print" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Tableau de bord | ${SITE.name}` },
+      { name: "robots", content: "noindex" }
+    ],
+  }),
   component: DashboardPage,
 });
 
 const pieColors = ["#E07856", "#3C82AB", "#5A9B6E", "#C89A3E", "#8B5CF6", "#EC4899"];
 
 function DashboardPage() {
-  // --- Mock en attente ---
-  const articles = useQuery({ queryKey: ["articles"], queryFn: articlesApi.list });
-
-  // --- Réel ---
   const { items: contacts, isLoading: contactsLoading } = useAdminContactsList({ perPage: 100 });
   const { items: users, isLoading: usersLoading } = useAdminUsersList({ perPage: 100 });
   const { items: students, isLoading: studentsLoading } = useAdminStudentsList({ perPage: 100 });
@@ -32,6 +33,9 @@ function DashboardPage() {
   const { items: services, isLoading: servicesLoading } = useAdminServicesList({ perPage: 100 });
   const { items: trainings, isLoading: trainingsLoading } = useAdminTrainingsList({ perPage: 100 });
   const { items: reports, isLoading: reportsLoading } = useAdminReportsList({ perPage: 100 });
+
+  // --- Mock en attente ---
+  const articles = useQuery({ queryKey: ["articles"], queryFn: articlesApi.list });
 
   // --- KPIs réels ---
   const newMessages = contacts.filter((c) => c.status === "new").length;

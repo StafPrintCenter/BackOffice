@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import type { APIAdminUser, APILoginResponse } from "@/data/auth";
 
@@ -31,4 +32,23 @@ export async function fetchAdminMe(): Promise<APIAdminUser | null> {
 
 export async function logoutAdmin(): Promise<void> {
   await adminFetch(`/api/admin/auth/logout`, { method: "POST" });
+}
+
+/**
+ * Hook pour récupérer l'administrateur actuellement connecté
+ */
+export function useCurrentAdmin() {
+  const { data: admin, isLoading, error } = useQuery({
+    queryKey: ["current-admin"],
+    queryFn: fetchAdminMe,
+    staleTime: 1000 * 60 * 5, // Met en cache les données pendant 5 minutes
+    retry: false, // Ne pas réessayer indéfiniment en cas de 401
+  });
+
+  return {
+    admin: admin ?? null,
+    isLoading,
+    isAuthenticated: !!admin,
+    error,
+  };
 }

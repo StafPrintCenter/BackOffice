@@ -16,13 +16,6 @@ export const seedStats: Stat[] = [
   { id: "st4", key: "years_experience", value: 8, suffix: "", label: "Années d'expérience", createdAt: "2024-01-01" },
 ];
 
-export const seedFaqs: Faq[] = [
-  { id: "fa1", categoryId: "c2", question: "Combien coûte un site web ?", answer: "Le prix dépend de la complexité — vitrine à partir de 250 000 FCFA, e-commerce à partir de 800 000 FCFA.", order: 1, createdAt: "2024-02-01" },
-  { id: "fa2", categoryId: "c3", question: "Quels formats d'impression proposez-vous ?", answer: "Du format carte de visite au grand format bâche 4x3m, en numérique ou offset.", order: 2, createdAt: "2024-02-01" },
-  { id: "fa3", categoryId: "c5", question: "Les formations sont-elles certifiantes ?", answer: "Oui, chaque formation débouche sur une attestation Staf Print Center reconnue par nos partenaires.", order: 3, createdAt: "2024-02-01" },
-  { id: "fa4", categoryId: "c1", question: "Combien de propositions de logo fournissez-vous ?", answer: "3 propositions initiales, puis affinage sur celle retenue avec 3 tours de retouches inclus.", order: 4, createdAt: "2024-02-01" },
-];
-
 export const seedShortLinks: ShortLink[] = [
   { id: "sl1", longUrl: "https://stafprint.com/formations/graphisme", longUrlHash: "a1b2c3", alias: "form-graph", category: "Formation", createdBy: "admin@stafprint.com", clicksCount: 148, activateAt: "2024-06-01", expiresAt: "2025-06-01", isActive: true, createdAt: "2024-06-01" },
   { id: "sl2", longUrl: "https://stafprint.com/services/impression", longUrlHash: "d4e5f6", alias: "print-promo", category: "Service", createdBy: "admin@stafprint.com", clicksCount: 92, activateAt: "2024-07-15", expiresAt: "2025-01-15", isActive: true, createdAt: "2024-07-15" },

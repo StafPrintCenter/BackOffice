@@ -45,10 +45,10 @@ import { Route as AdminNewsletterCampaignsIndexRouteImport } from './routes/admi
 import { Route as AdminNewsletterCampaignsIdRouteImport } from './routes/admin/newsletter/campaigns/$id'
 import { Route as AdminNewsletterSubscribersIndexRouteImport } from './routes/admin/newsletter/subscribers/index'
 import { Route as AdminNewsletterSubscribersIdRouteImport } from './routes/admin/newsletter/subscribers/$id'
-import { Route as AdminReviewsCampaignsIndexRouteImport } from './routes/admin/reviews/campaigns/index'
-import { Route as AdminReviewsCampaignsIdRouteImport } from './routes/admin/reviews/campaigns/$id'
 import { Route as AdminReviewsFormsIndexRouteImport } from './routes/admin/reviews/forms/index'
 import { Route as AdminReviewsFormsIdRouteImport } from './routes/admin/reviews/forms/$id'
+import { Route as AdminReviewsInvitesIndexRouteImport } from './routes/admin/reviews/invites/index'
+import { Route as AdminReviewsInvitesIdRouteImport } from './routes/admin/reviews/invites/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -234,17 +234,6 @@ const AdminNewsletterSubscribersIdRoute =
     path: '/admin/newsletter/subscribers/$id',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AdminReviewsCampaignsIndexRoute =
-  AdminReviewsCampaignsIndexRouteImport.update({
-    id: '/admin/reviews/campaigns/',
-    path: '/admin/reviews/campaigns/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AdminReviewsCampaignsIdRoute = AdminReviewsCampaignsIdRouteImport.update({
-  id: '/admin/reviews/campaigns/$id',
-  path: '/admin/reviews/campaigns/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminReviewsFormsIndexRoute = AdminReviewsFormsIndexRouteImport.update({
   id: '/admin/reviews/forms/',
   path: '/admin/reviews/forms/',
@@ -253,6 +242,17 @@ const AdminReviewsFormsIndexRoute = AdminReviewsFormsIndexRouteImport.update({
 const AdminReviewsFormsIdRoute = AdminReviewsFormsIdRouteImport.update({
   id: '/admin/reviews/forms/$id',
   path: '/admin/reviews/forms/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminReviewsInvitesIndexRoute =
+  AdminReviewsInvitesIndexRouteImport.update({
+    id: '/admin/reviews/invites/',
+    path: '/admin/reviews/invites/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminReviewsInvitesIdRoute = AdminReviewsInvitesIdRouteImport.update({
+  id: '/admin/reviews/invites/$id',
+  path: '/admin/reviews/invites/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -291,12 +291,12 @@ export interface FileRoutesByFullPath {
   '/admin/users/': typeof AdminUsersIndexRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
-  '/admin/reviews/campaigns/$id': typeof AdminReviewsCampaignsIdRoute
   '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
+  '/admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
   '/admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
-  '/admin/reviews/campaigns/': typeof AdminReviewsCampaignsIndexRoute
   '/admin/reviews/forms/': typeof AdminReviewsFormsIndexRoute
+  '/admin/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -333,12 +333,12 @@ export interface FileRoutesByTo {
   '/admin/users': typeof AdminUsersIndexRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
-  '/admin/reviews/campaigns/$id': typeof AdminReviewsCampaignsIdRoute
   '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
+  '/admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/admin/newsletter/campaigns': typeof AdminNewsletterCampaignsIndexRoute
   '/admin/newsletter/subscribers': typeof AdminNewsletterSubscribersIndexRoute
-  '/admin/reviews/campaigns': typeof AdminReviewsCampaignsIndexRoute
   '/admin/reviews/forms': typeof AdminReviewsFormsIndexRoute
+  '/admin/reviews/invites': typeof AdminReviewsInvitesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -376,12 +376,12 @@ export interface FileRoutesById {
   '/admin/users/': typeof AdminUsersIndexRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
-  '/admin/reviews/campaigns/$id': typeof AdminReviewsCampaignsIdRoute
   '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
+  '/admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
   '/admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
-  '/admin/reviews/campaigns/': typeof AdminReviewsCampaignsIndexRoute
   '/admin/reviews/forms/': typeof AdminReviewsFormsIndexRoute
+  '/admin/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -420,12 +420,12 @@ export interface FileRouteTypes {
     | '/admin/users/'
     | '/admin/newsletter/campaigns/$id'
     | '/admin/newsletter/subscribers/$id'
-    | '/admin/reviews/campaigns/$id'
     | '/admin/reviews/forms/$id'
+    | '/admin/reviews/invites/$id'
     | '/admin/newsletter/campaigns/'
     | '/admin/newsletter/subscribers/'
-    | '/admin/reviews/campaigns/'
     | '/admin/reviews/forms/'
+    | '/admin/reviews/invites/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -462,12 +462,12 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/admin/newsletter/campaigns/$id'
     | '/admin/newsletter/subscribers/$id'
-    | '/admin/reviews/campaigns/$id'
     | '/admin/reviews/forms/$id'
+    | '/admin/reviews/invites/$id'
     | '/admin/newsletter/campaigns'
     | '/admin/newsletter/subscribers'
-    | '/admin/reviews/campaigns'
     | '/admin/reviews/forms'
+    | '/admin/reviews/invites'
   id:
     | '__root__'
     | '/'
@@ -504,12 +504,12 @@ export interface FileRouteTypes {
     | '/admin/users/'
     | '/admin/newsletter/campaigns/$id'
     | '/admin/newsletter/subscribers/$id'
-    | '/admin/reviews/campaigns/$id'
     | '/admin/reviews/forms/$id'
+    | '/admin/reviews/invites/$id'
     | '/admin/newsletter/campaigns/'
     | '/admin/newsletter/subscribers/'
-    | '/admin/reviews/campaigns/'
     | '/admin/reviews/forms/'
+    | '/admin/reviews/invites/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -547,12 +547,12 @@ export interface RootRouteChildren {
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
   AdminNewsletterCampaignsIdRoute: typeof AdminNewsletterCampaignsIdRoute
   AdminNewsletterSubscribersIdRoute: typeof AdminNewsletterSubscribersIdRoute
-  AdminReviewsCampaignsIdRoute: typeof AdminReviewsCampaignsIdRoute
   AdminReviewsFormsIdRoute: typeof AdminReviewsFormsIdRoute
+  AdminReviewsInvitesIdRoute: typeof AdminReviewsInvitesIdRoute
   AdminNewsletterCampaignsIndexRoute: typeof AdminNewsletterCampaignsIndexRoute
   AdminNewsletterSubscribersIndexRoute: typeof AdminNewsletterSubscribersIndexRoute
-  AdminReviewsCampaignsIndexRoute: typeof AdminReviewsCampaignsIndexRoute
   AdminReviewsFormsIndexRoute: typeof AdminReviewsFormsIndexRoute
+  AdminReviewsInvitesIndexRoute: typeof AdminReviewsInvitesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -809,20 +809,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminNewsletterSubscribersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/reviews/campaigns/': {
-      id: '/admin/reviews/campaigns/'
-      path: '/admin/reviews/campaigns'
-      fullPath: '/admin/reviews/campaigns/'
-      preLoaderRoute: typeof AdminReviewsCampaignsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/reviews/campaigns/$id': {
-      id: '/admin/reviews/campaigns/$id'
-      path: '/admin/reviews/campaigns/$id'
-      fullPath: '/admin/reviews/campaigns/$id'
-      preLoaderRoute: typeof AdminReviewsCampaignsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/reviews/forms/': {
       id: '/admin/reviews/forms/'
       path: '/admin/reviews/forms'
@@ -835,6 +821,20 @@ declare module '@tanstack/react-router' {
       path: '/admin/reviews/forms/$id'
       fullPath: '/admin/reviews/forms/$id'
       preLoaderRoute: typeof AdminReviewsFormsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/reviews/invites/': {
+      id: '/admin/reviews/invites/'
+      path: '/admin/reviews/invites'
+      fullPath: '/admin/reviews/invites/'
+      preLoaderRoute: typeof AdminReviewsInvitesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/reviews/invites/$id': {
+      id: '/admin/reviews/invites/$id'
+      path: '/admin/reviews/invites/$id'
+      fullPath: '/admin/reviews/invites/$id'
+      preLoaderRoute: typeof AdminReviewsInvitesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -875,12 +875,12 @@ const rootRouteChildren: RootRouteChildren = {
   AdminUsersIndexRoute: AdminUsersIndexRoute,
   AdminNewsletterCampaignsIdRoute: AdminNewsletterCampaignsIdRoute,
   AdminNewsletterSubscribersIdRoute: AdminNewsletterSubscribersIdRoute,
-  AdminReviewsCampaignsIdRoute: AdminReviewsCampaignsIdRoute,
   AdminReviewsFormsIdRoute: AdminReviewsFormsIdRoute,
+  AdminReviewsInvitesIdRoute: AdminReviewsInvitesIdRoute,
   AdminNewsletterCampaignsIndexRoute: AdminNewsletterCampaignsIndexRoute,
   AdminNewsletterSubscribersIndexRoute: AdminNewsletterSubscribersIndexRoute,
-  AdminReviewsCampaignsIndexRoute: AdminReviewsCampaignsIndexRoute,
   AdminReviewsFormsIndexRoute: AdminReviewsFormsIndexRoute,
+  AdminReviewsInvitesIndexRoute: AdminReviewsInvitesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

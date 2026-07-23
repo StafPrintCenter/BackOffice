@@ -18,3 +18,4 @@ export * from "./useServicesStore";
 export * from "./useStatsStore";
 export * from "./useTestimonialsStore";
 export * from "./useTrainingsStore";
+export * from "./useUsersStore";

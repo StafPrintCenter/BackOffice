@@ -41,8 +41,8 @@ import { Route as AdminTrainingsIndexRouteImport } from './routes/admin/training
 import { Route as AdminTrainingsIdRouteImport } from './routes/admin/trainings/$id'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin.users.index'
 import { Route as AdminUsersIdRouteImport } from './routes/admin.users.$id'
-import { Route as AdminMembersAdminIndexRouteImport } from './routes/admin/members/admin/index'
-import { Route as AdminMembersAdminIdRouteImport } from './routes/admin/members/admin/$id'
+import { Route as AdminMembersAdminsIndexRouteImport } from './routes/admin/members/admins/index'
+import { Route as AdminMembersAdminsIdRouteImport } from './routes/admin/members/admins/$id'
 import { Route as AdminMembersStudentsIndexRouteImport } from './routes/admin/members/students/index'
 import { Route as AdminMembersStudentsIdRouteImport } from './routes/admin/members/students/$id'
 import { Route as AdminMembersUsersIndexRouteImport } from './routes/admin/members/users/index'
@@ -218,14 +218,14 @@ const AdminUsersIdRoute = AdminUsersIdRouteImport.update({
   path: '/admin/users/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminMembersAdminIndexRoute = AdminMembersAdminIndexRouteImport.update({
-  id: '/admin/members/admin/',
-  path: '/admin/members/admin/',
+const AdminMembersAdminsIndexRoute = AdminMembersAdminsIndexRouteImport.update({
+  id: '/admin/members/admins/',
+  path: '/admin/members/admins/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminMembersAdminIdRoute = AdminMembersAdminIdRouteImport.update({
-  id: '/admin/members/admin/$id',
-  path: '/admin/members/admin/$id',
+const AdminMembersAdminsIdRoute = AdminMembersAdminsIdRouteImport.update({
+  id: '/admin/members/admins/$id',
+  path: '/admin/members/admins/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMembersStudentsIndexRoute =
@@ -339,7 +339,7 @@ export interface FileRoutesByFullPath {
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
   '/admin/trainings/': typeof AdminTrainingsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
-  '/admin/members/admin/$id': typeof AdminMembersAdminIdRoute
+  '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
@@ -347,7 +347,7 @@ export interface FileRoutesByFullPath {
   '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
-  '/admin/members/admin/': typeof AdminMembersAdminIndexRoute
+  '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
   '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
   '/admin/members/users/': typeof AdminMembersUsersIndexRoute
   '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
@@ -389,7 +389,7 @@ export interface FileRoutesByTo {
   '/admin/testimonials': typeof AdminTestimonialsIndexRoute
   '/admin/trainings': typeof AdminTrainingsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
-  '/admin/members/admin/$id': typeof AdminMembersAdminIdRoute
+  '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
@@ -397,7 +397,7 @@ export interface FileRoutesByTo {
   '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
-  '/admin/members/admin': typeof AdminMembersAdminIndexRoute
+  '/admin/members/admins': typeof AdminMembersAdminsIndexRoute
   '/admin/members/students': typeof AdminMembersStudentsIndexRoute
   '/admin/members/users': typeof AdminMembersUsersIndexRoute
   '/admin/newsletter/campaigns': typeof AdminNewsletterCampaignsIndexRoute
@@ -440,7 +440,7 @@ export interface FileRoutesById {
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
   '/admin/trainings/': typeof AdminTrainingsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
-  '/admin/members/admin/$id': typeof AdminMembersAdminIdRoute
+  '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
@@ -448,7 +448,7 @@ export interface FileRoutesById {
   '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
-  '/admin/members/admin/': typeof AdminMembersAdminIndexRoute
+  '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
   '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
   '/admin/members/users/': typeof AdminMembersUsersIndexRoute
   '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
@@ -492,7 +492,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials/'
     | '/admin/trainings/'
     | '/admin/users/'
-    | '/admin/members/admin/$id'
+    | '/admin/members/admins/$id'
     | '/admin/members/students/$id'
     | '/admin/members/users/$id'
     | '/admin/newsletter/campaigns/$id'
@@ -500,7 +500,7 @@ export interface FileRouteTypes {
     | '/admin/reviews/forms/$id'
     | '/admin/reviews/invites/$id'
     | '/admin/reviews/responses/$id'
-    | '/admin/members/admin/'
+    | '/admin/members/admins/'
     | '/admin/members/students/'
     | '/admin/members/users/'
     | '/admin/newsletter/campaigns/'
@@ -542,7 +542,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials'
     | '/admin/trainings'
     | '/admin/users'
-    | '/admin/members/admin/$id'
+    | '/admin/members/admins/$id'
     | '/admin/members/students/$id'
     | '/admin/members/users/$id'
     | '/admin/newsletter/campaigns/$id'
@@ -550,7 +550,7 @@ export interface FileRouteTypes {
     | '/admin/reviews/forms/$id'
     | '/admin/reviews/invites/$id'
     | '/admin/reviews/responses/$id'
-    | '/admin/members/admin'
+    | '/admin/members/admins'
     | '/admin/members/students'
     | '/admin/members/users'
     | '/admin/newsletter/campaigns'
@@ -592,7 +592,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials/'
     | '/admin/trainings/'
     | '/admin/users/'
-    | '/admin/members/admin/$id'
+    | '/admin/members/admins/$id'
     | '/admin/members/students/$id'
     | '/admin/members/users/$id'
     | '/admin/newsletter/campaigns/$id'
@@ -600,7 +600,7 @@ export interface FileRouteTypes {
     | '/admin/reviews/forms/$id'
     | '/admin/reviews/invites/$id'
     | '/admin/reviews/responses/$id'
-    | '/admin/members/admin/'
+    | '/admin/members/admins/'
     | '/admin/members/students/'
     | '/admin/members/users/'
     | '/admin/newsletter/campaigns/'
@@ -643,7 +643,7 @@ export interface RootRouteChildren {
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
   AdminTrainingsIndexRoute: typeof AdminTrainingsIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
-  AdminMembersAdminIdRoute: typeof AdminMembersAdminIdRoute
+  AdminMembersAdminsIdRoute: typeof AdminMembersAdminsIdRoute
   AdminMembersStudentsIdRoute: typeof AdminMembersStudentsIdRoute
   AdminMembersUsersIdRoute: typeof AdminMembersUsersIdRoute
   AdminNewsletterCampaignsIdRoute: typeof AdminNewsletterCampaignsIdRoute
@@ -651,7 +651,7 @@ export interface RootRouteChildren {
   AdminReviewsFormsIdRoute: typeof AdminReviewsFormsIdRoute
   AdminReviewsInvitesIdRoute: typeof AdminReviewsInvitesIdRoute
   AdminReviewsResponsesIdRoute: typeof AdminReviewsResponsesIdRoute
-  AdminMembersAdminIndexRoute: typeof AdminMembersAdminIndexRoute
+  AdminMembersAdminsIndexRoute: typeof AdminMembersAdminsIndexRoute
   AdminMembersStudentsIndexRoute: typeof AdminMembersStudentsIndexRoute
   AdminMembersUsersIndexRoute: typeof AdminMembersUsersIndexRoute
   AdminNewsletterCampaignsIndexRoute: typeof AdminNewsletterCampaignsIndexRoute
@@ -887,18 +887,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/admin/': {
-      id: '/admin/members/admin/'
-      path: '/admin/members/admin'
-      fullPath: '/admin/members/admin/'
-      preLoaderRoute: typeof AdminMembersAdminIndexRouteImport
+    '/admin/members/admins/': {
+      id: '/admin/members/admins/'
+      path: '/admin/members/admins'
+      fullPath: '/admin/members/admins/'
+      preLoaderRoute: typeof AdminMembersAdminsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/admin/$id': {
-      id: '/admin/members/admin/$id'
-      path: '/admin/members/admin/$id'
-      fullPath: '/admin/members/admin/$id'
-      preLoaderRoute: typeof AdminMembersAdminIdRouteImport
+    '/admin/members/admins/$id': {
+      id: '/admin/members/admins/$id'
+      path: '/admin/members/admins/$id'
+      fullPath: '/admin/members/admins/$id'
+      preLoaderRoute: typeof AdminMembersAdminsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/members/students/': {
@@ -1035,7 +1035,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
   AdminTrainingsIndexRoute: AdminTrainingsIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,
-  AdminMembersAdminIdRoute: AdminMembersAdminIdRoute,
+  AdminMembersAdminsIdRoute: AdminMembersAdminsIdRoute,
   AdminMembersStudentsIdRoute: AdminMembersStudentsIdRoute,
   AdminMembersUsersIdRoute: AdminMembersUsersIdRoute,
   AdminNewsletterCampaignsIdRoute: AdminNewsletterCampaignsIdRoute,
@@ -1043,7 +1043,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminReviewsFormsIdRoute: AdminReviewsFormsIdRoute,
   AdminReviewsInvitesIdRoute: AdminReviewsInvitesIdRoute,
   AdminReviewsResponsesIdRoute: AdminReviewsResponsesIdRoute,
-  AdminMembersAdminIndexRoute: AdminMembersAdminIndexRoute,
+  AdminMembersAdminsIndexRoute: AdminMembersAdminsIndexRoute,
   AdminMembersStudentsIndexRoute: AdminMembersStudentsIndexRoute,
   AdminMembersUsersIndexRoute: AdminMembersUsersIndexRoute,
   AdminNewsletterCampaignsIndexRoute: AdminNewsletterCampaignsIndexRoute,

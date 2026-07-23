@@ -1,39 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft,
-  Loader2,
-  AlertTriangle,
-  Ban,
-  ShieldCheck,
-  Mail,
-  Calendar,
-  Phone,
-  Briefcase,
-  MapPin,
-  Info,
-  Cake,
-} from "lucide-react";
+import { ArrowLeft, Loader2, AlertTriangle, Ban, ShieldCheck, Mail, Calendar, Phone, Briefcase, MapPin, Info, Cake, } from "lucide-react";
 import { AdminShell } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
-  useAdminStudentDetail,
-  useAlertAdminStudent,
-  useBlockAdminStudent,
-  useReactivateAdminStudent,
-} from "@/stores/useStudentsStore";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, } from "@/components/ui/dialog";
+import { useAdminStudentDetail, useAlertAdminStudent, useBlockAdminStudent, useReactivateAdminStudent, } from "@/stores/useStudentsStore";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/members/students/$id")({

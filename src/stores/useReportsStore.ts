@@ -14,8 +14,6 @@ export const fetchAdminReportById = store.fetchById;
 export const useAdminReportsList = store.useList;
 export const useAdminReportDetail = store.useDetail;
 
-// ⚠️ Pas de create/delete pour cette ressource. Update = PUT /reports/{id}/status,
-// et l'API n'accepte que { status } (pas de admin_notes ici, contrairement à contact/appointments).
 async function updateReportStatus(
   id: string,
   payload: AdminReportStatusPayload

@@ -6,9 +6,6 @@ import type { APIAdminUserDetail, AdminUserBlockPayload } from "@/data/users";
 const resourceKey = "users";
 const basePath = "users";
 
-// Ressource "users" : pas de create/update/delete génériques. On ne réutilise
-// createResourceStore que pour fetchList/fetchById/useList/useDetail ; les actions
-// (alerter, bloquer, réactiver) passent par des endpoints dédiés hors factory.
 const store = createResourceStore<APIAdminUserDetail, AdminUserBlockPayload>({
   resourceKey,
   basePath,

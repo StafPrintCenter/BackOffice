@@ -1,11 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, CalendarClock, Ban, Send } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, CalendarClock, Ban, Send, Tag, User, Users, Calendar } from "lucide-react";
 import { AdminShell, ConfirmDelete, RichTextEditor } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import {
@@ -31,12 +30,16 @@ export const Route = createFileRoute("/admin/newsletter/campaigns/$id")({
 
 function statusBadge(status: string) {
   const map: Record<string, string> = {
-    draft: "bg-muted text-muted-foreground",
-    scheduled: "bg-amber-500/10 text-amber-600",
-    sent: "bg-emerald-500/10 text-emerald-600",
+    draft: "bg-muted text-muted-foreground border-border",
+    scheduled: "bg-amber-100 text-amber-700 border-amber-200",
+    sent: "bg-emerald-100 text-emerald-700 border-emerald-200",
   };
   const label: Record<string, string> = { draft: "Brouillon", scheduled: "Programmée", sent: "Envoyée" };
-  return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${map[status] ?? "bg-muted text-muted-foreground"}`}>{label[status] ?? status}</span>;
+  return (
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${map[status] ?? "bg-muted text-muted-foreground"}`}>
+      {label[status] ?? status}
+    </span>
+  );
 }
 
 function CampaignDetail() {
@@ -56,13 +59,16 @@ function CampaignDetail() {
   const [toDelete, setToDelete] = useState(false);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
   const [scheduledAt, setScheduledAt] = useState("");
-  const [categoryId, setCategoryId] = useState("");
 
   useEffect(() => {
     if (campaign && !form) {
-      setForm({ subject: campaign.subject, body: campaign.body, category_id: "" });
+      setForm({
+        subject: campaign.subject,
+        body: campaign.body,
+        category_id: categories.find((c) => c.name === campaign.category)?.id ?? "",
+      });
     }
-  }, [campaign, form]);
+  }, [campaign, form, categories]);
 
   if (isLoading) {
     return (
@@ -98,7 +104,11 @@ function CampaignDetail() {
   };
 
   const handleCancel = () => {
-    setForm({ subject: campaign.subject, body: campaign.body, category_id: "" });
+    setForm({
+      subject: campaign.subject,
+      body: campaign.body,
+      category_id: categories.find((c) => c.name === campaign.category)?.id ?? "",
+    });
     setIsEditing(false);
   };
 
@@ -123,6 +133,14 @@ function CampaignDetail() {
     sendMutation.mutate(campaign.id, {
       onSuccess: () => toast.success("Campagne envoyée"),
       onError: () => toast.error("Erreur lors de l'envoi"),
+    });
+  };
+
+  const formatDate = (dateStr?: string | null) => {
+    if (!dateStr) return "—";
+    return new Date(dateStr.replace("Z", "")).toLocaleString("fr-FR", {
+      dateStyle: "medium",
+      timeStyle: "short",
     });
   };
 
@@ -174,55 +192,79 @@ function CampaignDetail() {
         </div>
       </div>
 
-      <div className="max-w-3xl space-y-6">
+      <div className="max-w-4xl space-y-6">
+        {/* Metadonnées sous forme de badges */}
         <div className="flex flex-wrap items-center gap-2 text-xs">
           {statusBadge(campaign.status)}
-          {campaign.category && <span className="rounded-full bg-muted px-2 py-0.5">{campaign.category}</span>}
-          <span className="rounded-full bg-muted px-2 py-0.5">Par {campaign.sentBy}</span>
-          {campaign.recipientsCount !== null && <span className="rounded-full bg-muted px-2 py-0.5">{campaign.recipientsCount} destinataires</span>}
+          {campaign.category && (
+            <span className="inline-flex items-center gap-1 rounded-full border bg-primary/10 border-primary/20 px-2.5 py-0.5 font-medium text-primary">
+              <Tag className="h-3 w-3" /> {campaign.category}
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1 rounded-full border bg-muted px-2.5 py-0.5 text-muted-foreground">
+            <User className="h-3 w-3" /> Par {campaign.sentBy}
+          </span>
+          {campaign.recipientsCount !== null && (
+            <span className="inline-flex items-center gap-1 rounded-full border bg-muted px-2.5 py-0.5 text-muted-foreground">
+              <Users className="h-3 w-3" /> {campaign.recipientsCount} destinataires
+            </span>
+          )}
         </div>
 
         {isEditing ? (
           <div className="space-y-4 rounded-2xl border bg-card p-6">
             <div>
               <Label>Sujet</Label>
-              <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
+              <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} className="mt-1" />
             </div>
             <div>
               <Label>Catégorie</Label>
               <select
-                value={categoryId}
-                onChange={(e) => { setCategoryId(e.target.value); setForm({ ...form, category_id: e.target.value }); }}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={form.category_id}
+                onChange={(e) => setForm({ ...form, category_id: e.target.value })}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm mt-1"
               >
                 <option value="">— Aucune —</option>
                 {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
             </div>
             <div>
-              <Label>Contenu</Label>
-              <Textarea rows={10} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
+              <Label className="mb-1.5 block">Contenu du message</Label>
+              <RichTextEditor
+                value={form.body}
+                onChange={(html) => setForm({ ...form, body: html })}
+                minHeightClassName="min-h-[300px]"
+              />
             </div>
           </div>
         ) : (
           <>
-            <h1 className="font-display text-3xl font-bold">{campaign.subject}</h1>
-            <div className="rounded-2xl border bg-card p-6 whitespace-pre-wrap text-sm leading-relaxed">{campaign.body}</div>
+            <h1 className="font-display text-2xl font-bold md:text-3xl">{campaign.subject}</h1>
+
+            {/* Rendu HTML sécurisé du contenu rédigé avec RichTextEditor */}
+            <div
+              className="prose prose-sm max-w-none rounded-2xl border bg-card p-6 leading-relaxed text-foreground"
+              dangerouslySetInnerHTML={{ __html: campaign.body }}
+            />
           </>
         )}
 
         {(campaign.scheduledAt || campaign.sentAt) && (
           <div className="grid gap-4 sm:grid-cols-2 text-sm">
             {campaign.scheduledAt && (
-              <div className="rounded-xl border p-4">
-                <div className="text-xs text-muted-foreground">Programmée pour le</div>
-                {new Date(campaign.scheduledAt).toLocaleString("fr-FR")}
+              <div className="rounded-2xl border bg-card p-4 space-y-1">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <CalendarClock className="h-3.5 w-3.5 text-amber-600" /> Programmée pour le
+                </div>
+                <div className="font-semibold text-foreground">{formatDate(campaign.scheduledAt)}</div>
               </div>
             )}
             {campaign.sentAt && (
-              <div className="rounded-xl border p-4">
-                <div className="text-xs text-muted-foreground">Envoyée le</div>
-                {new Date(campaign.sentAt).toLocaleString("fr-FR")}
+              <div className="rounded-2xl border bg-card p-4 space-y-1">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Calendar className="h-3.5 w-3.5 text-emerald-600" /> Envoyée le
+                </div>
+                <div className="font-semibold text-foreground">{formatDate(campaign.sentAt)}</div>
               </div>
             )}
           </div>
@@ -232,10 +274,10 @@ function CampaignDetail() {
       <Dialog open={scheduleDialogOpen} onOpenChange={setScheduleDialogOpen}>
         <DialogContent>
           <DialogHeader><DialogTitle>Programmer la campagne</DialogTitle></DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-4 py-2">
             <div>
               <Label>Date et heure d'envoi</Label>
-              <Input type="datetime-local" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} />
+              <Input type="datetime-local" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} className="mt-1" />
             </div>
           </div>
           <DialogFooter>

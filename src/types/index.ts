@@ -79,18 +79,6 @@ export interface User {
 }
 
 /* ============ Nouveaux modèles ============ */
-
-export interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  colorClass: string;
-  isTrainingTheme: boolean;
-  isProjectCategory: boolean;
-  isArticleCategory: boolean;
-  createdAt: string;
-}
-
 export interface Stat {
   id: string;
   key: string;
@@ -111,22 +99,6 @@ export interface ShortLink {
   activateAt: string;
   expiresAt: string;
   isActive: boolean;
-  createdAt: string;
-}
-
-export interface ShortLinkClick {
-  id: string;
-  shortLinkId: string;
-  ipAddress: string;
-  userAgent: string;
-  referer: string;
-  country: string;
-  region: string;
-  city: string;
-  device: string;
-  browser: string;
-  platform: string;
-  clickedAt: string;
   createdAt: string;
 }
 

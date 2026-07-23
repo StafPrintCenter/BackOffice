@@ -8,12 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import {
-  useAdminAdminDetail,
-  useAlertAdminAdmin,
-  useBlockAdminAdmin,
-  useReactivateAdminAdmin,
-} from "@/stores/useAdminsStore";
+import { useAdminAdminDetail, useAlertAdminAdmin, useBlockAdminAdmin, useReactivateAdminAdmin, } from "@/stores/useAdminsStore";
 import { useCurrentAdmin } from "@/stores/useAuthStore";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS } from "@/data/admins";
 import { SITE } from "@/data/site";
@@ -29,17 +24,13 @@ function AdminDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
-  // Données de l'administrateur consulté
   const { item: admin, isLoading } = useAdminAdminDetail(id);
-  // Administrateur actuellement connecté
   const { admin: currentAdmin } = useCurrentAdmin();
 
-  // Mutations
   const alertMutation = useAlertAdminAdmin();
   const blockMutation = useBlockAdminAdmin();
   const reactivateMutation = useReactivateAdminAdmin();
 
-  // Modales d'action
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertForm, setAlertForm] = useState({ subject: "", message: "" });
   const [alertErrors, setAlertErrors] = useState<Record<string, string>>({});

@@ -183,8 +183,8 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="flex items-center gap-2"><Link2 className="h-4 w-4 text-primary" /><div className="font-display text-lg font-semibold">Top 5 liens courts</div></div>
           <div className="text-xs text-muted-foreground">{activeShortLinks} liens actifs</div>
           <div className="mt-4 h-56">
@@ -242,9 +242,6 @@ function DashboardPage() {
           </div>
         </div>
       </div>
-
-
-
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">

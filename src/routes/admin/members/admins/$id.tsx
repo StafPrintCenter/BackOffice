@@ -83,6 +83,7 @@ function AdminDetail() {
   }
 
   const isSelf = currentAdmin?.id === admin.id;
+  const isInviteRevoked = !!admin.invitationRevokedAt;
 
   const submitAlert = () => {
     if (!alertForm.subject.trim() || !alertForm.message.trim()) {

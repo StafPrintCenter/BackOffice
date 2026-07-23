@@ -6,8 +6,6 @@ import type { APIAdminAdminDetail, AdminAdminBlockPayload } from "@/data/admins"
 const resourceKey = "admins";
 const basePath = "admins";
 
-// Ressource "admins" : même comportement que "users"/"students" (pas d'update/delete
-// génériques), avec en plus une création dédiée via /invite (pas /create).
 const store = createResourceStore<APIAdminAdminDetail, AdminAdminBlockPayload>({
   resourceKey,
   basePath,

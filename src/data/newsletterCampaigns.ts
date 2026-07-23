@@ -26,3 +26,15 @@ export interface AdminNewsletterCampaignPayload {
 export interface AdminNewsletterCampaignSchedulePayload {
   scheduled_at: string; // ISO 8601
 }
+
+export const NEWSLETTER_CAMPAIGN_STATUS_MAP: Record<NewsletterCampaignStatus | string, string> = {
+  draft: "bg-muted text-muted-foreground border-border",
+  scheduled: "bg-amber-100 text-amber-700 border-amber-200",
+  sent: "bg-emerald-100 text-emerald-700 border-emerald-200",
+};
+
+export const NEWSLETTER_CAMPAIGN_STATUS_LABELS: Record<NewsletterCampaignStatus | string, string> = {
+  draft: "Brouillon",
+  scheduled: "Programmée",
+  sent: "Envoyée",
+};

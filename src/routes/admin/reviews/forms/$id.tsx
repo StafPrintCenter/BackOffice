@@ -14,7 +14,7 @@ import { useCreateAdminReviewQuestion, useUpdateAdminReviewQuestion, useDeleteAd
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import {
   type AdminReviewFormPayload, type AdminReviewFormQuestion, type AdminReviewQuestionPayload, type ReviewQuestionType,
-  REVIEW_FORM_STATUS_BADGES, REVIEW_FORM_STATUS_LABELS, REVIEW_QUESTION_TYPE_LABELS, REVIEW_QUESTION_TYPE_BADGES,
+  REVIEW_QUESTION_TYPES, CHOICE_QUESTION_TYPES, REVIEW_FORM_STATUS_LABELS, REVIEW_QUESTION_TYPE_LABELS, getReviewFormStatusBadge, getReviewQuestionTypeBadge,
 } from "@/data/reviewsForms";
 import { SITE } from "@/data/site";
 
@@ -28,31 +28,21 @@ export const Route = createFileRoute("/admin/reviews/forms/$id")({
   component: ReviewFormDetail,
 });
 
-const QUESTION_TYPES: ReviewQuestionType[] = [
-  "short_text", "long_text", "email", "phone", "number", "date", "datetime",
-  "single_choice", "multiple_choice", "select", "rating", "boolean", "file",
-];
-
-const CHOICE_TYPES: ReviewQuestionType[] = ["single_choice", "multiple_choice", "select"];
-
 interface QuestionOptionRow {
   label: string;
   value: string;
 }
 
-/** Formulaire "métier" : aucun champ JSON exposé. Les règles de validation/options/paramètres
- *  sont saisis via des champs clairs (longueur max, min/max, taille de fichier, liste d'options)
- *  et converties en JSON uniquement au moment de l'envoi, en interne. */
 interface QuestionFormValues {
   type: ReviewQuestionType;
   title: string;
   description: string;
   is_required: boolean;
-  maxLength: string;   // short_text / long_text
-  min: string;         // number
-  max: string;         // number
-  maxSizeKb: string;   // file
-  options: QuestionOptionRow[]; // single_choice / multiple_choice / select
+  maxLength: string;
+  min: string;
+  max: string;
+  maxSizeKb: string;
+  options: QuestionOptionRow[];
 }
 
 const emptyQuestionForm: QuestionFormValues = {
@@ -75,14 +65,6 @@ function slugifyOptionValue(label: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_+|_+$/g, "");
-}
-
-function statusBadgeClass(status: string) {
-  return REVIEW_FORM_STATUS_BADGES[status] ?? "bg-muted text-muted-foreground";
-}
-
-function typeBadgeClass(type: string) {
-  return REVIEW_QUESTION_TYPE_BADGES[type] ?? "bg-muted text-muted-foreground";
 }
 
 function ReviewFormDetail() {
@@ -223,9 +205,9 @@ function ReviewFormDetail() {
   };
 
   const openEditQuestion = (q: AdminReviewFormQuestion) => {
-    const rules = (q.validationRules ?? {}) as Record<string, unknown>;
-    const settings = (q.settings ?? {}) as Record<string, unknown>;
-    const options = (q.options ?? []) as { label: string; value: string }[];
+    const rules = q.validationRules ?? {};
+    const settings = q.settings ?? {};
+    const options = q.options ?? [];
     setEditingQuestion(q);
     setQuestionForm({
       type: q.type as ReviewQuestionType,
@@ -259,7 +241,7 @@ function ReviewFormDetail() {
     const errs: Record<string, string> = {};
     if (questionForm.title.trim().length < 2) errs.title = "Le titre est requis.";
 
-    const isChoiceType = CHOICE_TYPES.includes(questionForm.type);
+    const isChoiceType = CHOICE_QUESTION_TYPES.includes(questionForm.type);
     const cleanOptions = questionForm.options
       .map((o) => ({ label: o.label.trim(), value: o.value.trim() || slugifyOptionValue(o.label) }))
       .filter((o) => o.label.length > 0);
@@ -380,7 +362,7 @@ function ReviewFormDetail() {
 
       <div className="max-w-4xl space-y-6">
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass(reviewForm.status)}`}>
+          <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getReviewFormStatusBadge(reviewForm.status)}`}>
             {REVIEW_FORM_STATUS_LABELS[reviewForm.status] ?? reviewForm.status}
           </span>
           {reviewForm.category && (
@@ -457,7 +439,7 @@ function ReviewFormDetail() {
                     <div key={q.questionId} className="flex items-center justify-between p-3 text-sm">
                       <div>
                         <div className="font-medium">{q.title}</div>
-                        <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${typeBadgeClass(q.type)}`}>
+                        <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getReviewQuestionTypeBadge(q.type)}`}>
                           {REVIEW_QUESTION_TYPE_LABELS[q.type] ?? q.type}
                         </span>
                       </div>
@@ -508,7 +490,7 @@ function ReviewFormDetail() {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="font-medium truncate">{q.title}{q.isRequired && <span className="ml-1 text-destructive">*</span>}</span>
-                        <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${typeBadgeClass(q.type)}`}>
+                        <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getReviewQuestionTypeBadge(q.type)}`}>
                           {REVIEW_QUESTION_TYPE_LABELS[q.type] ?? q.type}
                         </span>
                       </div>
@@ -530,7 +512,6 @@ function ReviewFormDetail() {
         )}
       </div>
 
-      {/* Dialog création/édition de question — champs métier uniquement, pas de JSON */}
       <Dialog open={questionDialogOpen} onOpenChange={setQuestionDialogOpen}>
         <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingQuestion ? "Modifier la question" : "Nouvelle question"}</DialogTitle></DialogHeader>
@@ -543,7 +524,7 @@ function ReviewFormDetail() {
                   onChange={(e) => setQuestionForm({ ...questionForm, type: e.target.value as ReviewQuestionType })}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  {QUESTION_TYPES.map((t) => (<option key={t} value={t}>{REVIEW_QUESTION_TYPE_LABELS[t]}</option>))}
+                  {REVIEW_QUESTION_TYPES.map((t) => (<option key={t} value={t}>{REVIEW_QUESTION_TYPE_LABELS[t]}</option>))}
                 </select>
               </div>
               <div className="flex items-end gap-3">
@@ -602,7 +583,7 @@ function ReviewFormDetail() {
               </div>
             )}
 
-            {CHOICE_TYPES.includes(questionForm.type) && (
+            {CHOICE_QUESTION_TYPES.includes(questionForm.type) && (
               <div>
                 <Label>Options proposées</Label>
                 <div className="space-y-2">

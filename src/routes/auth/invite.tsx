@@ -1,13 +1,15 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Eye, EyeOff, Loader2, CheckCircle2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, CheckCircle2, XCircle } from "lucide-react";
+import { adminFetch } from "@/lib/api-url";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
+import type { AdminInviteVerifyResponse } from "@/data/auth";
 
 const searchSchema = z.object({
   admin: z.string(),
@@ -26,24 +28,41 @@ export const Route = createFileRoute("/auth/invite")({
   component: InviteAcceptPage,
 });
 
-// ⚠️ À adapter : ce endpoint doit être appelé SANS session (le nouvel admin n'est
-// pas encore connecté). Remplacez par le helper "public" réel du projet
-// (probablement le même utilisé en interne par useAuth().login) si adminFetch
-// exige un Authorization Bearer.
-async function acceptInvite(params: { admin: string; expires: string; signature: string; password: string }) {
+function buildInviteUrl(params: { admin: string; expires: string; signature: string }) {
   const qs = new URLSearchParams({
     admin: params.admin,
     expires: params.expires,
     signature: params.signature,
   });
+  return `${import.meta.env.VITE_API_URL}/api/v1/admin/auth/invite-accept?${qs.toString()}`;
+}
+
+// ⚠️ Appels publics (sans session) : à remplacer par le helper HTTP public
+// réel du projet (probablement le même utilisé en interne par useAuth().login)
+// si un tel helper existe déjà, plutôt qu'un fetch direct.
+async function verifyInvite(params: {
+  admin: string;
+  expires: string;
+  signature: string;
+}): Promise<AdminInviteVerifyResponse> {
+  const response = await fetch(buildInviteUrl(params), { method: "GET" });
+  const body = await response.json().catch(() => null);
+  if (!response.ok) {
+    throw new Error(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
+  }
+  return body.data as AdminInviteVerifyResponse;
+}
+
+async function acceptInvite(params: {
+  admin: string;
+  expires: string;
+  signature: string;
+  password: string;
+}) {
   const fd = new FormData();
   fd.append("password", params.password);
 
-  const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/v1/admin/auth/invite-accept?${qs.toString()}`,
-    { method: "POST", body: fd }
-  );
-
+  const response = await fetch(buildInviteUrl(params), { method: "POST", body: fd });
   const body = await response.json().catch(() => null);
   if (!response.ok) {
     throw new Error(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
@@ -51,9 +70,16 @@ async function acceptInvite(params: { admin: string; expires: string; signature:
   return body as { message: string };
 }
 
+type VerifyState =
+  | { status: "checking" }
+  | { status: "valid"; invitee: AdminInviteVerifyResponse }
+  | { status: "invalid"; message: string };
+
 function InviteAcceptPage() {
   const { admin, expires, signature } = Route.useSearch();
   const navigate = useNavigate();
+
+  const [verify, setVerify] = useState<VerifyState>({ status: "checking" });
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -61,6 +87,29 @@ function InviteAcceptPage() {
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
+
+  // Vérifie la validité du lien AVANT d'afficher le formulaire de mot de passe.
+  useEffect(() => {
+    let cancelled = false;
+    setVerify({ status: "checking" });
+
+    verifyInvite({ admin, expires, signature })
+      .then((invitee) => {
+        if (!cancelled) setVerify({ status: "valid", invitee });
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          setVerify({
+            status: "invalid",
+            message: err instanceof Error ? err.message : "Ce lien d'invitation est invalide ou a expiré.",
+          });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [admin, expires, signature]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,7 +165,25 @@ function InviteAcceptPage() {
             <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
           </div>
 
-          {done ? (
+          {verify.status === "checking" && (
+            <div className="text-center">
+              <Loader2 className="mx-auto h-8 w-8 animate-spin text-muted-foreground" />
+              <p className="mt-4 text-sm text-muted-foreground">Vérification du lien d'invitation...</p>
+            </div>
+          )}
+
+          {verify.status === "invalid" && (
+            <div className="text-center">
+              <XCircle className="mx-auto h-12 w-12 text-destructive" />
+              <h2 className="mt-4 font-display text-2xl font-bold">Lien invalide</h2>
+              <p className="mt-2 text-sm text-muted-foreground">{verify.message}</p>
+              <Button variant="outline" className="mt-6 w-full" onClick={() => navigate({ to: "/auth/login" })}>
+                Retour à la connexion
+              </Button>
+            </div>
+          )}
+
+          {verify.status === "valid" && done && (
             <div className="text-center">
               <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
               <h2 className="mt-4 font-display text-2xl font-bold">Compte activé</h2>
@@ -127,11 +194,13 @@ function InviteAcceptPage() {
                 Aller à la connexion
               </Button>
             </div>
-          ) : (
+          )}
+
+          {verify.status === "valid" && !done && (
             <>
               <h2 className="font-display text-3xl font-bold">Activer votre compte</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Choisissez un mot de passe pour finaliser votre invitation en tant qu'administrateur.
+                Bonjour {verify.invitee.firstName}, choisissez un mot de passe pour finaliser votre invitation en tant qu'administrateur ({verify.invitee.email}).
               </p>
 
               <form onSubmit={onSubmit} className="mt-8 space-y-4">

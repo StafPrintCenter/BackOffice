@@ -9,7 +9,7 @@ export * from "./useNewsletterCampaignsStore";
 export * from "./useNewsletterSubscribersStore";
 export * from "./useProjectsStore";
 export * from "./useReportsStore";
-export * from "./usereviewFormsStore.ts";
+export * from "./userReviewFormsStore";
 export * from "./useShortLinksStore";
 export * from "./useServicesStore";
 export * from "./useStatsStore";

@@ -87,7 +87,7 @@ function DashboardPage() {
 
   return (
     <AdminShell>
-      <PageHeader title="Dashboard" description="Vue d'ensemble de votre activité." />
+      <PageHeader title="Tableau de bord" description="Vue d'ensemble de votre activité." />
 
       {/* KPIs */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

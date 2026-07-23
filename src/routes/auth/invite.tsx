@@ -28,13 +28,14 @@ export const Route = createFileRoute("/auth/invite")({
   component: InviteAcceptPage,
 });
 
-function buildInviteUrl(params: { admin: string; expires: string; signature: string }) {
-  const qs = new URLSearchParams({
+class AdminInviteApiError extends Error { }
+
+function inviteQuery(params: { admin: string; expires: string; signature: string }) {
+  return new URLSearchParams({
     admin: params.admin,
     expires: params.expires,
     signature: params.signature,
-  });
-  return `${import.meta.env.VITE_API_URL}/api/v1/admin/auth/invite-accept?${qs.toString()}`;
+  }).toString();
 }
 
 async function verifyInvite(params: {
@@ -42,10 +43,10 @@ async function verifyInvite(params: {
   expires: string;
   signature: string;
 }): Promise<AdminInviteVerifyResponse> {
-  const response = await fetch(buildInviteUrl(params), { method: "GET" });
+  const response = await adminFetch(`/api/admin/auth/invite-accept?${inviteQuery(params)}`);
   const body = await response.json().catch(() => null);
   if (!response.ok) {
-    throw new Error(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
+    throw new AdminInviteApiError(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
   }
   return body.data as AdminInviteVerifyResponse;
 }
@@ -55,14 +56,17 @@ async function acceptInvite(params: {
   expires: string;
   signature: string;
   password: string;
-}) {
+}): Promise<{ message: string }> {
   const fd = new FormData();
   fd.append("password", params.password);
 
-  const response = await fetch(buildInviteUrl(params), { method: "POST", body: fd });
+  const response = await adminFetch(`/api/admin/auth/invite-accept?${inviteQuery(params)}`, {
+    method: "POST",
+    body: fd,
+  });
   const body = await response.json().catch(() => null);
   if (!response.ok) {
-    throw new Error(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
+    throw new AdminInviteApiError(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
   }
   return body as { message: string };
 }

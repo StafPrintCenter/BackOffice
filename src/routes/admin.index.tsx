@@ -5,11 +5,6 @@ import { AdminShell, PageHeader, StatCard } from "@/components/site";
 import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList, useAdminArticlesList } from "@/stores";
 import { SITE } from "@/data/site";
 
-// --- Encore sur mock : aucune spec reçue pour les articles ---
-import { articlesApi } from "@/api/articles.api";
-import { useQuery } from "@tanstack/react-query";
-
-
 export const Route = createFileRoute("/admin/")({
   head: () => ({
     meta: [

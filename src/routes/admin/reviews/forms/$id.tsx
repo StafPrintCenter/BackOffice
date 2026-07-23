@@ -1,7 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3, CheckCircle, Plus, ArrowUp, ArrowDown, GripVertical, } from "lucide-react";
+import {
+  ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3, CheckCircle,
+  Plus, ArrowUp, ArrowDown, GripVertical, Mail, User, FolderOpen, Calendar, Eye, EyeOff,
+} from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,6 +42,17 @@ const emptyQuestionForm: QuestionFormValues = {
   maxSizeKb: "",
   options: [],
 };
+
+// ⚠️ Statuts observés dans le payload analytics (pas encore listés dans data/reviewsForms.ts)
+const publicationStatusLabel = (s: string) =>
+  ({ pending: "En attente", approved: "Approuvé", rejected: "Rejeté" }[s] ?? s);
+
+const publicationStatusBadge = (s: string) =>
+({
+  pending: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+  approved: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+  rejected: "bg-destructive/10 text-destructive border-destructive/20",
+}[s] ?? "bg-muted text-muted-foreground border-transparent");
 
 function slugifyOptionValue(label: string): string {
   return label
@@ -124,6 +138,13 @@ function ReviewFormDetail() {
   );
 
   const sortedQuestions = [...reviewForm.questions].sort((a, b) => a.order - b.order);
+
+  // Utilisé pour afficher le titre de la question au lieu de son UUID dans chaque réponse
+  const getQuestionTitle = (questionId: string) =>
+    reviewForm.questions.find((q) => q.id === questionId)?.title ?? questionId;
+
+  const formatSubmittedAt = (dateStr: string) =>
+    new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
 
   const handleSave = () => {
     const payload: AdminReviewFormPayload = {
@@ -434,6 +455,62 @@ function ReviewFormDetail() {
               </div>
             ) : (
               <div className="text-sm text-muted-foreground">Chargement des analyses...</div>
+            )}
+          </div>
+        )}
+
+        {/* Réponses détaillées des utilisateurs */}
+        {!isEditing && (
+          <div className="rounded-2xl border bg-card p-6">
+            <div className="mb-4 flex items-center gap-2 font-display text-lg font-semibold">
+              <User className="h-5 w-5 text-primary" /> Réponses
+            </div>
+            {!analytics ? (
+              <div className="text-sm text-muted-foreground">Chargement des réponses...</div>
+            ) : analytics.responses.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Aucune réponse pour le moment.</p>
+            ) : (
+              <div className="space-y-4">
+                {analytics.responses.map((r) => (
+                  <div key={r.id} className="rounded-xl border p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3 border-b pb-3">
+                      <div>
+                        <div className="flex items-center gap-1.5 font-medium">
+                          <User className="h-3.5 w-3.5 text-muted-foreground" /> {r.clientName}
+                        </div>
+                        <a href={`mailto:${r.clientEmail}`} className="mt-0.5 flex items-center gap-1.5 text-xs text-primary hover:underline">
+                          <Mail className="h-3.5 w-3.5" /> {r.clientEmail}
+                        </a>
+                        {r.projectName && (
+                          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <FolderOpen className="h-3.5 w-3.5" /> {r.projectName}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-col items-end gap-1.5">
+                        <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${publicationStatusBadge(r.publicationStatus)}`}>
+                          {publicationStatusLabel(r.publicationStatus)}
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+                          {r.allowPublication ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+                          {r.allowPublication ? "Publication autorisée" : "Publication refusée"}
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+                          <Calendar className="h-3 w-3" /> {formatSubmittedAt(r.submittedAt)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="mt-3 space-y-2">
+                      {Object.entries(r.answers).map(([questionId, answer]) => (
+                        <div key={questionId} className="rounded-lg bg-muted/40 p-3 text-sm">
+                          <div className="text-xs font-medium text-muted-foreground">{getQuestionTitle(questionId)}</div>
+                          <div className="mt-1 whitespace-pre-wrap">{answer}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         )}

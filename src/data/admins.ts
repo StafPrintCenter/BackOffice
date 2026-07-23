@@ -10,6 +10,7 @@ export type APIAdminAdminListItem = {
   bio: string | null;
   level: AdminLevel;
   isActive: boolean;
+  invitationRevokedAt: string | null;
   isBlocked: boolean;
   isPending: boolean;
   blockedAt: string | null;

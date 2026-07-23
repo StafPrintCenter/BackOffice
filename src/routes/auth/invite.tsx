@@ -37,9 +37,6 @@ function buildInviteUrl(params: { admin: string; expires: string; signature: str
   return `${import.meta.env.VITE_API_URL}/api/v1/admin/auth/invite-accept?${qs.toString()}`;
 }
 
-// ⚠️ Appels publics (sans session) : à remplacer par le helper HTTP public
-// réel du projet (probablement le même utilisé en interne par useAuth().login)
-// si un tel helper existe déjà, plutôt qu'un fetch direct.
 async function verifyInvite(params: {
   admin: string;
   expires: string;

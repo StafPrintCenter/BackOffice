@@ -91,33 +91,6 @@ function DashboardPage() {
     services.reduce<Record<string, number>>((acc, s) => { const key = s.category || "Sans catégorie"; acc[key] = (acc[key] ?? 0) + 1; return acc; }, {})
   ).map(([name, value]) => ({ name, value }));
 
-  // --- Données 100% fictives, en attente de specs analytics/tracking/revenus ---
-  const monthly = [
-    { month: "Jan", projets: 4, revenus: 1200 },
-    { month: "Fév", projets: 6, revenus: 1800 },
-    { month: "Mar", projets: 8, revenus: 2400 },
-    { month: "Avr", projets: 5, revenus: 2100 },
-    { month: "Mai", projets: 9, revenus: 3200 },
-    { month: "Juin", projets: 12, revenus: 4100 },
-    { month: "Juil", projets: 10, revenus: 3800 },
-    { month: "Août", projets: 14, revenus: 4600 },
-  ];
-  const visits = [
-    { day: "Lun", visits: 240, uniques: 180 },
-    { day: "Mar", visits: 320, uniques: 240 },
-    { day: "Mer", visits: 280, uniques: 210 },
-    { day: "Jeu", visits: 410, uniques: 310 },
-    { day: "Ven", visits: 520, uniques: 400 },
-    { day: "Sam", visits: 380, uniques: 290 },
-    { day: "Dim", visits: 300, uniques: 220 },
-  ];
-  const funnel = [
-    { stage: "Visiteurs", value: 4820 },
-    { stage: "Leads", value: 1240 },
-    { stage: "Devis", value: 480 },
-    { stage: "Clients", value: 180 },
-  ];
-
   const recent = [
     ...projects.slice(0, 3).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
     ...trainings.slice(0, 2).map((t) => ({ type: "Formation", title: t.title, meta: t.theme, icon: GraduationCap })),

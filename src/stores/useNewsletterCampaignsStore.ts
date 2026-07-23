@@ -1,20 +1,33 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
-import type { AdminListParams } from "./createResourceStore";
-import type { APIAdminNewsletterSubscriberListItem, APIAdminNewsletterSubscriberDetail, AdminNewsletterBlockPayload, } from "@/data/newsletterSubscriber";
+import { createResourceStore } from "./createResourceStore";
+import type {
+  APIAdminNewsletterCampaignDetail,
+  AdminNewsletterCampaignPayload,
+  AdminNewsletterCampaignSchedulePayload,
+} from "@/data/newsletterCampaigns";
 
-const resourceKey = "newsletter-subscribers";
-const basePath = "newsletter/subscribers";
+const resourceKey = "newsletter-campaigns";
+const basePath = "newsletter/campaigns";
 
-interface ListResponse<T> {
-  data: T[];
-  links: any;
-  meta: any;
-}
+const store = createResourceStore<APIAdminNewsletterCampaignDetail, AdminNewsletterCampaignPayload>({
+  resourceKey,
+  basePath,
+});
 
-interface DetailResponse<T> {
-  data: T;
-}
+export const fetchAdminNewsletterCampaigns = store.fetchList;
+export const fetchAdminNewsletterCampaignById = store.fetchById;
+export const createAdminNewsletterCampaign = store.createItem;
+export const updateAdminNewsletterCampaign = store.updateItem;
+export const deleteAdminNewsletterCampaign = store.removeItem;
+
+export const useAdminNewsletterCampaignsList = store.useList;
+export const useAdminNewsletterCampaignDetail = store.useDetail;
+export const useCreateAdminNewsletterCampaign = store.useCreate;
+export const useUpdateAdminNewsletterCampaign = store.useUpdate;
+export const useDeleteAdminNewsletterCampaign = store.useRemove;
+
+/* ---- Actions dédiées, hors factory générique ---- */
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();
@@ -25,96 +38,54 @@ function buildFormData(payload: Record<string, unknown>): FormData {
   return fd;
 }
 
-async function fetchList(params: AdminListParams = {}): Promise<ListResponse<APIAdminNewsletterSubscriberListItem>> {
-  const qp = new URLSearchParams();
-  for (const [key, value] of Object.entries(params)) {
-    if (value !== undefined && value !== "") qp.append(key, String(value));
-  }
-  const response = await adminFetch(`/api/admin/${basePath}/list?${qp.toString()}`);
-  if (!response.ok) throw new Error(`Erreur lors de la récupération de "${resourceKey}"`);
-  return response.json();
-}
-
-async function fetchById(id: string): Promise<APIAdminNewsletterSubscriberDetail | null> {
-  const response = await adminFetch(`/api/admin/${basePath}/${id}`);
-  if (response.status === 404) return null;
-  if (!response.ok) throw new Error(`Erreur lors de la récupération de l'élément "${resourceKey}"`);
-  const json: DetailResponse<APIAdminNewsletterSubscriberDetail> = await response.json();
-  return json.data;
-}
-
-async function removeItem(id: string): Promise<void> {
-  const response = await adminFetch(`/api/admin/${basePath}/${id}`, { method: "DELETE" });
-  if (!response.ok && response.status !== 204) throw new Error(`Erreur lors de la suppression de "${resourceKey}"`);
-}
-
-async function blockSubscriber(id: string, payload: AdminNewsletterBlockPayload): Promise<APIAdminNewsletterSubscriberDetail> {
-  const response = await adminFetch(`/api/admin/${basePath}/${id}/block`, {
+async function scheduleCampaign(id: string, payload: AdminNewsletterCampaignSchedulePayload): Promise<APIAdminNewsletterCampaignDetail> {
+  const response = await adminFetch(`/api/admin/${basePath}/${id}/schedule`, {
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error(`Erreur lors du blocage de l'abonné`);
-  const json: DetailResponse<APIAdminNewsletterSubscriberDetail> = await response.json();
+  if (!response.ok) throw new Error("Erreur lors de la programmation de la campagne");
+  const json = await response.json();
   return json.data;
 }
 
-async function reactivateSubscriber(id: string): Promise<APIAdminNewsletterSubscriberDetail> {
-  const response = await adminFetch(`/api/admin/${basePath}/${id}/reactivate`, { method: "PUT" });
-  if (!response.ok) throw new Error(`Erreur lors de la réactivation de l'abonné`);
-  const json: DetailResponse<APIAdminNewsletterSubscriberDetail> = await response.json();
+async function cancelScheduleCampaign(id: string): Promise<APIAdminNewsletterCampaignDetail> {
+  const response = await adminFetch(`/api/admin/${basePath}/${id}/cancel-schedule`, { method: "PUT" });
+  if (!response.ok) throw new Error("Erreur lors de l'annulation de la programmation");
+  const json = await response.json();
   return json.data;
 }
 
-export const fetchAdminNewsletterSubscribers = fetchList;
-export const fetchAdminNewsletterSubscriberById = fetchById;
-export const deleteAdminNewsletterSubscriber = removeItem;
-export const blockAdminNewsletterSubscriber = blockSubscriber;
-export const reactivateAdminNewsletterSubscriber = reactivateSubscriber;
-
-export function useAdminNewsletterSubscribersList(params: AdminListParams = {}) {
-  const query = useQuery({
-    queryKey: [resourceKey, "admin-list", params],
-    queryFn: () => fetchList(params),
-    staleTime: 1000 * 30,
-  });
-  return {
-    items: query.data?.data ?? [],
-    meta: query.data?.meta ?? null,
-    isLoading: query.isLoading,
-    isError: query.isError,
-    refetch: query.refetch,
-  };
+async function sendCampaign(id: string): Promise<APIAdminNewsletterCampaignDetail> {
+  const response = await adminFetch(`/api/admin/${basePath}/${id}/send`, { method: "POST" });
+  if (!response.ok) throw new Error("Erreur lors de l'envoi de la campagne");
+  const json = await response.json();
+  return json.data;
 }
 
-export function useAdminNewsletterSubscriberDetail(id: string | undefined) {
-  const query = useQuery({
-    queryKey: [resourceKey, "admin-detail", id],
-    queryFn: () => fetchById(id as string),
-    enabled: !!id,
-  });
-  return { item: query.data ?? null, isLoading: query.isLoading, isError: query.isError, refetch: query.refetch };
-}
+export const scheduleAdminNewsletterCampaign = scheduleCampaign;
+export const cancelScheduleAdminNewsletterCampaign = cancelScheduleCampaign;
+export const sendAdminNewsletterCampaign = sendCampaign;
 
-export function useDeleteAdminNewsletterSubscriber() {
+export function useScheduleAdminNewsletterCampaign() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => removeItem(id),
+    mutationFn: ({ id, payload }: { id: string; payload: AdminNewsletterCampaignSchedulePayload }) => scheduleCampaign(id, payload),
     onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
   });
 }
 
-export function useBlockAdminNewsletterSubscriber() {
+export function useCancelScheduleAdminNewsletterCampaign() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: AdminNewsletterBlockPayload }) => blockSubscriber(id, payload),
+    mutationFn: (id: string) => cancelScheduleCampaign(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
   });
 }
 
-export function useReactivateAdminNewsletterSubscriber() {
+export function useSendAdminNewsletterCampaign() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => reactivateSubscriber(id),
+    mutationFn: (id: string) => sendCampaign(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
   });
 }

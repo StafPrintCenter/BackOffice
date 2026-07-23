@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { useAdminNewsletterSubscribersList, useDeleteAdminNewsletterSubscriber } from "@/stores/useNewsletterSubscribersStore";
-import type { APIAdminNewsletterSubscriberListItem } from "@/data/newsletter";
+import type { APIAdminNewsletterSubscriberListItem } from "@/data/newsletterSubscriber";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/newsletter/subscribers/")({

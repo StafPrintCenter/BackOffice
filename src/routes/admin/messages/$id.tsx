@@ -8,28 +8,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminContactDetail, useUpdateAdminContactStatus } from "@/stores/useContactsStore";
-import type { ContactStatus } from "@/data/contact";
+import {
+  type ContactStatus,
+  CONTACT_STATUS_BADGES,
+  CONTACT_STATUS_LABELS,
+} from "@/data/contact";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/messages/$id")({
   head: () => ({
     meta: [
       { title: `Messages | ${SITE.name}` },
-      { name: "robots", content: "noindex" }]
+      { name: "robots", content: "noindex" },
+    ],
   }),
   component: MessageDetail,
 });
-
-const statusBadge = (s: ContactStatus) =>
-({
-  new: "bg-blue-100 text-blue-700 border-blue-200",
-  in_progress: "bg-amber-100 text-amber-700 border-amber-200",
-  resolved: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  closed: "bg-muted text-muted-foreground border-border",
-}[s]);
-
-const statusLabel = (s: ContactStatus) =>
-  ({ new: "Nouveau", in_progress: "En cours", resolved: "Résolu", closed: "Fermé" }[s]);
 
 function MessageDetail() {
   const { id } = Route.useParams();
@@ -81,13 +75,13 @@ function MessageDetail() {
     <AdminShell>
       <div className="mb-6 flex items-center justify-between">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/messages" })}>
-          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+          <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
       </div>
 
       {isLoading ? (
         <div className="flex items-center justify-center py-24 text-muted-foreground">
-          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
+          <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement...
         </div>
       ) : !msg ? (
         <p className="text-muted-foreground">Message introuvable.</p>
@@ -98,12 +92,12 @@ function MessageDetail() {
             <div>
               <div className="flex items-center gap-2">
                 <code className="rounded bg-muted px-2.5 py-1 font-mono text-xs font-semibold">{msg.ticketNumber}</code>
-                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(msg.status)}`}>
-                  {statusLabel(msg.status)}
+                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${CONTACT_STATUS_BADGES[msg.status]}`}>
+                  {CONTACT_STATUS_LABELS[msg.status]}
                 </span>
               </div>
-              <h1 className="font-display text-2xl font-bold mt-2">{msg.name}</h1>
-              <a href={`mailto:${msg.email}`} className="text-sm text-primary hover:underline inline-flex items-center gap-1.5 mt-0.5">
+              <h1 className="mt-2 font-display text-2xl font-bold">{msg.name}</h1>
+              <a href={`mailto:${msg.email}`} className="mt-0.5 inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
                 <Mail className="h-3.5 w-3.5" /> {msg.email}
               </a>
             </div>
@@ -111,13 +105,13 @@ function MessageDetail() {
 
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Contenu principal du message */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="rounded-2xl border bg-card p-6 space-y-4">
-                <div className="flex items-center gap-2 font-display text-lg font-semibold border-b pb-3">
+            <div className="space-y-6 lg:col-span-2">
+              <div className="space-y-4 rounded-2xl border bg-card p-6">
+                <div className="flex items-center gap-2 border-b pb-3 font-display text-lg font-semibold">
                   <MessageSquare className="h-5 w-5 text-primary" /> Contenu du message
                 </div>
 
-                <div className="grid gap-3 text-xs sm:grid-cols-2 text-muted-foreground bg-muted/30 p-3 rounded-xl border">
+                <div className="grid gap-3 rounded-xl border bg-muted/30 p-3 text-xs text-muted-foreground sm:grid-cols-2">
                   <div className="flex items-center gap-2">
                     <Tag className="h-4 w-4 text-primary" />
                     <span>Service : <b className="text-foreground">{msg.customService || msg.service}</b></span>
@@ -128,14 +122,14 @@ function MessageDetail() {
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap border">
+                <div className="rounded-xl border bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap">
                   {msg.message}
                 </div>
               </div>
 
               {/* Traitement Admin */}
               {(msg.handledBy || msg.handledAt) && (
-                <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-4 text-xs text-muted-foreground">
                   {msg.handledBy && (
                     <div className="flex items-center gap-1.5">
                       <UserCheck className="h-4 w-4 text-primary" />
@@ -154,12 +148,12 @@ function MessageDetail() {
 
             {/* Panneau latéral : Gestion du statut et Notes */}
             <div className="space-y-6">
-              <div className="rounded-2xl border bg-card p-6 space-y-4">
+              <div className="space-y-4 rounded-2xl border bg-card p-6">
                 <div className="flex items-center justify-between border-b pb-3">
                   <span className="font-display font-semibold">Suivi du ticket</span>
                   {!isEditing && (
                     <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
-                      <Pencil className="h-4 w-4 mr-1" /> Modifier
+                      <Pencil className="mr-1 h-4 w-4" /> Modifier
                     </Button>
                   )}
                 </div>
@@ -181,8 +175,8 @@ function MessageDetail() {
                       </Select>
                     ) : (
                       <div className="mt-1">
-                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusBadge(msg.status)}`}>
-                          {statusLabel(msg.status)}
+                        <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${CONTACT_STATUS_BADGES[msg.status]}`}>
+                          {CONTACT_STATUS_LABELS[msg.status]}
                         </span>
                       </div>
                     )}
@@ -199,7 +193,7 @@ function MessageDetail() {
                         className="mt-1 text-xs"
                       />
                     ) : (
-                      <div className="mt-1 rounded-xl bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground whitespace-pre-wrap border">
+                      <div className="mt-1 rounded-xl border bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground whitespace-pre-wrap">
                         {msg.adminNotes || "Aucune note enregistrée."}
                       </div>
                     )}
@@ -208,10 +202,10 @@ function MessageDetail() {
                   {isEditing && (
                     <div className="flex gap-2 pt-2">
                       <Button size="sm" className="flex-1" onClick={handleSave} disabled={updateStatus.isPending}>
-                        {updateStatus.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-1" /> Enregistrer</>}
+                        {updateStatus.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="mr-1 h-4 w-4" /> Enregistrer</>}
                       </Button>
                       <Button size="sm" variant="outline" className="flex-1" onClick={handleCancel}>
-                        <X className="h-4 w-4 mr-1" /> Annuler
+                        <X className="mr-1 h-4 w-4" /> Annuler
                       </Button>
                     </div>
                   )}

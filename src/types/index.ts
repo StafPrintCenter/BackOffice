@@ -78,16 +78,6 @@ export interface User {
   token: string;
 }
 
-/* ============ Nouveaux modèles ============ */
-export interface Stat {
-  id: string;
-  key: string;
-  value: number;
-  suffix: string;
-  label: string;
-  createdAt: string;
-}
-
 export type ReportStatus = "ouvert" | "en_cours" | "resolu" | "rejete";
 
 export interface Report {

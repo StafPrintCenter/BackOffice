@@ -1,22 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft,
-  Trash2,
-  Ban,
-  RotateCcw,
-  Loader2,
-  Mail,
-  User,
-  Calendar,
-  ShieldAlert,
-  FileText,
-  Tag,
-  Clock,
-  UserX,
-  UserCheck,
-} from "lucide-react";
+import { ArrowLeft, Trash2, Ban, RotateCcw, Loader2, Mail, User, Calendar, ShieldAlert, FileText, Tag, Clock, UserX, UserCheck, } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

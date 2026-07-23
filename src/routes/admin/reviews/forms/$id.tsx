@@ -1,7 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3, CheckCircle, Plus, ArrowUp, ArrowDown, GripVertical, } from "lucide-react";
+import {
+  ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3, CheckCircle, Plus, ArrowUp, ArrowDown, GripVertical,
+} from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,11 +11,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { useAdminReviewFormDetail, useUpdateAdminReviewForm, useDeleteAdminReviewForm, usePublishAdminReviewForm, useDisableAdminReviewForm, useDuplicateAdminReviewForm, useAdminReviewFormAnalytics, } from "@/stores/useReviewFormsStore";
-import { useCreateAdminReviewQuestion, useUpdateAdminReviewQuestion, useDeleteAdminReviewQuestion, useReorderAdminReviewQuestions, } from "@/stores/useReviewQuestionsStore";
+import {
+  useAdminReviewFormDetail, useUpdateAdminReviewForm, useDeleteAdminReviewForm, usePublishAdminReviewForm, useDisableAdminReviewForm, useDuplicateAdminReviewForm, useAdminReviewFormAnalytics,
+} from "@/stores/useReviewFormsStore";
+import {
+  useCreateAdminReviewQuestion, useUpdateAdminReviewQuestion, useDeleteAdminReviewQuestion, useReorderAdminReviewQuestions,
+} from "@/stores/useReviewQuestionsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import {
-  type AdminReviewFormPayload, type AdminReviewFormQuestion, type AdminReviewQuestionPayload, type ReviewQuestionType,
+  type AdminReviewFormPayload, type AdminReviewFormQuestion, type AdminReviewQuestionPayload, type ReviewQuestionType, type ReviewQuestionOption, type QuestionFormValues,
   REVIEW_QUESTION_TYPES, CHOICE_QUESTION_TYPES, REVIEW_FORM_STATUS_LABELS, REVIEW_QUESTION_TYPE_LABELS, getReviewFormStatusBadge, getReviewQuestionTypeBadge,
 } from "@/data/reviewsForms";
 import { SITE } from "@/data/site";
@@ -27,23 +33,6 @@ export const Route = createFileRoute("/admin/reviews/forms/$id")({
   }),
   component: ReviewFormDetail,
 });
-
-interface QuestionOptionRow {
-  label: string;
-  value: string;
-}
-
-interface QuestionFormValues {
-  type: ReviewQuestionType;
-  title: string;
-  description: string;
-  is_required: boolean;
-  maxLength: string;
-  min: string;
-  max: string;
-  maxSizeKb: string;
-  options: QuestionOptionRow[];
-}
 
 const emptyQuestionForm: QuestionFormValues = {
   type: "short_text",
@@ -74,6 +63,7 @@ function ReviewFormDetail() {
   const { item: reviewForm, isLoading } = useAdminReviewFormDetail(id);
   const { items: categories } = useAdminCategoriesList({ perPage: 100 });
   const { analytics } = useAdminReviewFormAnalytics(id);
+
   const updateMutation = useUpdateAdminReviewForm();
   const removeMutation = useDeleteAdminReviewForm();
   const publishMutation = usePublishAdminReviewForm();
@@ -226,7 +216,7 @@ function ReviewFormDetail() {
 
   const addOptionRow = () => setQuestionForm({ ...questionForm, options: [...questionForm.options, { label: "", value: "" }] });
   const removeOptionRow = (index: number) => setQuestionForm({ ...questionForm, options: questionForm.options.filter((_, i) => i !== index) });
-  const updateOptionRow = (index: number, patch: Partial<QuestionOptionRow>) => {
+  const updateOptionRow = (index: number, patch: Partial<ReviewQuestionOption>) => {
     const next = [...questionForm.options];
     const current = { ...next[index], ...patch };
     // Auto-génère la valeur technique à partir du libellé si l'éditeur ne l'a pas saisie manuellement.

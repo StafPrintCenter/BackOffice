@@ -1,33 +1,33 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
-import { useAdminUsersList } from "@/stores/useUsersStore";
-import type { APIAdminUserListItem } from "@/data/users";
+import { useAdminStudentsList } from "@/stores/useStudentsStore";
+import type { APIAdminStudentListItem } from "@/data/students";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/members/students/")({
   head: () => ({
-    meta: [{ title: `Utilisateurs | ${SITE.name}` }, { name: "robots", content: "noindex" }],
+    meta: [{ title: `Apprenants | ${SITE.name}` }, { name: "robots", content: "noindex" }],
   }),
-  component: AdminUsers,
+  component: AdminStudents,
 });
 
-function AdminUsers() {
+function AdminStudents() {
   const navigate = useNavigate();
-  const { items, isLoading } = useAdminUsersList({ perPage: 100 });
+  const { items, isLoading } = useAdminStudentsList({ perPage: 100 });
 
   return (
     <AdminShell>
-      <PageHeader title="Utilisateurs" description="Consultez et modérez les comptes utilisateurs." />
+      <PageHeader title="Apprenants" description="Consultez et modérez les comptes apprenants." />
 
-      <DataTable<APIAdminUserListItem>
+      <DataTable<APIAdminStudentListItem>
         data={items}
         isLoading={isLoading}
-        searchKeys={["fullname", "email"]}
-        onView={(r) => navigate({ to: "/admin/members/users/$id", params: { id: r.id } })}
+        searchKeys={["fullname", "email", "occupation"]}
+        onView={(r) => navigate({ to: "/admin/members/students/$id", params: { id: r.id } })}
         columns={[
           {
             key: "fullname",
-            label: "Utilisateur",
+            label: "Apprenant",
             render: (r) => (
               <div>
                 <div className="font-medium">{r.fullname}</div>
@@ -35,7 +35,8 @@ function AdminUsers() {
               </div>
             ),
           },
-          { key: "role", label: "Rôle", render: (r) => <span className="text-xs capitalize">{r.role}</span> },
+          { key: "phone", label: "Téléphone", render: (r) => <span className="text-xs">{r.phone || "—"}</span> },
+          { key: "occupation", label: "Profession", render: (r) => <span className="text-xs">{r.occupation || "—"}</span> },
           {
             key: "isBlocked",
             label: "Statut",
@@ -57,14 +58,7 @@ function AdminUsers() {
           {
             key: "createdAt",
             label: "Inscrit le",
-            render: (r) => (
-              <span className="text-xs text-muted-foreground">
-                {new Date(r.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
-                  dateStyle: "short",
-                  timeStyle: "short",
-                })}
-              </span>
-            ),
+            render: (r) => <span className="text-xs text-muted-foreground">{new Date(r.createdAt).toLocaleDateString("fr-FR")}</span>,
           },
         ]}
       />

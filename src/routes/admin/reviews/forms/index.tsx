@@ -12,14 +12,20 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAdminReviewFormsList, useCreateAdminReviewForm, useDeleteAdminReviewForm } from "@/stores/userReviewFormsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import type { APIAdminReviewFormListItem, AdminReviewFormPayload } from "@/data/reviewsForms";
+import {
+  type APIAdminReviewFormListItem,
+  type AdminReviewFormPayload,
+  REVIEW_FORM_STATUS_BADGES,
+  REVIEW_FORM_STATUS_LABELS,
+} from "@/data/reviewsForms";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/reviews/forms/")({
   head: () => ({
     meta: [
       { title: `Formulaires d'avis | ${SITE.name}` },
-      { name: "robots", content: "noindex" }]
+      { name: "robots", content: "noindex" },
+    ],
   }),
   component: AdminReviewForms,
 });
@@ -34,16 +40,6 @@ const schema = z.object({
 });
 type FormValues = z.infer<typeof schema>;
 const empty: FormValues = { title: "", description: "", category_id: "", expires_at: "", max_responses: undefined, allow_response_edit: true };
-
-function statusBadge(status: string) {
-  const map: Record<string, string> = {
-    draft: "bg-muted text-muted-foreground",
-    published: "bg-emerald-500/10 text-emerald-600",
-    disabled: "bg-destructive/10 text-destructive",
-  };
-  const label: Record<string, string> = { draft: "Brouillon", published: "Publié", disabled: "Désactivé" };
-  return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${map[status] ?? "bg-muted text-muted-foreground"}`}>{label[status] ?? status}</span>;
-}
 
 function AdminReviewForms() {
   const navigate = useNavigate();
@@ -86,7 +82,7 @@ function AdminReviewForms() {
     <AdminShell>
       <div className="mb-4">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews" })}>
-          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+          <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
       </div>
       <PageHeader title="Formulaires d'avis" description="Créez et gérez vos formulaires de collecte d'avis." />
@@ -98,11 +94,48 @@ function AdminReviewForms() {
         onView={(r) => navigate({ to: "/admin/reviews/forms/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
-          { key: "title", label: "Titre", render: (r) => <div><div className="font-medium">{r.title}</div><div className="text-xs text-muted-foreground line-clamp-1">{r.description}</div></div> },
-          { key: "category", label: "Catégorie", render: (r) => <span className="text-xs">{r.category ?? "—"}</span> },
-          { key: "status", label: "Statut", render: (r) => statusBadge(r.status) },
-          { key: "responsesCount", label: "Réponses", render: (r) => <span className="text-xs">{r.responsesCount}{r.maxResponses ? ` / ${r.maxResponses}` : ""}</span> },
-          { key: "expiresAt", label: "Expire le", render: (r) => r.expiresAt ? new Date(r.expiresAt).toLocaleDateString("fr-FR") : "—" },
+          {
+            key: "title",
+            label: "Titre",
+            render: (r) => (
+              <div>
+                <div className="font-medium">{r.title}</div>
+                <div className="line-clamp-1 text-xs text-muted-foreground">{r.description}</div>
+              </div>
+            ),
+          },
+          {
+            key: "category",
+            label: "Catégorie",
+            render: (r) => {
+              if (!r.category) return <span className="text-xs text-muted-foreground">—</span>;
+              const catObj = categories.find((c) => c.id === r.categoryId || c.name === r.category);
+              return (
+                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${catObj?.colorClass ?? "bg-muted text-muted-foreground"}`}>
+                  {r.category}
+                </span>
+              );
+            },
+          },
+          {
+            key: "status",
+            label: "Statut",
+            render: (r) => (
+              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${REVIEW_FORM_STATUS_BADGES[r.status] ?? "bg-muted text-muted-foreground"}`}>
+                {REVIEW_FORM_STATUS_LABELS[r.status] ?? r.status}
+              </span>
+            ),
+          },
+          {
+            key: "responsesCount",
+            label: "Réponses",
+            render: (r) => <span className="text-xs">{r.responsesCount}{r.maxResponses ? ` / ${r.maxResponses}` : ""}</span>,
+          },
+          {
+            key: "expiresAt",
+            label: "Expire le",
+            render: (r) => r.expiresAt ? new Date(r.expiresAt).toLocaleDateString("fr-FR") : "—",
+          },
         ]}
       />
 
@@ -113,12 +146,12 @@ function AdminReviewForms() {
             <div>
               <Label>Titre</Label>
               <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
-              {errors.title && <p className="text-xs text-destructive mt-1">{errors.title}</p>}
+              {errors.title && <p className="mt-1 text-xs text-destructive">{errors.title}</p>}
             </div>
             <div>
               <Label>Description</Label>
               <Textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-              {errors.description && <p className="text-xs text-destructive mt-1">{errors.description}</p>}
+              {errors.description && <p className="mt-1 text-xs text-destructive">{errors.description}</p>}
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>

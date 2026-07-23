@@ -273,27 +273,6 @@ function DashboardPage() {
             </ResponsiveContainer>
           </div>
         </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Entonnoir commercial</div>
-          <div className="text-xs text-muted-foreground">Ce mois-ci — ⚠️ mock</div>
-          <div className="mt-4 space-y-3">
-            {funnel.map((f, i) => {
-              const pct = (f.value / funnel[0].value) * 100;
-              return (
-                <div key={f.stage}>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-medium">{f.stage}</span>
-                    <span className="text-muted-foreground">{f.value.toLocaleString()}</span>
-                  </div>
-                  <div className="mt-1 h-2 rounded-full bg-muted overflow-hidden">
-                    <div className="h-full rounded-full transition-all" style={{ width: pct + "%", background: pieColors[i % pieColors.length] }} />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">

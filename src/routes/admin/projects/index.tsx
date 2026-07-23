@@ -94,6 +94,20 @@ function AdminProjects() {
             },
           },
           { key: "client", label: "Client" },
+          {
+            key: "isPublic",
+            label: "Visibilité",
+            render: (r) => (
+              <span
+                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${r.isPublic
+                  ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400"
+                  : "bg-amber-100 text-amber-800 dark:bg-amber-950/50 dark:text-amber-400"
+                  }`}
+              >
+                {r.isPublic ? "Public" : "Privé"}
+              </span>
+            ),
+          },
         ]}
       />
 

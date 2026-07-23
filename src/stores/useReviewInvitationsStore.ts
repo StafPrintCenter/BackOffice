@@ -6,8 +6,6 @@ import type { APIAdminReviewInvitation, AdminReviewInvitationPayload } from "@/d
 const resourceKey = "review-invitations";
 const basePath = "reviews/invitations";
 
-// Ressource "reviews/invitations" : ni update ni delete génériques côté API.
-// On ne réutilise createResourceStore que pour fetchList / fetchById / create.
 const store = createResourceStore<APIAdminReviewInvitation, AdminReviewInvitationPayload>({
   resourceKey,
   basePath,

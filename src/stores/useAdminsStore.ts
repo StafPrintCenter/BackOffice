@@ -31,6 +31,20 @@ async function inviteAdmin(payload: import("@/data/admins").AdminAdminInvitePayl
   return json.data;
 }
 
+async function revokeAdminInvite(id: string): Promise<APIAdminAdminDetail> {
+  const response = await adminFetch(`/api/admin/${basePath}/${id}/invite/revoke`, { method: "PUT" });
+  if (!response.ok) throw new Error("Erreur lors de la révocation de l'invitation");
+  const json = await response.json();
+  return json.data;
+}
+
+async function resendAdminInvite(id: string): Promise<APIAdminAdminDetail> {
+  const response = await adminFetch(`/api/admin/${basePath}/${id}/invite/resend`, { method: "POST" });
+  if (!response.ok) throw new Error("Erreur lors du renvoi de l'invitation");
+  const json = await response.json();
+  return json.data;
+}
+
 async function alertAdmin(id: string, subject: string, message: string): Promise<void> {
   const fd = new FormData();
   fd.append("subject", subject);
@@ -63,6 +77,22 @@ export function useInviteAdminAdmin() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (payload: import("@/data/admins").AdminAdminInvitePayload) => inviteAdmin(payload),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
+  });
+}
+
+export function useRevokeAdminAdminInvite() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => revokeAdminInvite(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
+  });
+}
+
+export function useResendAdminAdminInvite() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => resendAdminInvite(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
   });
 }

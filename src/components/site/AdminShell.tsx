@@ -33,7 +33,6 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: "/admin/messages", label: "Messages", icon: Inbox },
       { to: "/admin/appointments", label: "Rendez-vous", icon: CalendarClock },
-
       { to: "/admin/reports", label: "Signalements", icon: ShieldAlert },
       { to: "/admin/newsletter", label: "Newsletter", icon: Mailbox },
     ],

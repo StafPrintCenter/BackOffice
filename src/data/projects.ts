@@ -6,7 +6,7 @@ export interface APIAdminProject {
   client: string;
   cover: string;
   description: string;
-  isPublic: string;
+  isPublic: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -17,4 +17,5 @@ export interface AdminProjectPayload {
   client: string;
   cover: string;
   description: string;
+  is_public: boolean;
 }

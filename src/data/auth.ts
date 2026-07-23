@@ -27,3 +27,10 @@ export type APILoginResponse = {
   admin: APIAdminUser;
   token: string;
 };
+
+export interface AdminInviteVerifyResponse {
+  firstName: string;
+  lastName: string;
+  fullname: string;
+  email: string;
+}

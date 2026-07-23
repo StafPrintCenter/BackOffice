@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
-import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList } from "@/stores";
+import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList, useAdminArticlesList } from "@/stores";
 import { SITE } from "@/data/site";
 
 // --- Encore sur mock : aucune spec reçue pour les articles ---

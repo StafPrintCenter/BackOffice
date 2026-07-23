@@ -1,3 +1,4 @@
+import { APIAdminReviewResponseListItem } from "./reviewResponses"
 export type ReviewFormStatus = "draft" | "published" | "disabled";
 
 export interface ReviewQuestionOption {
@@ -181,4 +182,5 @@ export interface AdminReviewFormAnalytics {
   formId: string;
   totalResponses: number;
   questions: AdminReviewFormAnalyticsQuestion[];
+  responses: APIAdminReviewResponseListItem[];
 }

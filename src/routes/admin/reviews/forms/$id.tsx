@@ -1,10 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3,
-  CheckCircle, Plus, ArrowUp, ArrowDown, GripVertical,
-} from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3, CheckCircle, Plus, ArrowUp, ArrowDown, GripVertical, } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,31 +9,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import {
-  useAdminReviewFormDetail,
-  useUpdateAdminReviewForm,
-  useDeleteAdminReviewForm,
-  usePublishAdminReviewForm,
-  useDisableAdminReviewForm,
-  useDuplicateAdminReviewForm,
-  useAdminReviewFormAnalytics,
-} from "@/stores/useReviewFormsStore";
-import {
-  useCreateAdminReviewQuestion,
-  useUpdateAdminReviewQuestion,
-  useDeleteAdminReviewQuestion,
-  useReorderAdminReviewQuestions,
-} from "@/stores/useReviewQuestionsStore";
+import { useAdminReviewFormDetail, useUpdateAdminReviewForm, useDeleteAdminReviewForm, usePublishAdminReviewForm, useDisableAdminReviewForm, useDuplicateAdminReviewForm, useAdminReviewFormAnalytics, } from "@/stores/useReviewFormsStore";
+import { useCreateAdminReviewQuestion, useUpdateAdminReviewQuestion, useDeleteAdminReviewQuestion, useReorderAdminReviewQuestions, } from "@/stores/useReviewQuestionsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import {
-  type AdminReviewFormPayload,
-  type AdminReviewFormQuestion,
-  type AdminReviewQuestionPayload,
-  type ReviewQuestionType,
-  REVIEW_FORM_STATUS_BADGES,
-  REVIEW_FORM_STATUS_LABELS,
-  REVIEW_QUESTION_TYPE_LABELS,
-  REVIEW_QUESTION_TYPE_BADGES,
+  type AdminReviewFormPayload, type AdminReviewFormQuestion, type AdminReviewQuestionPayload, type ReviewQuestionType,
+  REVIEW_FORM_STATUS_BADGES, REVIEW_FORM_STATUS_LABELS, REVIEW_QUESTION_TYPE_LABELS, REVIEW_QUESTION_TYPE_BADGES,
 } from "@/data/reviewsForms";
 import { SITE } from "@/data/site";
 

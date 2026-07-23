@@ -12,6 +12,7 @@ export * from "./useReportsStore";
 export * from "./useReviewFormsStore";
 export * from "./useReviewInvitationsStore";
 export * from "./useReviewQuestionsStore";
+export * from "./useReviewResponsesStore";
 export * from "./useShortLinksStore";
 export * from "./useServicesStore";
 export * from "./useStatsStore";

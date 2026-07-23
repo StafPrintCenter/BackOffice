@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ArrowLeft, Tag } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable, RichTextEditor } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,12 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAdminNewsletterCampaignsList, useCreateAdminNewsletterCampaign, useDeleteAdminNewsletterCampaign } from "@/stores/useNewsletterCampaignsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import type { APIAdminNewsletterCampaignListItem, AdminNewsletterCampaignPayload } from "@/data/newsletterCampaigns";
+import {
+  type APIAdminNewsletterCampaignListItem,
+  type AdminNewsletterCampaignPayload,
+  NEWSLETTER_CAMPAIGN_STATUS_MAP,
+  NEWSLETTER_CAMPAIGN_STATUS_LABELS,
+} from "@/data/newsletterCampaigns";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/newsletter/campaigns/")({
@@ -31,15 +36,11 @@ type FormValues = z.infer<typeof schema>;
 const empty: FormValues = { subject: "", body: "", category_id: "" };
 
 function statusBadge(status: string) {
-  const map: Record<string, string> = {
-    draft: "bg-muted text-muted-foreground border-border",
-    scheduled: "bg-amber-100 text-amber-700 border-amber-200",
-    sent: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  };
-  const label: Record<string, string> = { draft: "Brouillon", scheduled: "Programmée", sent: "Envoyée" };
+  const colorClass = NEWSLETTER_CAMPAIGN_STATUS_MAP[status] ?? "bg-muted text-muted-foreground border-border";
+  const label = NEWSLETTER_CAMPAIGN_STATUS_LABELS[status] ?? status;
   return (
-    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${map[status] ?? "bg-muted text-muted-foreground"}`}>
-      {label[status] ?? status}
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${colorClass}`}>
+      {label}
     </span>
   );
 }
@@ -84,7 +85,7 @@ function AdminNewsletterCampaigns() {
       <DataTable<APIAdminNewsletterCampaignListItem>
         data={items}
         isLoading={isLoading}
-        searchKeys={["subject"]}
+        searchKeys={["subject", "category"]}
         onCreate={openCreate}
         onView={(r) => navigate({ to: "/admin/newsletter/campaigns/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
@@ -93,11 +94,21 @@ function AdminNewsletterCampaigns() {
           {
             key: "category",
             label: "Catégorie",
-            render: (r) => r.category ? (
-              <span className="inline-flex items-center gap-1 rounded-full border bg-primary/10 border-primary/20 px-2.5 py-0.5 text-xs font-medium text-primary">
-                <Tag className="h-3 w-3" /> {r.category}
-              </span>
-            ) : <span className="text-xs text-muted-foreground">—</span>
+            render: (r) => {
+              if (!r.category) return <span className="text-xs text-muted-foreground">—</span>;
+
+              const match = categories.find(
+                (c) => c.name.toLowerCase() === r.category?.toLowerCase()
+              );
+
+              const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";
+
+              return (
+                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${colorClass}`}>
+                  {r.category}
+                </span>
+              );
+            },
           },
           { key: "status", label: "Statut", render: (r) => statusBadge(r.status) },
           { key: "recipientsCount", label: "Destinataires", render: (r) => <span className="text-xs font-medium">{r.recipientsCount ?? "—"}</span> },

@@ -36,7 +36,12 @@ function AdminStudents() {
             ),
           },
           { key: "phone", label: "Téléphone", render: (r) => <span className="text-xs">{r.phone || "—"}</span> },
-          { key: "occupation", label: "Profession", render: (r) => <span className="text-xs">{r.occupation || "—"}</span> },
+          {
+            key: "occupation",
+            label: "Profession",
+            render: (r) => <span className="text-xs">{r.occupation || "-"
+            }</span>
+          },
           {
             key: "isBlocked",
             label: "Statut",

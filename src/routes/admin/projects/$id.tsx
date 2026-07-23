@@ -302,7 +302,7 @@ function ProjectDetail() {
                   ) : (
                     <>
                       <Lock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                      <span>Masqué du public (Back-office uniquement)</span>
+                      <span>Masqué du public</span>
                     </>
                   )}
                 </div>

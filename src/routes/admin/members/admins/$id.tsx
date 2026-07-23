@@ -55,6 +55,7 @@ function AdminDetail() {
   const [blockOpen, setBlockOpen] = useState(false);
   const [blockReason, setBlockReason] = useState("");
   const [blockError, setBlockError] = useState("");
+  const [revokeInviteOpen, setRevokeInviteOpen] = useState(false);
 
   if (isLoading) {
     return (

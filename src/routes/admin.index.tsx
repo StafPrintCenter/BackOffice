@@ -145,20 +145,14 @@ function DashboardPage() {
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Visites 7j" value="2 450" icon={<Eye className="h-5 w-5" />} hint="+12% vs sem. précédente" />
-        <StatCard label="Leads mois" value="1 240" icon={<Users className="h-5 w-5" />} hint="+8% ce mois" />
-        <StatCard label="Taux conversion" value="14.5%" icon={<TrendingUp className="h-5 w-5" />} hint="Objectif 15%" />
+        <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
+        <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
+        <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${shortLinks.length} liens`} />
         <StatCard label="Note moyenne" value={testimonialsLoading ? "…" : avgRating + " / 5"} icon={<Star className="h-5 w-5" />} hint={`${testimonials.length} témoignages`} />
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
-        <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
-        <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${shortLinks.length} liens`} />
         <StatCard label="Membres actifs" value={usersLoading || studentsLoading || adminsLoading ? "…" : activeUsers + activeStudents + activeAdmins} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total`} />
-      </div>
-
-      <div className="mt-4 grid gap-4 sm:grid-cols-3">
         <StatCard label="Utilisateurs actifs" value={usersLoading ? "…" : activeUsers} icon={<Users className="h-5 w-5" />} hint={`${users.length} au total`} />
         <StatCard label="Apprenants actifs" value={studentsLoading ? "…" : activeStudents} icon={<GraduationCap className="h-5 w-5" />} hint={`${students.length} au total`} />
         <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldCheck className="h-5 w-5" />} hint={`${admins.length} au total`} />

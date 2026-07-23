@@ -2,11 +2,10 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Tag } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable, RichTextEditor } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAdminNewsletterCampaignsList, useCreateAdminNewsletterCampaign, useDeleteAdminNewsletterCampaign } from "@/stores/useNewsletterCampaignsStore";
@@ -24,8 +23,8 @@ export const Route = createFileRoute("/admin/newsletter/campaigns/")({
 });
 
 const schema = z.object({
-  subject: z.string().trim().min(2).max(150),
-  body: z.string().trim().min(10),
+  subject: z.string().trim().min(2, "Le sujet doit contenir au moins 2 caractères").max(150),
+  body: z.string().trim().min(10, "Le contenu doit contenir au moins 10 caractères"),
   category_id: z.string().trim().optional(),
 });
 type FormValues = z.infer<typeof schema>;
@@ -33,12 +32,16 @@ const empty: FormValues = { subject: "", body: "", category_id: "" };
 
 function statusBadge(status: string) {
   const map: Record<string, string> = {
-    draft: "bg-muted text-muted-foreground",
-    scheduled: "bg-amber-500/10 text-amber-600",
-    sent: "bg-emerald-500/10 text-emerald-600",
+    draft: "bg-muted text-muted-foreground border-border",
+    scheduled: "bg-amber-100 text-amber-700 border-amber-200",
+    sent: "bg-emerald-100 text-emerald-700 border-emerald-200",
   };
   const label: Record<string, string> = { draft: "Brouillon", scheduled: "Programmée", sent: "Envoyée" };
-  return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${map[status] ?? "bg-muted text-muted-foreground"}`}>{label[status] ?? status}</span>;
+  return (
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${map[status] ?? "bg-muted text-muted-foreground"}`}>
+      {label[status] ?? status}
+    </span>
+  );
 }
 
 function AdminNewsletterCampaigns() {
@@ -86,38 +89,59 @@ function AdminNewsletterCampaigns() {
         onView={(r) => navigate({ to: "/admin/newsletter/campaigns/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
-          { key: "subject", label: "Sujet", render: (r) => <div className="font-medium max-w-sm">{r.subject}</div> },
-          { key: "category", label: "Catégorie", render: (r) => <span className="text-xs">{r.category ?? "—"}</span> },
+          { key: "subject", label: "Sujet", render: (r) => <div className="font-medium text-foreground max-w-sm">{r.subject}</div> },
+          {
+            key: "category",
+            label: "Catégorie",
+            render: (r) => r.category ? (
+              <span className="inline-flex items-center gap-1 rounded-full border bg-primary/10 border-primary/20 px-2.5 py-0.5 text-xs font-medium text-primary">
+                <Tag className="h-3 w-3" /> {r.category}
+              </span>
+            ) : <span className="text-xs text-muted-foreground">—</span>
+          },
           { key: "status", label: "Statut", render: (r) => statusBadge(r.status) },
-          { key: "recipientsCount", label: "Destinataires", render: (r) => <span className="text-xs">{r.recipientsCount ?? "—"}</span> },
-          { key: "scheduledAt", label: "Programmée le", render: (r) => r.scheduledAt ? new Date(r.scheduledAt).toLocaleString("fr-FR") : "—" },
+          { key: "recipientsCount", label: "Destinataires", render: (r) => <span className="text-xs font-medium">{r.recipientsCount ?? "—"}</span> },
+          {
+            key: "scheduledAt",
+            label: "Programmée le",
+            render: (r) => r.scheduledAt ? (
+              <span className="text-xs text-muted-foreground">
+                {new Date(r.scheduledAt.replace("Z", "")).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })}
+              </span>
+            ) : "—"
+          },
         ]}
       />
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>Nouvelle campagne</DialogTitle></DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-4 py-2">
             <div>
-              <Label>Sujet</Label>
-              <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
-              {errors.subject && <p className="text-xs text-destructive mt-1">{errors.subject}</p>}
+              <Label>Sujet *</Label>
+              <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} placeholder="Ex: Découvrez nos nouveautés du mois !" />
+              {errors.subject && <p className="text-xs text-destructive mt-1 font-medium">{errors.subject}</p>}
             </div>
             <div>
               <Label>Catégorie (optionnel)</Label>
               <select
                 value={form.category_id}
                 onChange={(e) => setForm({ ...form, category_id: e.target.value })}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm mt-1"
               >
                 <option value="">— Aucune —</option>
                 {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
             </div>
             <div>
-              <Label>Contenu</Label>
-              <Textarea rows={8} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
-              {errors.body && <p className="text-xs text-destructive mt-1">{errors.body}</p>}
+              <Label className="mb-1.5 block">Contenu du message *</Label>
+              <RichTextEditor
+                value={form.body}
+                onChange={(html) => setForm({ ...form, body: html })}
+                placeholder="Rédigez le contenu de votre email ici..."
+                minHeightClassName="min-h-[220px]"
+              />
+              {errors.body && <p className="text-xs text-destructive mt-1 font-medium">{errors.body}</p>}
             </div>
           </div>
           <DialogFooter>

@@ -29,10 +29,9 @@ function DashboardPage() {
   const { items: trainings, isLoading: trainingsLoading } = useAdminTrainingsList({ perPage: 100 });
   const { items: reports, isLoading: reportsLoading } = useAdminReportsList({ perPage: 100 });
 
-  // --- Branchement de l'API réelle pour les articles ---
   const { items: articles, isLoading: articlesLoading } = useAdminArticlesList({ perPage: 100 });
 
-  // --- KPIs réels ---
+  // --- KPIs ---
   const newMessages = contacts.filter((c) => c.status === "new").length;
   const openReports = reports.filter((r) => r.status === "pending" || r.status === "in_review").length;
 

@@ -39,3 +39,11 @@ export const REVIEW_PUBLICATION_STATUS_LABELS: Record<string, string> = {
   hidden: "Masquée",
   featured: "Mise en avant",
 };
+
+export function getReviewPublicationStatusBadge(status: string): string {
+  return REVIEW_PUBLICATION_STATUS_BADGES[status] ?? "bg-muted text-muted-foreground border-transparent";
+}
+
+export function getReviewPublicationStatusLabel(status: string): string {
+  return REVIEW_PUBLICATION_STATUS_LABELS[status] ?? status;
+}

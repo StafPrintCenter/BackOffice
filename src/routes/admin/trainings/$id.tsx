@@ -13,13 +13,16 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminTrainingDetail, useUpdateAdminTraining, useDeleteAdminTraining } from "@/stores/useTrainingsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-
-// 💡 Importation du helper de badge et des types
 import { getTrainingLevelBadgeClass } from "@/data/trainings";
 import type { AdminTrainingPayload, TrainingLevel, TrainingProgramModule } from "@/data/trainings";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/trainings/$id")({
-  head: () => ({ meta: [{ title: "Formation — Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Formations | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
+  }),
   component: TrainingDetail,
 });
 

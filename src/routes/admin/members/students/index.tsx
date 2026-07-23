@@ -35,7 +35,7 @@ function AdminStudents() {
               </div>
             ),
           },
-          { key: "phone", label: "Téléphone", render: (r) => <span className="text-xs">{r.phone || "—"}</span> },
+          { key: "phone", label: "Téléphone", render: (r) => <span className="text-xs">{r.phone || "-"}</span> },
           {
             key: "birthDate",
             label: "Date de naissance",

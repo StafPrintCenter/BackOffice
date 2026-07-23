@@ -24,16 +24,24 @@ export const Route = createFileRoute("/admin/projects/")({
 });
 
 const schema = z.object({
-  title: z.string().trim().min(2).max(120),
+  title: z.string().trim().min(2, "Le titre doit faire au moins 2 caractères").max(120),
   category_id: z.string().trim().min(1, "Choisissez une catégorie"),
-  client: z.string().trim().min(1).max(100),
+  client: z.string().trim().min(1, "Le client est requis").max(100),
   cover: z.string().trim().url("URL image invalide"),
-  description: z.string().trim().min(10).max(2000),
+  description: z.string().trim().min(10, "La description doit faire au moins 10 caractères").max(2000),
   is_public: z.boolean(),
 });
 
 type FormValues = z.infer<typeof schema>;
-const empty: FormValues = { title: "", category_id: "", client: "", cover: "", description: "", is_public: true };
+
+const empty: FormValues = {
+  title: "",
+  category_id: "",
+  client: "",
+  cover: "",
+  description: "",
+  is_public: true
+};
 
 function AdminProjects() {
   const navigate = useNavigate();
@@ -151,18 +159,11 @@ function AdminProjects() {
               <Textarea rows={5} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               {errors.description && <p className="text-xs text-destructive mt-1">{errors.description}</p>}
             </div>
-            <div className="flex items-center justify-between rounded-lg border p-3 shadow-sm">
-              <div className="space-y-0.5">
-                <Label className="text-base font-medium">Visibilité publique</Label>
-                <p className="text-xs text-muted-foreground">
-                  Détermine si ce projet est visible sur la vitrine publique.
-                </p>
-              </div>
-              <input
-                type="checkbox"
+            <div className="flex items-center justify-between rounded-lg border p-3">
+              <Label className="cursor-pointer">Projet public</Label>
+              <Switch
                 checked={form.is_public}
-                onChange={(e) => setForm({ ...form, is_public: e.target.checked })}
-                className="h-5 w-5 rounded border-input accent-primary"
+                onCheckedChange={(v) => setForm({ ...form, is_public: v })}
               />
             </div>
           </div>

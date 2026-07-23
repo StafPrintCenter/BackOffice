@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ArrowLeft, Copy } from "lucide-react";
+import { ArrowLeft, Copy, Check } from "lucide-react";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -70,6 +70,7 @@ function AdminReviewInvites() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormValues>(empty);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const openCreate = () => {
     setForm(empty);
@@ -105,10 +106,12 @@ function AdminReviewInvites() {
     });
   };
 
-  const copyLink = (e: React.MouseEvent, link: string) => {
+  const copyLink = (e: React.MouseEvent, id: string, link: string) => {
     e.stopPropagation();
     navigator.clipboard.writeText(link);
+    setCopiedId(id);
     toast.success("Lien copié");
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   return (
@@ -161,11 +164,18 @@ function AdminReviewInvites() {
           {
             key: "link",
             label: "Lien",
-            render: (r) => (
-              <Button size="icon" variant="ghost" onClick={(e) => copyLink(e, r.link)}>
-                <Copy className="h-4 w-4" />
-              </Button>
-            ),
+            render: (r) => {
+              const isCopied = copiedId === r.id;
+              return (
+                <Button size="icon" variant="ghost" onClick={(e) => copyLink(e, r.id, r.link)}>
+                  {isCopied ? (
+                    <Check className="h-4 w-4 text-emerald-600" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
+              );
+            },
           },
         ]}
       />

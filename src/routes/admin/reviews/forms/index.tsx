@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { useAdminReviewFormsList, useCreateAdminReviewForm, useDeleteAdminReviewForm } from "@/stores/userReviewFormsStore";
+import { useAdminReviewFormsList, useCreateAdminReviewForm, useDeleteAdminReviewForm } from "@/stores/useReviewFormsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import {
   type APIAdminReviewFormListItem,

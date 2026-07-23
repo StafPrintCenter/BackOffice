@@ -7,19 +7,20 @@ import {
 } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
 
-// --- Encore sur mocks/anciennes API : pas de specs disponibles pour ces ressources ---
+// --- Encore sur mocks/anciennes API : pas de specs reçues pour ces ressources ---
 import { servicesApi } from "@/api/services.api";
 import { formationsApi } from "@/api/formations.api";
 import { articlesApi } from "@/api/articles.api";
-import { testimonialsApi } from "@/api/testimonials.api";
-import { reportsApi, shortLinksApi, shortLinkClicksApi } from "@/api/extra.api";
+import { reportsApi } from "@/api/extra.api";
 
-// --- Réel : branché sur l'API ---
+// --- Réel ---
 import { useAdminContactsList } from "@/stores/useContactsStore";
 import { useAdminUsersList } from "@/stores/useUsersStore";
 import { useAdminStudentsList } from "@/stores/useStudentsStore";
 import { useAdminAdminsList } from "@/stores/useAdminsStore";
 import { useAdminProjectsList } from "@/stores/useProjectsStore";
+import { useAdminTestimonialsList } from "@/stores/useTestimonialsStore";
+import { useAdminShortLinksList } from "@/stores/useShortLinksStore";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({ meta: [{ title: "Dashboard — Admin Staf Print" }, { name: "robots", content: "noindex" }] }),
@@ -33,10 +34,7 @@ function DashboardPage() {
   const services = useQuery({ queryKey: ["services"], queryFn: servicesApi.list });
   const formations = useQuery({ queryKey: ["formations"], queryFn: formationsApi.list });
   const articles = useQuery({ queryKey: ["articles"], queryFn: articlesApi.list });
-  const testimonials = useQuery({ queryKey: ["testimonials"], queryFn: testimonialsApi.list });
   const reports = useQuery({ queryKey: ["reports"], queryFn: reportsApi.list });
-  const shortLinks = useQuery({ queryKey: ["short-links"], queryFn: shortLinksApi.list });
-  const clicks = useQuery({ queryKey: ["short-link-clicks"], queryFn: shortLinkClicksApi.list });
 
   // --- Réel ---
   const { items: contacts, isLoading: contactsLoading } = useAdminContactsList({ perPage: 100 });
@@ -44,16 +42,25 @@ function DashboardPage() {
   const { items: students, isLoading: studentsLoading } = useAdminStudentsList({ perPage: 100 });
   const { items: admins, isLoading: adminsLoading } = useAdminAdminsList({ perPage: 100 });
   const { items: projects, isLoading: projectsLoading } = useAdminProjectsList({ perPage: 100 });
+  const { items: testimonials, isLoading: testimonialsLoading } = useAdminTestimonialsList({ perPage: 100 });
+  const { items: shortLinks, isLoading: shortLinksLoading } = useAdminShortLinksList({ perPage: 100 });
 
   // --- KPIs réels ---
   const newMessages = contacts.filter((c) => c.status === "new").length;
   const openReports = (reports.data ?? []).filter((r) => r.status === "ouvert" || r.status === "en_cours").length; // ⚠️ mock, statuts à confirmer
-  const totalClicks = (shortLinks.data ?? []).reduce((s, l) => s + l.clicksCount, 0); // ⚠️ mock
 
   const activeUsers = users.filter((u) => u.isActive && !u.isBlocked).length;
   const activeStudents = students.filter((s) => s.isActive && !s.isBlocked).length;
   const activeAdmins = admins.filter((a) => a.isActive && !a.isBlocked && !a.isPending).length;
   const totalMembers = users.length + students.length + admins.length;
+
+  const totalClicks = shortLinks.reduce((s, l) => s + l.clicksCount, 0);
+  const activeShortLinks = shortLinks.filter((l) => l.isActive).length;
+
+  const avgRating = testimonials.length
+    ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1)
+    : "…";
+  const featuredTestimonials = testimonials.filter((t) => t.featured).length;
 
   const msgByStatus = Object.entries(
     contacts.reduce<Record<string, number>>((a, c) => { a[c.status] = (a[c.status] ?? 0) + 1; return a; }, {})
@@ -69,20 +76,17 @@ function DashboardPage() {
     projects.reduce<Record<string, number>>((acc, p) => { const key = p.category || "Sans catégorie"; acc[key] = (acc[key] ?? 0) + 1; return acc; }, {})
   ).map(([name, value]) => ({ name, value }));
 
-  const topLinks = [...(shortLinks.data ?? [])].sort((a, b) => b.clicksCount - a.clicksCount).slice(0, 5).map((l) => ({ name: l.alias, value: l.clicksCount })); // ⚠️ mock
+  const topLinks = [...shortLinks].sort((a, b) => b.clicksCount - a.clicksCount).slice(0, 5).map((l) => ({ name: l.alias, value: l.clicksCount }));
 
-  const clicks30 = (() => {
-    const map = new Map<string, number>();
-    for (let i = 29; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); map.set(d.toISOString().slice(0, 10), 0); }
-    (clicks.data ?? []).forEach((c) => { const k = c.clickedAt.slice(0, 10); if (map.has(k)) map.set(k, (map.get(k) ?? 0) + 1); });
-    return Array.from(map.entries()).map(([day, value]) => ({ day: day.slice(5), value }));
-  })(); // ⚠️ mock
+  const linksByCategory = Object.entries(
+    shortLinks.reduce<Record<string, number>>((acc, l) => { acc[l.category] = (acc[l.category] ?? 0) + 1; return acc; }, {})
+  ).map(([name, value]) => ({ name, value }));
 
   const formationsByTheme = Object.entries(
     (formations.data ?? []).reduce<Record<string, number>>((acc, f) => { acc[f.theme] = (acc[f.theme] ?? 0) + 1; return acc; }, {})
   ).map(([name, value]) => ({ name, value })); // ⚠️ mock
 
-  // --- Données 100% fictives, jamais réelles, laissées telles quelles en attendant vos specs de reporting ---
+  // --- Données 100% fictives, en attente de specs analytics/tracking/revenus ---
   const monthly = [
     { month: "Jan", projets: 4, formations: 2, revenus: 1200 },
     { month: "Fév", projets: 6, formations: 3, revenus: 1800 },
@@ -117,45 +121,40 @@ function DashboardPage() {
     { stage: "Clients", value: 180 },
   ];
 
-  const avgRating = testimonials.data && testimonials.data.length
-    ? (testimonials.data.reduce((s, t) => s + t.rating, 0) / testimonials.data.length).toFixed(1)
-    : "…"; // ⚠️ mock
-
   const recent = [
     ...projects.slice(0, 3).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
     ...(articles.data ?? []).slice(0, 2).map((a) => ({ type: "Article", title: a.title, meta: a.author, icon: FileText })), // ⚠️ mock
-    ...(formations.data ?? []).slice(0, 2).map((f) => ({ type: "Formation", title: f.title, meta: f.theme, icon: GraduationCap })), // ⚠️ mock
+    ...(formations.data ?? []).slice(0, 1).map((f) => ({ type: "Formation", title: f.title, meta: f.theme, icon: GraduationCap })), // ⚠️ mock
   ].slice(0, 6);
 
   return (
     <AdminShell>
       <PageHeader title="Dashboard" description="Vue d'ensemble de votre activité." />
 
-      {/* KPIs — ⚠️ Services/Formations/Articles encore sur ancienne API, Projets réel */}
+      {/* KPIs — Services/Formations/Articles encore sur ancienne API, Projets réel */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Services" value={services.data?.length ?? "…"} icon={<Wrench className="h-5 w-5" />} hint={`${services.data?.filter((s) => s.featured).length ?? 0} en vedette`} />
         <StatCard label="Formations" value={formations.data?.length ?? "…"} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
-        <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint="Portfolio" />
+        <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint="Portfolio (réel)" />
         <StatCard label="Articles" value={articles.data?.length ?? "…"} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
       </div>
 
-      {/* Ligne 100% mock — en attente de specs analytics/tracking */}
+      {/* Note moyenne réelle, reste mock en attente d'analytics */}
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Visites 7j" value="2 450" icon={<Eye className="h-5 w-5" />} hint="+12% vs sem. précédente" />
         <StatCard label="Leads mois" value="1 240" icon={<Users className="h-5 w-5" />} hint="+8% ce mois" />
         <StatCard label="Taux conversion" value="14.5%" icon={<TrendingUp className="h-5 w-5" />} hint="Objectif 15%" />
-        <StatCard label="Note moyenne" value={avgRating + " / 5"} icon={<Star className="h-5 w-5" />} hint={`${testimonials.data?.length ?? 0} témoignages`} />
+        <StatCard label="Note moyenne" value={testimonialsLoading ? "…" : avgRating + " / 5"} icon={<Star className="h-5 w-5" />} hint={`${testimonials.length} témoignages (réel)`} />
       </div>
 
-      {/* Messages réel, Signalements/Clics mock */}
+      {/* Messages, clics et membres réels ; signalements encore mock */}
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total (réel)`} />
         <StatCard label="Signalements ouverts" value={openReports} icon={<ShieldAlert className="h-5 w-5" />} hint="À traiter" />
-        <StatCard label="Clics liens courts" value={totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${shortLinks.data?.length ?? 0} liens`} />
+        <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${shortLinks.length} liens (réel)`} />
         <StatCard label="Membres actifs" value={usersLoading || studentsLoading || adminsLoading ? "…" : activeUsers + activeStudents + activeAdmins} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total (réel)`} />
       </div>
 
-      {/* Nouvelle ligne réelle : détail par type de membre */}
       <div className="mt-4 grid gap-4 sm:grid-cols-3">
         <StatCard label="Utilisateurs actifs" value={usersLoading ? "…" : activeUsers} icon={<Users className="h-5 w-5" />} hint={`${users.length} au total`} />
         <StatCard label="Apprenants actifs" value={studentsLoading ? "…" : activeStudents} icon={<GraduationCap className="h-5 w-5" />} hint={`${students.length} au total`} />
@@ -164,17 +163,17 @@ function DashboardPage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
-          <div className="font-display text-lg font-semibold">Clics liens courts — 30 jours</div>
+          <div className="font-display text-lg font-semibold">Répartition des liens courts par catégorie</div>
+          <div className="text-xs text-muted-foreground">Réel</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
-              <AreaChart data={clicks30}>
-                <defs><linearGradient id="clk" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#3C82AB" stopOpacity={0.4} /><stop offset="100%" stopColor="#3C82AB" stopOpacity={0} /></linearGradient></defs>
+              <BarChart data={linksByCategory}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="day" stroke="var(--muted-foreground)" fontSize={11} />
+                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
                 <YAxis stroke="var(--muted-foreground)" fontSize={11} />
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Area type="monotone" dataKey="value" stroke="#3C82AB" strokeWidth={2} fill="url(#clk)" />
-              </AreaChart>
+                <Bar dataKey="value" fill="#3C82AB" radius={[6, 6, 0, 0]} />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
@@ -194,6 +193,7 @@ function DashboardPage() {
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="flex items-center gap-2"><Link2 className="h-4 w-4 text-primary" /><div className="font-display text-lg font-semibold">Top 5 liens courts</div></div>
+          <div className="text-xs text-muted-foreground">Réel · {activeShortLinks} liens actifs</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
               <BarChart data={topLinks} layout="vertical">
@@ -208,6 +208,7 @@ function DashboardPage() {
         </div>
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Répartition des membres</div>
+          <div className="text-xs text-muted-foreground">Réel</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
               <BarChart data={membersByType}>
@@ -227,7 +228,7 @@ function DashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <div className="font-display text-lg font-semibold">Revenus mensuels</div>
-              <div className="text-xs text-muted-foreground">Estimation en milliers FCFA</div>
+              <div className="text-xs text-muted-foreground">Estimation en milliers FCFA — ⚠️ mock, en attente de specs</div>
             </div>
             <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-1 text-xs font-semibold text-primary">
               <TrendingUp className="h-3 w-3" /> +18%
@@ -254,7 +255,7 @@ function DashboardPage() {
 
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Visites du site</div>
-          <div className="text-xs text-muted-foreground">7 derniers jours</div>
+          <div className="text-xs text-muted-foreground">7 derniers jours — ⚠️ mock</div>
           <div className="mt-4 h-64">
             <ResponsiveContainer>
               <LineChart data={visits}>
@@ -273,7 +274,7 @@ function DashboardPage() {
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="font-display text-lg font-semibold">Activité mensuelle</div>
-          <div className="text-xs text-muted-foreground">Projets & formations livrés</div>
+          <div className="text-xs text-muted-foreground">Projets & formations livrés — ⚠️ mock</div>
           <div className="mt-4 h-64">
             <ResponsiveContainer>
               <BarChart data={monthly}>
@@ -291,6 +292,7 @@ function DashboardPage() {
 
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Formations par thème</div>
+          <div className="text-xs text-muted-foreground">⚠️ mock</div>
           <div className="mt-4 h-64">
             <ResponsiveContainer>
               <PieChart>
@@ -307,7 +309,7 @@ function DashboardPage() {
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Performance par domaine</div>
-          <div className="text-xs text-muted-foreground">Score interne /100</div>
+          <div className="text-xs text-muted-foreground">Score interne /100 — ⚠️ mock</div>
           <div className="mt-4 h-64">
             <ResponsiveContainer>
               <RadarChart data={perf}>
@@ -338,7 +340,7 @@ function DashboardPage() {
 
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Entonnoir commercial</div>
-          <div className="text-xs text-muted-foreground">Ce mois-ci</div>
+          <div className="text-xs text-muted-foreground">Ce mois-ci — ⚠️ mock</div>
           <div className="mt-4 space-y-3">
             {funnel.map((f, i) => {
               const pct = (f.value / funnel[0].value) * 100;
@@ -364,6 +366,7 @@ function DashboardPage() {
             <Activity className="h-4 w-4 text-primary" />
             <div className="font-display text-lg font-semibold">Activité récente</div>
           </div>
+          <div className="text-xs text-muted-foreground">Projets réel · Articles/Formations mock</div>
           <ul className="mt-4 divide-y">
             {recent.map((r, i) => {
               const Icon = r.icon;
@@ -389,20 +392,25 @@ function DashboardPage() {
             <MessagesSquare className="h-4 w-4 text-primary" />
             <div className="font-display text-lg font-semibold">Derniers témoignages</div>
           </div>
+          <div className="text-xs text-muted-foreground">Réel · {featuredTestimonials} en vedette</div>
           <ul className="mt-4 space-y-4">
-            {(testimonials.data ?? []).slice(0, 3).map((t) => (
-              <li key={t.id} className="rounded-xl border p-3">
-                <div className="flex gap-0.5">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="h-3 w-3 fill-primary text-primary" />
-                  ))}
-                </div>
-                <p className="mt-2 text-xs italic line-clamp-3">"{t.quote}"</p>
-                <div className="mt-2 text-xs font-medium">{t.name}</div>
-                <div className="text-[10px] text-muted-foreground">{t.company}</div>
-              </li>
-            ))}
-            {(!testimonials.data || testimonials.data.length === 0) && (
+            {testimonialsLoading && <li className="text-center text-sm text-muted-foreground">Chargement...</li>}
+            {[...testimonials]
+              .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+              .slice(0, 3)
+              .map((t) => (
+                <li key={t.id} className="rounded-xl border p-3">
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: t.rating }).map((_, i) => (
+                      <Star key={i} className="h-3 w-3 fill-primary text-primary" />
+                    ))}
+                  </div>
+                  <p className="mt-2 text-xs italic line-clamp-3">"{t.quote}"</p>
+                  <div className="mt-2 text-xs font-medium">{t.name}</div>
+                  <div className="text-[10px] text-muted-foreground">{t.role}</div>
+                </li>
+              ))}
+            {!testimonialsLoading && testimonials.length === 0 && (
               <li className="text-center text-sm text-muted-foreground">Aucun témoignage</li>
             )}
           </ul>

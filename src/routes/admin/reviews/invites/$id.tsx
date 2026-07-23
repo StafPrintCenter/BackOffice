@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Loader2, Ban, Copy, Send } from "lucide-react";
 import { AdminShell } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { useAdminReviewInvitationDetail, useRevokeAdminReviewInvitation } from "@/stores/useReviewInvitationsStore";
+import { useAdminReviewInvitationDetail, useRevokeAdminReviewInvitation, useResendAdminReviewInvitation } from "@/stores/useReviewInvitationsStore";
 import { REVIEW_INVITATION_STATUS_BADGES, REVIEW_INVITATION_STATUS_LABELS } from "@/data/reviewInvitations";
 import { SITE } from "@/data/site";
 
@@ -19,6 +19,7 @@ function InvitationDetail() {
   const navigate = useNavigate();
   const { item: invitation, isLoading } = useAdminReviewInvitationDetail(id);
   const revokeMutation = useRevokeAdminReviewInvitation();
+  const resendMutation = useResendAdminReviewInvitation();
 
   if (isLoading) {
     return (
@@ -44,6 +45,7 @@ function InvitationDetail() {
   }
 
   const canRevoke = invitation.status !== "revoked" && invitation.status !== "completed";
+  const canResend = invitation.status !== "revoked" && invitation.status !== "completed";
 
   const copyLink = () => {
     navigator.clipboard.writeText(invitation.link);
@@ -54,6 +56,13 @@ function InvitationDetail() {
     revokeMutation.mutate(invitation.id, {
       onSuccess: () => toast.success("Invitation révoquée"),
       onError: () => toast.error("Erreur lors de la révocation"),
+    });
+  };
+
+  const handleResend = () => {
+    resendMutation.mutate(invitation.id, {
+      onSuccess: () => toast.success("Invitation renvoyée"),
+      onError: () => toast.error("Erreur lors du renvoi de l'invitation"),
     });
   };
 
@@ -68,7 +77,7 @@ function InvitationDetail() {
             <Copy className="mr-1 h-4 w-4" /> Copier le lien
           </Button>
           {/* Renvoyer désactivé tant que l'endpoint réel n'est pas confirmé (voir note dans le store) */}
-          <Button variant="outline" size="sm" disabled title="Endpoint à confirmer côté backend">
+          <Button variant="outline" size="sm" onClick={handleResend} disabled={!canResend || resendMutation.isPending}>
             <Send className="mr-1 h-4 w-4" /> Renvoyer
           </Button>
           {canRevoke && (

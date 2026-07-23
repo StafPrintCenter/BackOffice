@@ -45,7 +45,9 @@ const schema = z
     message: "Le nom du projet est requis",
     path: ["project_name"],
   });
+
 type FormValues = z.infer<typeof schema>;
+
 const empty: FormValues = {
   review_form_id: "",
   project_mode: "none",
@@ -69,13 +71,19 @@ function AdminReviewInvites() {
   const [form, setForm] = useState<FormValues>(empty);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const openCreate = () => { setForm(empty); setErrors({}); setOpen(true); };
+  const openCreate = () => {
+    setForm(empty);
+    setErrors({});
+    setOpen(true);
+  };
 
   const submit = () => {
     const parsed = schema.safeParse(form);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
-      parsed.error.issues.forEach((i) => { errs[i.path[i.path.length - 1] as string] = i.message; });
+      parsed.error.issues.forEach((i) => {
+        errs[i.path[i.path.length - 1] as string] = i.message;
+      });
       setErrors(errs);
       return;
     }
@@ -89,12 +97,16 @@ function AdminReviewInvites() {
       expires_at: parsed.data.expires_at ? new Date(parsed.data.expires_at).toISOString() : undefined,
     };
     createMutation.mutate(payload, {
-      onSuccess: () => { toast.success("Invitation créée"); setOpen(false); },
+      onSuccess: () => {
+        toast.success("Invitation créée");
+        setOpen(false);
+      },
       onError: () => toast.error("Erreur lors de la création de l'invitation"),
     });
   };
 
-  const copyLink = (link: string) => {
+  const copyLink = (e: React.MouseEvent, link: string) => {
+    e.stopPropagation();
     navigator.clipboard.writeText(link);
     toast.success("Lien copié");
   };
@@ -150,7 +162,7 @@ function AdminReviewInvites() {
             key: "link",
             label: "Lien",
             render: (r) => (
-              <Button size="icon" variant="ghost" onClick={() => copyLink(r.link)}>
+              <Button size="icon" variant="ghost" onClick={(e) => copyLink(e, r.link)}>
                 <Copy className="h-4 w-4" />
               </Button>
             ),

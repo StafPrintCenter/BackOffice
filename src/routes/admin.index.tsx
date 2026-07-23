@@ -135,7 +135,7 @@ function DashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Services" value={services.data?.length ?? "…"} icon={<Wrench className="h-5 w-5" />} hint={`${services.data?.filter((s) => s.featured).length ?? 0} en vedette`} />
         <StatCard label="Formations" value={formations.data?.length ?? "…"} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
-        <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint="Portfolio (réel)" />
+        <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint="Portfolio" />
         <StatCard label="Articles" value={articles.data?.length ?? "…"} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
       </div>
 

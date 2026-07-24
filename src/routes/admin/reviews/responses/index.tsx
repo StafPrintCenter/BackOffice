@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Send, FileText, MessageSquareText, } from "lucide-react";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { useAdminReviewResponsesList } from "@/stores/useReviewResponsesStore";
@@ -23,9 +23,6 @@ function AdminReviewResponses() {
   return (
     <AdminShell>
       <div className="mb-4">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews" })}>
-          <ArrowLeft className="mr-1 h-4 w-4" /> Retour
-        </Button>
       </div>
       <PageHeader title="Réponses" description="Consultez les réponses reçues et gérez leur publication." />
 

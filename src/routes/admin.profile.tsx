@@ -46,10 +46,6 @@ function ProfilePage() {
   const [newPw, setNewPw] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
 
-  const [showCurrentPw, setShowCurrentPw] = useState(false);
-  const [showNewPw, setShowNewPw] = useState(false);
-  const [showConfirmPw, setShowConfirmPw] = useState(false);
-
   const fullName = [firstName, lastName].filter(Boolean).join(" ") || "Administrateur";
 
   const initials = fullName
@@ -87,20 +83,6 @@ function ProfilePage() {
     // TODO: Connecter à l'API de mise à jour du profil
     toast.success("Profil mis à jour");
     setIsEditing(false);
-  };
-
-  const onChangePassword = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!currentPw || !newPw) return toast.error("Veuillez remplir les champs de mot de passe");
-    if (newPw.length < 6)
-      return toast.error("Le mot de passe doit contenir au moins 6 caractères");
-    if (newPw !== confirmPw) return toast.error("Les mots de passe ne correspondent pas");
-
-    // TODO: Connecter à l'API de changement de mot de passe
-    setCurrentPw("");
-    setNewPw("");
-    setConfirmPw("");
-    toast.success("Mot de passe modifié avec succès");
   };
 
   const handleLogout = async () => {

@@ -163,7 +163,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
           )}
         </Link>
         <button
-          onClick={handleLogout}
+          onClick={() => setConfirmDisconnectOpen(true)}
           title={collapsed ? "Déconnexion" : undefined}
           className={
             "flex items-center gap-2 rounded-lg text-sm text-sidebar-foreground/80 hover:bg-destructive cursor-pointer hover:text-sidebar-accent-foreground " +

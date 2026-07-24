@@ -43,7 +43,7 @@ export function ConfirmDisconnect({ open, onOpenChange, onConfirm, title = "Se d
             onClick={onConfirm}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            Déconnexion
+            Déconnecter
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

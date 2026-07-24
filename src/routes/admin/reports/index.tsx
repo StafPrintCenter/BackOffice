@@ -1,13 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { useAdminReportsList } from "@/stores/useReportsStore";
-import {
-  REPORT_STATUS_BADGES,
-  REPORT_STATUS_LABELS,
-  getReportReasonLabel,
-  getReportableTypeLabel,
-  type APIAdminReport,
-} from "@/data/reports";
+import { REPORT_STATUS_BADGES, REPORT_STATUS_LABELS, getReportReasonLabel, getReportableTypeLabel, type APIAdminReport, } from "@/data/reports";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/reports/")({

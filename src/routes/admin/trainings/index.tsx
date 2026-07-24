@@ -103,7 +103,7 @@ function AdminTrainings() {
       {/* Onglet retour vers la liste des formations */}
       <div className="mb-4">
         <Link to="/admin/trainings" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <UserRoundPlus className="h-4 w-4" /> Voir les formations
+          <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
         </Link>
       </div>
 

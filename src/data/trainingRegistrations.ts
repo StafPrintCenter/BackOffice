@@ -1,5 +1,3 @@
-// ⚠️ Seules "pending" et "contacted" sont confirmées par les payloads reçus.
-// À compléter si l'enum backend a d'autres valeurs (accepted, rejected, etc.)
 export type TrainingRegistrationStatus = "pending" | "contacted" | "accepted" | "accepted" | "cancelled";
 
 export type APIAdminTrainingRegistration = {

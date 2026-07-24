@@ -12,12 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAdminReviewFormsList, useCreateAdminReviewForm, useDeleteAdminReviewForm } from "@/stores/useReviewFormsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import {
-  type APIAdminReviewFormListItem,
-  type AdminReviewFormPayload,
-  REVIEW_FORM_STATUS_BADGES,
-  REVIEW_FORM_STATUS_LABELS,
-} from "@/data/reviewsForms";
+import { type APIAdminReviewFormListItem, type AdminReviewFormPayload, REVIEW_FORM_STATUS_BADGES, REVIEW_FORM_STATUS_LABELS, } from "@/data/reviewsForms";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/reviews/forms/")({

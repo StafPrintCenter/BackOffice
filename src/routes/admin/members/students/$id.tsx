@@ -120,6 +120,13 @@ function StudentDetail() {
     });
   };
 
+  const handleResendInvite = () => {
+    resendInviteMutation.mutate(student.id, {
+      onSuccess: () => toast.success("Invitation renvoyée"),
+      onError: () => toast.error("Erreur lors du renvoi de l'invitation"),
+    });
+  };
+
   return (
     <AdminShell>
       {/* Top Bar */}
@@ -128,6 +135,16 @@ function StudentDetail() {
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
         <div className="flex flex-wrap gap-2">
+          {!student.isActive && !student.isBlocked && (
+            <Button variant="outline" size="sm" onClick={handleResendInvite} disabled={resendInviteMutation.isPending}>
+              {resendInviteMutation.isPending ? (
+                <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+              ) : (
+                <MailCheck className="mr-1.5 h-4 w-4 text-primary" />
+              )}
+              Renvoyer l'invitation
+            </Button>
+          )}
           <Button variant="outline" size="sm" onClick={() => setAlertOpen(true)}>
             <AlertTriangle className="mr-1.5 h-4 w-4 text-amber-500" /> Avertir l'apprenant
           </Button>
@@ -158,6 +175,19 @@ function StudentDetail() {
               <p className="mt-0.5 text-xs text-destructive/80">
                 Bloqué le {student.blockedAt ? new Date(student.blockedAt).toLocaleString() : "—"}.
                 {student.blockedReason && ` Motif : "${student.blockedReason}"`}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Banner invitation en attente si inactif */}
+        {!student.isActive && !student.isBlocked && (
+          <div className="flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-amber-700">
+            <MailCheck className="h-5 w-5 shrink-0 mt-0.5" />
+            <div className="text-sm">
+              <p className="font-semibold">Ce compte n'a pas encore été activé.</p>
+              <p className="mt-0.5 text-xs text-amber-700/80">
+                L'apprenant n'a pas finalisé son invitation. Vous pouvez la renvoyer via le bouton ci-dessus.
               </p>
             </div>
           </div>

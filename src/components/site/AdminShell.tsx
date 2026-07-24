@@ -217,6 +217,12 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
           {children ?? <Outlet />}
         </main>
       </div>
+
+      <ConfirmDisconnect
+        open={confirmDisconnectOpen}
+        onOpenChange={setConfirmDisconnectOpen}
+        onConfirm={handleLogout}
+      />
     </div>
   );
 }

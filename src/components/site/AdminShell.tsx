@@ -60,6 +60,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [confirmDisconnectOpen, setConfirmDisconnectOpen] = useState(false);
 
   useEffect(() => {
     if (ready && !isAuthenticated) navigate({ to: "/auth/login" });

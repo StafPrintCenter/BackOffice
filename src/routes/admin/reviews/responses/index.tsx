@@ -24,6 +24,26 @@ function AdminReviewResponses() {
     <AdminShell>
       <PageHeader title="Réponses" description="Consultez les réponses reçues et gérez leur publication." />
 
+      {/* Raccourci */}
+      <div className="flex items-center gap-4">
+        <div className="mb-4">
+          <Link to="/admin/reviews/invites"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <Send className="h-4 w-4"
+            />
+            Inviter un client
+          </Link>
+        </div>
+        <div className="mb-4">
+          <Link to="/admin/reviews/responses"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <MessageSquareText className="h-4 w-4"
+            />
+            Voir les reponses
+          </Link>
+        </div>
+      </div>
+
       <DataTable<APIAdminReviewResponseListItem>
         data={items}
         isLoading={isLoading}

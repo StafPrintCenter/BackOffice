@@ -100,7 +100,7 @@ function AdminTrainings() {
     <AdminShell>
       <PageHeader title="Formations" description="Programmes proposés au public." />
 
-      {/* Onglet */}
+      {/* Raccourci */}
       <div className="mb-4">
         <Link to="/admin/trainings/registrations"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">

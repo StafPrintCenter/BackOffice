@@ -315,7 +315,7 @@ function TrainingRegistrationDetail() {
                         className="mt-1 text-xs leading-relaxed"
                       />
                     ) : (
-                      <div className="mt-1.5 rounded-xl bg-muted/30 p-3 text-xs leading-relaxed text-muted-foreground whitespace-pre-wrap border min-h-[90px]">
+                      <div className="mt-1.5 rounded-xl bg-muted/30 p-3 text-xs leading-relaxed text-muted-foreground whitespace-pre-wrap border min-h-22.5">
                         {reg.adminNotes || "Aucune note interne enregistrée."}
                       </div>
                     )}

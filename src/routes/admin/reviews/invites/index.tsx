@@ -116,11 +116,11 @@ function AdminReviewInvites() {
       {/* Raccourci */}
       <div className="flex items-center gap-4">
         <div className="mb-4">
-          <Link to="/admin/reviews/invites"
+          <Link to="/admin/reviews/forms"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <Send className="h-4 w-4"
             />
-            Inviter le clients
+            Gérer les formulaire
           </Link>
         </div>
         <div className="mb-4">

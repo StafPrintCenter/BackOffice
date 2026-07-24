@@ -13,6 +13,11 @@ import {
   XCircle,
   Clock,
   ShieldAlert,
+  Pencil,
+  X,
+  Eye,
+  EyeOff,
+  AlignLeft,
 } from "lucide-react";
 import { AdminShell, PageHeader } from "@/components/site";
 import { useAuth } from "@/hooks/useAuth";
@@ -35,13 +40,15 @@ function ProfilePage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
+  const [isEditing, setIsEditing] = useState(false);
+
   // États éditables dérivés de APIAdminUser
   const [firstName, setFirstName] = useState(user?.first_name ?? "");
   const [lastName, setLastName] = useState(user?.last_name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
   const [bio, setBio] = useState(user?.bio ?? "");
 
-  // Synchronisation si le user est chargé/mis à jour de manière asynchrone
+  // Synchronisation si le user est chargé/mis à jour
   useEffect(() => {
     if (user) {
       setFirstName(user.first_name || "");
@@ -51,10 +58,14 @@ function ProfilePage() {
     }
   }, [user]);
 
-  // Mot de passe
+  // Mot de passe & Affichage Œil
   const [currentPw, setCurrentPw] = useState("");
   const [newPw, setNewPw] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
+
+  const [showCurrentPw, setShowCurrentPw] = useState(false);
+  const [showNewPw, setShowNewPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
 
   const fullName = [firstName, lastName].filter(Boolean).join(" ") || "Administrateur";
 
@@ -75,15 +86,29 @@ function ProfilePage() {
       })
       : "Non renseigné";
 
+  const handleCancel = () => {
+    if (user) {
+      setFirstName(user.first_name || "");
+      setLastName(user.last_name || "");
+      setEmail(user.email || "");
+      setBio(user.bio || "");
+    }
+    setCurrentPw("");
+    setNewPw("");
+    setConfirmPw("");
+    setIsEditing(false);
+  };
+
   const onSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Connecter à la mutation d'update profil une fois l'endpoint prêt
+    // TODO: Connecter à l'API de mise à jour du profil
     toast.success("Profil mis à jour");
+    setIsEditing(false);
   };
 
   const onChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!currentPw || !newPw) return toast.error("Veuillez remplir tous les champs");
+    if (!currentPw || !newPw) return toast.error("Veuillez remplir les champs de mot de passe");
     if (newPw.length < 6)
       return toast.error("Le mot de passe doit contenir au moins 6 caractères");
     if (newPw !== confirmPw) return toast.error("Les mots de passe ne correspondent pas");
@@ -105,7 +130,7 @@ function ProfilePage() {
     <AdminShell>
       <PageHeader title="Mon Profil" description="Gérez vos informations d'identification et la sécurité de votre compte." />
 
-      {/* Bannière / Header card */}
+      {/* Barre d'action & En-tête du profil */}
       <div className="relative overflow-hidden rounded-2xl border bg-card shadow-sm">
         <div className="h-32 bg-gradient-hero" />
         <div className="p-6 pt-0">
@@ -129,127 +154,211 @@ function ProfilePage() {
                 </div>
               </div>
             </div>
-            <Button variant="outline" onClick={handleLogout} className="self-start sm:self-auto text-destructive hover:bg-destructive/10">
-              <LogOut className="mr-2 h-4 w-4" /> Déconnexion
-            </Button>
+
+            {/* Actions Édition / Déconnexion */}
+            <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+              {isEditing ? (
+                <>
+                  <Button variant="outline" size="sm" onClick={handleCancel}>
+                    <X className="h-4 w-4 mr-1" /> Annuler
+                  </Button>
+                  <Button size="sm" onClick={onSaveProfile}>
+                    <Save className="h-4 w-4 mr-1" /> Enregistrer
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                    <Pencil className="h-4 w-4 mr-1" /> Modifier le profil
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleLogout}
+                    className="text-destructive hover:bg-destructive/10"
+                  >
+                    <LogOut className="h-4 w-4 mr-1" /> Déconnexion
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Grille 2 colonnes */}
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        {/* Colonne Principale (2/3) : Formulaires d'édition */}
+        {/* Colonne Principale (2/3) : Informations Personnelles */}
         <div className="space-y-6 lg:col-span-2">
-          {/* Informations personnelles */}
-          <form onSubmit={onSaveProfile} className="rounded-2xl border bg-card p-6 shadow-sm">
+          <div className="rounded-2xl border bg-card p-6 shadow-sm">
             <div className="flex items-center gap-2 border-b pb-4 mb-5">
               <UserIcon className="h-5 w-5 text-primary" />
               <h3 className="font-display text-lg font-semibold">Informations personnelles</h3>
             </div>
 
-            <div className="space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2">
+            {isEditing ? (
+              <form onSubmit={onSaveProfile} className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <Label htmlFor="first_name">Prénom</Label>
+                    <Input
+                      id="first_name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="mt-1.5"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="last_name">Nom</Label>
+                    <Input
+                      id="last_name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      className="mt-1.5"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <Label htmlFor="first_name">Prénom</Label>
+                  <Label htmlFor="email">Adresse email</Label>
                   <Input
-                    id="first_name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="mt-1.5"
                   />
                 </div>
+
                 <div>
-                  <Label htmlFor="last_name">Nom</Label>
-                  <Input
-                    id="last_name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                  <Label htmlFor="bio">Biographie / Note personnelle</Label>
+                  <Textarea
+                    id="bio"
+                    rows={4}
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    placeholder="Écrivez une courte présentation de votre rôle..."
                     className="mt-1.5"
                   />
                 </div>
-              </div>
+              </form>
+            ) : (
+              <div className="space-y-6">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <Label className="text-xs text-muted-foreground">Prénom</Label>
+                    <div className="mt-1 text-sm font-medium">{user?.first_name || "Non renseigné"}</div>
+                  </div>
+                  <div>
+                    <Label className="text-xs text-muted-foreground">Nom</Label>
+                    <div className="mt-1 text-sm font-medium">{user?.last_name || "Non renseigné"}</div>
+                  </div>
+                </div>
 
-              <div>
-                <Label htmlFor="email">Adresse email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1.5"
-                />
-              </div>
+                <div>
+                  <Label className="text-xs text-muted-foreground">Adresse email</Label>
+                  <div className="mt-1 flex items-center gap-2 text-sm font-medium">
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                    <span>{user?.email}</span>
+                  </div>
+                </div>
 
-              <div>
-                <Label htmlFor="bio">Biographie / Note personnelle</Label>
-                <Textarea
-                  id="bio"
-                  rows={4}
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                  placeholder="Écrivez une courte présentation de votre rôle..."
-                  className="mt-1.5"
-                />
+                <div>
+                  <Label className="text-xs text-muted-foreground">Biographie / Note</Label>
+                  <div className="mt-1.5 rounded-xl border bg-muted/20 p-4 text-sm text-foreground leading-relaxed">
+                    {user?.bio ? user.bio : <span className="italic text-muted-foreground">Aucune biographie disponible.</span>}
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div className="mt-6 flex justify-end">
-              <Button type="submit">
-                <Save className="mr-2 h-4 w-4" /> Enregistrer les modifications
-              </Button>
-            </div>
-          </form>
-
-          {/* Formulaire de Sécurité (Mot de passe) */}
-          <form onSubmit={onChangePassword} className="rounded-2xl border bg-card p-6 shadow-sm">
-            <div className="flex items-center gap-2 border-b pb-4 mb-5">
-              <KeyRound className="h-5 w-5 text-primary" />
-              <h3 className="font-display text-lg font-semibold">Sécurité du compte</h3>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div>
-                <Label htmlFor="cpw">Mot de passe actuel</Label>
-                <Input
-                  id="cpw"
-                  type="password"
-                  value={currentPw}
-                  onChange={(e) => setCurrentPw(e.target.value)}
-                  className="mt-1.5"
-                />
-              </div>
-              <div>
-                <Label htmlFor="npw">Nouveau mot de passe</Label>
-                <Input
-                  id="npw"
-                  type="password"
-                  value={newPw}
-                  onChange={(e) => setNewPw(e.target.value)}
-                  className="mt-1.5"
-                />
-              </div>
-              <div>
-                <Label htmlFor="cnpw">Confirmation</Label>
-                <Input
-                  id="cnpw"
-                  type="password"
-                  value={confirmPw}
-                  onChange={(e) => setConfirmPw(e.target.value)}
-                  className="mt-1.5"
-                />
-              </div>
-            </div>
-
-            <div className="mt-6 flex justify-end">
-              <Button type="submit" variant="secondary">
-                <Save className="mr-2 h-4 w-4" /> Mettre à jour le mot de passe
-              </Button>
-            </div>
-          </form>
+            )}
+          </div>
         </div>
 
-        {/* Barre Latérale (1/3) : Informations Système & Métadonnées API */}
+        {/* Barre Latérale (1/3) : Sécurité (si Édition) & Statuts Système */}
         <div className="space-y-6 lg:col-span-1">
+          {/* Bloc de Sécurité / Changement de mot de passe (affiché uniquement en mode édition) */}
+          {isEditing && (
+            <div className="rounded-2xl border bg-card p-6 shadow-sm">
+              <div className="flex items-center gap-2 border-b pb-3 mb-4">
+                <KeyRound className="h-4 w-4 text-primary" />
+                <h3 className="font-display text-sm font-semibold">Changer le mot de passe</h3>
+              </div>
+
+              <form onSubmit={onChangePassword} className="space-y-4">
+                <div>
+                  <Label htmlFor="cpw" className="text-xs">Mot de passe actuel</Label>
+                  <div className="relative mt-1">
+                    <Input
+                      id="cpw"
+                      type={showCurrentPw ? "text" : "password"}
+                      value={currentPw}
+                      onChange={(e) => setCurrentPw(e.target.value)}
+                      className="pr-10 text-sm"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:bg-transparent"
+                      onClick={() => setShowCurrentPw(!showCurrentPw)}
+                    >
+                      {showCurrentPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="npw" className="text-xs">Nouveau mot de passe</Label>
+                  <div className="relative mt-1">
+                    <Input
+                      id="npw"
+                      type={showNewPw ? "text" : "password"}
+                      value={newPw}
+                      onChange={(e) => setNewPw(e.target.value)}
+                      className="pr-10 text-sm"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:bg-transparent"
+                      onClick={() => setShowNewPw(!showNewPw)}
+                    >
+                      {showNewPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="cnpw" className="text-xs">Confirmation</Label>
+                  <div className="relative mt-1">
+                    <Input
+                      id="cnpw"
+                      type={showConfirmPw ? "text" : "password"}
+                      value={confirmPw}
+                      onChange={(e) => setConfirmPw(e.target.value)}
+                      className="pr-10 text-sm"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:bg-transparent"
+                      onClick={() => setShowConfirmPw(!showConfirmPw)}
+                    >
+                      {showConfirmPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <Button type="submit" variant="secondary" size="sm" className="w-full mt-2">
+                  <Save className="mr-2 h-3.5 w-3.5" /> Mettre à jour
+                </Button>
+              </form>
+            </div>
+          )}
+
+          {/* Statut du Compte */}
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
             <div className="flex items-center gap-2 border-b pb-3 mb-4">
               <Shield className="h-4 w-4 text-primary" />

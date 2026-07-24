@@ -11,12 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useAdminReviewInvitationsList, useCreateAdminReviewInvitation } from "@/stores/useReviewInvitationsStore";
 import { useAdminReviewFormsList } from "@/stores/useReviewFormsStore";
 import { useAdminProjectsList } from "@/stores/useProjectsStore";
-import {
-  type APIAdminReviewInvitation,
-  type AdminReviewInvitationPayload,
-  REVIEW_INVITATION_STATUS_BADGES,
-  REVIEW_INVITATION_STATUS_LABELS,
-} from "@/data/reviewInvitations";
+import { type APIAdminReviewInvitation, type AdminReviewInvitationPayload, REVIEW_INVITATION_STATUS_BADGES, REVIEW_INVITATION_STATUS_LABELS, } from "@/data/reviewInvitations";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/reviews/invites/")({

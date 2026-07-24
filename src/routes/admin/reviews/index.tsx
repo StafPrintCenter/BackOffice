@@ -21,7 +21,7 @@ const sections = [
   },
   {
     to: "/admin/reviews/invites" as const,
-    icon: Send,
+    icon: Send, FileText, MessageSquareText,
     title: "Invitations",
     description: "Envoyez et suivez les invitations à répondre.",
   },

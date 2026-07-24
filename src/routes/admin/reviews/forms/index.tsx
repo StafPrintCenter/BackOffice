@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Send, FileText, MessageSquareText, } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -81,6 +81,17 @@ function AdminReviewForms() {
         </Button>
       </div>
       <PageHeader title="Formulaires d'avis" description="Créez et gérez vos formulaires de collecte d'avis." />
+
+
+      {/* Raccourci */}
+      <div className="mb-4">
+        <Link to="/admin/newsletter/subscribers"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Users className="h-4 w-4"
+          />
+          Voir les abonnés
+        </Link>
+      </div>
       <DataTable<APIAdminReviewFormListItem>
         data={items}
         isLoading={isLoading}

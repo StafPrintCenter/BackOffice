@@ -78,7 +78,7 @@ function AdminReviewForms() {
       <PageHeader title="Formulaires d'avis" description="Créez et gérez vos formulaires de collecte d'avis." />
 
       {/* Raccourci */}
-      <div className="">
+      <div className="flex items-center gap-4">
         <div className="mb-4">
           <Link to="/admin/reviews/invites"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">

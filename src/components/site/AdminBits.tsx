@@ -39,7 +39,6 @@ export function PageHeader({ title, description, actions }: { title: string; des
   );
 }
 
-
 export function StatCard({ label, value, icon, hint }:
   { label: string; value: string | number; icon: ReactNode; hint?: string }) {
 

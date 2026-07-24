@@ -84,7 +84,7 @@ function AdminReviewForms() {
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <Send className="h-4 w-4"
             />
-            Inviter un clients
+            Inviter un client
           </Link>
         </div>
         <div className="mb-4">

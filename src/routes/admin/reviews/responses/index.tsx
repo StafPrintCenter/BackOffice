@@ -3,11 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { useAdminReviewResponsesList } from "@/stores/useReviewResponsesStore";
-import {
-  type APIAdminReviewResponseListItem,
-  REVIEW_PUBLICATION_STATUS_BADGES,
-  REVIEW_PUBLICATION_STATUS_LABELS,
-} from "@/data/reviewResponses";
+import { type APIAdminReviewResponseListItem, REVIEW_PUBLICATION_STATUS_BADGES, REVIEW_PUBLICATION_STATUS_LABELS, } from "@/data/reviewResponses";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/reviews/responses/")({

@@ -1,8 +1,8 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, UserRoundPlus } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete } from "@/components/site";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { DataTable } from "@/components/site/DataTable";
@@ -99,6 +99,14 @@ function AdminTrainings() {
   return (
     <AdminShell>
       <PageHeader title="Formations" description="Programmes proposés au public." />
+
+      {/* Onglet retour vers la liste des formations */}
+      <div className="mb-4">
+        <Link to="/admin/trainings" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <UserRoundPlus className="h-4 w-4" /> Voir les formations
+        </Link>
+      </div>
+
       <DataTable<APIAdminTrainingListItem>
         data={items}
         isLoading={isLoading}

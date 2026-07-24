@@ -7,20 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import {
-  useAdminNewsletterCampaignDetail,
-  useUpdateAdminNewsletterCampaign,
-  useDeleteAdminNewsletterCampaign,
-  useScheduleAdminNewsletterCampaign,
-  useCancelScheduleAdminNewsletterCampaign,
-  useSendAdminNewsletterCampaign,
-} from "@/stores/useNewsletterCampaignsStore";
+import { useAdminNewsletterCampaignDetail, useUpdateAdminNewsletterCampaign, useDeleteAdminNewsletterCampaign, useScheduleAdminNewsletterCampaign, useCancelScheduleAdminNewsletterCampaign, useSendAdminNewsletterCampaign, } from "@/stores/useNewsletterCampaignsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import {
-  type AdminNewsletterCampaignPayload,
-  NEWSLETTER_CAMPAIGN_STATUS_MAP,
-  NEWSLETTER_CAMPAIGN_STATUS_LABELS,
-} from "@/data/newsletterCampaigns";
+import { type AdminNewsletterCampaignPayload, NEWSLETTER_CAMPAIGN_STATUS_MAP, NEWSLETTER_CAMPAIGN_STATUS_LABELS, } from "@/data/newsletterCampaigns";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/newsletter/campaigns/$id")({

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { FileText, ListChecks, Send, MessageSquareText, ArrowRight } from "lucide-react";
+import { FileText, Send, MessageSquareText, ArrowRight } from "lucide-react";
 import { AdminShell, PageHeader } from "@/components/site";
 import { SITE } from "@/data/site";
 

@@ -75,7 +75,7 @@ function AdminNewsletterCampaigns() {
 
       {/* Raccourci */}
       <div className="mb-4">
-        <Link to="/admin/newsletter/campaigns"
+        <Link to="/admin/newsletter/subscribers"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <Users className="h-4 w-4"
           />

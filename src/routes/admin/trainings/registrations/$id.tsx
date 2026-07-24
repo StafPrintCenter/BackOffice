@@ -1,13 +1,13 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { ArrowLeft, Loader2, Mail, Phone, GraduationCap, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare, CheckCircle2, XCircle, User, ShieldCheck, Sparkles, } from "lucide-react";
+import { ArrowLeft, Loader2, Mail, Phone, GraduationCap, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare, CheckCircle2, XCircle, User, ShieldCheck, Sparkles, Trash2, } from "lucide-react";
 import { toast } from "sonner";
-import { AdminShell } from "@/components/site/AdminShell";
+import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAdminTrainingRegistrationDetail, useUpdateAdminTrainingRegistrationStatus, } from "@/stores/useTrainingRegistrationsStore";
+import { useAdminTrainingRegistrationDetail, useUpdateAdminTrainingRegistrationStatus, useDeleteAdminTrainingRegistration, } from "@/stores/useTrainingRegistrationsStore";
 import { type TrainingRegistrationStatus, type AdminTrainingRegistrationStatusPayload, getStatusBadge, getStatusLabel, STATUS_LABELS, } from "@/data/trainingRegistrations";
 import { SITE } from "@/data/site";
 
@@ -26,9 +26,11 @@ function TrainingRegistrationDetail() {
   const navigate = useNavigate();
   const { item: reg, isLoading } = useAdminTrainingRegistrationDetail(id);
   const updateStatus = useUpdateAdminTrainingRegistrationStatus();
+  const removeMutation = useDeleteAdminTrainingRegistration();
 
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState<AdminTrainingRegistrationStatusPayload | null>(null);
+  const [toDelete, setToDelete] = useState(false);
 
   useEffect(() => {
     if (reg && !form) {
@@ -76,10 +78,22 @@ function TrainingRegistrationDetail() {
           <ArrowLeft className="h-4 w-4 mr-1.5" /> Retour aux inscriptions
         </Button>
 
-        {reg && !isEditing && (
-          <Button size="sm" onClick={() => setIsEditing(true)}>
-            <Pencil className="h-4 w-4 mr-1.5" /> Traiter la demande
-          </Button>
+        {reg && (
+          <div className="flex gap-2">
+            {!isEditing && (
+              <Button size="sm" onClick={() => setIsEditing(true)}>
+                <Pencil className="h-4 w-4 mr-1.5" /> Traiter la demande
+              </Button>
+            )}
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-destructive/30 text-destructive hover:bg-destructive/10"
+              onClick={() => setToDelete(true)}
+            >
+              <Trash2 className="h-4 w-4 mr-1.5" /> Supprimer
+            </Button>
+          </div>
         )}
       </div>
 
@@ -291,6 +305,22 @@ function TrainingRegistrationDetail() {
           </div>
         </div>
       )}
+
+      <ConfirmDelete
+        open={toDelete}
+        onOpenChange={setToDelete}
+        onConfirm={() => {
+          if (!reg) return;
+          removeMutation.mutate(reg.id, {
+            onSuccess: () => {
+              toast.success("Inscription supprimée");
+              navigate({ to: "/admin/trainings/registrations" });
+            },
+            onError: () => toast.error("Erreur lors de la suppression"),
+          });
+        }}
+        title={`Supprimer l'inscription de "${reg?.firstName} ${reg?.lastName}" ?`}
+      />
     </AdminShell>
   );
 }

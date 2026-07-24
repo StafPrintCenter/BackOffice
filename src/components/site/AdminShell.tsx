@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 
-type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean; matchPrefixes?: string[]; };
 type NavGroup = { label: string; items: NavItem[] };
 
 const NAV_GROUPS: NavGroup[] = [
@@ -41,7 +41,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Outils",
     items: [
       { to: "/admin/shortlinks", label: "Liens courts", icon: Link2 },
-      { to: "/admin/reviews/forms", label: "Formulaires d'avis", icon: Form },
+      { to: "/admin/reviews/forms", label: "Formulaires d'avis", icon: Form, matchPrefixes: ["/admin/reviews"] },
     ],
   },
   {
@@ -93,7 +93,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
   const profileActive = pathname.startsWith("/admin/profile");
 
   const renderItem = (n: NavItem) => {
-    const active = n.exact ? pathname === n.to : pathname.startsWith(n.to);
+    const active = n.exact ? pathname === n.to : n.matchPrefixes ? n.matchPrefixes.some((prefix) => pathname.startsWith(prefix)) : pathname.startsWith(n.to);
     const Icon = n.icon;
     return (
       <Link
@@ -220,4 +220,3 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
     </div>
   );
 }
-

@@ -22,8 +22,6 @@ function AdminReviewResponses() {
 
   return (
     <AdminShell>
-      <div className="mb-4">
-      </div>
       <PageHeader title="Réponses" description="Consultez les réponses reçues et gérez leur publication." />
 
       <DataTable<APIAdminReviewResponseListItem>

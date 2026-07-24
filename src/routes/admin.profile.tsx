@@ -12,9 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 export const Route = createFileRoute("/admin/profile")({
   head: () => ({
     meta: [
-      { title: "Profil — Admin Staf Print" },
-      { name: "robots", content: "noindex" },
-    ],
+      { title: `Profil | ${SITE.name}` },
+      { name: "robots", content: "noindex" }]
   }),
   component: ProfilePage,
 });

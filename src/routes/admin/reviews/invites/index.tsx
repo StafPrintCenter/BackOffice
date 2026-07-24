@@ -114,8 +114,8 @@ function AdminReviewInvites() {
       <PageHeader title="Invitations" description="Invitez des clients à répondre à vos formulaires d'avis." />
 
       {/* Raccourci */}
-      <div className="flex items-center gap-4">
-        <div className="mb-4">
+      <div className="flex items-center gap-6 mb-4">
+        <div>
           <Link to="/admin/reviews/forms"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <FileText className="h-4 w-4"
@@ -123,7 +123,7 @@ function AdminReviewInvites() {
             Gérer les formulaire
           </Link>
         </div>
-        <div className="mb-4">
+        <div>
           <Link to="/admin/reviews/responses"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <Send className="h-4 w-4"

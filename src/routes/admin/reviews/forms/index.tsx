@@ -75,11 +75,6 @@ function AdminReviewForms() {
 
   return (
     <AdminShell>
-      <div className="mb-4">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews" })}>
-          <ArrowLeft className="mr-1 h-4 w-4" /> Retour
-        </Button>
-      </div>
       <PageHeader title="Formulaires d'avis" description="Créez et gérez vos formulaires de collecte d'avis." />
 
 

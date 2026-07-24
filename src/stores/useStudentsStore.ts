@@ -84,6 +84,6 @@ export function useResendAdminStudentInvite() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => resendInvite(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["students"] }), // ⚠️ ajuste si resourceKey diffère dans ton store
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["students"] }),
   });
 }

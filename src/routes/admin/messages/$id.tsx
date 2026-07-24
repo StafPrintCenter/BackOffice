@@ -8,11 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminContactDetail, useUpdateAdminContactStatus } from "@/stores/useContactsStore";
-import {
-  type ContactStatus,
-  CONTACT_STATUS_BADGES,
-  CONTACT_STATUS_LABELS,
-} from "@/data/contact";
+import { type ContactStatus, CONTACT_STATUS_BADGES, CONTACT_STATUS_LABELS, } from "@/data/contact";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/messages/$id")({

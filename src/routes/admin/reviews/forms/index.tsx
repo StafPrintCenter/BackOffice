@@ -87,7 +87,7 @@ function AdminReviewForms() {
         </Link>
       </div>
       <div className="mb-4">
-        <Link to="/admin/reviews/subscribers"
+        <Link to="/admin/reviews/responses"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <Send className="h-4 w-4"
           />

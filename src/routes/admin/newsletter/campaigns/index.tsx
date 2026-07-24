@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ArrowLeft, Megaphone } from "lucide-react";
+import { ArrowLeft, Megaphone, User } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable, RichTextEditor } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -82,9 +82,9 @@ function AdminNewsletterCampaigns() {
       <div className="mb-4">
         <Link to="/admin/newsletter/campaigns"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Megaphone className="h-4 w-4"
+          <Users className="h-4 w-4"
           />
-          Aller aux campagnes
+          Voir les abonnés
         </Link>
       </div>
 

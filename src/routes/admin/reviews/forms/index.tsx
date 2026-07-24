@@ -77,7 +77,6 @@ function AdminReviewForms() {
     <AdminShell>
       <PageHeader title="Formulaires d'avis" description="Créez et gérez vos formulaires de collecte d'avis." />
 
-
       {/* Raccourci */}
       <div className="mb-4">
         <Link to="/admin/newsletter/subscribers"

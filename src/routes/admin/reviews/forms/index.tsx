@@ -78,8 +78,8 @@ function AdminReviewForms() {
       <PageHeader title="Formulaires d'avis" description="Créez et gérez vos formulaires de collecte d'avis." />
 
       {/* Raccourci */}
-      <div className="flex items-center gap-4">
-        <div className="mb-4">
+      <div className="flex items-center gap-6 mb-4">
+        <div>
           <Link to="/admin/reviews/invites"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <Send className="h-4 w-4"
@@ -87,7 +87,7 @@ function AdminReviewForms() {
             Inviter un client
           </Link>
         </div>
-        <div className="mb-4">
+        <div>
           <Link to="/admin/reviews/responses"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <MessageSquareText className="h-4 w-4"

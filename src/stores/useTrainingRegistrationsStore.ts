@@ -6,8 +6,6 @@ import type { APIAdminTrainingRegistration, AdminTrainingRegistrationStatusPaylo
 const RESOURCE_KEY = "training-registrations";
 const BASE_PATH = "trainings/registrations";
 
-// Comme pour contact/appointments/reports : pas de create/delete pour cette ressource,
-// la factory ne sert qu'à list/detail.
 const store = createResourceStore<APIAdminTrainingRegistration, AdminTrainingRegistrationStatusPayload>({
   resourceKey: RESOURCE_KEY,
   basePath: BASE_PATH,
@@ -19,7 +17,6 @@ export const fetchAdminTrainingRegistrationById = store.fetchById;
 export const useAdminTrainingRegistrationsList = store.useList;
 export const useAdminTrainingRegistrationDetail = store.useDetail;
 
-// ⚠️ Update = PUT /trainings/registrations/{id}/status avec { status, admin_notes }.
 async function updateTrainingRegistrationStatus(
   id: string,
   payload: AdminTrainingRegistrationStatusPayload

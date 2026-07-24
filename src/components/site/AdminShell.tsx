@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
+import { ConfirmDisconnect } from "@/components/site/AdminBits";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean; matchPrefixes?: string[]; };
 type NavGroup = { label: string; items: NavItem[] };

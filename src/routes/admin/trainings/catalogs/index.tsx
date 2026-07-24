@@ -115,7 +115,7 @@ function AdminTrainings() {
         isLoading={isLoading}
         searchKeys={["title", "theme"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/trainings/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/admin/trainings/catalogs/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "title", label: "Titre", render: (r) => <div className="font-medium">{r.title}</div> },

@@ -22,7 +22,6 @@ import { Route as AdminCategoriesIndexRouteImport } from './routes/admin/categor
 import { Route as AdminCategoriesIdRouteImport } from './routes/admin/categories/$id'
 import { Route as AdminFaqsIndexRouteImport } from './routes/admin/faqs/index'
 import { Route as AdminFaqsIdRouteImport } from './routes/admin/faqs/$id'
-import { Route as AdminMembersIndexRouteImport } from './routes/admin/members/index'
 import { Route as AdminMessagesIndexRouteImport } from './routes/admin/messages/index'
 import { Route as AdminMessagesIdRouteImport } from './routes/admin/messages/$id'
 import { Route as AdminNewsletterIndexRouteImport } from './routes/admin/newsletter/index'
@@ -121,11 +120,6 @@ const AdminFaqsIndexRoute = AdminFaqsIndexRouteImport.update({
 const AdminFaqsIdRoute = AdminFaqsIdRouteImport.update({
   id: '/admin/faqs/$id',
   path: '/admin/faqs/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminMembersIndexRoute = AdminMembersIndexRouteImport.update({
-  id: '/admin/members/',
-  path: '/admin/members/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMessagesIndexRoute = AdminMessagesIndexRouteImport.update({
@@ -328,7 +322,6 @@ export interface FileRoutesByFullPath {
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
   '/admin/faqs/': typeof AdminFaqsIndexRoute
-  '/admin/members/': typeof AdminMembersIndexRoute
   '/admin/messages/': typeof AdminMessagesIndexRoute
   '/admin/newsletter/': typeof AdminNewsletterIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
@@ -378,7 +371,6 @@ export interface FileRoutesByTo {
   '/admin/articles': typeof AdminArticlesIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
   '/admin/faqs': typeof AdminFaqsIndexRoute
-  '/admin/members': typeof AdminMembersIndexRoute
   '/admin/messages': typeof AdminMessagesIndexRoute
   '/admin/newsletter': typeof AdminNewsletterIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
@@ -429,7 +421,6 @@ export interface FileRoutesById {
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
   '/admin/faqs/': typeof AdminFaqsIndexRoute
-  '/admin/members/': typeof AdminMembersIndexRoute
   '/admin/messages/': typeof AdminMessagesIndexRoute
   '/admin/newsletter/': typeof AdminNewsletterIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
@@ -481,7 +472,6 @@ export interface FileRouteTypes {
     | '/admin/articles/'
     | '/admin/categories/'
     | '/admin/faqs/'
-    | '/admin/members/'
     | '/admin/messages/'
     | '/admin/newsletter/'
     | '/admin/projects/'
@@ -531,7 +521,6 @@ export interface FileRouteTypes {
     | '/admin/articles'
     | '/admin/categories'
     | '/admin/faqs'
-    | '/admin/members'
     | '/admin/messages'
     | '/admin/newsletter'
     | '/admin/projects'
@@ -581,7 +570,6 @@ export interface FileRouteTypes {
     | '/admin/articles/'
     | '/admin/categories/'
     | '/admin/faqs/'
-    | '/admin/members/'
     | '/admin/messages/'
     | '/admin/newsletter/'
     | '/admin/projects/'
@@ -632,7 +620,6 @@ export interface RootRouteChildren {
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
   AdminFaqsIndexRoute: typeof AdminFaqsIndexRoute
-  AdminMembersIndexRoute: typeof AdminMembersIndexRoute
   AdminMessagesIndexRoute: typeof AdminMessagesIndexRoute
   AdminNewsletterIndexRoute: typeof AdminNewsletterIndexRoute
   AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
@@ -752,13 +739,6 @@ declare module '@tanstack/react-router' {
       path: '/admin/faqs/$id'
       fullPath: '/admin/faqs/$id'
       preLoaderRoute: typeof AdminFaqsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/members/': {
-      id: '/admin/members/'
-      path: '/admin/members'
-      fullPath: '/admin/members/'
-      preLoaderRoute: typeof AdminMembersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/messages/': {
@@ -1024,7 +1004,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
   AdminFaqsIndexRoute: AdminFaqsIndexRoute,
-  AdminMembersIndexRoute: AdminMembersIndexRoute,
   AdminMessagesIndexRoute: AdminMessagesIndexRoute,
   AdminNewsletterIndexRoute: AdminNewsletterIndexRoute,
   AdminProjectsIndexRoute: AdminProjectsIndexRoute,

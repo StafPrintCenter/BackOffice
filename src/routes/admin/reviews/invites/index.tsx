@@ -118,7 +118,7 @@ function AdminReviewInvites() {
         <div className="mb-4">
           <Link to="/admin/reviews/forms"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <Send className="h-4 w-4"
+            <FileText className="h-4 w-4"
             />
             Gérer les formulaire
           </Link>

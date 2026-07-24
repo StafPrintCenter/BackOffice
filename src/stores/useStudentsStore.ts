@@ -70,7 +70,6 @@ export function useReactivateAdminStudent() {
   });
 }
 
-// ⚠️ Endpoint confirmé : POST /students/{id}/invite/resend, corps vide, réponse = { message } (pas d'enveloppe { data }).
 async function resendInvite(id: string): Promise<{ message: string }> {
   const response = await adminFetch(`/api/admin/students/${id}/invite/resend`, {
     method: "POST",

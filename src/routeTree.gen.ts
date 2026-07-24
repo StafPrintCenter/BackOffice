@@ -24,7 +24,6 @@ import { Route as AdminFaqsIndexRouteImport } from './routes/admin/faqs/index'
 import { Route as AdminFaqsIdRouteImport } from './routes/admin/faqs/$id'
 import { Route as AdminMessagesIndexRouteImport } from './routes/admin/messages/index'
 import { Route as AdminMessagesIdRouteImport } from './routes/admin/messages/$id'
-import { Route as AdminNewsletterIndexRouteImport } from './routes/admin/newsletter/index'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/index'
 import { Route as AdminProjectsIdRouteImport } from './routes/admin/projects/$id'
 import { Route as AdminReportsIndexRouteImport } from './routes/admin/reports/index'
@@ -132,11 +131,6 @@ const AdminMessagesIndexRoute = AdminMessagesIndexRouteImport.update({
 const AdminMessagesIdRoute = AdminMessagesIdRouteImport.update({
   id: '/admin/messages/$id',
   path: '/admin/messages/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminNewsletterIndexRoute = AdminNewsletterIndexRouteImport.update({
-  id: '/admin/newsletter/',
-  path: '/admin/newsletter/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
@@ -338,7 +332,6 @@ export interface FileRoutesByFullPath {
   '/admin/categories/': typeof AdminCategoriesIndexRoute
   '/admin/faqs/': typeof AdminFaqsIndexRoute
   '/admin/messages/': typeof AdminMessagesIndexRoute
-  '/admin/newsletter/': typeof AdminNewsletterIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/reports/': typeof AdminReportsIndexRoute
   '/admin/reviews/': typeof AdminReviewsIndexRoute
@@ -389,7 +382,6 @@ export interface FileRoutesByTo {
   '/admin/categories': typeof AdminCategoriesIndexRoute
   '/admin/faqs': typeof AdminFaqsIndexRoute
   '/admin/messages': typeof AdminMessagesIndexRoute
-  '/admin/newsletter': typeof AdminNewsletterIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/reports': typeof AdminReportsIndexRoute
   '/admin/reviews': typeof AdminReviewsIndexRoute
@@ -441,7 +433,6 @@ export interface FileRoutesById {
   '/admin/categories/': typeof AdminCategoriesIndexRoute
   '/admin/faqs/': typeof AdminFaqsIndexRoute
   '/admin/messages/': typeof AdminMessagesIndexRoute
-  '/admin/newsletter/': typeof AdminNewsletterIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/reports/': typeof AdminReportsIndexRoute
   '/admin/reviews/': typeof AdminReviewsIndexRoute
@@ -494,7 +485,6 @@ export interface FileRouteTypes {
     | '/admin/categories/'
     | '/admin/faqs/'
     | '/admin/messages/'
-    | '/admin/newsletter/'
     | '/admin/projects/'
     | '/admin/reports/'
     | '/admin/reviews/'
@@ -545,7 +535,6 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/faqs'
     | '/admin/messages'
-    | '/admin/newsletter'
     | '/admin/projects'
     | '/admin/reports'
     | '/admin/reviews'
@@ -596,7 +585,6 @@ export interface FileRouteTypes {
     | '/admin/categories/'
     | '/admin/faqs/'
     | '/admin/messages/'
-    | '/admin/newsletter/'
     | '/admin/projects/'
     | '/admin/reports/'
     | '/admin/reviews/'
@@ -648,7 +636,6 @@ export interface RootRouteChildren {
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
   AdminFaqsIndexRoute: typeof AdminFaqsIndexRoute
   AdminMessagesIndexRoute: typeof AdminMessagesIndexRoute
-  AdminNewsletterIndexRoute: typeof AdminNewsletterIndexRoute
   AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
   AdminReportsIndexRoute: typeof AdminReportsIndexRoute
   AdminReviewsIndexRoute: typeof AdminReviewsIndexRoute
@@ -783,13 +770,6 @@ declare module '@tanstack/react-router' {
       path: '/admin/messages/$id'
       fullPath: '/admin/messages/$id'
       preLoaderRoute: typeof AdminMessagesIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/newsletter/': {
-      id: '/admin/newsletter/'
-      path: '/admin/newsletter'
-      fullPath: '/admin/newsletter/'
-      preLoaderRoute: typeof AdminNewsletterIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/projects/': {
@@ -1048,7 +1028,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
   AdminFaqsIndexRoute: AdminFaqsIndexRoute,
   AdminMessagesIndexRoute: AdminMessagesIndexRoute,
-  AdminNewsletterIndexRoute: AdminNewsletterIndexRoute,
   AdminProjectsIndexRoute: AdminProjectsIndexRoute,
   AdminReportsIndexRoute: AdminReportsIndexRoute,
   AdminReviewsIndexRoute: AdminReviewsIndexRoute,

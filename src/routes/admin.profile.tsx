@@ -17,7 +17,6 @@ import {
   X,
   Eye,
   EyeOff,
-  AlignLeft,
 } from "lucide-react";
 import { AdminShell, PageHeader } from "@/components/site";
 import { useAuth } from "@/hooks/useAuth";
@@ -130,7 +129,7 @@ function ProfilePage() {
     <AdminShell>
       <PageHeader title="Mon Profil" description="Gérez vos informations d'identification et la sécurité de votre compte." />
 
-      {/* Barre d'action & En-tête du profil */}
+      {/* En-tête du profil */}
       <div className="relative overflow-hidden rounded-2xl border bg-card shadow-sm">
         <div className="h-32 bg-gradient-hero" />
         <div className="p-6 pt-0">
@@ -155,32 +154,16 @@ function ProfilePage() {
               </div>
             </div>
 
-            {/* Actions Édition / Déconnexion */}
-            <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
-              {isEditing ? (
-                <>
-                  <Button variant="outline" size="sm" onClick={handleCancel}>
-                    <X className="h-4 w-4 mr-1" /> Annuler
-                  </Button>
-                  <Button size="sm" onClick={onSaveProfile}>
-                    <Save className="h-4 w-4 mr-1" /> Enregistrer
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
-                    <Pencil className="h-4 w-4 mr-1" /> Modifier le profil
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleLogout}
-                    className="text-destructive hover:bg-destructive/10"
-                  >
-                    <LogOut className="h-4 w-4 mr-1" /> Déconnexion
-                  </Button>
-                </>
-              )}
+            {/* Action Déconnexion */}
+            <div className="self-start sm:self-auto">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="text-destructive hover:bg-destructive/10"
+              >
+                <LogOut className="h-4 w-4 mr-1" /> Déconnexion
+              </Button>
             </div>
           </div>
         </div>
@@ -191,9 +174,29 @@ function ProfilePage() {
         {/* Colonne Principale (2/3) : Informations Personnelles */}
         <div className="space-y-6 lg:col-span-2">
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <div className="flex items-center gap-2 border-b pb-4 mb-5">
-              <UserIcon className="h-5 w-5 text-primary" />
-              <h3 className="font-display text-lg font-semibold">Informations personnelles</h3>
+            {/* Header du bloc d'informations personnelles avec les boutons d'édition */}
+            <div className="flex items-center justify-between border-b pb-4 mb-5">
+              <div className="flex items-center gap-2">
+                <UserIcon className="h-5 w-5 text-primary" />
+                <h3 className="font-display text-lg font-semibold">Informations personnelles</h3>
+              </div>
+
+              <div>
+                {isEditing ? (
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={handleCancel}>
+                      <X className="h-4 w-4 mr-1" /> Annuler
+                    </Button>
+                    <Button size="sm" onClick={onSaveProfile}>
+                      <Save className="h-4 w-4 mr-1" /> Enregistrer
+                    </Button>
+                  </div>
+                ) : (
+                  <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                    <Pencil className="h-4 w-4 mr-1" /> Modifier
+                  </Button>
+                )}
+              </div>
             </div>
 
             {isEditing ? (
@@ -276,6 +279,88 @@ function ProfilePage() {
 
         {/* Barre Latérale (1/3) : Sécurité (si Édition) & Statuts Système */}
         <div className="space-y-6 lg:col-span-1">
+          {/* Bloc de Sécurité / Changement de mot de passe (affiché uniquement en mode édition) */}
+          {isEditing && (
+            <div className="rounded-2xl border bg-card p-6 shadow-sm">
+              <div className="flex items-center gap-2 border-b pb-3 mb-4">
+                <KeyRound className="h-4 w-4 text-primary" />
+                <h3 className="font-display text-sm font-semibold">Changer le mot de passe</h3>
+              </div>
+
+              <form onSubmit={onChangePassword} className="space-y-4">
+                <div>
+                  <Label htmlFor="cpw" className="text-xs">Mot de passe actuel</Label>
+                  <div className="relative mt-1">
+                    <Input
+                      id="cpw"
+                      type={showCurrentPw ? "text" : "password"}
+                      value={currentPw}
+                      onChange={(e) => setCurrentPw(e.target.value)}
+                      className="pr-10 text-sm"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:bg-transparent"
+                      onClick={() => setShowCurrentPw(!showCurrentPw)}
+                    >
+                      {showCurrentPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="npw" className="text-xs">Nouveau mot de passe</Label>
+                  <div className="relative mt-1">
+                    <Input
+                      id="npw"
+                      type={showNewPw ? "text" : "password"}
+                      value={newPw}
+                      onChange={(e) => setNewPw(e.target.value)}
+                      className="pr-10 text-sm"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:bg-transparent"
+                      onClick={() => setShowNewPw(!showNewPw)}
+                    >
+                      {showNewPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="cnpw" className="text-xs">Confirmation</Label>
+                  <div className="relative mt-1">
+                    <Input
+                      id="cnpw"
+                      type={showConfirmPw ? "text" : "password"}
+                      value={confirmPw}
+                      onChange={(e) => setConfirmPw(e.target.value)}
+                      className="pr-10 text-sm"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:bg-transparent"
+                      onClick={() => setShowConfirmPw(!showConfirmPw)}
+                    >
+                      {showConfirmPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <Button type="submit" variant="secondary" size="sm" className="w-full mt-2">
+                  <Save className="mr-2 h-3.5 w-3.5" /> Mettre à jour
+                </Button>
+              </form>
+            </div>
+          )}
+
           {/* Statut du Compte */}
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
             <div className="flex items-center gap-2 border-b pb-3 mb-4">

@@ -35,7 +35,7 @@ function AdminTrainingRegistrations() {
     <AdminShell>
       <PageHeader title="Inscriptions aux formations" description="Demandes d'inscription reçues depuis le site public." />
 
-      {/* Onglet retour vers la liste des formations */}
+      {/* Onglet */}
       <div className="mb-4">
         <Link to="/admin/trainings/catalogs"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"

@@ -1,8 +1,8 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Megaphone } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable, RichTextEditor } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -77,6 +77,17 @@ function AdminNewsletterCampaigns() {
         </Button>
       </div>
       <PageHeader title="Campagnes newsletter" description="Créez, programmez et envoyez vos campagnes d'emailing." />
+
+      {/* Raccourci */}
+      <div className="mb-4">
+        <Link to="/admin/newsletter/campaigns"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Megaphone className="h-4 w-4"
+          />
+          Aller aux campagnes
+        </Link>
+      </div>
+
       <DataTable<APIAdminNewsletterCampaignListItem>
         data={items}
         isLoading={isLoading}

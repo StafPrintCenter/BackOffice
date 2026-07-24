@@ -24,6 +24,7 @@ function ProfilePage() {
   const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmDisconnectOpen, setConfirmDisconnectOpen] = useState(false);
 
   // États éditables dérivés de APIAdminUser
   const [firstName, setFirstName] = useState(user?.first_name ?? "");
@@ -125,7 +126,7 @@ function ProfilePage() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={handleLogout}
+                onClick={() => setConfirmDisconnectOpen(true)}
                 className="text-destructive hover:bg-destructive/10"
               >
                 <LogOut className="h-4 w-4 mr-1" /> Déconnexion
@@ -243,7 +244,7 @@ function ProfilePage() {
           </div>
         </div>
 
-        {/* Barre Latérale (1/3) : Sécurité (si Édition) & Statuts Système */}
+        {/* Barre Latérale (1/3) : Sécurité & Statuts Système */}
         <div className="space-y-6 lg:col-span-1">
           {/* Statut du Compte */}
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
@@ -328,6 +329,12 @@ function ProfilePage() {
           </div>
         </div>
       </div>
+
+      <ConfirmDisconnect
+        open={confirmDisconnectOpen}
+        onOpenChange={setConfirmDisconnectOpen}
+        onConfirm={handleLogout}
+      />
     </AdminShell>
   );
 }

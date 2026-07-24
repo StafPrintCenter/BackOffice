@@ -69,3 +69,22 @@ export function useReactivateAdminStudent() {
     onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
   });
 }
+
+// ⚠️ Endpoint confirmé : POST /students/{id}/invite/resend, corps vide, réponse = { message } (pas d'enveloppe { data }).
+async function resendInvite(id: string): Promise<{ message: string }> {
+  const response = await adminFetch(`/api/admin/students/${id}/invite/resend`, {
+    method: "POST",
+  });
+  if (!response.ok) throw new Error("Erreur lors du renvoi de l'invitation");
+  return response.json();
+}
+
+export const resendAdminStudentInvite = resendInvite;
+
+export function useResendAdminStudentInvite() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => resendInvite(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["students"] }), // ⚠️ ajuste si resourceKey diffère dans ton store
+  });
+}

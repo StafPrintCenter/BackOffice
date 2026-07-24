@@ -28,7 +28,6 @@ import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/
 import { Route as AdminProjectsIdRouteImport } from './routes/admin/projects/$id'
 import { Route as AdminReportsIndexRouteImport } from './routes/admin/reports/index'
 import { Route as AdminReportsIdRouteImport } from './routes/admin/reports/$id'
-import { Route as AdminReviewsIndexRouteImport } from './routes/admin/reviews/index'
 import { Route as AdminServicesIndexRouteImport } from './routes/admin/services/index'
 import { Route as AdminServicesIdRouteImport } from './routes/admin/services/$id'
 import { Route as AdminShortlinksIndexRouteImport } from './routes/admin/shortlinks/index'
@@ -151,11 +150,6 @@ const AdminReportsIndexRoute = AdminReportsIndexRouteImport.update({
 const AdminReportsIdRoute = AdminReportsIdRouteImport.update({
   id: '/admin/reports/$id',
   path: '/admin/reports/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminReviewsIndexRoute = AdminReviewsIndexRouteImport.update({
-  id: '/admin/reviews/',
-  path: '/admin/reviews/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminServicesIndexRoute = AdminServicesIndexRouteImport.update({
@@ -334,7 +328,6 @@ export interface FileRoutesByFullPath {
   '/admin/messages/': typeof AdminMessagesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/reports/': typeof AdminReportsIndexRoute
-  '/admin/reviews/': typeof AdminReviewsIndexRoute
   '/admin/services/': typeof AdminServicesIndexRoute
   '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
@@ -384,7 +377,6 @@ export interface FileRoutesByTo {
   '/admin/messages': typeof AdminMessagesIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/reports': typeof AdminReportsIndexRoute
-  '/admin/reviews': typeof AdminReviewsIndexRoute
   '/admin/services': typeof AdminServicesIndexRoute
   '/admin/shortlinks': typeof AdminShortlinksIndexRoute
   '/admin/stats': typeof AdminStatsIndexRoute
@@ -435,7 +427,6 @@ export interface FileRoutesById {
   '/admin/messages/': typeof AdminMessagesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/reports/': typeof AdminReportsIndexRoute
-  '/admin/reviews/': typeof AdminReviewsIndexRoute
   '/admin/services/': typeof AdminServicesIndexRoute
   '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
@@ -487,7 +478,6 @@ export interface FileRouteTypes {
     | '/admin/messages/'
     | '/admin/projects/'
     | '/admin/reports/'
-    | '/admin/reviews/'
     | '/admin/services/'
     | '/admin/shortlinks/'
     | '/admin/stats/'
@@ -537,7 +527,6 @@ export interface FileRouteTypes {
     | '/admin/messages'
     | '/admin/projects'
     | '/admin/reports'
-    | '/admin/reviews'
     | '/admin/services'
     | '/admin/shortlinks'
     | '/admin/stats'
@@ -587,7 +576,6 @@ export interface FileRouteTypes {
     | '/admin/messages/'
     | '/admin/projects/'
     | '/admin/reports/'
-    | '/admin/reviews/'
     | '/admin/services/'
     | '/admin/shortlinks/'
     | '/admin/stats/'
@@ -638,7 +626,6 @@ export interface RootRouteChildren {
   AdminMessagesIndexRoute: typeof AdminMessagesIndexRoute
   AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
   AdminReportsIndexRoute: typeof AdminReportsIndexRoute
-  AdminReviewsIndexRoute: typeof AdminReviewsIndexRoute
   AdminServicesIndexRoute: typeof AdminServicesIndexRoute
   AdminShortlinksIndexRoute: typeof AdminShortlinksIndexRoute
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
@@ -798,13 +785,6 @@ declare module '@tanstack/react-router' {
       path: '/admin/reports/$id'
       fullPath: '/admin/reports/$id'
       preLoaderRoute: typeof AdminReportsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/reviews/': {
-      id: '/admin/reviews/'
-      path: '/admin/reviews'
-      fullPath: '/admin/reviews/'
-      preLoaderRoute: typeof AdminReviewsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/services/': {
@@ -1030,7 +1010,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminMessagesIndexRoute: AdminMessagesIndexRoute,
   AdminProjectsIndexRoute: AdminProjectsIndexRoute,
   AdminReportsIndexRoute: AdminReportsIndexRoute,
-  AdminReviewsIndexRoute: AdminReviewsIndexRoute,
   AdminServicesIndexRoute: AdminServicesIndexRoute,
   AdminShortlinksIndexRoute: AdminShortlinksIndexRoute,
   AdminStatsIndexRoute: AdminStatsIndexRoute,

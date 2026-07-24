@@ -1,24 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import {
-  ArrowLeft,
-  Loader2,
-  Mail,
-  Phone,
-  GraduationCap,
-  Calendar,
-  UserCheck,
-  Clock,
-  Pencil,
-  Save,
-  X,
-  MessageSquare,
-  CheckCircle2,
-  XCircle,
-  User,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+import { ArrowLeft, Loader2, Mail, Phone, GraduationCap, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare, CheckCircle2, XCircle, User, ShieldCheck, Sparkles, } from "lucide-react";
 import { toast } from "sonner";
 import { AdminShell } from "@/components/site/AdminShell";
 import { Button } from "@/components/ui/button";

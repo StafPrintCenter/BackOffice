@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, TrendingUp } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, TrendingUp, Key, Calendar, Layers, Hash } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,7 +61,9 @@ function StatDetail() {
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
-        <p className="text-muted-foreground">Statistique introuvable.</p>
+        <div className="rounded-xl border p-8 text-center text-muted-foreground">
+          Statistique introuvable.
+        </div>
       </AdminShell>
     );
   }
@@ -83,8 +85,11 @@ function StatDetail() {
     setIsEditing(false);
   };
 
+  const currentKeyLabel = STAT_KEYS.find((k) => k.value === (isEditing ? form.key : stat.key))?.label || (isEditing ? form.key : stat.key);
+
   return (
     <AdminShell>
+      {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/stats" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -112,57 +117,132 @@ function StatDetail() {
         </div>
       </div>
 
-      <div className="max-w-2xl space-y-6">
-        {isEditing ? (
-          <div className="space-y-4 rounded-2xl border bg-card p-6">
-            <div>
-              <Label>Libellé</Label>
-              <Input value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} />
+      {/* Disposition à 2 colonnes */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Colonne Principale (2/3) */}
+        <div className="space-y-6 lg:col-span-2">
+          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <div className="flex items-center gap-2 border-b pb-4">
+              <TrendingUp className="h-5 w-5 text-primary" />
+              <h2 className="font-display text-lg font-semibold">Chiffre clé</h2>
             </div>
 
-            <div>
-              <Label>Clé de statistique</Label>
-              <Select value={form.key} onValueChange={(v) => setForm({ ...form, key: v as StatKeyType })}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {STAT_KEYS.map((k) => (
-                    <SelectItem key={k.value} value={k.value}>{k.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="mt-6 space-y-5">
+              {isEditing ? (
+                <>
+                  <div>
+                    <Label htmlFor="label">Libellé d'affichage</Label>
+                    <Input
+                      id="label"
+                      value={form.label}
+                      onChange={(e) => setForm({ ...form, label: e.target.value })}
+                      className="mt-1.5"
+                    />
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <Label htmlFor="value">Valeur numérique</Label>
+                      <Input
+                        id="value"
+                        type="number"
+                        value={form.value}
+                        onChange={(e) => setForm({ ...form, value: Number(e.target.value) })}
+                        className="mt-1.5"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="suffix">Suffixe (ex: %, +, k, M)</Label>
+                      <Input
+                        id="suffix"
+                        value={form.suffix}
+                        onChange={(e) => setForm({ ...form, suffix: e.target.value })}
+                        className="mt-1.5"
+                      />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="rounded-xl border bg-muted/20 p-8 text-center">
+                  <div className="font-display text-6xl font-bold tracking-tight text-primary">
+                    {stat.value}
+                    <span className="text-4xl text-primary/80">{stat.suffix}</span>
+                  </div>
+                  <div className="mt-3 text-lg font-medium text-foreground">{stat.label}</div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Barre Latérale (1/3) */}
+        <div className="space-y-6 lg:col-span-1">
+          {/* Configuration Technique */}
+          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <div className="flex items-center gap-2 border-b pb-3 mb-4">
+              <Layers className="h-4 w-4 text-primary" />
+              <h3 className="font-display text-sm font-semibold">Configuration</h3>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-4 text-sm">
+              {/* Clé de statistique */}
               <div>
-                <Label>Valeur</Label>
-                <Input type="number" value={form.value} onChange={(e) => setForm({ ...form, value: Number(e.target.value) })} />
+                <Label htmlFor="key" className="text-xs text-muted-foreground">Clé d'identification</Label>
+                {isEditing ? (
+                  <Select value={form.key} onValueChange={(v) => setForm({ ...form, key: v as StatKeyType })}>
+                    <SelectTrigger id="key" className="mt-1 text-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {STAT_KEYS.map((k) => (
+                        <SelectItem key={k.value} value={k.value}>
+                          {k.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <div className="mt-1 flex items-center gap-1.5">
+                    <Key className="h-3.5 w-3.5 text-muted-foreground" />
+                    <span className="font-medium text-foreground">{currentKeyLabel}</span>
+                  </div>
+                )}
               </div>
+
+              {/* Code de la clé (Badge) */}
               <div>
-                <Label>Suffixe</Label>
-                <Input value={form.suffix} onChange={(e) => setForm({ ...form, suffix: e.target.value })} />
+                <Label className="text-xs text-muted-foreground">Clé système (slug)</Label>
+                <div className="mt-1">
+                  <code className="inline-block rounded-md bg-muted px-2.5 py-1 text-xs font-mono font-semibold text-foreground">
+                    {isEditing ? form.key : stat.key}
+                  </code>
+                </div>
               </div>
             </div>
           </div>
-        ) : (
-          <>
-            <div className="rounded-2xl border bg-card p-8 text-center">
-              <TrendingUp className="mx-auto h-8 w-8 text-primary" />
-              <div className="mt-4 font-display text-6xl font-bold text-primary">{stat.value}{stat.suffix}</div>
-              <div className="mt-2 text-lg font-medium">{stat.label}</div>
-              <code className="mt-3 inline-block rounded bg-muted px-2.5 py-1 text-xs font-mono">{stat.key}</code>
-            </div>
 
-            {/* Encadré des métadonnées de dates */}
-            <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex items-center justify-between">
-              <div>
-                Créée le : {new Date(stat.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+          {/* Métadonnées & Dates */}
+          <div className="rounded-2xl border bg-card p-6 shadow-sm">
+            <div className="flex items-center gap-2 border-b pb-3 mb-4">
+              <Calendar className="h-4 w-4 text-primary" />
+              <h3 className="font-display text-sm font-semibold">Métadonnées</h3>
+            </div>
+            <div className="space-y-3 text-xs text-muted-foreground">
+              <div className="flex justify-between">
+                <span>Créée le</span>
+                <span className="font-medium text-foreground">
+                  {new Date(stat.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
+                </span>
               </div>
-              <div>
-                Modifiée le : {new Date(stat.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+              <div className="flex justify-between">
+                <span>Modifiée le</span>
+                <span className="font-medium text-foreground">
+                  {new Date(stat.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
+                </span>
               </div>
             </div>
-          </>
-        )}
+          </div>
+        </div>
       </div>
 
       <ConfirmDelete

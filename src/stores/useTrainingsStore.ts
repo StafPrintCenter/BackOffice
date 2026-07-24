@@ -3,7 +3,7 @@ import type { APIAdminTrainingDetail, AdminTrainingPayload } from "@/data/traini
 
 const store = createResourceStore<APIAdminTrainingDetail, AdminTrainingPayload>({
   resourceKey: "trainings",
-  basePath: "trainings",
+  basePath: "trainings/catalogs",
 });
 
 export const fetchAdminTrainings = store.fetchList;

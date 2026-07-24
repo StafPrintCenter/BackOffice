@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ArrowLeft, Copy, Check } from "lucide-react";
+import { ArrowLeft, Copy, Check, Send, FileText, MessageSquareText, } from "lucide-react";
 import { AdminShell, PageHeader, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -111,11 +111,6 @@ function AdminReviewInvites() {
 
   return (
     <AdminShell>
-      <div className="mb-4">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews" })}>
-          <ArrowLeft className="mr-1 h-4 w-4" /> Retour
-        </Button>
-      </div>
       <PageHeader title="Invitations" description="Invitez des clients à répondre à vos formulaires d'avis." />
 
       <DataTable<APIAdminReviewInvitation>

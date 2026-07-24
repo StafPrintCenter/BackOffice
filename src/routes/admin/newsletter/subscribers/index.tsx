@@ -1,7 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Megaphone } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { useAdminNewsletterSubscribersList, useDeleteAdminNewsletterSubscriber } from "@/stores/useNewsletterSubscribersStore";
@@ -32,12 +32,18 @@ function AdminNewsletterSubscribers() {
 
   return (
     <AdminShell>
-      <div className="mb-4">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter" })}>
-          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
-        </Button>
-      </div>
       <PageHeader title="Abonnés newsletter" description="Consultez, bloquez, réactivez ou supprimez les abonnés." />
+
+      {/* Raccourci */}
+      <div className="mb-4">
+        <Link to="/admin/newsletter/campaigns"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Megaphone className="h-4 w-4"
+          />
+          Aller aux campagnes
+        </Link>
+      </div>
+
       <DataTable<APIAdminNewsletterSubscriberListItem>
         data={items}
         isLoading={isLoading}

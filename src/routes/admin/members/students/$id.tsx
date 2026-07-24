@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, AlertTriangle, Ban, ShieldCheck, Mail, Calendar, Phone, Briefcase, MapPin, Info, Cake, } from "lucide-react";
+import { ArrowLeft, Loader2, AlertTriangle, Ban, ShieldCheck, Mail, Calendar, Phone, Briefcase, MapPin, Info, Cake, MailCheck, } from "lucide-react";
 import { AdminShell } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

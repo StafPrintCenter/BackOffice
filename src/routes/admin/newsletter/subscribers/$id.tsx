@@ -7,12 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import {
-  useAdminNewsletterSubscriberDetail,
-  useDeleteAdminNewsletterSubscriber,
-  useBlockAdminNewsletterSubscriber,
-  useReactivateAdminNewsletterSubscriber,
-} from "@/stores/useNewsletterSubscribersStore";
+import { useAdminNewsletterSubscriberDetail, useDeleteAdminNewsletterSubscriber, useBlockAdminNewsletterSubscriber, useReactivateAdminNewsletterSubscriber, } from "@/stores/useNewsletterSubscribersStore";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/newsletter/subscribers/$id")({

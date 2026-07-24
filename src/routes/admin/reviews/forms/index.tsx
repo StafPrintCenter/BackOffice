@@ -79,7 +79,22 @@ function AdminReviewForms() {
 
       {/* Raccourci */}
       <div>
-
+        <div className="mb-4">
+          <Link to="/admin/reviews/invites"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <Send className="h-4 w-4"
+            />
+            Inviter le clients
+          </Link>
+        </div>
+        <div className="mb-4">
+          <Link to="/admin/reviews/responses"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <Send className="h-4 w-4"
+            />
+            Voir les reponses
+          </Link>
+        </div>
       </div>
 
 

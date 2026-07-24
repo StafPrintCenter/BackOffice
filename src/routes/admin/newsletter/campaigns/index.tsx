@@ -10,12 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAdminNewsletterCampaignsList, useCreateAdminNewsletterCampaign, useDeleteAdminNewsletterCampaign } from "@/stores/useNewsletterCampaignsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import {
-  type APIAdminNewsletterCampaignListItem,
-  type AdminNewsletterCampaignPayload,
-  NEWSLETTER_CAMPAIGN_STATUS_MAP,
-  NEWSLETTER_CAMPAIGN_STATUS_LABELS,
-} from "@/data/newsletterCampaigns";
+import { type APIAdminNewsletterCampaignListItem, type AdminNewsletterCampaignPayload, NEWSLETTER_CAMPAIGN_STATUS_MAP, NEWSLETTER_CAMPAIGN_STATUS_LABELS, } from "@/data/newsletterCampaigns";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/newsletter/campaigns/")({

@@ -72,7 +72,7 @@ function TrainingDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/trainings" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/trainings/catalogs" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>

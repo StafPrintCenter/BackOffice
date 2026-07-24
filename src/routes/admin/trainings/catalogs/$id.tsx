@@ -99,7 +99,7 @@ function TrainingDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/trainings" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/trainings/catalogs" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">
@@ -354,7 +354,7 @@ function TrainingDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(training.id, {
-            onSuccess: () => { toast.success("Formation supprimée"); navigate({ to: "/admin/trainings" }); },
+            onSuccess: () => { toast.success("Formation supprimée"); navigate({ to: "/admin/trainings/catalogs" }); },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

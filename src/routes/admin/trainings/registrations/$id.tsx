@@ -1,41 +1,14 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import {
-  ArrowLeft,
-  Loader2,
-  Mail,
-  Phone,
-  GraduationCap,
-  Calendar,
-  UserCheck,
-  Clock,
-  Pencil,
-  Save,
-  X,
-  MessageSquare,
-  CheckCircle2,
-  XCircle,
-  User,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+import { ArrowLeft, Loader2, Mail, Phone, GraduationCap, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare, CheckCircle2, XCircle, User, ShieldCheck, Sparkles, } from "lucide-react";
 import { toast } from "sonner";
 import { AdminShell } from "@/components/site/AdminShell";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  useAdminTrainingRegistrationDetail,
-  useUpdateAdminTrainingRegistrationStatus,
-} from "@/stores/useTrainingRegistrationsStore";
-import {
-  type TrainingRegistrationStatus,
-  type AdminTrainingRegistrationStatusPayload,
-  getStatusBadge,
-  getStatusLabel,
-  STATUS_LABELS,
-} from "@/data/trainingRegistrations";
+import { useAdminTrainingRegistrationDetail, useUpdateAdminTrainingRegistrationStatus, } from "@/stores/useTrainingRegistrationsStore";
+import { type TrainingRegistrationStatus, type AdminTrainingRegistrationStatusPayload, getStatusBadge, getStatusLabel, STATUS_LABELS, } from "@/data/trainingRegistrations";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/trainings/registrations/$id")({

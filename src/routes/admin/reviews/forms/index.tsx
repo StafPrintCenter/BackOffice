@@ -81,9 +81,9 @@ function AdminReviewForms() {
       <div className="mb-4">
         <Link to="/admin/newsletter/subscribers"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Users className="h-4 w-4"
+          <Send className="h-4 w-4"
           />
-          Voir les abonnés
+          Inviter le clients
         </Link>
       </div>
 

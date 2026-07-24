@@ -37,6 +37,7 @@ function StudentDetail() {
   const alertMutation = useAlertAdminStudent();
   const blockMutation = useBlockAdminStudent();
   const reactivateMutation = useReactivateAdminStudent();
+  const resendInviteMutation = useResendAdminStudentInvite();
 
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertForm, setAlertForm] = useState({ subject: "", message: "" });

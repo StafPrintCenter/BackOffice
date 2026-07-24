@@ -13,9 +13,11 @@ const store = createResourceStore<APIAdminTrainingRegistration, AdminTrainingReg
 
 export const fetchAdminTrainingRegistrations = store.fetchList;
 export const fetchAdminTrainingRegistrationById = store.fetchById;
+export const deleteAdminTrainingRegistration = store.removeItem;
 
 export const useAdminTrainingRegistrationsList = store.useList;
 export const useAdminTrainingRegistrationDetail = store.useDetail;
+export const useDeleteAdminTrainingRegistration = store.useRemove;
 
 async function updateTrainingRegistrationStatus(
   id: string,

@@ -1,49 +1,85 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, HelpCircle, Tag, Hash, Calendar, Layers } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2 } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { useAdminFaqDetail, useUpdateAdminFaq, useDeleteAdminFaq } from "@/stores/useFaqsStore";
-import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import type { AdminFaqPayload } from "@/data/faqs";
+import { Switch } from "@/components/ui/switch";
+import { useAdminAnnouncementDetail, useUpdateAdminAnnouncement, useDeleteAdminAnnouncement } from "@/stores/useAnnouncementsStore";
+import type { AnnouncementType, AnnouncementPosition, AnnouncementStyle, AnnouncementActionType } from "@/data/announcements";
+import {
+  ANNOUNCEMENT_TYPE_LABELS, ANNOUNCEMENT_POSITION_LABELS, ANNOUNCEMENT_STYLE_LABELS, getAnnouncementStyleBadge,
+} from "@/data/announcements";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/announces/$id")({
   head: () => ({
     meta: [
-      { title: `FAQ | ${SITE.name}` },
-      { name: "robots", content: "noindex" }]
+      { title: `Annonce | ${SITE.name}` },
+      { name: "robots", content: "noindex" },
+    ],
   }),
-  component: FaqDetail,
+  component: AnnouncementDetail,
 });
 
-function FaqDetail() {
+interface EditForm {
+  type: AnnouncementType;
+  position: AnnouncementPosition;
+  style?: AnnouncementStyle;
+  title: string;
+  message: string;
+  icon: string;
+  isClosable: boolean;
+  priority: string;
+  isEnabled: boolean;
+  publishedAt: string;
+  expiresAt: string;
+  targetPages: string;
+  actionLabel: string;
+  actionType: AnnouncementActionType;
+  actionUrl: string;
+  actionTarget: "_self" | "_blank";
+}
+
+function toEditForm(a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>["item"]>): EditForm {
+  return {
+    type: a.type,
+    position: a.position,
+    style: a.style ?? undefined,
+    title: a.title,
+    message: a.message,
+    icon: a.icon ?? "",
+    isClosable: a.isClosable,
+    priority: String(a.priority ?? ""),
+    isEnabled: a.isEnabled,
+    publishedAt: a.publishedAt ? a.publishedAt.slice(0, 16) : "",
+    expiresAt: a.expiresAt ? a.expiresAt.slice(0, 16) : "",
+    targetPages: (a.targetPages ?? []).join("\n"),
+    actionLabel: a.action?.label ?? "",
+    actionType: a.action?.type ?? "link",
+    actionUrl: a.action?.url ?? "",
+    actionTarget: a.action?.target ?? "_self",
+  };
+}
+
+function AnnouncementDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
-  const { item: faq, isLoading } = useAdminFaqDetail(id);
-  const { items: categories } = useAdminCategoriesList({ perPage: 100 });
-  const updateMutation = useUpdateAdminFaq();
-  const removeMutation = useDeleteAdminFaq();
+  const { item: announcement, isLoading } = useAdminAnnouncementDetail(id);
+  const updateMutation = useUpdateAdminAnnouncement();
+  const removeMutation = useDeleteAdminAnnouncement();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [form, setForm] = useState<AdminFaqPayload | null>(null);
+  const [form, setForm] = useState<EditForm | null>(null);
   const [toDelete, setToDelete] = useState(false);
 
   useEffect(() => {
-    if (faq && !form) {
-      setForm({
-        category_id: faq.categoryId,
-        question: faq.question,
-        answer: faq.answer,
-        order: faq.order,
-      });
-    }
-  }, [faq, form]);
+    if (announcement && !form) setForm(toEditForm(announcement));
+  }, [announcement, form]);
 
   if (isLoading) {
     return (
@@ -55,51 +91,69 @@ function FaqDetail() {
     );
   }
 
-  if (!faq || !form) {
+  if (!announcement || !form) {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/faqs" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/announces" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
-        <div className="rounded-xl border p-8 text-center text-muted-foreground">
-          FAQ introuvable.
-        </div>
+        <p className="text-muted-foreground">Annonce introuvable.</p>
       </AdminShell>
     );
   }
 
-  // Récupération de la catégorie correspondante
-  const selectedCatId = isEditing ? form.category_id : faq.categoryId;
-  const categoryMeta = categories.find(
-    (c) => c.id === selectedCatId || c.name.toLowerCase() === (typeof faq.category === "string" ? faq.category.toLowerCase() : "")
-  );
-  const categoryColorClass = categoryMeta?.colorClass ?? "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300";
-  const categoryName = categoryMeta?.name ?? (typeof faq.category === "string" ? faq.category : "Sans catégorie");
-
-  const handleSave = () => {
-    updateMutation.mutate({ id: faq.id, payload: form }, {
-      onSuccess: () => { toast.success("FAQ modifiée"); setIsEditing(false); },
-      onError: () => toast.error("Erreur lors de la modification"),
-    });
+  const handleCancel = () => {
+    setForm(toEditForm(announcement));
+    setIsEditing(false);
   };
 
-  const handleCancel = () => {
-    setForm({
-      category_id: faq.categoryId,
-      question: faq.question,
-      answer: faq.answer,
-      order: faq.order,
-    });
-    setIsEditing(false);
+  const handleSave = () => {
+    const targetPages = form.targetPages
+      .split("\n")
+      .map((p) => p.trim())
+      .filter(Boolean);
+
+    const action = form.actionLabel.trim()
+      ? JSON.stringify({
+        label: form.actionLabel.trim(),
+        type: form.actionType,
+        url: form.actionUrl.trim() || undefined,
+        target: form.actionTarget,
+      })
+      : undefined;
+
+    updateMutation.mutate(
+      {
+        id: announcement.id,
+        payload: {
+          type: form.type,
+          position: form.position,
+          style: form.style,
+          title: form.title,
+          message: form.message,
+          icon: form.icon || undefined,
+          action,
+          is_closable: form.isClosable,
+          priority: form.priority === "" ? undefined : Number(form.priority),
+          is_enabled: form.isEnabled,
+          published_at: form.publishedAt ? new Date(form.publishedAt).toISOString() : undefined,
+          expires_at: form.expiresAt ? new Date(form.expiresAt).toISOString() : undefined,
+          target_pages: targetPages.length > 0 ? targetPages : undefined,
+        },
+      },
+      {
+        onSuccess: () => { toast.success("Annonce modifiée"); setIsEditing(false); },
+        onError: () => toast.error("Erreur lors de la modification"),
+      }
+    );
   };
 
   return (
     <AdminShell>
-      {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/faqs" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/announces" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">
@@ -125,143 +179,194 @@ function FaqDetail() {
         </div>
       </div>
 
-      {/* Disposition à 2 colonnes */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Colonne Principale (2/3) */}
-        <div className="space-y-6 lg:col-span-2">
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <div className="flex items-center gap-2 border-b pb-4">
-              <HelpCircle className="h-5 w-5 text-primary" />
-              <h2 className="font-display text-lg font-semibold">Contenu de la FAQ</h2>
-            </div>
-
-            <div className="mt-6 space-y-5">
-              <div>
-                <Label htmlFor="question">Question</Label>
-                {isEditing ? (
-                  <Input
-                    id="question"
-                    value={form.question}
-                    onChange={(e) => setForm({ ...form, question: e.target.value })}
-                    className="mt-1.5"
-                  />
-                ) : (
-                  <h1 className="mt-1.5 font-display text-2xl font-bold">{faq.question}</h1>
-                )}
-              </div>
-
-              <div>
-                <Label htmlFor="answer">Réponse</Label>
-                {isEditing ? (
-                  <Textarea
-                    id="answer"
-                    rows={8}
-                    value={form.answer}
-                    onChange={(e) => setForm({ ...form, answer: e.target.value })}
-                    className="mt-1.5"
-                  />
-                ) : (
-                  <div className="mt-1.5 rounded-xl border bg-muted/20 p-5 text-sm leading-relaxed whitespace-pre-wrap">
-                    {faq.answer || "Aucune réponse fournie."}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+      <div className="max-w-3xl space-y-6">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="rounded-full bg-muted px-2 py-0.5 font-medium">{ANNOUNCEMENT_TYPE_LABELS[announcement.type]}</span>
+          <span className="rounded-full bg-muted px-2 py-0.5 font-medium">{ANNOUNCEMENT_POSITION_LABELS[announcement.position]}</span>
+          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 font-medium ${getAnnouncementStyleBadge(announcement.style)}`}>
+            {announcement.style ? ANNOUNCEMENT_STYLE_LABELS[announcement.style] : "Sans style"}
+          </span>
+          <span className={`rounded-full px-2 py-0.5 font-medium ${announcement.isEnabled ? (announcement.isActive ? "bg-emerald-500/10 text-emerald-600" : "bg-amber-500/10 text-amber-600") : "bg-muted text-muted-foreground"}`}>
+            {announcement.isEnabled ? (announcement.isActive ? "Active" : "En attente") : "Désactivée"}
+          </span>
+          <span className="rounded-full bg-muted px-2 py-0.5">Priorité {announcement.priority}</span>
+          <span className="rounded-full bg-muted px-2 py-0.5">Par {announcement.createdBy}</span>
         </div>
 
-        {/* Barre Latérale (1/3) */}
-        <div className="space-y-6 lg:col-span-1">
-          {/* Organisation & Catégorie */}
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <div className="flex items-center gap-2 border-b pb-3 mb-4">
-              <Layers className="h-4 w-4 text-primary" />
-              <h3 className="font-display text-sm font-semibold">Organisation</h3>
+        {isEditing ? (
+          <div className="space-y-4 rounded-2xl border bg-card p-6">
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div>
+                <Label>Type</Label>
+                <select
+                  value={form.type}
+                  onChange={(e) => setForm({ ...form, type: e.target.value as AnnouncementType })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  {Object.entries(ANNOUNCEMENT_TYPE_LABELS).map(([k, l]) => (<option key={k} value={k}>{l}</option>))}
+                </select>
+              </div>
+              <div>
+                <Label>Position</Label>
+                <select
+                  value={form.position}
+                  onChange={(e) => setForm({ ...form, position: e.target.value as AnnouncementPosition })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  {Object.entries(ANNOUNCEMENT_POSITION_LABELS).map(([k, l]) => (<option key={k} value={k}>{l}</option>))}
+                </select>
+              </div>
+              <div>
+                <Label>Style</Label>
+                <select
+                  value={form.style ?? ""}
+                  onChange={(e) => setForm({ ...form, style: (e.target.value || undefined) as AnnouncementStyle | undefined })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">— Aucun —</option>
+                  {Object.entries(ANNOUNCEMENT_STYLE_LABELS).map(([k, l]) => (<option key={k} value={k}>{l}</option>))}
+                </select>
+              </div>
             </div>
 
-            <div className="space-y-4 text-sm">
-              {/* Catégorie */}
-              <div>
-                <Label htmlFor="category" className="text-xs text-muted-foreground">Catégorie</Label>
-                {isEditing ? (
-                  <select
-                    id="category"
-                    value={form.category_id}
-                    onChange={(e) => setForm({ ...form, category_id: e.target.value })}
-                    className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  >
-                    <option value="">— Choisir —</option>
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <div className="mt-1">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${categoryColorClass}`}>
-                      <Tag className="h-3 w-3" />
-                      {categoryName}
-                    </span>
-                  </div>
-                )}
-              </div>
+            <div>
+              <Label>Titre</Label>
+              <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+            </div>
 
-              {/* Ordre */}
+            <div>
+              <Label>Message</Label>
+              <Textarea rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <Label htmlFor="order" className="text-xs text-muted-foreground">Ordre d'affichage</Label>
-                {isEditing ? (
-                  <Input
-                    id="order"
-                    type="number"
-                    value={form.order}
-                    onChange={(e) => setForm({ ...form, order: Number(e.target.value) })}
-                    className="mt-1 text-sm"
-                  />
-                ) : (
-                  <div className="mt-1 flex items-center gap-1.5 font-medium text-sm">
-                    <Hash className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span>Position {faq.order}</span>
-                  </div>
-                )}
+                <Label>Icône</Label>
+                <Input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} />
+              </div>
+              <div>
+                <Label>Priorité</Label>
+                <Input type="number" value={form.priority} onChange={(e) => setForm({ ...form, priority: e.target.value })} />
+              </div>
+              <div>
+                <Label>Publiée le</Label>
+                <Input type="datetime-local" value={form.publishedAt} onChange={(e) => setForm({ ...form, publishedAt: e.target.value })} />
+              </div>
+              <div>
+                <Label>Expire le</Label>
+                <Input type="datetime-local" value={form.expiresAt} onChange={(e) => setForm({ ...form, expiresAt: e.target.value })} />
+              </div>
+            </div>
+
+            <div className="flex gap-6">
+              <div className="flex items-center gap-3">
+                <Label className="cursor-pointer">Fermable</Label>
+                <Switch checked={form.isClosable} onCheckedChange={(v) => setForm({ ...form, isClosable: v })} />
+              </div>
+              <div className="flex items-center gap-3">
+                <Label className="cursor-pointer">Activée</Label>
+                <Switch checked={form.isEnabled} onCheckedChange={(v) => setForm({ ...form, isEnabled: v })} />
+              </div>
+            </div>
+
+            <div>
+              <Label>Pages ciblées (une par ligne — vide = toutes les pages)</Label>
+              <Textarea
+                rows={3}
+                value={form.targetPages}
+                onChange={(e) => setForm({ ...form, targetPages: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-3 rounded-lg border p-3">
+              <Label className="text-xs text-muted-foreground">Bouton d'action (optionnel)</Label>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Input
+                  placeholder="Libellé"
+                  value={form.actionLabel}
+                  onChange={(e) => setForm({ ...form, actionLabel: e.target.value })}
+                />
+                <select
+                  value={form.actionType}
+                  onChange={(e) => setForm({ ...form, actionType: e.target.value as AnnouncementActionType })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="link">Lien</option>
+                  <option value="route">Route interne</option>
+                  <option value="dismiss">Fermer</option>
+                </select>
+                <Input
+                  placeholder="URL"
+                  value={form.actionUrl}
+                  onChange={(e) => setForm({ ...form, actionUrl: e.target.value })}
+                />
+                <select
+                  value={form.actionTarget}
+                  onChange={(e) => setForm({ ...form, actionTarget: e.target.value as "_self" | "_blank" })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="_self">Même onglet</option>
+                  <option value="_blank">Nouvel onglet</option>
+                </select>
               </div>
             </div>
           </div>
+        ) : (
+          <>
+            <h1 className="font-display text-3xl font-bold">{announcement.title}</h1>
+            <p className="whitespace-pre-wrap text-muted-foreground">{announcement.message}</p>
 
-          {/* Métadonnées & Dates */}
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <div className="flex items-center gap-2 border-b pb-3 mb-4">
-              <Calendar className="h-4 w-4 text-primary" />
-              <h3 className="font-display text-sm font-semibold">Métadonnées</h3>
-            </div>
-            <div className="space-y-3 text-xs text-muted-foreground">
-              <div className="flex justify-between">
-                <span>Créée le</span>
-                <span className="font-medium text-foreground">
-                  {new Date(faq.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
-                </span>
+            <div className="grid gap-4 rounded-2xl border bg-card p-6 sm:grid-cols-2">
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Icône</div>
+                <div className="mt-0.5 text-sm">{announcement.icon || "—"}</div>
               </div>
-              <div className="flex justify-between">
-                <span>Modifiée le</span>
-                <span className="font-medium text-foreground">
-                  {new Date(faq.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
-                </span>
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Fermable</div>
+                <div className="mt-0.5 text-sm">{announcement.isClosable ? "Oui" : "Non"}</div>
               </div>
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Publiée le</div>
+                <div className="mt-0.5 text-sm">
+                  {announcement.publishedAt ? new Date(announcement.publishedAt).toLocaleString("fr-FR") : "—"}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs font-medium text-muted-foreground">Expire le</div>
+                <div className="mt-0.5 text-sm">
+                  {announcement.expiresAt ? new Date(announcement.expiresAt).toLocaleString("fr-FR") : "—"}
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <div className="text-xs font-medium text-muted-foreground">Pages ciblées</div>
+                <div className="mt-0.5 text-sm">
+                  {announcement.targetPages.length > 0 ? announcement.targetPages.join(", ") : "Toutes les pages"}
+                </div>
+              </div>
+              {announcement.action && (
+                <div className="sm:col-span-2">
+                  <div className="text-xs font-medium text-muted-foreground">Action</div>
+                  <div className="mt-0.5 text-sm">
+                    {announcement.action.label} ({announcement.action.type}
+                    {announcement.action.url ? ` → ${announcement.action.url}` : ""})
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
 
       <ConfirmDelete
         open={toDelete}
         onOpenChange={setToDelete}
         onConfirm={() => {
-          removeMutation.mutate(faq.id, {
-            onSuccess: () => { toast.success("FAQ supprimée"); navigate({ to: "/admin/faqs" }); },
+          removeMutation.mutate(announcement.id, {
+            onSuccess: () => { toast.success("Annonce supprimée"); navigate({ to: "/admin/announces" }); },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}
-        title="Supprimer cette FAQ ?"
+        title={`Supprimer "${announcement.title}" ?`}
       />
     </AdminShell>
   );

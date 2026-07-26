@@ -14,6 +14,7 @@ export type APIAdminTrainingListItem = {
   durationHours: number;
   level: TrainingLevel;
   price: number;
+  maxSeats: number | null
   short: string;
   objectives: string[];
   createdAt: string;
@@ -42,6 +43,7 @@ export interface AdminTrainingPayload {
   program: TrainingProgramModule[];
   certification: string;
   schedule: string;
+  max_seats?: number | null;
 }
 
 export const TRAINING_LEVEL_BADGES: Record<TrainingLevel, { label: string; className: string }> = {

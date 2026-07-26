@@ -275,7 +275,19 @@ function TrainingDetail() {
                 <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
                   <Clock className="h-3 w-3" /> {training.duration}
                 </span>
+
+                {training.maxSeats !== undefined && (
+                  <div className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
+                    <UserCheck className="h-3 w-3" />
+                    <span>
+                      <strong className="text-foreground">{training.seatsRemaining ?? training.maxSeats}</strong>
+                      / {training.maxSeats} places disponibles
+                    </span>
+                  </div>
+                )}
               </div>
+
+
               <h1 className="mt-3 font-display text-4xl font-bold leading-tight">{training.title}</h1>
               <p className="mt-2 text-muted-foreground">{training.short}</p>
             </div>
@@ -321,14 +333,6 @@ function TrainingDetail() {
               <div className="font-display text-3xl font-bold text-primary">{training.price.toLocaleString()} FCFA</div>
 
               <div className="mt-4 space-y-3 text-sm">
-                {training.maxSeats !== undefined && (
-                  <div className="flex items-start gap-2 text-muted-foreground">
-                    <UserCheck className="h-4 w-4 shrink-0 mt-0.5 text-primary" />
-                    <span>
-                      Places disponibles : <strong className="text-foreground">{training.seatsRemaining ?? training.maxSeats}</strong> / {training.maxSeats}
-                    </span>
-                  </div>
-                )}
                 <div className="flex items-start gap-2 text-muted-foreground">
                   <Users className="h-4 w-4 shrink-0 mt-0.5" />
                   <span>{training.audience || "—"}</span>

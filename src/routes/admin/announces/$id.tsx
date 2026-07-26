@@ -1,17 +1,18 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2 } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, BarChart3, Eye, MousePointerClick, XCircle } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useAdminAnnouncementDetail, useUpdateAdminAnnouncement, useDeleteAdminAnnouncement } from "@/stores/useAnnouncementsStore";
+import { useAdminAnnouncementDetail, useUpdateAdminAnnouncement, useDeleteAdminAnnouncement, useAdminAnnouncementAnalytics } from "@/stores/useAnnouncementsStore";
 import type { AnnouncementType, AnnouncementPosition, AnnouncementStyle, AnnouncementActionType } from "@/data/announcements";
 import {
   ANNOUNCEMENT_TYPE_LABELS, ANNOUNCEMENT_POSITION_LABELS, ANNOUNCEMENT_STYLE_LABELS, getAnnouncementStyleBadge,
+  ANNOUNCEMENT_EVENT_LABELS, ANNOUNCEMENT_EVENT_BADGES,
 } from "@/data/announcements";
 import { SITE } from "@/data/site";
 
@@ -65,11 +66,16 @@ function toEditForm(a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>
   };
 }
 
+function formatDay(day: string) {
+  return new Date(day).toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short" });
+}
+
 function AnnouncementDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
   const { item: announcement, isLoading } = useAdminAnnouncementDetail(id);
+  const { analytics } = useAdminAnnouncementAnalytics(id);
   const updateMutation = useUpdateAdminAnnouncement();
   const removeMutation = useDeleteAdminAnnouncement();
 
@@ -351,6 +357,65 @@ function AnnouncementDetail() {
                     {announcement.action.url ? ` → ${announcement.action.url}` : ""})
                   </div>
                 </div>
+              )}
+            </div>
+
+            {/* Analyses */}
+            <div className="rounded-2xl border bg-card p-6">
+              <div className="mb-4 flex items-center gap-2 font-display text-lg font-semibold">
+                <BarChart3 className="h-5 w-5 text-primary" /> Analyses
+              </div>
+              {analytics ? (
+                <div className="space-y-4">
+                  <div className="grid gap-3 sm:grid-cols-4">
+                    <div className="flex items-center gap-2.5 rounded-xl border bg-muted/20 p-3">
+                      <Eye className="h-4 w-4 text-sky-600 shrink-0" />
+                      <div>
+                        <div className="text-xs text-muted-foreground">Vues</div>
+                        <div className="text-sm font-semibold">{analytics.views}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2.5 rounded-xl border bg-muted/20 p-3">
+                      <MousePointerClick className="h-4 w-4 text-emerald-600 shrink-0" />
+                      <div>
+                        <div className="text-xs text-muted-foreground">Clics</div>
+                        <div className="text-sm font-semibold">{analytics.clicks}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2.5 rounded-xl border bg-muted/20 p-3">
+                      <XCircle className="h-4 w-4 text-muted-foreground shrink-0" />
+                      <div>
+                        <div className="text-xs text-muted-foreground">Fermetures</div>
+                        <div className="text-sm font-semibold">{analytics.closes}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2.5 rounded-xl border bg-muted/20 p-3">
+                      <BarChart3 className="h-4 w-4 text-primary shrink-0" />
+                      <div>
+                        <div className="text-xs text-muted-foreground">Taux de clic</div>
+                        <div className="text-sm font-semibold">{analytics.clickThroughRate}%</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {analytics.byDay.length > 0 && (
+                    <div className="divide-y rounded-lg border">
+                      {analytics.byDay.map((row, i) => (
+                        <div key={`${row.day}-${row.event_type}-${i}`} className="flex items-center justify-between p-3 text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground">{formatDay(row.day)}</span>
+                            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${ANNOUNCEMENT_EVENT_BADGES[row.event_type]}`}>
+                              {ANNOUNCEMENT_EVENT_LABELS[row.event_type]}
+                            </span>
+                          </div>
+                          <span className="text-sm font-semibold text-primary">{row.total}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-sm text-muted-foreground">Chargement des analyses...</div>
               )}
             </div>
           </>

@@ -42,6 +42,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Outils",
     items: [
       { to: "/admin/shortlinks", label: "Liens courts", icon: Link2 },
+      { to: "/admin/shortlinks", label: "Liens courts", icon: Link2 },
       { to: "/admin/reviews/forms", label: "Formulaires d'avis", icon: Form, matchPrefixes: ["/admin/reviews"] },
     ],
   },

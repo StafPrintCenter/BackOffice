@@ -10,12 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAdminAnnouncementsList, useCreateAdminAnnouncement, useDeleteAdminAnnouncement } from "@/stores/useAnnouncementsStore";
-import type {
-  APIAdminAnnouncement, AdminAnnouncementPayload, AnnouncementType, AnnouncementPosition, AnnouncementStyle,
-} from "@/data/announcements";
-import {
-  ANNOUNCEMENT_TYPE_LABELS, ANNOUNCEMENT_POSITION_LABELS, ANNOUNCEMENT_STYLE_LABELS, getAnnouncementStyleBadge,
-} from "@/data/announcements";
+import type { APIAdminAnnouncement, AdminAnnouncementPayload, AnnouncementType, AnnouncementPosition, AnnouncementStyle, } from "@/data/announcements";
+import { ANNOUNCEMENT_TYPE_LABELS, ANNOUNCEMENT_POSITION_LABELS, ANNOUNCEMENT_STYLE_LABELS, getAnnouncementStyleBadge, } from "@/data/announcements";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/announces/")({

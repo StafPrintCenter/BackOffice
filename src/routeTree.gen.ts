@@ -20,6 +20,8 @@ import { Route as AdminArticlesIndexRouteImport } from './routes/admin/articles/
 import { Route as AdminArticlesIdRouteImport } from './routes/admin/articles/$id'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/admin/categories/index'
 import { Route as AdminCategoriesIdRouteImport } from './routes/admin/categories/$id'
+import { Route as AdminFaqscopyIndexRouteImport } from './routes/admin/faqs copy/index'
+import { Route as AdminFaqscopyIdRouteImport } from './routes/admin/faqs copy/$id'
 import { Route as AdminFaqsIndexRouteImport } from './routes/admin/faqs/index'
 import { Route as AdminFaqsIdRouteImport } from './routes/admin/faqs/$id'
 import { Route as AdminMessagesIndexRouteImport } from './routes/admin/messages/index'
@@ -110,6 +112,16 @@ const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
 const AdminCategoriesIdRoute = AdminCategoriesIdRouteImport.update({
   id: '/admin/categories/$id',
   path: '/admin/categories/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminFaqscopyIndexRoute = AdminFaqscopyIndexRouteImport.update({
+  id: '/admin/faqs copy/',
+  path: '/admin/faqs copy/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminFaqscopyIdRoute = AdminFaqscopyIdRouteImport.update({
+  id: '/admin/faqs copy/$id',
+  path: '/admin/faqs copy/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminFaqsIndexRoute = AdminFaqsIndexRouteImport.update({
@@ -313,6 +325,7 @@ export interface FileRoutesByFullPath {
   '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/admin/articles/$id': typeof AdminArticlesIdRoute
   '/admin/categories/$id': typeof AdminCategoriesIdRoute
+  '/admin/faqs copy/$id': typeof AdminFaqscopyIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/messages/$id': typeof AdminMessagesIdRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
@@ -324,6 +337,7 @@ export interface FileRoutesByFullPath {
   '/admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
+  '/admin/faqs copy/': typeof AdminFaqscopyIndexRoute
   '/admin/faqs/': typeof AdminFaqsIndexRoute
   '/admin/messages/': typeof AdminMessagesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
@@ -362,6 +376,7 @@ export interface FileRoutesByTo {
   '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/admin/articles/$id': typeof AdminArticlesIdRoute
   '/admin/categories/$id': typeof AdminCategoriesIdRoute
+  '/admin/faqs copy/$id': typeof AdminFaqscopyIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/messages/$id': typeof AdminMessagesIdRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
@@ -373,6 +388,7 @@ export interface FileRoutesByTo {
   '/admin/appointments': typeof AdminAppointmentsIndexRoute
   '/admin/articles': typeof AdminArticlesIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/admin/faqs copy': typeof AdminFaqscopyIndexRoute
   '/admin/faqs': typeof AdminFaqsIndexRoute
   '/admin/messages': typeof AdminMessagesIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
@@ -412,6 +428,7 @@ export interface FileRoutesById {
   '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/admin/articles/$id': typeof AdminArticlesIdRoute
   '/admin/categories/$id': typeof AdminCategoriesIdRoute
+  '/admin/faqs copy/$id': typeof AdminFaqscopyIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/messages/$id': typeof AdminMessagesIdRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
@@ -423,6 +440,7 @@ export interface FileRoutesById {
   '/admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
+  '/admin/faqs copy/': typeof AdminFaqscopyIndexRoute
   '/admin/faqs/': typeof AdminFaqsIndexRoute
   '/admin/messages/': typeof AdminMessagesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
@@ -463,6 +481,7 @@ export interface FileRouteTypes {
     | '/admin/appointments/$id'
     | '/admin/articles/$id'
     | '/admin/categories/$id'
+    | '/admin/faqs copy/$id'
     | '/admin/faqs/$id'
     | '/admin/messages/$id'
     | '/admin/projects/$id'
@@ -474,6 +493,7 @@ export interface FileRouteTypes {
     | '/admin/appointments/'
     | '/admin/articles/'
     | '/admin/categories/'
+    | '/admin/faqs copy/'
     | '/admin/faqs/'
     | '/admin/messages/'
     | '/admin/projects/'
@@ -512,6 +532,7 @@ export interface FileRouteTypes {
     | '/admin/appointments/$id'
     | '/admin/articles/$id'
     | '/admin/categories/$id'
+    | '/admin/faqs copy/$id'
     | '/admin/faqs/$id'
     | '/admin/messages/$id'
     | '/admin/projects/$id'
@@ -523,6 +544,7 @@ export interface FileRouteTypes {
     | '/admin/appointments'
     | '/admin/articles'
     | '/admin/categories'
+    | '/admin/faqs copy'
     | '/admin/faqs'
     | '/admin/messages'
     | '/admin/projects'
@@ -561,6 +583,7 @@ export interface FileRouteTypes {
     | '/admin/appointments/$id'
     | '/admin/articles/$id'
     | '/admin/categories/$id'
+    | '/admin/faqs copy/$id'
     | '/admin/faqs/$id'
     | '/admin/messages/$id'
     | '/admin/projects/$id'
@@ -572,6 +595,7 @@ export interface FileRouteTypes {
     | '/admin/appointments/'
     | '/admin/articles/'
     | '/admin/categories/'
+    | '/admin/faqs copy/'
     | '/admin/faqs/'
     | '/admin/messages/'
     | '/admin/projects/'
@@ -611,6 +635,7 @@ export interface RootRouteChildren {
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
   AdminCategoriesIdRoute: typeof AdminCategoriesIdRoute
+  AdminFaqscopyIdRoute: typeof AdminFaqscopyIdRoute
   AdminFaqsIdRoute: typeof AdminFaqsIdRoute
   AdminMessagesIdRoute: typeof AdminMessagesIdRoute
   AdminProjectsIdRoute: typeof AdminProjectsIdRoute
@@ -622,6 +647,7 @@ export interface RootRouteChildren {
   AdminAppointmentsIndexRoute: typeof AdminAppointmentsIndexRoute
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
+  AdminFaqscopyIndexRoute: typeof AdminFaqscopyIndexRoute
   AdminFaqsIndexRoute: typeof AdminFaqsIndexRoute
   AdminMessagesIndexRoute: typeof AdminMessagesIndexRoute
   AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
@@ -729,6 +755,20 @@ declare module '@tanstack/react-router' {
       path: '/admin/categories/$id'
       fullPath: '/admin/categories/$id'
       preLoaderRoute: typeof AdminCategoriesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/faqs copy/': {
+      id: '/admin/faqs copy/'
+      path: '/admin/faqs copy'
+      fullPath: '/admin/faqs copy/'
+      preLoaderRoute: typeof AdminFaqscopyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/faqs copy/$id': {
+      id: '/admin/faqs copy/$id'
+      path: '/admin/faqs copy/$id'
+      fullPath: '/admin/faqs copy/$id'
+      preLoaderRoute: typeof AdminFaqscopyIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/faqs/': {
@@ -995,6 +1035,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,
   AdminCategoriesIdRoute: AdminCategoriesIdRoute,
+  AdminFaqscopyIdRoute: AdminFaqscopyIdRoute,
   AdminFaqsIdRoute: AdminFaqsIdRoute,
   AdminMessagesIdRoute: AdminMessagesIdRoute,
   AdminProjectsIdRoute: AdminProjectsIdRoute,
@@ -1006,6 +1047,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
+  AdminFaqscopyIndexRoute: AdminFaqscopyIndexRoute,
   AdminFaqsIndexRoute: AdminFaqsIndexRoute,
   AdminMessagesIndexRoute: AdminMessagesIndexRoute,
   AdminProjectsIndexRoute: AdminProjectsIndexRoute,

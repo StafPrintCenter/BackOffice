@@ -57,7 +57,7 @@ function toEditForm(a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>
     isEnabled: a.isEnabled,
     publishedAt: a.publishedAt ? a.publishedAt.slice(0, 16) : "",
     expiresAt: a.expiresAt ? a.expiresAt.slice(0, 16) : "",
-    targetPages: (a.targetPages ?? []).join("\n"),
+    targetPages: Array.isArray(a.targetPages) ? a.targetPages.join("\n") : "",
     actionLabel: a.action?.label ?? "",
     actionType: a.action?.type ?? "link",
     actionUrl: a.action?.url ?? "",
@@ -340,7 +340,7 @@ function AnnouncementDetail() {
               <div className="sm:col-span-2">
                 <div className="text-xs font-medium text-muted-foreground">Pages ciblées</div>
                 <div className="mt-0.5 text-sm">
-                  {announcement.targetPages.length > 0 ? announcement.targetPages.join(", ") : "Toutes les pages"}
+                  {announcement.targetPages?.length ? announcement.targetPages.join(", ") : "Toutes les pages"}
                 </div>
               </div>
               {announcement.action && (

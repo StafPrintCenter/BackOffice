@@ -84,3 +84,32 @@ export const ANNOUNCEMENT_STYLE_BADGES: Record<AnnouncementStyle, string> = {
 export function getAnnouncementStyleBadge(style: AnnouncementStyle | null): string {
   return style ? ANNOUNCEMENT_STYLE_BADGES[style] : ANNOUNCEMENT_STYLE_BADGES.neutral;
 }
+
+export type AnnouncementAnalyticsEventType = "view" | "click" | "close";
+
+export interface AnnouncementAnalyticsByDay {
+  day: string;
+  event_type: AnnouncementAnalyticsEventType;
+  total: number;
+}
+
+export interface AdminAnnouncementAnalytics {
+  announcementId: string;
+  views: number;
+  clicks: number;
+  closes: number;
+  clickThroughRate: number;
+  byDay: AnnouncementAnalyticsByDay[];
+}
+
+export const ANNOUNCEMENT_EVENT_LABELS: Record<AnnouncementAnalyticsEventType, string> = {
+  view: "Vue",
+  click: "Clic",
+  close: "Fermeture",
+};
+
+export const ANNOUNCEMENT_EVENT_BADGES: Record<AnnouncementAnalyticsEventType, string> = {
+  view: "bg-sky-500/10 text-sky-600",
+  click: "bg-emerald-500/10 text-emerald-600",
+  close: "bg-muted text-muted-foreground",
+};

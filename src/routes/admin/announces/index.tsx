@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Plus, Trash2 } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -10,8 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAdminAnnouncementsList, useCreateAdminAnnouncement, useDeleteAdminAnnouncement } from "@/stores/useAnnouncementsStore";
-import type { APIAdminAnnouncement, AdminAnnouncementPayload, AnnouncementType, AnnouncementPosition, AnnouncementStyle, } from "@/data/announcements";
-import { ANNOUNCEMENT_TYPE_LABELS, ANNOUNCEMENT_POSITION_LABELS, ANNOUNCEMENT_STYLE_LABELS, getAnnouncementStyleBadge, } from "@/data/announcements";
+import type { APIAdminAnnouncement, AdminAnnouncementPayload, AnnouncementType, AnnouncementPosition, AnnouncementStyle } from "@/data/announcements";
+import { ANNOUNCEMENT_TYPE_LABELS, ANNOUNCEMENT_POSITION_LABELS, ANNOUNCEMENT_STYLE_LABELS, getAnnouncementStyleBadge } from "@/data/announcements";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/announces/")({
@@ -36,7 +37,7 @@ const schema = z.object({
   isEnabled: z.boolean(),
   publishedAt: z.string().optional(),
   expiresAt: z.string().optional(),
-  targetPages: z.string().optional(), // saisie brute, une page par ligne
+  targetPages: z.array(z.string().trim()),
   actionLabel: z.string().optional(),
   actionType: z.enum(["link", "route", "dismiss"]).optional(),
   actionUrl: z.string().optional(),
@@ -56,7 +57,7 @@ const empty: FormValues = {
   isEnabled: true,
   publishedAt: "",
   expiresAt: "",
-  targetPages: "",
+  targetPages: [""],
   actionLabel: "",
   actionType: "link",
   actionUrl: "",
@@ -87,7 +88,12 @@ function AdminAnnouncements() {
   const openCreate = () => { setForm(empty); setErrors({}); setOpen(true); };
 
   const submit = () => {
-    const parsed = schema.safeParse(form);
+    const cleaned: FormValues = {
+      ...form,
+      targetPages: form.targetPages.filter((p) => p.trim()),
+    };
+
+    const parsed = schema.safeParse(cleaned);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
       parsed.error.issues.forEach((i) => { errs[i.path[0] as string] = i.message; });
@@ -96,11 +102,6 @@ function AdminAnnouncements() {
     }
 
     const v = parsed.data;
-
-    const targetPages = (v.targetPages ?? "")
-      .split("\n")
-      .map((p) => p.trim())
-      .filter(Boolean);
 
     const action = v.actionLabel?.trim()
       ? JSON.stringify({
@@ -124,7 +125,7 @@ function AdminAnnouncements() {
       is_enabled: v.isEnabled,
       published_at: v.publishedAt ? new Date(v.publishedAt).toISOString() : undefined,
       expires_at: v.expiresAt ? new Date(v.expiresAt).toISOString() : undefined,
-      target_pages: targetPages.length > 0 ? targetPages : undefined,
+      target_pages: v.targetPages.length > 0 ? v.targetPages : undefined,
     };
 
     createMutation.mutate(payload, {
@@ -278,14 +279,45 @@ function AdminAnnouncements() {
               </div>
             </div>
 
+            {/* Pages ciblées (Liste dynamique) */}
             <div>
-              <Label>Pages ciblées (optionnel, une par ligne — vide = toutes les pages)</Label>
-              <Textarea
-                rows={3}
-                value={form.targetPages}
-                onChange={(e) => setForm({ ...form, targetPages: e.target.value })}
-                placeholder={"/\n/formations/*"}
-              />
+              <div className="flex items-center justify-between">
+                <Label>Pages ciblées (optionnel, vide = toutes les pages)</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setForm({ ...form, targetPages: [...form.targetPages, ""] })}
+                >
+                  <Plus className="h-3 w-3 mr-1" /> Ajouter une page
+                </Button>
+              </div>
+              <div className="mt-2 space-y-2">
+                {form.targetPages.map((page, index) => (
+                  <div key={index} className="flex gap-2">
+                    <Input
+                      placeholder="ex: /formations/*"
+                      value={page}
+                      onChange={(e) => {
+                        const arr = [...form.targetPages];
+                        arr[index] = e.target.value;
+                        setForm({ ...form, targetPages: arr });
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() => {
+                        const arr = form.targetPages.filter((_, idx) => idx !== index);
+                        setForm({ ...form, targetPages: arr.length > 0 ? arr : [""] });
+                      }}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-3 rounded-lg border p-3">

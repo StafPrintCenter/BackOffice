@@ -32,7 +32,6 @@ function toPayload(t: NonNullable<ReturnType<typeof useAdminTrainingDetail>["ite
     level: t.level,
     price: t.price,
     max_seats: t.maxSeats ?? 0,
-    seats_remaining: t.seatsRemaining ?? 0,
     short: t.short,
     audience: t.audience,
     objectives: [...t.objectives],
@@ -161,12 +160,8 @@ function TrainingDetail() {
               <Input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} />
             </div>
             <div>
-              <Label>Places Max</Label>
+              <Label>Places Max (0 = illimité)</Label>
               <Input type="number" value={form.max_seats ?? 0} onChange={(e) => setForm({ ...form, max_seats: Number(e.target.value) })} />
-            </div>
-            <div>
-              <Label>Places Restantes</Label>
-              <Input type="number" value={form.seats_remaining ?? 0} onChange={(e) => setForm({ ...form, seats_remaining: Number(e.target.value) })} />
             </div>
             <div className="sm:col-span-2">
               <Label>Public visé</Label>
@@ -281,7 +276,7 @@ function TrainingDetail() {
                     <UserCheck className="h-3 w-3" />
                     <span>
                       {!training.maxSeats || training.maxSeats === 0 ? (
-                        <strong className="text-foreground">Places illimitées</strong>
+                        <span className="text-foreground">Places illimitées</span>
                       ) : (
                         <>
                           <strong className="text-foreground">

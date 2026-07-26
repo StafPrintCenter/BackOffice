@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus, Target, BookOpen, Clock, Signal, Users, Award, CalendarClock, ListChecks, } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus, Target, BookOpen, Clock, Signal, Users, Award, CalendarClock, ListChecks, UserCheck } from "lucide-react";
 import { AdminShell } from "@/components/site/AdminShell";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,8 @@ function toPayload(t: NonNullable<ReturnType<typeof useAdminTrainingDetail>["ite
     duration_hours: t.durationHours,
     level: t.level,
     price: t.price,
+    max_seats: t.maxSeats ?? 0,
+    seats_remaining: t.seatsRemaining ?? 0,
     short: t.short,
     audience: t.audience,
     objectives: [...t.objectives],
@@ -158,6 +160,14 @@ function TrainingDetail() {
               <Label>Prix (FCFA)</Label>
               <Input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} />
             </div>
+            <div>
+              <Label>Places Max</Label>
+              <Input type="number" value={form.max_seats ?? 0} onChange={(e) => setForm({ ...form, max_seats: Number(e.target.value) })} />
+            </div>
+            <div>
+              <Label>Places Restantes</Label>
+              <Input type="number" value={form.seats_remaining ?? 0} onChange={(e) => setForm({ ...form, seats_remaining: Number(e.target.value) })} />
+            </div>
             <div className="sm:col-span-2">
               <Label>Public visé</Label>
               <Input value={form.audience} onChange={(e) => setForm({ ...form, audience: e.target.value })} />
@@ -257,7 +267,7 @@ function TrainingDetail() {
               <div className="flex flex-wrap items-center gap-2 text-xs">
                 <span className={`inline-flex px-2 py-1 rounded-full font-medium ${themeColorClass}`}>{training.theme}</span>
 
-                {/* 💡 Badge de niveau stylisé avec getTrainingLevelBadgeClass */}
+                {/* Badge de niveau */}
                 <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${getTrainingLevelBadgeClass(training.level)}`}>
                   <Signal className="h-3 w-3" /> {training.level}
                 </span>
@@ -311,6 +321,14 @@ function TrainingDetail() {
               <div className="font-display text-3xl font-bold text-primary">{training.price.toLocaleString()} FCFA</div>
 
               <div className="mt-4 space-y-3 text-sm">
+                {training.maxSeats !== undefined && (
+                  <div className="flex items-start gap-2 text-muted-foreground">
+                    <UserCheck className="h-4 w-4 shrink-0 mt-0.5 text-primary" />
+                    <span>
+                      Places disponibles : <strong className="text-foreground">{training.seatsRemaining ?? training.maxSeats}</strong> / {training.maxSeats}
+                    </span>
+                  </div>
+                )}
                 <div className="flex items-start gap-2 text-muted-foreground">
                   <Users className="h-4 w-4 shrink-0 mt-0.5" />
                   <span>{training.audience || "—"}</span>

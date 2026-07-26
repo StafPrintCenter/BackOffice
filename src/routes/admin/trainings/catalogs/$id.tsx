@@ -280,13 +280,20 @@ function TrainingDetail() {
                   <div className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
                     <UserCheck className="h-3 w-3" />
                     <span>
-                      <strong className="text-foreground">{training.seatsRemaining ?? training.maxSeats}</strong>
-                      / {training.maxSeats} places disponibles
+                      {!training.maxSeats || training.maxSeats === 0 ? (
+                        <strong className="text-foreground">Places illimitées</strong>
+                      ) : (
+                        <>
+                          <strong className="text-foreground">
+                            {training.seatsRemaining ?? training.maxSeats}
+                          </strong>
+                          / {training.maxSeats} places disponibles
+                        </>
+                      )}
                     </span>
                   </div>
                 )}
               </div>
-
 
               <h1 className="mt-3 font-display text-4xl font-bold leading-tight">{training.title}</h1>
               <p className="mt-2 text-muted-foreground">{training.short}</p>

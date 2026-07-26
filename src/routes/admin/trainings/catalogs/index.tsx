@@ -39,13 +39,14 @@ const schema = z.object({
   program: z.array(z.object({ title: z.string().min(1), items: z.array(z.string().min(1)) })).min(1),
   certification: z.string().trim().min(1),
   schedule: z.string().trim().min(1),
+  max_seats: z.number().min(0).nullable().optional(),
 });
 type FormValues = z.infer<typeof schema>;
 
 const empty: FormValues = {
   title: "", theme_id: "", duration: "", duration_hours: 0, level: "Débutant", price: 0, short: "",
   audience: "", objectives: [""], prerequisites: [""], program: [{ title: "", items: [""] }],
-  certification: "", schedule: "",
+  certification: "", schedule: "", max_seats: 0,
 };
 
 function AdminTrainings() {
@@ -104,8 +105,7 @@ function AdminTrainings() {
       <div className="mb-4">
         <Link to="/admin/trainings/registrations"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <UserRoundPlus className="h-4 w-4"
-          />
+          <UserRoundPlus className="h-4 w-4" />
           Voir les inscriptions
         </Link>
       </div>
@@ -148,6 +148,15 @@ function AdminTrainings() {
           },
           { key: "duration", label: "Durée" },
           { key: "price", label: "Prix", render: (r) => <span className="font-semibold">{r.price.toLocaleString()} FCFA</span> },
+          {
+            key: "max_seats",
+            label: "Places max",
+            render: (r) => (
+              <span className="text-sm">
+                {r.maxSeats && r.maxSeats > 0 ? `${r.maxSeats} places` : "Illimité"}
+              </span>
+            ),
+          },
         ]}
       />
 
@@ -193,6 +202,10 @@ function AdminTrainings() {
               <div>
                 <Label>Prix (FCFA)</Label>
                 <Input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} />
+              </div>
+              <div>
+                <Label>Nombre de places max (0 = Illimité)</Label>
+                <Input type="number" min={0} value={form.max_seats ?? 0} onChange={(e) => setForm({ ...form, max_seats: Number(e.target.value) })} placeholder="0 pour illimité" />
               </div>
               <div className="sm:col-span-2">
                 <Label>Public visé</Label>

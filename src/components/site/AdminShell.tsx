@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, PanelLeftClose, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, Mailbox, Flag } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, PanelLeftClose, Menu, X, UserCircle, Tags, BarChart3, HelpCircle, Link2, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, Mailbox, Flag, BriefcaseBusiness } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
@@ -44,11 +44,11 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/admin/shortlinks", label: "Liens courts", icon: Link2 },
       { to: "/admin/announces", label: "Annonces", icon: Flag },
       { to: "/admin/reviews/forms", label: "Formulaires d'avis", icon: Form, matchPrefixes: ["/admin/reviews"] },
-      { to: "/admin/jobs/offers", label: "Offres d'emploi", icon: Form, matchPrefixes: ["/admin/jobs"] },
+      { to: "/admin/jobs/offers", label: "Offres d'emploi", icon: BriefcaseBusiness, matchPrefixes: ["/admin/jobs"] },
     ],
   },
   {
-    label: "Membre",
+    label: "Membres",
     items: [
       { to: "/admin/members/users", label: "Utilisateurs", icon: UserCheck },
       { to: "/admin/members/students", label: "Apprenants", icon: UserRoundPen },

@@ -29,7 +29,7 @@ export interface AdminJobOfferPayload {
   contract_type?: JobOfferContractType;
   location?: string | null;
   description?: string;
-  responsibilities?: string[] | string; // Accepte le tableau envoyé par le formulaire
+  responsibilities?: string[] | string;
   requirements?: string[] | string;
   salary_min?: number;
   salary_max?: number;

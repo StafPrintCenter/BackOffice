@@ -38,16 +38,16 @@ import { Route as AdminStatsIndexRouteImport } from './routes/admin/stats/index'
 import { Route as AdminStatsIdRouteImport } from './routes/admin/stats/$id'
 import { Route as AdminTestimonialsIndexRouteImport } from './routes/admin/testimonials/index'
 import { Route as AdminTestimonialsIdRouteImport } from './routes/admin/testimonials/$id'
+import { Route as AdminJobsCampaignsIndexRouteImport } from './routes/admin/jobs/campaigns/index'
+import { Route as AdminJobsCampaignsIdRouteImport } from './routes/admin/jobs/campaigns/$id'
+import { Route as AdminJobsSubscribersIndexRouteImport } from './routes/admin/jobs/subscribers/index'
+import { Route as AdminJobsSubscribersIdRouteImport } from './routes/admin/jobs/subscribers/$id'
 import { Route as AdminMembersAdminsIndexRouteImport } from './routes/admin/members/admins/index'
 import { Route as AdminMembersAdminsIdRouteImport } from './routes/admin/members/admins/$id'
 import { Route as AdminMembersStudentsIndexRouteImport } from './routes/admin/members/students/index'
 import { Route as AdminMembersStudentsIdRouteImport } from './routes/admin/members/students/$id'
 import { Route as AdminMembersUsersIndexRouteImport } from './routes/admin/members/users/index'
 import { Route as AdminMembersUsersIdRouteImport } from './routes/admin/members/users/$id'
-import { Route as AdminNewslettercopyCampaignsIndexRouteImport } from './routes/admin/newsletter copy/campaigns/index'
-import { Route as AdminNewslettercopyCampaignsIdRouteImport } from './routes/admin/newsletter copy/campaigns/$id'
-import { Route as AdminNewslettercopySubscribersIndexRouteImport } from './routes/admin/newsletter copy/subscribers/index'
-import { Route as AdminNewslettercopySubscribersIdRouteImport } from './routes/admin/newsletter copy/subscribers/$id'
 import { Route as AdminNewsletterCampaignsIndexRouteImport } from './routes/admin/newsletter/campaigns/index'
 import { Route as AdminNewsletterCampaignsIdRouteImport } from './routes/admin/newsletter/campaigns/$id'
 import { Route as AdminNewsletterSubscribersIndexRouteImport } from './routes/admin/newsletter/subscribers/index'
@@ -208,6 +208,27 @@ const AdminTestimonialsIdRoute = AdminTestimonialsIdRouteImport.update({
   path: '/admin/testimonials/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminJobsCampaignsIndexRoute = AdminJobsCampaignsIndexRouteImport.update({
+  id: '/admin/jobs/campaigns/',
+  path: '/admin/jobs/campaigns/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminJobsCampaignsIdRoute = AdminJobsCampaignsIdRouteImport.update({
+  id: '/admin/jobs/campaigns/$id',
+  path: '/admin/jobs/campaigns/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminJobsSubscribersIndexRoute =
+  AdminJobsSubscribersIndexRouteImport.update({
+    id: '/admin/jobs/subscribers/',
+    path: '/admin/jobs/subscribers/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminJobsSubscribersIdRoute = AdminJobsSubscribersIdRouteImport.update({
+  id: '/admin/jobs/subscribers/$id',
+  path: '/admin/jobs/subscribers/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminMembersAdminsIndexRoute = AdminMembersAdminsIndexRouteImport.update({
   id: '/admin/members/admins/',
   path: '/admin/members/admins/',
@@ -239,30 +260,6 @@ const AdminMembersUsersIdRoute = AdminMembersUsersIdRouteImport.update({
   path: '/admin/members/users/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminNewslettercopyCampaignsIndexRoute =
-  AdminNewslettercopyCampaignsIndexRouteImport.update({
-    id: '/admin/newsletter copy/campaigns/',
-    path: '/admin/newsletter copy/campaigns/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AdminNewslettercopyCampaignsIdRoute =
-  AdminNewslettercopyCampaignsIdRouteImport.update({
-    id: '/admin/newsletter copy/campaigns/$id',
-    path: '/admin/newsletter copy/campaigns/$id',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AdminNewslettercopySubscribersIndexRoute =
-  AdminNewslettercopySubscribersIndexRouteImport.update({
-    id: '/admin/newsletter copy/subscribers/',
-    path: '/admin/newsletter copy/subscribers/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AdminNewslettercopySubscribersIdRoute =
-  AdminNewslettercopySubscribersIdRouteImport.update({
-    id: '/admin/newsletter copy/subscribers/$id',
-    path: '/admin/newsletter copy/subscribers/$id',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const AdminNewsletterCampaignsIndexRoute =
   AdminNewsletterCampaignsIndexRouteImport.update({
     id: '/admin/newsletter/campaigns/',
@@ -374,11 +371,11 @@ export interface FileRoutesByFullPath {
   '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/admin/jobs/campaigns/$id': typeof AdminJobsCampaignsIdRoute
+  '/admin/jobs/subscribers/$id': typeof AdminJobsSubscribersIdRoute
   '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
-  '/admin/newsletter copy/campaigns/$id': typeof AdminNewslettercopyCampaignsIdRoute
-  '/admin/newsletter copy/subscribers/$id': typeof AdminNewslettercopySubscribersIdRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
   '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
@@ -386,11 +383,11 @@ export interface FileRoutesByFullPath {
   '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
   '/admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
   '/admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
+  '/admin/jobs/campaigns/': typeof AdminJobsCampaignsIndexRoute
+  '/admin/jobs/subscribers/': typeof AdminJobsSubscribersIndexRoute
   '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
   '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
   '/admin/members/users/': typeof AdminMembersUsersIndexRoute
-  '/admin/newsletter copy/campaigns/': typeof AdminNewslettercopyCampaignsIndexRoute
-  '/admin/newsletter copy/subscribers/': typeof AdminNewslettercopySubscribersIndexRoute
   '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
   '/admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
   '/admin/reviews/forms/': typeof AdminReviewsFormsIndexRoute
@@ -429,11 +426,11 @@ export interface FileRoutesByTo {
   '/admin/shortlinks': typeof AdminShortlinksIndexRoute
   '/admin/stats': typeof AdminStatsIndexRoute
   '/admin/testimonials': typeof AdminTestimonialsIndexRoute
+  '/admin/jobs/campaigns/$id': typeof AdminJobsCampaignsIdRoute
+  '/admin/jobs/subscribers/$id': typeof AdminJobsSubscribersIdRoute
   '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
-  '/admin/newsletter copy/campaigns/$id': typeof AdminNewslettercopyCampaignsIdRoute
-  '/admin/newsletter copy/subscribers/$id': typeof AdminNewslettercopySubscribersIdRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
   '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
@@ -441,11 +438,11 @@ export interface FileRoutesByTo {
   '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
   '/admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
   '/admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
+  '/admin/jobs/campaigns': typeof AdminJobsCampaignsIndexRoute
+  '/admin/jobs/subscribers': typeof AdminJobsSubscribersIndexRoute
   '/admin/members/admins': typeof AdminMembersAdminsIndexRoute
   '/admin/members/students': typeof AdminMembersStudentsIndexRoute
   '/admin/members/users': typeof AdminMembersUsersIndexRoute
-  '/admin/newsletter copy/campaigns': typeof AdminNewslettercopyCampaignsIndexRoute
-  '/admin/newsletter copy/subscribers': typeof AdminNewslettercopySubscribersIndexRoute
   '/admin/newsletter/campaigns': typeof AdminNewsletterCampaignsIndexRoute
   '/admin/newsletter/subscribers': typeof AdminNewsletterSubscribersIndexRoute
   '/admin/reviews/forms': typeof AdminReviewsFormsIndexRoute
@@ -485,11 +482,11 @@ export interface FileRoutesById {
   '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/admin/jobs/campaigns/$id': typeof AdminJobsCampaignsIdRoute
+  '/admin/jobs/subscribers/$id': typeof AdminJobsSubscribersIdRoute
   '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
-  '/admin/newsletter copy/campaigns/$id': typeof AdminNewslettercopyCampaignsIdRoute
-  '/admin/newsletter copy/subscribers/$id': typeof AdminNewslettercopySubscribersIdRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
   '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
@@ -497,11 +494,11 @@ export interface FileRoutesById {
   '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
   '/admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
   '/admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
+  '/admin/jobs/campaigns/': typeof AdminJobsCampaignsIndexRoute
+  '/admin/jobs/subscribers/': typeof AdminJobsSubscribersIndexRoute
   '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
   '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
   '/admin/members/users/': typeof AdminMembersUsersIndexRoute
-  '/admin/newsletter copy/campaigns/': typeof AdminNewslettercopyCampaignsIndexRoute
-  '/admin/newsletter copy/subscribers/': typeof AdminNewslettercopySubscribersIndexRoute
   '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
   '/admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
   '/admin/reviews/forms/': typeof AdminReviewsFormsIndexRoute
@@ -542,11 +539,11 @@ export interface FileRouteTypes {
     | '/admin/shortlinks/'
     | '/admin/stats/'
     | '/admin/testimonials/'
+    | '/admin/jobs/campaigns/$id'
+    | '/admin/jobs/subscribers/$id'
     | '/admin/members/admins/$id'
     | '/admin/members/students/$id'
     | '/admin/members/users/$id'
-    | '/admin/newsletter copy/campaigns/$id'
-    | '/admin/newsletter copy/subscribers/$id'
     | '/admin/newsletter/campaigns/$id'
     | '/admin/newsletter/subscribers/$id'
     | '/admin/reviews/forms/$id'
@@ -554,11 +551,11 @@ export interface FileRouteTypes {
     | '/admin/reviews/responses/$id'
     | '/admin/trainings/catalogs/$id'
     | '/admin/trainings/registrations/$id'
+    | '/admin/jobs/campaigns/'
+    | '/admin/jobs/subscribers/'
     | '/admin/members/admins/'
     | '/admin/members/students/'
     | '/admin/members/users/'
-    | '/admin/newsletter copy/campaigns/'
-    | '/admin/newsletter copy/subscribers/'
     | '/admin/newsletter/campaigns/'
     | '/admin/newsletter/subscribers/'
     | '/admin/reviews/forms/'
@@ -597,11 +594,11 @@ export interface FileRouteTypes {
     | '/admin/shortlinks'
     | '/admin/stats'
     | '/admin/testimonials'
+    | '/admin/jobs/campaigns/$id'
+    | '/admin/jobs/subscribers/$id'
     | '/admin/members/admins/$id'
     | '/admin/members/students/$id'
     | '/admin/members/users/$id'
-    | '/admin/newsletter copy/campaigns/$id'
-    | '/admin/newsletter copy/subscribers/$id'
     | '/admin/newsletter/campaigns/$id'
     | '/admin/newsletter/subscribers/$id'
     | '/admin/reviews/forms/$id'
@@ -609,11 +606,11 @@ export interface FileRouteTypes {
     | '/admin/reviews/responses/$id'
     | '/admin/trainings/catalogs/$id'
     | '/admin/trainings/registrations/$id'
+    | '/admin/jobs/campaigns'
+    | '/admin/jobs/subscribers'
     | '/admin/members/admins'
     | '/admin/members/students'
     | '/admin/members/users'
-    | '/admin/newsletter copy/campaigns'
-    | '/admin/newsletter copy/subscribers'
     | '/admin/newsletter/campaigns'
     | '/admin/newsletter/subscribers'
     | '/admin/reviews/forms'
@@ -652,11 +649,11 @@ export interface FileRouteTypes {
     | '/admin/shortlinks/'
     | '/admin/stats/'
     | '/admin/testimonials/'
+    | '/admin/jobs/campaigns/$id'
+    | '/admin/jobs/subscribers/$id'
     | '/admin/members/admins/$id'
     | '/admin/members/students/$id'
     | '/admin/members/users/$id'
-    | '/admin/newsletter copy/campaigns/$id'
-    | '/admin/newsletter copy/subscribers/$id'
     | '/admin/newsletter/campaigns/$id'
     | '/admin/newsletter/subscribers/$id'
     | '/admin/reviews/forms/$id'
@@ -664,11 +661,11 @@ export interface FileRouteTypes {
     | '/admin/reviews/responses/$id'
     | '/admin/trainings/catalogs/$id'
     | '/admin/trainings/registrations/$id'
+    | '/admin/jobs/campaigns/'
+    | '/admin/jobs/subscribers/'
     | '/admin/members/admins/'
     | '/admin/members/students/'
     | '/admin/members/users/'
-    | '/admin/newsletter copy/campaigns/'
-    | '/admin/newsletter copy/subscribers/'
     | '/admin/newsletter/campaigns/'
     | '/admin/newsletter/subscribers/'
     | '/admin/reviews/forms/'
@@ -708,11 +705,11 @@ export interface RootRouteChildren {
   AdminShortlinksIndexRoute: typeof AdminShortlinksIndexRoute
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
+  AdminJobsCampaignsIdRoute: typeof AdminJobsCampaignsIdRoute
+  AdminJobsSubscribersIdRoute: typeof AdminJobsSubscribersIdRoute
   AdminMembersAdminsIdRoute: typeof AdminMembersAdminsIdRoute
   AdminMembersStudentsIdRoute: typeof AdminMembersStudentsIdRoute
   AdminMembersUsersIdRoute: typeof AdminMembersUsersIdRoute
-  AdminNewslettercopyCampaignsIdRoute: typeof AdminNewslettercopyCampaignsIdRoute
-  AdminNewslettercopySubscribersIdRoute: typeof AdminNewslettercopySubscribersIdRoute
   AdminNewsletterCampaignsIdRoute: typeof AdminNewsletterCampaignsIdRoute
   AdminNewsletterSubscribersIdRoute: typeof AdminNewsletterSubscribersIdRoute
   AdminReviewsFormsIdRoute: typeof AdminReviewsFormsIdRoute
@@ -720,11 +717,11 @@ export interface RootRouteChildren {
   AdminReviewsResponsesIdRoute: typeof AdminReviewsResponsesIdRoute
   AdminTrainingsCatalogsIdRoute: typeof AdminTrainingsCatalogsIdRoute
   AdminTrainingsRegistrationsIdRoute: typeof AdminTrainingsRegistrationsIdRoute
+  AdminJobsCampaignsIndexRoute: typeof AdminJobsCampaignsIndexRoute
+  AdminJobsSubscribersIndexRoute: typeof AdminJobsSubscribersIndexRoute
   AdminMembersAdminsIndexRoute: typeof AdminMembersAdminsIndexRoute
   AdminMembersStudentsIndexRoute: typeof AdminMembersStudentsIndexRoute
   AdminMembersUsersIndexRoute: typeof AdminMembersUsersIndexRoute
-  AdminNewslettercopyCampaignsIndexRoute: typeof AdminNewslettercopyCampaignsIndexRoute
-  AdminNewslettercopySubscribersIndexRoute: typeof AdminNewslettercopySubscribersIndexRoute
   AdminNewsletterCampaignsIndexRoute: typeof AdminNewsletterCampaignsIndexRoute
   AdminNewsletterSubscribersIndexRoute: typeof AdminNewsletterSubscribersIndexRoute
   AdminReviewsFormsIndexRoute: typeof AdminReviewsFormsIndexRoute
@@ -939,6 +936,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTestimonialsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/jobs/campaigns/': {
+      id: '/admin/jobs/campaigns/'
+      path: '/admin/jobs/campaigns'
+      fullPath: '/admin/jobs/campaigns/'
+      preLoaderRoute: typeof AdminJobsCampaignsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/jobs/campaigns/$id': {
+      id: '/admin/jobs/campaigns/$id'
+      path: '/admin/jobs/campaigns/$id'
+      fullPath: '/admin/jobs/campaigns/$id'
+      preLoaderRoute: typeof AdminJobsCampaignsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/jobs/subscribers/': {
+      id: '/admin/jobs/subscribers/'
+      path: '/admin/jobs/subscribers'
+      fullPath: '/admin/jobs/subscribers/'
+      preLoaderRoute: typeof AdminJobsSubscribersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/jobs/subscribers/$id': {
+      id: '/admin/jobs/subscribers/$id'
+      path: '/admin/jobs/subscribers/$id'
+      fullPath: '/admin/jobs/subscribers/$id'
+      preLoaderRoute: typeof AdminJobsSubscribersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/members/admins/': {
       id: '/admin/members/admins/'
       path: '/admin/members/admins'
@@ -979,34 +1004,6 @@ declare module '@tanstack/react-router' {
       path: '/admin/members/users/$id'
       fullPath: '/admin/members/users/$id'
       preLoaderRoute: typeof AdminMembersUsersIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/newsletter copy/campaigns/': {
-      id: '/admin/newsletter copy/campaigns/'
-      path: '/admin/newsletter copy/campaigns'
-      fullPath: '/admin/newsletter copy/campaigns/'
-      preLoaderRoute: typeof AdminNewslettercopyCampaignsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/newsletter copy/campaigns/$id': {
-      id: '/admin/newsletter copy/campaigns/$id'
-      path: '/admin/newsletter copy/campaigns/$id'
-      fullPath: '/admin/newsletter copy/campaigns/$id'
-      preLoaderRoute: typeof AdminNewslettercopyCampaignsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/newsletter copy/subscribers/': {
-      id: '/admin/newsletter copy/subscribers/'
-      path: '/admin/newsletter copy/subscribers'
-      fullPath: '/admin/newsletter copy/subscribers/'
-      preLoaderRoute: typeof AdminNewslettercopySubscribersIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/newsletter copy/subscribers/$id': {
-      id: '/admin/newsletter copy/subscribers/$id'
-      path: '/admin/newsletter copy/subscribers/$id'
-      fullPath: '/admin/newsletter copy/subscribers/$id'
-      preLoaderRoute: typeof AdminNewslettercopySubscribersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/newsletter/campaigns/': {
@@ -1140,11 +1137,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminShortlinksIndexRoute: AdminShortlinksIndexRoute,
   AdminStatsIndexRoute: AdminStatsIndexRoute,
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
+  AdminJobsCampaignsIdRoute: AdminJobsCampaignsIdRoute,
+  AdminJobsSubscribersIdRoute: AdminJobsSubscribersIdRoute,
   AdminMembersAdminsIdRoute: AdminMembersAdminsIdRoute,
   AdminMembersStudentsIdRoute: AdminMembersStudentsIdRoute,
   AdminMembersUsersIdRoute: AdminMembersUsersIdRoute,
-  AdminNewslettercopyCampaignsIdRoute: AdminNewslettercopyCampaignsIdRoute,
-  AdminNewslettercopySubscribersIdRoute: AdminNewslettercopySubscribersIdRoute,
   AdminNewsletterCampaignsIdRoute: AdminNewsletterCampaignsIdRoute,
   AdminNewsletterSubscribersIdRoute: AdminNewsletterSubscribersIdRoute,
   AdminReviewsFormsIdRoute: AdminReviewsFormsIdRoute,
@@ -1152,13 +1149,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminReviewsResponsesIdRoute: AdminReviewsResponsesIdRoute,
   AdminTrainingsCatalogsIdRoute: AdminTrainingsCatalogsIdRoute,
   AdminTrainingsRegistrationsIdRoute: AdminTrainingsRegistrationsIdRoute,
+  AdminJobsCampaignsIndexRoute: AdminJobsCampaignsIndexRoute,
+  AdminJobsSubscribersIndexRoute: AdminJobsSubscribersIndexRoute,
   AdminMembersAdminsIndexRoute: AdminMembersAdminsIndexRoute,
   AdminMembersStudentsIndexRoute: AdminMembersStudentsIndexRoute,
   AdminMembersUsersIndexRoute: AdminMembersUsersIndexRoute,
-  AdminNewslettercopyCampaignsIndexRoute:
-    AdminNewslettercopyCampaignsIndexRoute,
-  AdminNewslettercopySubscribersIndexRoute:
-    AdminNewslettercopySubscribersIndexRoute,
   AdminNewsletterCampaignsIndexRoute: AdminNewsletterCampaignsIndexRoute,
   AdminNewsletterSubscribersIndexRoute: AdminNewsletterSubscribersIndexRoute,
   AdminReviewsFormsIndexRoute: AdminReviewsFormsIndexRoute,

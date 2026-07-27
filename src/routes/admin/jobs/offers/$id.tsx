@@ -148,12 +148,12 @@ function JobOfferDetail() {
   // Helper pour l'affichage conditionnel du salaire
   const renderSalary = () => {
     if (offer.salaryMin != null && offer.salaryMax != null) {
-      return `${offer.salaryMin.toLocaleString()} — ${offer.salaryMax.toLocaleString()} FCFA`;
+      return `${offer.salaryMin.toLocaleString()} - ${offer.salaryMax.toLocaleString()} FCFA`;
     }
     if (offer.salaryMin != null) {
       return `${offer.salaryMin.toLocaleString()} FCFA`;
     }
-    return "—";
+    return "-";
   };
 
   return (
@@ -368,15 +368,15 @@ function JobOfferDetail() {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Building2 className="h-4 w-4 shrink-0" />
-                  <span>Département : <strong className="text-foreground">{offer.department || "—"}</strong></span>
+                  <span>Département : <strong className="text-foreground">{offer.department || "-"}</strong></span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-4 w-4 shrink-0" />
-                  <span>Lieu : <strong className="text-foreground">{offer.location || "—"}</strong></span>
+                  <span>Lieu : <strong className="text-foreground">{offer.location || "-"}</strong></span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Calendar className="h-4 w-4 shrink-0" />
-                  <span>Expire le : <strong className="text-foreground">{offer.expiresAt ? new Date(offer.expiresAt).toLocaleString("fr-FR") : "—"}</strong></span>
+                  <span>Expire le : <strong className="text-foreground">{offer.expiresAt ? new Date(offer.expiresAt).toLocaleString("fr-FR") : "-"}</strong></span>
                 </div>
               </div>
             </div>

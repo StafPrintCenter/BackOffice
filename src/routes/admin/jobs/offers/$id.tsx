@@ -1,20 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, CheckCircle,
-  Briefcase, MapPin, Building2, Calendar, FileText, ListChecks, Settings2, Plus,
-  Eye, EyeOff, Link2, Clock, CheckCircle2
-} from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, CheckCircle, Briefcase, MapPin, Building2, Calendar, FileText, ListChecks, Settings2, Plus, Eye, EyeOff, Link2, Clock, CheckCircle2 } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  useAdminJobOfferDetail, useUpdateAdminJobOffer, useDeleteAdminJobOffer,
-  usePublishAdminJobOffer, useDisableAdminJobOffer, useReactivateAdminJobOffer,
-} from "@/stores/useJobOffersStore";
+import { useAdminJobOfferDetail, useUpdateAdminJobOffer, useDeleteAdminJobOffer, usePublishAdminJobOffer, useDisableAdminJobOffer, useReactivateAdminJobOffer, } from "@/stores/useJobOffersStore";
 import type { AdminJobOfferPayload, APIAdminJobOffer } from "@/data/jobOffers";
 import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge } from "@/data/jobOffers";
 import { SITE } from "@/data/site";
@@ -47,9 +40,7 @@ function parseArrayField(val: unknown): string[] {
       try {
         const parsed = JSON.parse(trimmed);
         if (Array.isArray(parsed)) return parsed.map(String);
-      } catch {
-        // Fallback
-      }
+      } catch { }
     }
     return trimmed ? trimmed.split("\n").map((s) => s.trim()).filter(Boolean) : [];
   }

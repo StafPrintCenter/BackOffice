@@ -32,7 +32,6 @@ async function publishOffer(id: string): Promise<APIAdminJobOffer> {
   return json.data;
 }
 
-// ⚠️ Endpoint supposé par analogie avec reviews/forms — à confirmer.
 async function disableOffer(id: string): Promise<APIAdminJobOffer> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/disable`, { method: "PUT" });
   if (!response.ok) throw new Error("Erreur lors de la désactivation de l'offre");

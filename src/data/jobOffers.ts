@@ -21,6 +21,7 @@ export type APIAdminJobOffer = {
   applicationsCount: number;
   createdBy?: string;
   createdAt: string;
+  updatedAt: string;
 };
 
 export interface AdminJobOfferPayload {

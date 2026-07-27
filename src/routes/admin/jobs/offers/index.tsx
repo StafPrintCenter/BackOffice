@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Users } from "lucide-react";
+import { Users, Plus, Trash2 } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -30,8 +30,8 @@ const schema = z.object({
   contractType: z.enum(["cdi", "cdd", "stage", "freelance", "alternance"]),
   location: z.string().trim().min(1).max(150),
   description: z.string().trim().min(2),
-  responsibilities: z.string().trim().optional(), // une par ligne
-  requirements: z.string().trim().optional(), // une par ligne
+  responsibilities: z.array(z.string().trim()),
+  requirements: z.array(z.string().trim()),
   salaryMin: z.string().optional(),
   salaryMax: z.string().optional(),
   publishedAt: z.string().optional(),
@@ -45,17 +45,18 @@ const empty: FormValues = {
   contractType: "cdi",
   location: "",
   description: "",
-  responsibilities: "",
-  requirements: "",
+  responsibilities: [""],
+  requirements: [""],
   salaryMin: "",
   salaryMax: "",
   publishedAt: "",
   expiresAt: "",
 };
 
-function toCsv(linesText?: string): string | undefined {
-  const lines = (linesText ?? "").split("\n").map((l) => l.trim()).filter(Boolean);
-  return lines.length > 0 ? lines.join(",") : undefined;
+function toCsv(items?: string[]): string | undefined {
+  if (!items) return undefined;
+  const filtered = items.map((i) => i.trim()).filter(Boolean);
+  return filtered.length > 0 ? filtered.join(",") : undefined;
 }
 
 function AdminJobOffers() {
@@ -73,7 +74,13 @@ function AdminJobOffers() {
   const openCreate = () => { setForm(empty); setErrors({}); setOpen(true); };
 
   const submit = () => {
-    const parsed = schema.safeParse(form);
+    const cleaned: FormValues = {
+      ...form,
+      responsibilities: form.responsibilities.filter((r) => r.trim()),
+      requirements: form.requirements.filter((r) => r.trim()),
+    };
+
+    const parsed = schema.safeParse(cleaned);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
       parsed.error.issues.forEach((i) => { errs[i.path[0] as string] = i.message; });
@@ -110,8 +117,7 @@ function AdminJobOffers() {
       <div className="mb-4">
         <Link to="/admin/jobs/subscribers"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Users className="h-4 w-4"
-          />
+          <Users className="h-4 w-4" />
           Voir les candidatures
         </Link>
       </div>
@@ -209,24 +215,90 @@ function AdminJobOffers() {
               {errors.description && <p className="text-xs text-destructive mt-1">{errors.description}</p>}
             </div>
 
+            {/* Missions / Responsabilités */}
             <div>
-              <Label>Missions / Responsabilités (une par ligne)</Label>
-              <Textarea
-                rows={3}
-                value={form.responsibilities}
-                onChange={(e) => setForm({ ...form, responsibilities: e.target.value })}
-                placeholder={"Gérer la comptabilité\nÉtablir les rapports mensuels"}
-              />
+              <div className="flex items-center justify-between">
+                <Label>Missions / Responsabilités</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setForm({ ...form, responsibilities: [...form.responsibilities, ""] })}
+                >
+                  <Plus className="h-3 w-3 mr-1" /> Ajouter
+                </Button>
+              </div>
+              <div className="mt-2 space-y-2">
+                {form.responsibilities.map((r, i) => (
+                  <div key={i} className="flex gap-2">
+                    <Input
+                      placeholder="Ex: Gérer la comptabilité"
+                      value={r}
+                      onChange={(e) => {
+                        const arr = [...form.responsibilities];
+                        arr[i] = e.target.value;
+                        setForm({ ...form, responsibilities: arr });
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() =>
+                        setForm({
+                          ...form,
+                          responsibilities: form.responsibilities.filter((_, idx) => idx !== i),
+                        })
+                      }
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
 
+            {/* Exigences */}
             <div>
-              <Label>Exigences (une par ligne)</Label>
-              <Textarea
-                rows={3}
-                value={form.requirements}
-                onChange={(e) => setForm({ ...form, requirements: e.target.value })}
-                placeholder={"Maîtrise Excel\nConnaissance OHADA"}
-              />
+              <div className="flex items-center justify-between">
+                <Label>Exigences</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setForm({ ...form, requirements: [...form.requirements, ""] })}
+                >
+                  <Plus className="h-3 w-3 mr-1" /> Ajouter
+                </Button>
+              </div>
+              <div className="mt-2 space-y-2">
+                {form.requirements.map((req, i) => (
+                  <div key={i} className="flex gap-2">
+                    <Input
+                      placeholder="Ex: Maîtrise Excel"
+                      value={req}
+                      onChange={(e) => {
+                        const arr = [...form.requirements];
+                        arr[i] = e.target.value;
+                        setForm({ ...form, requirements: arr });
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() =>
+                        setForm({
+                          ...form,
+                          requirements: form.requirements.filter((_, idx) => idx !== i),
+                        })
+                      }
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">

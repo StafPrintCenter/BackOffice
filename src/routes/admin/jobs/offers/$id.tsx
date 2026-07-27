@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, CheckCircle,
-  Briefcase, MapPin, Building2, Calendar, FileText, ListChecks, Settings2, Plus
+  Briefcase, MapPin, Building2, Calendar, FileText, ListChecks, Settings2, Plus,
+  Eye, EyeOff, Link2, Clock, CheckCircle2
 } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import {
   useAdminJobOfferDetail, useUpdateAdminJobOffer, useDeleteAdminJobOffer,
   usePublishAdminJobOffer, useDisableAdminJobOffer, useReactivateAdminJobOffer,
 } from "@/stores/useJobOffersStore";
-import type { AdminJobOfferPayload } from "@/data/jobOffers";
+import type { AdminJobOfferPayload, APIAdminJobOffer } from "@/data/jobOffers";
 import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge } from "@/data/jobOffers";
 import { SITE } from "@/data/site";
 
@@ -33,19 +34,46 @@ interface EditForm {
   department: string;
   location: string;
   description: string;
-  responsibilities: string[]; // Géré sous forme de tableau
+  responsibilities: string[];
   expiresAt: string;
 }
 
-function toEditForm(o: NonNullable<ReturnType<typeof useAdminJobOfferDetail>["item"]>): EditForm {
+// Sécurisation de la conversion en tableau pour les listes
+function parseArrayField(val: unknown): string[] {
+  if (Array.isArray(val)) return val.map(String);
+  if (typeof val === "string") {
+    const trimmed = val.trim();
+    if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (Array.isArray(parsed)) return parsed.map(String);
+      } catch {
+        // Fallback
+      }
+    }
+    return trimmed ? trimmed.split("\n").map((s) => s.trim()).filter(Boolean) : [];
+  }
+  return [];
+}
+
+function toEditForm(o: APIAdminJobOffer): EditForm {
+  const resp = parseArrayField(o.responsibilities);
   return {
-    title: o.title,
+    title: o.title ?? "",
     department: o.department ?? "",
     location: o.location ?? "",
-    description: o.description,
-    responsibilities: o.responsibilities && o.responsibilities.length > 0 ? [...o.responsibilities] : [""],
+    description: o.description ?? "",
+    responsibilities: resp.length > 0 ? resp : [""],
     expiresAt: o.expiresAt ? o.expiresAt.slice(0, 16) : "",
   };
+}
+
+function formatDate(dateStr?: string | null): string {
+  if (!dateStr) return "—";
+  return new Date(dateStr).toLocaleString("fr-FR", {
+    dateStyle: "short",
+    timeStyle: "short",
+  });
 }
 
 function JobOfferDetail() {
@@ -64,7 +92,9 @@ function JobOfferDetail() {
   const [toDelete, setToDelete] = useState(false);
 
   useEffect(() => {
-    if (offer && !form) setForm(toEditForm(offer));
+    if (offer && !form) {
+      setForm(toEditForm(offer));
+    }
   }, [offer, form]);
 
   if (isLoading) {
@@ -100,25 +130,26 @@ function JobOfferDetail() {
   };
 
   const handleSave = () => {
-    // Nettoyage des responsabilités vides
     const cleanResponsibilities = form.responsibilities
       .map((r) => r.trim())
       .filter(Boolean);
 
-    // Payload strict aligné sur la validation Laravel
-    const payload: Partial<AdminJobOfferPayload> = {
+    const payload: AdminJobOfferPayload = {
       title: form.title,
-      department: form.department || undefined,
-      location: form.location || undefined,
+      department: form.department || null,
+      location: form.location || null,
       description: form.description,
       responsibilities: cleanResponsibilities,
-      expires_at: form.expiresAt ? new Date(form.expiresAt).toISOString() : null,
+      expires_at: form.expiresAt ? new Date(form.expiresAt).toISOString() : undefined,
     };
 
     updateMutation.mutate(
-      { id: offer.id, payload: payload as AdminJobOfferPayload },
+      { id: offer.id, payload },
       {
-        onSuccess: () => { toast.success("Offre modifiée"); setIsEditing(false); },
+        onSuccess: () => {
+          toast.success("Offre modifiée");
+          setIsEditing(false);
+        },
         onError: () => toast.error("Erreur lors de la modification"),
       }
     );
@@ -145,20 +176,25 @@ function JobOfferDetail() {
     });
   };
 
-  // Helper pour l'affichage conditionnel du salaire
   const renderSalary = () => {
-    if (offer.salaryMin != null && offer.salaryMax != null) {
-      return `${offer.salaryMin.toLocaleString()} - ${offer.salaryMax.toLocaleString()} FCFA`;
+    const min = offer.salaryMin != null && offer.salaryMin !== "" ? Number(offer.salaryMin).toLocaleString() : null;
+    const max = offer.salaryMax != null && offer.salaryMax !== "" ? Number(offer.salaryMax).toLocaleString() : null;
+
+    if (min && max) {
+      return `${min} — ${max} FCFA`;
     }
-    if (offer.salaryMin != null) {
-      return `${offer.salaryMin.toLocaleString()} FCFA`;
+    if (min) {
+      return `${min} FCFA`;
     }
-    return "-";
+    return "—";
   };
+
+  const responsibilitiesList = parseArrayField(offer.responsibilities);
+  const requirementsList = parseArrayField(offer.requirements);
 
   return (
     <AdminShell>
-      {/* Barre d'action d'en-tête */}
+      {/* Action Header */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/jobs/offers" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -202,9 +238,8 @@ function JobOfferDetail() {
       </div>
 
       {isEditing ? (
-        /* MODE ÉDITION - 2 COLONNES */
+        /* MODE ÉDITION */
         <div className="grid gap-6 lg:grid-cols-12">
-          {/* Colonne Principale (8 Cols) */}
           <div className="lg:col-span-8 space-y-6">
             <div className="rounded-2xl border bg-card p-6 space-y-4">
               <div className="flex items-center gap-2 font-semibold text-base border-b pb-3">
@@ -252,7 +287,6 @@ function JobOfferDetail() {
               </div>
             </div>
 
-            {/* Responsabilités / Missions */}
             <div className="rounded-2xl border bg-card p-6 space-y-4">
               <div className="flex items-center justify-between border-b pb-3">
                 <div className="flex items-center gap-2 font-semibold text-base">
@@ -294,11 +328,10 @@ function JobOfferDetail() {
             </div>
           </div>
 
-          {/* Sidebar Édition (4 Cols) */}
           <div className="lg:col-span-4 space-y-6">
             <div className="rounded-2xl border bg-card p-6 space-y-4">
               <div className="flex items-center gap-2 font-semibold text-base border-b pb-3">
-                <Settings2 className="h-4 w-4 text-primary" /> Paramètres d'échéance
+                <Settings2 className="h-4 w-4 text-primary" /> Échéance & Paramètres
               </div>
 
               <div>
@@ -314,17 +347,28 @@ function JobOfferDetail() {
           </div>
         </div>
       ) : (
-        /* MODE LECTURE - 2 COLONNES */
+        /* MODE LECTURE (TOUTES LES DONNÉES DE L'API Y SONT) */
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Colonne Principale (2/3) */}
           <div className="lg:col-span-2 space-y-6">
             <div>
+              {/* Badges de Statut & Visibilité */}
               <div className="flex flex-wrap items-center gap-2 text-xs">
                 <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 font-medium ${getJobOfferStatusBadge(offer.status)}`}>
                   {JOB_OFFER_STATUS_LABELS[offer.status]}
                 </span>
+
+                <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 font-medium ${offer.isVisible ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" : "bg-muted text-muted-foreground border-transparent"
+                  }`}>
+                  {offer.isVisible ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+                  {offer.isVisible ? "Publique" : "Masquée"}
+                </span>
+
                 <span className="rounded-full bg-muted px-2.5 py-0.5 font-medium">{JOB_OFFER_CONTRACT_LABELS[offer.contractType]}</span>
-                <span className="rounded-full bg-muted px-2.5 py-0.5">{offer.applicationsCount} candidature{offer.applicationsCount > 1 ? "s" : ""}</span>
+
+                <span className="rounded-full bg-muted px-2.5 py-0.5 font-medium">
+                  {offer.applicationsCount} candidature{offer.applicationsCount > 1 ? "s" : ""}
+                </span>
+
                 {offer.createdBy && <span className="rounded-full bg-muted px-2.5 py-0.5">Par {offer.createdBy}</span>}
               </div>
 
@@ -332,30 +376,30 @@ function JobOfferDetail() {
               <p className="mt-3 whitespace-pre-wrap text-muted-foreground leading-relaxed">{offer.description}</p>
             </div>
 
-            {offer.responsibilities && offer.responsibilities.length > 0 && (
+            {responsibilitiesList.length > 0 && (
               <div className="rounded-2xl border bg-card p-6 space-y-3">
                 <div className="flex items-center gap-2 font-semibold text-base">
                   <ListChecks className="h-4 w-4 text-primary" /> Missions & Responsabilités
                 </div>
                 <ul className="list-inside list-disc text-sm space-y-1.5 text-muted-foreground">
-                  {offer.responsibilities.map((r, i) => (<li key={i}>{r}</li>))}
+                  {responsibilitiesList.map((r, i) => (<li key={i}>{r}</li>))}
                 </ul>
               </div>
             )}
 
-            {offer.requirements && offer.requirements.length > 0 && (
+            {requirementsList.length > 0 && (
               <div className="rounded-2xl border bg-card p-6 space-y-3">
                 <div className="flex items-center gap-2 font-semibold text-base">
                   <Briefcase className="h-4 w-4 text-primary" /> Exigences du poste
                 </div>
                 <ul className="list-inside list-disc text-sm space-y-1.5 text-muted-foreground">
-                  {offer.requirements.map((r, i) => (<li key={i}>{r}</li>))}
+                  {requirementsList.map((r, i) => (<li key={i}>{r}</li>))}
                 </ul>
               </div>
             )}
           </div>
 
-          {/* Sidebar Fiche Pratique (1/3) */}
+          {/* Sidebar des métadonnées (Slug, Dates, Statuts) */}
           <div className="lg:sticky lg:top-6 h-fit space-y-4">
             <div className="rounded-2xl border bg-card p-6 space-y-4">
               <div className="border-b pb-3">
@@ -367,16 +411,42 @@ function JobOfferDetail() {
 
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Building2 className="h-4 w-4 shrink-0" />
-                  <span>Département : <strong className="text-foreground">{offer.department || "-"}</strong></span>
+                  <Building2 className="h-4 w-4 shrink-0 text-muted-foreground/70" />
+                  <span>Département : <strong className="text-foreground">{offer.department || "—"}</strong></span>
                 </div>
+
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <MapPin className="h-4 w-4 shrink-0" />
-                  <span>Lieu : <strong className="text-foreground">{offer.location || "-"}</strong></span>
+                  <MapPin className="h-4 w-4 shrink-0 text-muted-foreground/70" />
+                  <span>Lieu : <strong className="text-foreground">{offer.location || "—"}</strong></span>
                 </div>
+
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Calendar className="h-4 w-4 shrink-0" />
-                  <span>Expire le : <strong className="text-foreground">{offer.expiresAt ? new Date(offer.expiresAt).toLocaleString("fr-FR") : "-"}</strong></span>
+                  <Link2 className="h-4 w-4 shrink-0 text-muted-foreground/70" />
+                  <span>Slug : <code className="text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">{offer.slug}</code></span>
+                </div>
+
+                <div className="border-t pt-3 space-y-2.5 text-xs text-muted-foreground">
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Créée le :</span>
+                    <span className="font-medium text-foreground">{formatDate(offer.createdAt)}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> Modifiée le :</span>
+                    <span className="font-medium text-foreground">{formatDate(offer.updatedAt)}</span>
+                  </div>
+
+                  {offer.publishedAt && (
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5" /> Publiée le :</span>
+                      <span className="font-medium text-foreground">{formatDate(offer.publishedAt)}</span>
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between">
+                    <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Expire le :</span>
+                    <span className="font-medium text-foreground">{formatDate(offer.expiresAt)}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -389,7 +459,10 @@ function JobOfferDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(offer.id, {
-            onSuccess: () => { toast.success("Offre supprimée"); navigate({ to: "/admin/jobs/offers" }); },
+            onSuccess: () => {
+              toast.success("Offre supprimée");
+              navigate({ to: "/admin/jobs/offers" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

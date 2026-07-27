@@ -25,7 +25,7 @@ export type APIAdminJobOffer = {
 
 export interface AdminJobOfferPayload {
   title?: string;
-  department?: string;
+  department?: string | null;
   contract_type?: JobOfferContractType;
   location?: string;
   description?: string;

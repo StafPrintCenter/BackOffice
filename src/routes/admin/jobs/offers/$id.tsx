@@ -69,7 +69,7 @@ function toEditForm(o: APIAdminJobOffer): EditForm {
 }
 
 function formatDate(dateStr?: string | null): string {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleString("fr-FR", {
     dateStyle: "short",
     timeStyle: "short",
@@ -181,12 +181,12 @@ function JobOfferDetail() {
     const max = offer.salaryMax != null && offer.salaryMax !== "" ? Number(offer.salaryMax).toLocaleString() : null;
 
     if (min && max) {
-      return `${min} — ${max} FCFA`;
+      return `${min} - ${max} FCFA`;
     }
     if (min) {
       return `${min} FCFA`;
     }
-    return "—";
+    return "-";
   };
 
   const responsibilitiesList = parseArrayField(offer.responsibilities);
@@ -412,12 +412,12 @@ function JobOfferDetail() {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Building2 className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                  <span>Département : <strong className="text-foreground">{offer.department || "—"}</strong></span>
+                  <span>Département : <strong className="text-foreground">{offer.department || "-"}</strong></span>
                 </div>
 
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                  <span>Lieu : <strong className="text-foreground">{offer.location || "—"}</strong></span>
+                  <span>Lieu : <strong className="text-foreground">{offer.location || "-"}</strong></span>
                 </div>
 
                 <div className="flex items-center gap-2 text-muted-foreground">

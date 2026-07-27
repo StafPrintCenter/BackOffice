@@ -33,8 +33,8 @@ export interface AdminJobOfferPayload {
   requirements?: string[] | string;
   salary_min?: number;
   salary_max?: number;
-  published_at?: string;
-  expires_at?: string;
+  published_at?: string | null;
+  expires_at?: string | null; // Accepte null pour réinitialiser la date
 }
 
 export const JOB_OFFER_CONTRACT_LABELS: Record<JobOfferContractType, string> = {

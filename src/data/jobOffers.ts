@@ -27,7 +27,7 @@ export interface AdminJobOfferPayload {
   title?: string;
   department?: string | null;
   contract_type?: JobOfferContractType;
-  location?: string;
+  location?: string | null;
   description?: string;
   responsibilities?: string;
   requirements?: string;

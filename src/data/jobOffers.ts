@@ -1,17 +1,23 @@
 export type JobOfferContractType = "cdi" | "cdd" | "stage" | "freelance" | "alternance";
+export type JobOfferWorkMode = "presentiel" | "hybride" | "teletravail";
 export type JobOfferStatus = "draft" | "published" | "disabled";
+export type JobEducationLevel = "sans_diplome" | "bepc" | "bac" | "bac+2" | "bac+3" | "master" | "doctorat";
 
 // Liste et détail renvoient les mêmes champs → un seul type.
 export type APIAdminJobOffer = {
   id: string;
   title: string;
   slug: string;
-  department: string;
+  summary: string;
+  department: string | null;
   contractType: JobOfferContractType;
-  location: string;
+  workMode: JobOfferWorkMode;
+  location: string | null; // null si workMode = teletravail
+  numPositions: number | null;
   description: string;
-  responsibilities: string[];
-  requirements: string[];
+  missions: string[];
+  profile: string[];
+  educationLevel: JobEducationLevel | null;
   salaryMin: number | string | null;
   salaryMax: number | string | null;
   expiresAt: string | null;
@@ -24,18 +30,37 @@ export type APIAdminJobOffer = {
   updatedAt: string;
 };
 
-export interface AdminJobOfferPayload {
-  title?: string;
-  department?: string | null;
-  contract_type?: JobOfferContractType;
-  location?: string | null;
-  description?: string;
-  responsibilities?: string[] | string;
-  requirements?: string[] | string;
+// CREATE : tous les champs acceptés par CreateController. expires_at est obligatoire.
+export interface AdminJobOfferCreatePayload {
+  title: string;
+  summary: string;
+  department?: string;
+  contract_type: JobOfferContractType;
+  work_mode: JobOfferWorkMode;
+  location?: string;
+  num_positions?: number;
+  description: string;
+  missions?: string[];
+  profile?: string[];
+  education_level?: JobEducationLevel;
   salary_min?: number;
   salary_max?: number;
-  published_at?: string | null;
-  expires_at?: string | null;
+  published_at?: string;
+  expires_at: string;
+}
+
+// seulement après publication. Ne pas les inclure dans ce payload.
+export interface AdminJobOfferUpdatePayload {
+  title?: string;
+  summary?: string;
+  department?: string;
+  work_mode?: JobOfferWorkMode;
+  location?: string;
+  num_positions?: number;
+  description?: string;
+  missions?: string[];
+  education_level?: JobEducationLevel;
+  expires_at?: string;
 }
 
 export const JOB_OFFER_CONTRACT_LABELS: Record<JobOfferContractType, string> = {
@@ -44,6 +69,22 @@ export const JOB_OFFER_CONTRACT_LABELS: Record<JobOfferContractType, string> = {
   stage: "Stage",
   freelance: "Freelance",
   alternance: "Alternance",
+};
+
+export const JOB_OFFER_WORK_MODE_LABELS: Record<JobOfferWorkMode, string> = {
+  presentiel: "Présentiel",
+  hybride: "Hybride",
+  teletravail: "Télétravail",
+};
+
+export const JOB_EDUCATION_LEVEL_LABELS: Record<JobEducationLevel, string> = {
+  sans_diplome: "Sans diplôme",
+  bepc: "BEPC",
+  bac: "Bac",
+  "bac+2": "Bac+2",
+  "bac+3": "Bac+3",
+  master: "Master",
+  doctorat: "Doctorat",
 };
 
 export const JOB_OFFER_STATUS_LABELS: Record<JobOfferStatus, string> = {

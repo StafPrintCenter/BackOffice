@@ -38,10 +38,10 @@ import { Route as AdminStatsIndexRouteImport } from './routes/admin/stats/index'
 import { Route as AdminStatsIdRouteImport } from './routes/admin/stats/$id'
 import { Route as AdminTestimonialsIndexRouteImport } from './routes/admin/testimonials/index'
 import { Route as AdminTestimonialsIdRouteImport } from './routes/admin/testimonials/$id'
+import { Route as AdminJobsApplicationsIndexRouteImport } from './routes/admin/jobs/applications/index'
+import { Route as AdminJobsApplicationsIdRouteImport } from './routes/admin/jobs/applications/$id'
 import { Route as AdminJobsOffersIndexRouteImport } from './routes/admin/jobs/offers/index'
 import { Route as AdminJobsOffersIdRouteImport } from './routes/admin/jobs/offers/$id'
-import { Route as AdminJobsSubscribersIndexRouteImport } from './routes/admin/jobs/subscribers/index'
-import { Route as AdminJobsSubscribersIdRouteImport } from './routes/admin/jobs/subscribers/$id'
 import { Route as AdminMembersAdminsIndexRouteImport } from './routes/admin/members/admins/index'
 import { Route as AdminMembersAdminsIdRouteImport } from './routes/admin/members/admins/$id'
 import { Route as AdminMembersStudentsIndexRouteImport } from './routes/admin/members/students/index'
@@ -208,6 +208,17 @@ const AdminTestimonialsIdRoute = AdminTestimonialsIdRouteImport.update({
   path: '/admin/testimonials/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminJobsApplicationsIndexRoute =
+  AdminJobsApplicationsIndexRouteImport.update({
+    id: '/admin/jobs/applications/',
+    path: '/admin/jobs/applications/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminJobsApplicationsIdRoute = AdminJobsApplicationsIdRouteImport.update({
+  id: '/admin/jobs/applications/$id',
+  path: '/admin/jobs/applications/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminJobsOffersIndexRoute = AdminJobsOffersIndexRouteImport.update({
   id: '/admin/jobs/offers/',
   path: '/admin/jobs/offers/',
@@ -216,17 +227,6 @@ const AdminJobsOffersIndexRoute = AdminJobsOffersIndexRouteImport.update({
 const AdminJobsOffersIdRoute = AdminJobsOffersIdRouteImport.update({
   id: '/admin/jobs/offers/$id',
   path: '/admin/jobs/offers/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminJobsSubscribersIndexRoute =
-  AdminJobsSubscribersIndexRouteImport.update({
-    id: '/admin/jobs/subscribers/',
-    path: '/admin/jobs/subscribers/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AdminJobsSubscribersIdRoute = AdminJobsSubscribersIdRouteImport.update({
-  id: '/admin/jobs/subscribers/$id',
-  path: '/admin/jobs/subscribers/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMembersAdminsIndexRoute = AdminMembersAdminsIndexRouteImport.update({
@@ -371,8 +371,8 @@ export interface FileRoutesByFullPath {
   '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
-  '/admin/jobs/subscribers/$id': typeof AdminJobsSubscribersIdRoute
   '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
@@ -383,8 +383,8 @@ export interface FileRoutesByFullPath {
   '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
   '/admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
   '/admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
+  '/admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
   '/admin/jobs/offers/': typeof AdminJobsOffersIndexRoute
-  '/admin/jobs/subscribers/': typeof AdminJobsSubscribersIndexRoute
   '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
   '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
   '/admin/members/users/': typeof AdminMembersUsersIndexRoute
@@ -426,8 +426,8 @@ export interface FileRoutesByTo {
   '/admin/shortlinks': typeof AdminShortlinksIndexRoute
   '/admin/stats': typeof AdminStatsIndexRoute
   '/admin/testimonials': typeof AdminTestimonialsIndexRoute
+  '/admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
-  '/admin/jobs/subscribers/$id': typeof AdminJobsSubscribersIdRoute
   '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
@@ -438,8 +438,8 @@ export interface FileRoutesByTo {
   '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
   '/admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
   '/admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
+  '/admin/jobs/applications': typeof AdminJobsApplicationsIndexRoute
   '/admin/jobs/offers': typeof AdminJobsOffersIndexRoute
-  '/admin/jobs/subscribers': typeof AdminJobsSubscribersIndexRoute
   '/admin/members/admins': typeof AdminMembersAdminsIndexRoute
   '/admin/members/students': typeof AdminMembersStudentsIndexRoute
   '/admin/members/users': typeof AdminMembersUsersIndexRoute
@@ -482,8 +482,8 @@ export interface FileRoutesById {
   '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/admin/stats/': typeof AdminStatsIndexRoute
   '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
-  '/admin/jobs/subscribers/$id': typeof AdminJobsSubscribersIdRoute
   '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
@@ -494,8 +494,8 @@ export interface FileRoutesById {
   '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
   '/admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
   '/admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
+  '/admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
   '/admin/jobs/offers/': typeof AdminJobsOffersIndexRoute
-  '/admin/jobs/subscribers/': typeof AdminJobsSubscribersIndexRoute
   '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
   '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
   '/admin/members/users/': typeof AdminMembersUsersIndexRoute
@@ -539,8 +539,8 @@ export interface FileRouteTypes {
     | '/admin/shortlinks/'
     | '/admin/stats/'
     | '/admin/testimonials/'
+    | '/admin/jobs/applications/$id'
     | '/admin/jobs/offers/$id'
-    | '/admin/jobs/subscribers/$id'
     | '/admin/members/admins/$id'
     | '/admin/members/students/$id'
     | '/admin/members/users/$id'
@@ -551,8 +551,8 @@ export interface FileRouteTypes {
     | '/admin/reviews/responses/$id'
     | '/admin/trainings/catalogs/$id'
     | '/admin/trainings/registrations/$id'
+    | '/admin/jobs/applications/'
     | '/admin/jobs/offers/'
-    | '/admin/jobs/subscribers/'
     | '/admin/members/admins/'
     | '/admin/members/students/'
     | '/admin/members/users/'
@@ -594,8 +594,8 @@ export interface FileRouteTypes {
     | '/admin/shortlinks'
     | '/admin/stats'
     | '/admin/testimonials'
+    | '/admin/jobs/applications/$id'
     | '/admin/jobs/offers/$id'
-    | '/admin/jobs/subscribers/$id'
     | '/admin/members/admins/$id'
     | '/admin/members/students/$id'
     | '/admin/members/users/$id'
@@ -606,8 +606,8 @@ export interface FileRouteTypes {
     | '/admin/reviews/responses/$id'
     | '/admin/trainings/catalogs/$id'
     | '/admin/trainings/registrations/$id'
+    | '/admin/jobs/applications'
     | '/admin/jobs/offers'
-    | '/admin/jobs/subscribers'
     | '/admin/members/admins'
     | '/admin/members/students'
     | '/admin/members/users'
@@ -649,8 +649,8 @@ export interface FileRouteTypes {
     | '/admin/shortlinks/'
     | '/admin/stats/'
     | '/admin/testimonials/'
+    | '/admin/jobs/applications/$id'
     | '/admin/jobs/offers/$id'
-    | '/admin/jobs/subscribers/$id'
     | '/admin/members/admins/$id'
     | '/admin/members/students/$id'
     | '/admin/members/users/$id'
@@ -661,8 +661,8 @@ export interface FileRouteTypes {
     | '/admin/reviews/responses/$id'
     | '/admin/trainings/catalogs/$id'
     | '/admin/trainings/registrations/$id'
+    | '/admin/jobs/applications/'
     | '/admin/jobs/offers/'
-    | '/admin/jobs/subscribers/'
     | '/admin/members/admins/'
     | '/admin/members/students/'
     | '/admin/members/users/'
@@ -705,8 +705,8 @@ export interface RootRouteChildren {
   AdminShortlinksIndexRoute: typeof AdminShortlinksIndexRoute
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
+  AdminJobsApplicationsIdRoute: typeof AdminJobsApplicationsIdRoute
   AdminJobsOffersIdRoute: typeof AdminJobsOffersIdRoute
-  AdminJobsSubscribersIdRoute: typeof AdminJobsSubscribersIdRoute
   AdminMembersAdminsIdRoute: typeof AdminMembersAdminsIdRoute
   AdminMembersStudentsIdRoute: typeof AdminMembersStudentsIdRoute
   AdminMembersUsersIdRoute: typeof AdminMembersUsersIdRoute
@@ -717,8 +717,8 @@ export interface RootRouteChildren {
   AdminReviewsResponsesIdRoute: typeof AdminReviewsResponsesIdRoute
   AdminTrainingsCatalogsIdRoute: typeof AdminTrainingsCatalogsIdRoute
   AdminTrainingsRegistrationsIdRoute: typeof AdminTrainingsRegistrationsIdRoute
+  AdminJobsApplicationsIndexRoute: typeof AdminJobsApplicationsIndexRoute
   AdminJobsOffersIndexRoute: typeof AdminJobsOffersIndexRoute
-  AdminJobsSubscribersIndexRoute: typeof AdminJobsSubscribersIndexRoute
   AdminMembersAdminsIndexRoute: typeof AdminMembersAdminsIndexRoute
   AdminMembersStudentsIndexRoute: typeof AdminMembersStudentsIndexRoute
   AdminMembersUsersIndexRoute: typeof AdminMembersUsersIndexRoute
@@ -936,6 +936,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTestimonialsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/jobs/applications/': {
+      id: '/admin/jobs/applications/'
+      path: '/admin/jobs/applications'
+      fullPath: '/admin/jobs/applications/'
+      preLoaderRoute: typeof AdminJobsApplicationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/jobs/applications/$id': {
+      id: '/admin/jobs/applications/$id'
+      path: '/admin/jobs/applications/$id'
+      fullPath: '/admin/jobs/applications/$id'
+      preLoaderRoute: typeof AdminJobsApplicationsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/jobs/offers/': {
       id: '/admin/jobs/offers/'
       path: '/admin/jobs/offers'
@@ -948,20 +962,6 @@ declare module '@tanstack/react-router' {
       path: '/admin/jobs/offers/$id'
       fullPath: '/admin/jobs/offers/$id'
       preLoaderRoute: typeof AdminJobsOffersIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/jobs/subscribers/': {
-      id: '/admin/jobs/subscribers/'
-      path: '/admin/jobs/subscribers'
-      fullPath: '/admin/jobs/subscribers/'
-      preLoaderRoute: typeof AdminJobsSubscribersIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/jobs/subscribers/$id': {
-      id: '/admin/jobs/subscribers/$id'
-      path: '/admin/jobs/subscribers/$id'
-      fullPath: '/admin/jobs/subscribers/$id'
-      preLoaderRoute: typeof AdminJobsSubscribersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/members/admins/': {
@@ -1137,8 +1137,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminShortlinksIndexRoute: AdminShortlinksIndexRoute,
   AdminStatsIndexRoute: AdminStatsIndexRoute,
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
+  AdminJobsApplicationsIdRoute: AdminJobsApplicationsIdRoute,
   AdminJobsOffersIdRoute: AdminJobsOffersIdRoute,
-  AdminJobsSubscribersIdRoute: AdminJobsSubscribersIdRoute,
   AdminMembersAdminsIdRoute: AdminMembersAdminsIdRoute,
   AdminMembersStudentsIdRoute: AdminMembersStudentsIdRoute,
   AdminMembersUsersIdRoute: AdminMembersUsersIdRoute,
@@ -1149,8 +1149,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminReviewsResponsesIdRoute: AdminReviewsResponsesIdRoute,
   AdminTrainingsCatalogsIdRoute: AdminTrainingsCatalogsIdRoute,
   AdminTrainingsRegistrationsIdRoute: AdminTrainingsRegistrationsIdRoute,
+  AdminJobsApplicationsIndexRoute: AdminJobsApplicationsIndexRoute,
   AdminJobsOffersIndexRoute: AdminJobsOffersIndexRoute,
-  AdminJobsSubscribersIndexRoute: AdminJobsSubscribersIndexRoute,
   AdminMembersAdminsIndexRoute: AdminMembersAdminsIndexRoute,
   AdminMembersStudentsIndexRoute: AdminMembersStudentsIndexRoute,
   AdminMembersUsersIndexRoute: AdminMembersUsersIndexRoute,

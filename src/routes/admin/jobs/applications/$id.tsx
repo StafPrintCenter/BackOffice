@@ -1,19 +1,13 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft, Loader2, Mail, Phone, Briefcase, GraduationCap, Calendar, UserCheck,
-  Clock, Pencil, Save, X, FileText, Download, CheckCircle2, XCircle,
-} from "lucide-react";
+import { ArrowLeft, Loader2, Mail, Phone, Briefcase, GraduationCap, Calendar, UserCheck, Clock, Pencil, Save, X, FileText, Download, CheckCircle2, XCircle, Eye, Paperclip, } from "lucide-react";
 import { AdminShell, FilePreviewModal } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  useAdminJobApplicationDetail, useUpdateAdminJobApplicationStatus,
-  useAcceptAdminJobApplication, useRejectAdminJobApplication,
-} from "@/stores/useJobApplicationsStore";
+import { useAdminJobApplicationDetail, useUpdateAdminJobApplicationStatus, useAcceptAdminJobApplication, useRejectAdminJobApplication, } from "@/stores/useJobApplicationsStore";
 import type { AdminJobApplicationStatusPayload, JobApplicationManualStatus } from "@/data/jobApplications";
 import { JOB_APPLICATION_STATUS_LABELS, getJobApplicationStatusBadge } from "@/data/jobApplications";
 import { SITE } from "@/data/site";
@@ -45,6 +39,9 @@ function JobApplicationDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState<AdminJobApplicationStatusPayload | null>(null);
 
+  // État pour la prévisualisation des fichiers (CV, lettre...)
+  const [previewFile, setPreviewFile] = useState<{ url: string; title: string } | null>(null);
+
   useEffect(() => {
     if (app && !form && (app.status === "pending" || app.status === "reviewing" || app.status === "shortlisted")) {
       setForm({ status: app.status, admin_notes: app.adminNotes ?? "" });
@@ -63,7 +60,10 @@ function JobApplicationDetail() {
     updateStatus.mutate(
       { id, payload: form },
       {
-        onSuccess: () => { toast.success("Candidature mise à jour"); setIsEditing(false); },
+        onSuccess: () => {
+          toast.success("Candidature mise à jour");
+          setIsEditing(false);
+        },
         onError: () => toast.error("Erreur lors de la mise à jour"),
       }
     );
@@ -84,6 +84,10 @@ function JobApplicationDetail() {
   };
 
   const isFinalized = app?.status === "accepted" || app?.status === "rejected";
+
+  // Résolution des URLs sécurisées/complètes des fichiers joints
+  const cvUrlResolved = resolveStorageUrl(app?.cvUrl);
+  const coverLetterUrlResolved = resolveStorageUrl(app?.coverLetterFileUrl);
 
   return (
     <AdminShell>
@@ -132,7 +136,9 @@ function JobApplicationDetail() {
                   {JOB_APPLICATION_STATUS_LABELS[app.status]}
                 </span>
               </div>
-              <h1 className="font-display text-2xl font-bold mt-2">{app.firstName} {app.lastName}</h1>
+              <h1 className="font-display text-2xl font-bold mt-2">
+                {app.firstName} {app.lastName}
+              </h1>
               <div className="mt-1 flex flex-wrap items-center gap-4 text-sm">
                 <a href={`mailto:${app.email}`} className="text-primary hover:underline inline-flex items-center gap-1.5">
                   <Mail className="h-3.5 w-3.5" /> {app.email}
@@ -155,38 +161,96 @@ function JobApplicationDetail() {
                 <div className="grid gap-3 text-xs sm:grid-cols-2 text-muted-foreground bg-muted/30 p-3 rounded-xl border">
                   <div className="flex items-center gap-2">
                     <GraduationCap className="h-4 w-4 text-primary" />
-                    <span>Niveau d'étude : <b className="text-foreground">{app.educationLevel}</b></span>
+                    <span>
+                      Niveau d'étude : <b className="text-foreground">{app.educationLevel}</b>
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-primary" />
-                    <span>Reçue le : <b className="text-foreground">{formatDate(app.createdAt)}</b></span>
+                    <span>
+                      Reçue le : <b className="text-foreground">{formatDate(app.createdAt)}</b>
+                    </span>
                   </div>
                 </div>
 
-                <div className="grid gap-2 sm:grid-cols-2">
-                  <a
-                    href={app.cvUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-muted/40"
-                  >
-                    <Download className="h-4 w-4 text-primary" /> Télécharger le CV
-                  </a>
-                  {app.coverLetterFileUrl && (
-                    <a
-                      href={app.coverLetterFileUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-muted/40"
-                    >
-                      <Download className="h-4 w-4 text-primary" /> Lettre de motivation (fichier)
-                    </a>
-                  )}
+                {/* Section Fichiers Joints (CV & Lettre) */}
+                <div className="space-y-3">
+                  <Label className="text-xs font-semibold text-muted-foreground">Documents joints</Label>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {/* Carte CV */}
+                    {cvUrlResolved && (
+                      <div className="flex flex-col justify-between rounded-xl border bg-muted/20 p-3 gap-2">
+                        <div className="flex items-center gap-2 text-xs font-medium">
+                          <Paperclip className="h-4 w-4 text-primary" />
+                          <span>Curriculum Vitae (CV)</span>
+                        </div>
+                        <div className="flex items-center gap-2 pt-1">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="w-full text-xs"
+                            onClick={() =>
+                              setPreviewFile({
+                                url: cvUrlResolved,
+                                title: `CV - ${app.firstName} ${app.lastName}`,
+                              })
+                            }
+                          >
+                            <Eye className="h-3.5 w-3.5 mr-1.5" /> Aperçu
+                          </Button>
+                          <a
+                            href={cvUrlResolved}
+                            download
+                            className="inline-flex items-center justify-center rounded-md border border-input bg-background p-2 text-xs font-medium hover:bg-accent transition-colors"
+                            title="Télécharger le CV"
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                          </a>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Carte Lettre de motivation (fichier) */}
+                    {coverLetterUrlResolved && (
+                      <div className="flex flex-col justify-between rounded-xl border bg-muted/20 p-3 gap-2">
+                        <div className="flex items-center gap-2 text-xs font-medium">
+                          <Paperclip className="h-4 w-4 text-primary" />
+                          <span>Lettre de motivation</span>
+                        </div>
+                        <div className="flex items-center gap-2 pt-1">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="w-full text-xs"
+                            onClick={() =>
+                              setPreviewFile({
+                                url: coverLetterUrlResolved,
+                                title: `Lettre de motivation - ${app.firstName} ${app.lastName}`,
+                              })
+                            }
+                          >
+                            <Eye className="h-3.5 w-3.5 mr-1.5" /> Aperçu
+                          </Button>
+                          <a
+                            href={coverLetterUrlResolved}
+                            download
+                            className="inline-flex items-center justify-center rounded-md border border-input bg-background p-2 text-xs font-medium hover:bg-accent transition-colors"
+                            title="Télécharger la lettre"
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
+                {/* Lettre de motivation texte */}
                 {app.coverLetter && (
                   <div>
-                    <Label className="text-xs font-semibold text-muted-foreground">Lettre de motivation</Label>
+                    <Label className="text-xs font-semibold text-muted-foreground">Lettre de motivation (texte)</Label>
                     <div className="mt-1 rounded-xl bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap border">
                       {app.coverLetter}
                     </div>
@@ -200,13 +264,17 @@ function JobApplicationDetail() {
                   {app.reviewedBy && (
                     <div className="flex items-center gap-1.5">
                       <UserCheck className="h-4 w-4 text-primary" />
-                      <span>Traité par : <b className="text-foreground">{app.reviewedBy}</b></span>
+                      <span>
+                        Traité par : <b className="text-foreground">{app.reviewedBy}</b>
+                      </span>
                     </div>
                   )}
                   {app.reviewedAt && (
                     <div className="flex items-center gap-1.5">
                       <Clock className="h-4 w-4 text-primary" />
-                      <span>Le : <b className="text-foreground">{formatDate(app.reviewedAt)}</b></span>
+                      <span>
+                        Le : <b className="text-foreground">{formatDate(app.reviewedAt)}</b>
+                      </span>
                     </div>
                   )}
                 </div>
@@ -238,7 +306,9 @@ function JobApplicationDetail() {
                           value={form.status}
                           onValueChange={(v) => setForm({ ...form, status: v as JobApplicationManualStatus })}
                         >
-                          <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue />
+                          </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="pending">En attente</SelectItem>
                             <SelectItem value="reviewing">En cours d'examen</SelectItem>
@@ -259,6 +329,7 @@ function JobApplicationDetail() {
                       {isEditing && form ? (
                         <Textarea
                           rows={6}
+
                           value={form.admin_notes ?? ""}
                           onChange={(e) => setForm({ ...form, admin_notes: e.target.value })}
                           placeholder="Ajouter des notes privées sur le traitement..."
@@ -274,7 +345,13 @@ function JobApplicationDetail() {
                     {isEditing && (
                       <div className="flex gap-2 pt-2">
                         <Button size="sm" className="flex-1" onClick={handleSave} disabled={updateStatus.isPending}>
-                          {updateStatus.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-1" /> Enregistrer</>}
+                          {updateStatus.isPending ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <>
+                              <Save className="h-4 w-4 mr-1" /> Enregistrer
+                            </>
+                          )}
                         </Button>
                         <Button size="sm" variant="outline" className="flex-1" onClick={handleCancel}>
                           <X className="h-4 w-4 mr-1" /> Annuler
@@ -286,9 +363,15 @@ function JobApplicationDetail() {
               </div>
             </div>
           </div>
-        </div >
-      )
-      }
-    </AdminShell >
+        </div>
+      )}
+
+      {/* Modale d'aperçu du fichier (CV ou Lettre) */}
+      <FilePreviewModal
+        url={previewFile?.url ?? null}
+        title={previewFile?.title ?? ""}
+        onClose={() => setPreviewFile(null)}
+      />
+    </AdminShell>
   );
 }

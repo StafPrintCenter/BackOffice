@@ -308,8 +308,7 @@ function JobOfferDetail() {
             </div>
 
             <div className="rounded-xl border border-dashed bg-muted/20 p-4 text-xs text-muted-foreground">
-              Le type de contrat, le profil recherché et la fourchette salariale ne sont plus modifiables après création
-              (non acceptés par l'API en mise à jour). Contactez le support technique si une correction est nécessaire.
+              Le type de contrat, le profil recherché et la fourchette salariale ne sont plus modifiables après création.
             </div>
           </div>
 

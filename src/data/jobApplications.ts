@@ -1,7 +1,4 @@
 export type JobApplicationStatus = "pending" | "reviewing" | "shortlisted" | "accepted" | "rejected";
-
-// ⚠️ Seuls pending/reviewing/shortlisted sont acceptés via l'update de statut classique.
-// accepted/rejected ne sont atteignables que via les actions dédiées /accept et /reject.
 export type JobApplicationManualStatus = "pending" | "reviewing" | "shortlisted";
 
 export type APIAdminJobApplication = {

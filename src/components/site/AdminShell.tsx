@@ -44,7 +44,13 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/admin/shortlinks", label: "Liens courts", icon: Link2 },
       { to: "/admin/announces", label: "Annonces", icon: Flag },
       { to: "/admin/reviews/forms", label: "Formulaires d'avis", icon: Form, matchPrefixes: ["/admin/reviews"] },
+    ],
+  },
+  {
+    label: "Recruitements",
+    items: [
       { to: "/admin/jobs/offers", label: "Offres d'emploi", icon: BriefcaseBusiness, matchPrefixes: ["/admin/jobs"] },
+      { to: "/admin/jobs/offers", label: "Stages", icon: BriefcaseBusiness, matchPrefixes: ["/admin/jobs"] },
     ],
   },
   {

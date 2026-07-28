@@ -26,10 +26,6 @@ function buildFormData(payload: Record<string, unknown>): FormData {
   return fd;
 }
 
-// ⚠️ Écart signalé : l'update se fait sur PUT /jobs/applications/{id} (endpoint racine),
-// pas sur un sous-chemin /status comme pour contact/appointments/reports/trainings.
-// Le payload reste restreint à { status, admin_notes } et status ne peut ici valoir
-// que pending/reviewing/shortlisted — accepted/rejected passent par les actions dédiées.
 async function updateStatus(id: string, payload: AdminJobApplicationStatusPayload): Promise<APIAdminJobApplication> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}`, {
     method: "PUT",

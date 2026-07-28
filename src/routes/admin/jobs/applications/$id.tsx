@@ -5,7 +5,7 @@ import {
   ArrowLeft, Loader2, Mail, Phone, Briefcase, GraduationCap, Calendar, UserCheck,
   Clock, Pencil, Save, X, FileText, Download, CheckCircle2, XCircle,
 } from "lucide-react";
-import { AdminShell } from "@/components/site/AdminShell";
+import { AdminShell, FilePreviewModal } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -17,6 +17,7 @@ import {
 import type { AdminJobApplicationStatusPayload, JobApplicationManualStatus } from "@/data/jobApplications";
 import { JOB_APPLICATION_STATUS_LABELS, getJobApplicationStatusBadge } from "@/data/jobApplications";
 import { SITE } from "@/data/site";
+import { resolveStorageUrl } from "@/lib/file-url";
 
 export const Route = createFileRoute("/admin/jobs/applications/$id")({
   head: () => ({

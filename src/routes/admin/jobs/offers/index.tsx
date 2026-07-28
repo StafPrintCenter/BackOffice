@@ -10,8 +10,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAdminJobOffersList, useCreateAdminJobOffer, useDeleteAdminJobOffer } from "@/stores/useJobOffersStore";
-import type { APIAdminJobOffer, AdminJobOfferPayload, JobOfferContractType } from "@/data/jobOffers";
-import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge } from "@/data/jobOffers";
+import type { APIAdminJobOffer, AdminJobOfferCreatePayload, JobOfferContractType, JobOfferWorkMode, JobEducationLevel } from "@/data/jobOffers";
+import {
+  JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_WORK_MODE_LABELS, JOB_EDUCATION_LEVEL_LABELS,
+  JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge,
+} from "@/data/jobOffers";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/jobs/offers/")({
@@ -24,40 +27,48 @@ export const Route = createFileRoute("/admin/jobs/offers/")({
   component: AdminJobOffers,
 });
 
-const schema = z.object({
-  title: z.string().trim().min(2).max(255),
-  department: z.string().trim().min(1).max(150),
-  contractType: z.enum(["cdi", "cdd", "stage", "freelance", "alternance"]),
-  location: z.string().trim().min(1).max(150),
-  description: z.string().trim().min(2),
-  responsibilities: z.array(z.string().trim()),
-  requirements: z.array(z.string().trim()),
-  salaryMin: z.string().optional(),
-  salaryMax: z.string().optional(),
-  publishedAt: z.string().optional(),
-  expiresAt: z.string().optional(),
-});
+const schema = z
+  .object({
+    title: z.string().trim().min(2).max(255),
+    summary: z.string().trim().min(2).max(500),
+    department: z.string().trim().max(150).optional(),
+    contractType: z.enum(["cdi", "cdd", "stage", "freelance", "alternance"]),
+    workMode: z.enum(["presentiel", "hybride", "teletravail"]),
+    location: z.string().trim().max(150).optional(),
+    numPositions: z.string().optional(),
+    description: z.string().trim().min(2),
+    missions: z.array(z.string().trim()),
+    profile: z.array(z.string().trim()),
+    educationLevel: z.enum(["sans_diplome", "bepc", "bac", "bac+2", "bac+3", "master", "doctorat"]).optional(),
+    salaryMin: z.string().optional(),
+    salaryMax: z.string().optional(),
+    publishedAt: z.string().optional(),
+    expiresAt: z.string().min(1, "La date d'expiration est requise"),
+  })
+  .superRefine((v, ctx) => {
+    if (v.workMode !== "teletravail" && !v.location?.trim()) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["location"], message: "Le lieu est requis sauf en télétravail" });
+    }
+  });
 type FormValues = z.infer<typeof schema>;
 
 const empty: FormValues = {
   title: "",
+  summary: "",
   department: "",
   contractType: "cdi",
+  workMode: "presentiel",
   location: "",
+  numPositions: "",
   description: "",
-  responsibilities: [""],
-  requirements: [""],
+  missions: [""],
+  profile: [""],
+  educationLevel: undefined,
   salaryMin: "",
   salaryMax: "",
   publishedAt: "",
   expiresAt: "",
 };
-
-function toCsv(items?: string[]): string | undefined {
-  if (!items) return undefined;
-  const filtered = items.map((i) => i.trim()).filter(Boolean);
-  return filtered.length > 0 ? filtered.join(",") : undefined;
-}
 
 function AdminJobOffers() {
   const navigate = useNavigate();
@@ -76,8 +87,9 @@ function AdminJobOffers() {
   const submit = () => {
     const cleaned: FormValues = {
       ...form,
-      responsibilities: form.responsibilities.filter((r) => r.trim()),
-      requirements: form.requirements.filter((r) => r.trim()),
+      missions: form.missions.filter((m) => m.trim()),
+      profile: form.profile.filter((p) => p.trim()),
+      location: form.workMode === "teletravail" ? undefined : form.location,
     };
 
     const parsed = schema.safeParse(cleaned);
@@ -89,18 +101,22 @@ function AdminJobOffers() {
     }
 
     const v = parsed.data;
-    const payload: AdminJobOfferPayload = {
+    const payload: AdminJobOfferCreatePayload = {
       title: v.title,
-      department: v.department,
+      summary: v.summary,
+      department: v.department || undefined,
       contract_type: v.contractType as JobOfferContractType,
-      location: v.location,
+      work_mode: v.workMode as JobOfferWorkMode,
+      location: v.workMode === "teletravail" ? undefined : v.location,
+      num_positions: v.numPositions ? Number(v.numPositions) : undefined,
       description: v.description,
-      responsibilities: toCsv(v.responsibilities),
-      requirements: toCsv(v.requirements),
+      missions: v.missions.length > 0 ? v.missions : undefined,
+      profile: v.profile.length > 0 ? v.profile : undefined,
+      education_level: v.educationLevel as JobEducationLevel | undefined,
       salary_min: v.salaryMin ? Number(v.salaryMin) : undefined,
       salary_max: v.salaryMax ? Number(v.salaryMax) : undefined,
       published_at: v.publishedAt ? new Date(v.publishedAt).toISOString() : undefined,
-      expires_at: v.expiresAt ? new Date(v.expiresAt).toISOString() : undefined,
+      expires_at: new Date(v.expiresAt).toISOString(),
     };
 
     createMutation.mutate(payload, {
@@ -113,10 +129,8 @@ function AdminJobOffers() {
     <AdminShell>
       <PageHeader title="Offres d'emploi" description="Postes ouverts publiés sur le site." />
 
-      {/* Raccourci */}
       <div className="mb-4">
-        <Link to="/admin/jobs/subscribers"
-          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+        <Link to="/admin/jobs/subscribers" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <Users className="h-4 w-4" />
           Voir les candidatures
         </Link>
@@ -143,7 +157,7 @@ function AdminJobOffers() {
           {
             key: "department",
             label: "Département",
-            render: (r) => <span className="text-xs">{r.department}</span>,
+            render: (r) => <span className="text-xs">{r.department || "-"}</span>,
           },
           {
             key: "contractType",
@@ -155,14 +169,35 @@ function AdminJobOffers() {
             ),
           },
           {
-            key: "location",
-            label: "Lieu",
-            render: (r) => <span className="text-xs">{r.location}</span>,
+            key: "workMode",
+            label: "Mode",
+            render: (r) => (
+              <div>
+                <div className="text-xs font-medium">{JOB_OFFER_WORK_MODE_LABELS[r.workMode]}</div>
+                {r.workMode !== "teletravail" && (
+                  <div className="text-xs text-muted-foreground">{r.location || "-"}</div>
+                )}
+              </div>
+            ),
+          },
+          {
+            key: "numPositions",
+            label: "Postes",
+            render: (r) => <span className="text-xs font-mono">{r.numPositions ?? "-"}</span>,
           },
           {
             key: "applicationsCount",
             label: "Candidatures",
             render: (r) => <span className="text-xs font-mono">{r.applicationsCount}</span>,
+          },
+          {
+            key: "expiresAt",
+            label: "Expire le",
+            render: (r) => (
+              <span className="text-xs text-muted-foreground">
+                {r.expiresAt ? new Date(r.expiresAt).toLocaleDateString("fr-FR") : "-"}
+              </span>
+            ),
           },
           {
             key: "status",
@@ -186,11 +221,16 @@ function AdminJobOffers() {
               {errors.title && <p className="text-xs text-destructive mt-1">{errors.title}</p>}
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div>
+              <Label>Résumé court</Label>
+              <Input value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} placeholder="Distinct de la description complète" />
+              {errors.summary && <p className="text-xs text-destructive mt-1">{errors.summary}</p>}
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <Label>Département</Label>
                 <Input value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} />
-                {errors.department && <p className="text-xs text-destructive mt-1">{errors.department}</p>}
               </div>
               <div>
                 <Label>Type de contrat</Label>
@@ -203,9 +243,36 @@ function AdminJobOffers() {
                 </select>
               </div>
               <div>
-                <Label>Lieu</Label>
-                <Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} />
-                {errors.location && <p className="text-xs text-destructive mt-1">{errors.location}</p>}
+                <Label>Mode de travail</Label>
+                <select
+                  value={form.workMode}
+                  onChange={(e) => setForm({ ...form, workMode: e.target.value as FormValues["workMode"] })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  {Object.entries(JOB_OFFER_WORK_MODE_LABELS).map(([k, l]) => (<option key={k} value={k}>{l}</option>))}
+                </select>
+              </div>
+              {form.workMode !== "teletravail" && (
+                <div>
+                  <Label>Lieu</Label>
+                  <Input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} />
+                  {errors.location && <p className="text-xs text-destructive mt-1">{errors.location}</p>}
+                </div>
+              )}
+              <div>
+                <Label>Nombre de postes</Label>
+                <Input type="number" min={1} value={form.numPositions} onChange={(e) => setForm({ ...form, numPositions: e.target.value })} />
+              </div>
+              <div>
+                <Label>Niveau d'étude requis</Label>
+                <select
+                  value={form.educationLevel ?? ""}
+                  onChange={(e) => setForm({ ...form, educationLevel: (e.target.value || undefined) as JobEducationLevel | undefined })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">- Non spécifié -</option>
+                  {Object.entries(JOB_EDUCATION_LEVEL_LABELS).map(([k, l]) => (<option key={k} value={k}>{l}</option>))}
+                </select>
               </div>
             </div>
 
@@ -215,42 +282,27 @@ function AdminJobOffers() {
               {errors.description && <p className="text-xs text-destructive mt-1">{errors.description}</p>}
             </div>
 
-            {/* Missions / Responsabilités */}
+            {/* Missions */}
             <div>
               <div className="flex items-center justify-between">
-                <Label>Missions / Responsabilités</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setForm({ ...form, responsibilities: [...form.responsibilities, ""] })}
-                >
+                <Label>Missions</Label>
+                <Button type="button" variant="outline" size="sm" onClick={() => setForm({ ...form, missions: [...form.missions, ""] })}>
                   <Plus className="h-3 w-3 mr-1" /> Ajouter
                 </Button>
               </div>
               <div className="mt-2 space-y-2">
-                {form.responsibilities.map((r, i) => (
+                {form.missions.map((m, i) => (
                   <div key={i} className="flex gap-2">
                     <Input
                       placeholder="Ex: Gérer la comptabilité"
-                      value={r}
+                      value={m}
                       onChange={(e) => {
-                        const arr = [...form.responsibilities];
+                        const arr = [...form.missions];
                         arr[i] = e.target.value;
-                        setForm({ ...form, responsibilities: arr });
+                        setForm({ ...form, missions: arr });
                       }}
                     />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() =>
-                        setForm({
-                          ...form,
-                          responsibilities: form.responsibilities.filter((_, idx) => idx !== i),
-                        })
-                      }
-                    >
+                    <Button type="button" variant="outline" size="icon" onClick={() => setForm({ ...form, missions: form.missions.filter((_, idx) => idx !== i) })}>
                       <Trash2 className="h-3 w-3" />
                     </Button>
                   </div>
@@ -258,42 +310,27 @@ function AdminJobOffers() {
               </div>
             </div>
 
-            {/* Exigences */}
+            {/* Profil recherché */}
             <div>
               <div className="flex items-center justify-between">
-                <Label>Exigences</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setForm({ ...form, requirements: [...form.requirements, ""] })}
-                >
+                <Label>Profil recherché</Label>
+                <Button type="button" variant="outline" size="sm" onClick={() => setForm({ ...form, profile: [...form.profile, ""] })}>
                   <Plus className="h-3 w-3 mr-1" /> Ajouter
                 </Button>
               </div>
               <div className="mt-2 space-y-2">
-                {form.requirements.map((req, i) => (
+                {form.profile.map((p, i) => (
                   <div key={i} className="flex gap-2">
                     <Input
                       placeholder="Ex: Maîtrise Excel"
-                      value={req}
+                      value={p}
                       onChange={(e) => {
-                        const arr = [...form.requirements];
+                        const arr = [...form.profile];
                         arr[i] = e.target.value;
-                        setForm({ ...form, requirements: arr });
+                        setForm({ ...form, profile: arr });
                       }}
                     />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() =>
-                        setForm({
-                          ...form,
-                          requirements: form.requirements.filter((_, idx) => idx !== i),
-                        })
-                      }
-                    >
+                    <Button type="button" variant="outline" size="icon" onClick={() => setForm({ ...form, profile: form.profile.filter((_, idx) => idx !== i) })}>
                       <Trash2 className="h-3 w-3" />
                     </Button>
                   </div>
@@ -315,8 +352,9 @@ function AdminJobOffers() {
                 <Input type="datetime-local" value={form.publishedAt} onChange={(e) => setForm({ ...form, publishedAt: e.target.value })} />
               </div>
               <div>
-                <Label>Date d'expiration (optionnel)</Label>
+                <Label>Date d'expiration</Label>
                 <Input type="datetime-local" value={form.expiresAt} onChange={(e) => setForm({ ...form, expiresAt: e.target.value })} />
+                {errors.expiresAt && <p className="text-xs text-destructive mt-1">{errors.expiresAt}</p>}
               </div>
             </div>
           </div>

@@ -22,9 +22,14 @@ export default defineConfig(({ mode }) => {
             target: `${apiOrigin}/api`,
             changeOrigin: true,
           },
+          "/storage": {
+            target: `${apiOrigin}/storage`,
+            changeOrigin: true,
+          },
         },
         routeRules: {
           "/api/**": { proxy: `${apiOrigin}/api/**` },
+          "/storage/**": { proxy: `${apiOrigin}/storage/**` },
         },
       }),
     ],

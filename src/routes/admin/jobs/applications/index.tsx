@@ -25,7 +25,9 @@ function AdminJobApplications() {
       <PageHeader title="Candidatures" description="Candidatures reçues pour les offres d'emploi." />
 
       <div className="mb-4">
-        <Link to="/admin/jobs/offers" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+        <Link
+          to="/admin/jobs/offers"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <Briefcase className="h-4 w-4" /> Voir les offres d'emploi
         </Link>
       </div>

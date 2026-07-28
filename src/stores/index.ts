@@ -6,7 +6,7 @@ export * from "./useArticlesStore";
 export * from "./useCategoriesStore";
 export * from "./useContactsStore";
 export * from "./useFaqsStore";
-export * from "./useJobOffersStore";
+export * from "./useJobApplicationsStore";
 export * from "./useJobOffersStore";
 export * from "./useNewsletterCampaignsStore";
 export * from "./useNewsletterSubscribersStore";

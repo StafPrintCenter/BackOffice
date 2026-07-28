@@ -130,7 +130,8 @@ function AdminJobOffers() {
       <PageHeader title="Offres d'emploi" description="Postes ouverts publiés sur le site." />
 
       <div className="mb-4">
-        <Link to="/admin/jobs/applications" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+        <Link to="/admin/jobs/applications"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <Users className="h-4 w-4" />
           Voir les candidatures
         </Link>

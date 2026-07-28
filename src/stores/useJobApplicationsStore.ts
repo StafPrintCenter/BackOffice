@@ -6,7 +6,6 @@ import type { APIAdminJobApplication, AdminJobApplicationStatusPayload } from "@
 const resourceKey = "job-applications";
 const basePath = "jobs/applications";
 
-// Pas de create/delete pour cette ressource (non exposés) : la factory ne sert qu'à list/detail.
 const store = createResourceStore<APIAdminJobApplication, AdminJobApplicationStatusPayload>({
   resourceKey,
   basePath,

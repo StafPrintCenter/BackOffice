@@ -1,340 +1,293 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Trash2, Ban, RotateCcw, Loader2, Mail, User, Calendar, ShieldAlert, FileText, Tag, Clock, UserX, UserCheck, } from "lucide-react";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import {
+  ArrowLeft, Loader2, Mail, Phone, Briefcase, GraduationCap, Calendar, UserCheck,
+  Clock, Pencil, Save, X, FileText, Download, CheckCircle2, XCircle,
+} from "lucide-react";
+import { AdminShell } from "@/components/site/AdminShell";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { useAdminNewsletterSubscriberDetail, useDeleteAdminNewsletterSubscriber, useBlockAdminNewsletterSubscriber, useReactivateAdminNewsletterSubscriber, } from "@/stores/useNewsletterSubscribersStore";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  useAdminJobApplicationDetail, useUpdateAdminJobApplicationStatus,
+  useAcceptAdminJobApplication, useRejectAdminJobApplication,
+} from "@/stores/useJobApplicationsStore";
+import type { AdminJobApplicationStatusPayload, JobApplicationManualStatus } from "@/data/jobApplications";
+import { JOB_APPLICATION_STATUS_LABELS, getJobApplicationStatusBadge } from "@/data/jobApplications";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/jobs/applications/$id")({
   head: () => ({
     meta: [
-      { title: `Abonné — Admin | ${SITE.name}` },
+      { title: `Candidature | ${SITE.name}` },
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: SubscriberDetail,
+  component: JobApplicationDetail,
 });
 
-function SubscriberDetail() {
+function formatDate(dateStr?: string | null): string {
+  if (!dateStr) return "—";
+  return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
+}
+
+function JobApplicationDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
+  const { item: app, isLoading } = useAdminJobApplicationDetail(id);
+  const updateStatus = useUpdateAdminJobApplicationStatus();
+  const acceptMutation = useAcceptAdminJobApplication();
+  const rejectMutation = useRejectAdminJobApplication();
 
-  const { item: subscriber, isLoading } = useAdminNewsletterSubscriberDetail(id);
-  const removeMutation = useDeleteAdminNewsletterSubscriber();
-  const blockMutation = useBlockAdminNewsletterSubscriber();
-  const reactivateMutation = useReactivateAdminNewsletterSubscriber();
+  const [isEditing, setIsEditing] = useState(false);
+  const [form, setForm] = useState<AdminJobApplicationStatusPayload | null>(null);
 
-  const [toDelete, setToDelete] = useState(false);
-  const [blockDialogOpen, setBlockDialogOpen] = useState(false);
-  const [reason, setReason] = useState("");
-  const [reasonError, setReasonError] = useState("");
+  useEffect(() => {
+    if (app && !form && (app.status === "pending" || app.status === "reviewing" || app.status === "shortlisted")) {
+      setForm({ status: app.status, admin_notes: app.adminNotes ?? "" });
+    }
+  }, [app, form]);
 
-  if (isLoading) {
-    return (
-      <AdminShell>
-        <div className="flex items-center justify-center py-24 text-muted-foreground">
-          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
-        </div>
-      </AdminShell>
-    );
-  }
-
-  if (!subscriber) {
-    return (
-      <AdminShell>
-        <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/subscribers" })}>
-            <ArrowLeft className="h-4 w-4 mr-1" /> Retour
-          </Button>
-        </div>
-        <p className="text-muted-foreground">Abonné introuvable.</p>
-      </AdminShell>
-    );
-  }
-
-  const openBlockDialog = () => {
-    setReason("");
-    setReasonError("");
-    setBlockDialogOpen(true);
+  const handleCancel = () => {
+    if (app && (app.status === "pending" || app.status === "reviewing" || app.status === "shortlisted")) {
+      setForm({ status: app.status, admin_notes: app.adminNotes ?? "" });
+    }
+    setIsEditing(false);
   };
 
-  const submitBlock = () => {
-    if (reason.trim().length < 2) {
-      setReasonError("La raison est obligatoire.");
-      return;
-    }
-    blockMutation.mutate(
-      { id: subscriber.id, payload: { reason: reason.trim() } },
+  const handleSave = () => {
+    if (!form) return;
+    updateStatus.mutate(
+      { id, payload: form },
       {
-        onSuccess: () => {
-          toast.success("Abonné bloqué");
-          setBlockDialogOpen(false);
-        },
-        onError: () => toast.error("Erreur lors du blocage"),
+        onSuccess: () => { toast.success("Candidature mise à jour"); setIsEditing(false); },
+        onError: () => toast.error("Erreur lors de la mise à jour"),
       }
     );
   };
 
-  const handleReactivate = () => {
-    reactivateMutation.mutate(subscriber.id, {
-      onSuccess: () => toast.success("Abonné réactivé"),
-      onError: () => toast.error("Erreur lors de la réactivation"),
+  const handleAccept = () => {
+    acceptMutation.mutate(id, {
+      onSuccess: () => toast.success("Candidature acceptée"),
+      onError: () => toast.error("Erreur lors de l'acceptation"),
     });
   };
 
-  const formatDate = (dateStr?: string | null) => {
-    if (!dateStr) return "—";
-    const cleaned = dateStr.includes("T") ? dateStr.replace("Z", "") : dateStr;
-    return new Date(cleaned).toLocaleString("fr-FR", {
-      dateStyle: "medium",
-      timeStyle: "short",
+  const handleReject = () => {
+    rejectMutation.mutate(id, {
+      onSuccess: () => toast.success("Candidature rejetée"),
+      onError: () => toast.error("Erreur lors du rejet"),
     });
   };
 
-  const getInitials = (firstName?: string | null, lastName?: string | null, email?: string) => {
-    if (firstName || lastName) {
-      return `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
-    }
-    return email ? email[0].toUpperCase() : "A";
-  };
-
-  const categories = subscriber.categories ?? [];
+  const isFinalized = app?.status === "accepted" || app?.status === "rejected";
 
   return (
     <AdminShell>
-      {/* Barre d'actions */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/subscribers" })}>
+      <div className="mb-6 flex items-center justify-between">
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/jobs/applications" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
-
-        <div className="flex items-center gap-2">
-          {subscriber.isBlocked ? (
+        {app && !isFinalized && (
+          <div className="flex gap-2">
+            <Button size="sm" onClick={handleAccept} disabled={acceptMutation.isPending}>
+              <CheckCircle2 className="h-4 w-4 mr-1" /> Accepter
+            </Button>
             <Button
               variant="outline"
               size="sm"
-              onClick={handleReactivate}
-              disabled={reactivateMutation.isPending}
+              className="border-destructive/30 text-destructive hover:bg-destructive/10"
+              onClick={handleReject}
+              disabled={rejectMutation.isPending}
             >
-              {reactivateMutation.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-1" />
-              ) : (
-                <RotateCcw className="h-4 w-4 mr-1 text-emerald-600" />
-              )}
-              Réactiver
+              <XCircle className="h-4 w-4 mr-1" /> Rejeter
             </Button>
-          ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-              onClick={openBlockDialog}
-            >
-              <Ban className="h-4 w-4 mr-1" /> Bloquer
-            </Button>
-          )}
-
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-            onClick={() => setToDelete(true)}
-          >
-            <Trash2 className="h-4 w-4 mr-1" /> Supprimer
-          </Button>
-        </div>
+          </div>
+        )}
       </div>
 
-      <div className="max-w-4xl space-y-6">
-        {/* Carte Profil Abonné */}
-        <div className="rounded-2xl border bg-card p-6 md:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-6">
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary font-display text-xl font-bold">
-                {getInitials(subscriber.firstName, subscriber.lastName, subscriber.email)}
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="font-display text-2xl font-bold text-foreground">
-                    {subscriber.firstName || subscriber.lastName
-                      ? `${subscriber.firstName ?? ""} ${subscriber.lastName ?? ""}`.trim()
-                      : "Abonné sans nom"}
-                  </h1>
-                </div>
-                <a
-                  href={`mailto:${subscriber.email}`}
-                  className="mt-0.5 inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+      {isLoading ? (
+        <div className="flex items-center justify-center py-24 text-muted-foreground">
+          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
+        </div>
+      ) : !app ? (
+        <p className="text-muted-foreground">Candidature introuvable.</p>
+      ) : (
+        <div className="max-w-5xl space-y-6">
+          {/* En-tête principal */}
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border bg-card p-6">
+            <div>
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/admin/jobs/offers/$id"
+                  params={{ id: app.jobOfferId }}
+                  className="inline-flex items-center gap-1.5 rounded bg-muted px-2.5 py-1 text-xs font-semibold hover:underline"
                 >
-                  <Mail className="h-3.5 w-3.5" />
-                  {subscriber.email}
+                  <Briefcase className="h-3.5 w-3.5" /> {app.jobOffer}
+                </Link>
+                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getJobApplicationStatusBadge(app.status)}`}>
+                  {JOB_APPLICATION_STATUS_LABELS[app.status]}
+                </span>
+              </div>
+              <h1 className="font-display text-2xl font-bold mt-2">{app.firstName} {app.lastName}</h1>
+              <div className="mt-1 flex flex-wrap items-center gap-4 text-sm">
+                <a href={`mailto:${app.email}`} className="text-primary hover:underline inline-flex items-center gap-1.5">
+                  <Mail className="h-3.5 w-3.5" /> {app.email}
+                </a>
+                <a href={`tel:${app.phone}`} className="text-muted-foreground hover:text-primary inline-flex items-center gap-1.5">
+                  <Phone className="h-3.5 w-3.5" /> {app.phone}
                 </a>
               </div>
             </div>
+          </div>
 
-            {/* Badges de statut */}
-            <div>
-              {subscriber.isBlocked ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive">
-                  <Ban className="h-3.5 w-3.5" /> Bloqué
-                </span>
-              ) : subscriber.isActive ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600">
-                  <UserCheck className="h-3.5 w-3.5" /> Actif
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-                  <UserX className="h-3.5 w-3.5" /> Désabonné
-                </span>
+          <div className="grid gap-6 lg:grid-cols-3">
+            {/* Contenu principal */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="rounded-2xl border bg-card p-6 space-y-4">
+                <div className="flex items-center gap-2 font-display text-lg font-semibold border-b pb-3">
+                  <FileText className="h-5 w-5 text-primary" /> Dossier de candidature
+                </div>
+
+                <div className="grid gap-3 text-xs sm:grid-cols-2 text-muted-foreground bg-muted/30 p-3 rounded-xl border">
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4 text-primary" />
+                    <span>Niveau d'étude : <b className="text-foreground">{app.educationLevel}</b></span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    <span>Reçue le : <b className="text-foreground">{formatDate(app.createdAt)}</b></span>
+                  </div>
+                </div>
+
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <a
+                    href={app.cvUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-muted/40"
+                  >
+                    <Download className="h-4 w-4 text-primary" /> Télécharger le CV
+                  </a>
+                  {app.coverLetterFileUrl && (
+                    <a
+                      href={app.coverLetterFileUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-muted/40"
+                    >
+                      <Download className="h-4 w-4 text-primary" /> Lettre de motivation (fichier)
+                    </a>
+                  )}
+                </div>
+
+                {app.coverLetter && (
+                  <div>
+                    <Label className="text-xs font-semibold text-muted-foreground">Lettre de motivation</Label>
+                    <div className="mt-1 rounded-xl bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-wrap border">
+                      {app.coverLetter}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Traitement Admin */}
+              {(app.reviewedBy || app.reviewedAt) && (
+                <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
+                  {app.reviewedBy && (
+                    <div className="flex items-center gap-1.5">
+                      <UserCheck className="h-4 w-4 text-primary" />
+                      <span>Traité par : <b className="text-foreground">{app.reviewedBy}</b></span>
+                    </div>
+                  )}
+                  {app.reviewedAt && (
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-4 w-4 text-primary" />
+                      <span>Le : <b className="text-foreground">{formatDate(app.reviewedAt)}</b></span>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
-          </div>
 
-          {/* Section Catégories d'intérêt */}
-          <div className="mt-6">
-            <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-              <Tag className="h-3.5 w-3.5 text-primary" /> Catégories d'intérêt
-            </div>
-            {categories.length === 0 ? (
-              <p className="text-xs text-muted-foreground italic">Aucune catégorie sélectionnée</p>
-            ) : (
-              <div className="flex flex-wrap gap-1.5">
-                {categories.map((c) => (
-                  <span
-                    key={c.id}
-                    className="inline-flex items-center rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-foreground"
-                  >
-                    {c.name}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+            {/* Panneau latéral : Statut + Notes */}
+            <div className="space-y-6">
+              <div className="rounded-2xl border bg-card p-6 space-y-4">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <span className="font-display font-semibold">Suivi de la candidature</span>
+                  {!isEditing && !isFinalized && (
+                    <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
+                      <Pencil className="h-4 w-4 mr-1" /> Modifier
+                    </Button>
+                  )}
+                </div>
 
-        {/* Alerte si bloqué */}
-        {subscriber.isBlocked && subscriber.blockedReason && (
-          <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 space-y-2">
-            <div className="flex items-center gap-2 font-display text-base font-semibold text-destructive">
-              <ShieldAlert className="h-5 w-5" /> Raison du blocage
-            </div>
-            <p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap bg-background/60 p-3.5 rounded-xl border border-destructive/20">
-              {subscriber.blockedReason}
-            </p>
-          </div>
-        )}
+                {isFinalized ? (
+                  <p className="text-xs text-muted-foreground">
+                    Cette candidature a été {app.status === "accepted" ? "acceptée" : "rejetée"} et ne peut plus être modifiée manuellement.
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Statut actuel</Label>
+                      {isEditing && form ? (
+                        <Select
+                          value={form.status}
+                          onValueChange={(v) => setForm({ ...form, status: v as JobApplicationManualStatus })}
+                        >
+                          <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pending">En attente</SelectItem>
+                            <SelectItem value="reviewing">En cours d'examen</SelectItem>
+                            <SelectItem value="shortlisted">Présélectionné</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <div className="mt-1">
+                          <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getJobApplicationStatusBadge(app.status)}`}>
+                            {JOB_APPLICATION_STATUS_LABELS[app.status]}
+                          </span>
+                        </div>
+                      )}
+                    </div>
 
-        {/* Section Notes internes */}
-        {subscriber.notes && (
-          <div className="rounded-2xl border bg-card p-6 space-y-3">
-            <div className="flex items-center gap-2 font-display text-base font-semibold border-b pb-3">
-              <FileText className="h-4 w-4 text-primary" /> Notes internes
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap rounded-xl bg-muted/40 p-4 border">
-              {subscriber.notes}
-            </p>
-          </div>
-        )}
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Notes internes admin</Label>
+                      {isEditing && form ? (
+                        <Textarea
+                          rows={6}
+                          value={form.admin_notes ?? ""}
+                          onChange={(e) => setForm({ ...form, admin_notes: e.target.value })}
+                          placeholder="Ajouter des notes privées sur le traitement..."
+                          className="mt-1 text-xs"
+                        />
+                      ) : (
+                        <div className="mt-1 rounded-xl bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground whitespace-pre-wrap border">
+                          {app.adminNotes || "Aucune note enregistrée."}
+                        </div>
+                      )}
+                    </div>
 
-        {/* Grille d'historique temporel */}
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-2xl border bg-card p-4 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Calendar className="h-3.5 w-3.5 text-primary" /> Abonné le
-            </div>
-            <div className="text-sm font-semibold text-foreground">
-              {formatDate(subscriber.subscribedAt)}
-            </div>
-          </div>
-
-          {subscriber.unsubscribedAt && (
-            <div className="rounded-2xl border bg-card p-4 space-y-1">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <UserX className="h-3.5 w-3.5 text-amber-600" /> Désabonné le
-              </div>
-              <div className="text-sm font-semibold text-foreground">
-                {formatDate(subscriber.unsubscribedAt)}
-              </div>
-            </div>
-          )}
-
-          {subscriber.blockedAt && (
-            <div className="rounded-2xl border bg-card p-4 space-y-1">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Ban className="h-3.5 w-3.5 text-destructive" /> Bloqué le
-              </div>
-              <div className="text-sm font-semibold text-foreground">
-                {formatDate(subscriber.blockedAt)}
+                    {isEditing && (
+                      <div className="flex gap-2 pt-2">
+                        <Button size="sm" className="flex-1" onClick={handleSave} disabled={updateStatus.isPending}>
+                          {updateStatus.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-1" /> Enregistrer</>}
+                        </Button>
+                        <Button size="sm" variant="outline" className="flex-1" onClick={handleCancel}>
+                          <X className="h-4 w-4 mr-1" /> Annuler
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
-          )}
-        </div>
-
-        {/* Métadonnées de création / modification */}
-        <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5" />
-            <span>Créé le : <b className="text-foreground">{formatDate(subscriber.createdAt)}</b></span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5" />
-            <span>Dernière modification : <b className="text-foreground">{formatDate(subscriber.updatedAt)}</b></span>
-          </div>
-        </div>
-      </div>
-
-      {/* Modal de blocage */}
-      <Dialog open={blockDialogOpen} onOpenChange={setBlockDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Ban className="h-5 w-5 text-destructive" /> Bloquer cet abonné
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 pt-2">
-            <div>
-              <Label className="text-xs">Raison du blocage *</Label>
-              <Textarea
-                rows={4}
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                placeholder="Ex : demande de désabonnement forcé, adresse invalide, comportement inapproprié..."
-                className="mt-1 text-sm"
-              />
-              {reasonError && <p className="text-xs text-destructive mt-1.5 font-medium">{reasonError}</p>}
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setBlockDialogOpen(false)}>
-              Annuler
-            </Button>
-            <Button variant="destructive" onClick={submitBlock} disabled={blockMutation.isPending}>
-              {blockMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
-              Confirmer le blocage
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Modal de confirmation de suppression */}
-      <ConfirmDelete
-        open={toDelete}
-        onOpenChange={setToDelete}
-        onConfirm={() => {
-          removeMutation.mutate(subscriber.id, {
-            onSuccess: () => {
-              toast.success("Abonné supprimé");
-              navigate({ to: "/admin/newsletter/subscribers" });
-            },
-            onError: () => toast.error("Erreur lors de la suppression"),
-          });
-        }}
-        title={`Supprimer l'abonné "${subscriber.email}" ?`}
-      />
-    </AdminShell>
+        </div >
+      )
+      }
+    </AdminShell >
   );
 }

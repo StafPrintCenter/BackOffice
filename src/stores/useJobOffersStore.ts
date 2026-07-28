@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import { createResourceStore } from "./createResourceStore";
-import type { APIAdminJobOffer, AdminJobOfferPayload } from "@/data/jobOffers";
+import type { APIAdminJobOffer, AdminJobOfferCreatePayload, AdminJobOfferUpdatePayload } from "@/data/jobOffers";
 
 const resourceKey = "job-offers";
 const basePath = "jobs/offers";
 
-const store = createResourceStore<APIAdminJobOffer, AdminJobOfferPayload>({
+const store = createResourceStore<APIAdminJobOffer, AdminJobOfferCreatePayload>({
   resourceKey,
   basePath,
 });
@@ -14,14 +14,49 @@ const store = createResourceStore<APIAdminJobOffer, AdminJobOfferPayload>({
 export const fetchAdminJobOffers = store.fetchList;
 export const fetchAdminJobOfferById = store.fetchById;
 export const createAdminJobOffer = store.createItem;
-export const updateAdminJobOffer = store.updateItem;
 export const deleteAdminJobOffer = store.removeItem;
 
 export const useAdminJobOffersList = store.useList;
 export const useAdminJobOfferDetail = store.useDetail;
 export const useCreateAdminJobOffer = store.useCreate;
-export const useUpdateAdminJobOffer = store.useUpdate;
 export const useDeleteAdminJobOffer = store.useRemove;
+
+function buildFormData(payload: Record<string, unknown>): FormData {
+  const fd = new FormData();
+  for (const [key, value] of Object.entries(payload)) {
+    if (value === undefined) continue;
+    if (typeof value === "boolean") {
+      fd.append(key, value ? "1" : "0");
+    } else if (Array.isArray(value)) {
+      fd.append(key, JSON.stringify(value));
+    } else if (value === null) {
+      fd.append(key, "");
+    } else {
+      fd.append(key, String(value));
+    }
+  }
+  return fd;
+}
+
+async function updateOffer(id: string, payload: AdminJobOfferUpdatePayload): Promise<APIAdminJobOffer> {
+  const response = await adminFetch(`/api/admin/${basePath}/${id}`, {
+    method: "PUT",
+    body: buildFormData(payload as unknown as Record<string, unknown>),
+  });
+  if (!response.ok) throw new Error("Erreur lors de la modification de l'offre");
+  const json = await response.json();
+  return json.data;
+}
+
+export const updateAdminJobOffer = updateOffer;
+
+export function useUpdateAdminJobOffer() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: AdminJobOfferUpdatePayload }) => updateOffer(id, payload),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [resourceKey] }),
+  });
+}
 
 /* ---- Actions dédiées, hors factory générique ---- */
 

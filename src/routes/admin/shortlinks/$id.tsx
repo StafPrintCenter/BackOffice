@@ -347,11 +347,11 @@ function ShortLinkDetail() {
                           dateStyle: "short", timeStyle: "medium",
                         })}
                       </td>
-                      <td className="px-3 py-2">{c.country ?? "—"}</td>
-                      <td className="px-3 py-2">{c.city ?? "—"}</td>
+                      <td className="px-3 py-2">{c.country ?? "-"}</td>
+                      <td className="px-3 py-2">{c.city ?? "-"}</td>
                       <td className="px-3 py-2">{c.device}</td>
                       <td className="px-3 py-2">{c.browser}</td>
-                      <td className="px-3 py-2 text-xs text-muted-foreground">{c.referer ?? "—"}</td>
+                      <td className="px-3 py-2 text-xs text-muted-foreground">{c.referer ?? "-"}</td>
                     </tr>
                   ))
                 )}

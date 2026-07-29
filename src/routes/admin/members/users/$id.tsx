@@ -155,7 +155,7 @@ function UserDetail() {
             <div className="text-sm">
               <p className="font-semibold">Ce compte est actuellement bloqué.</p>
               <p className="mt-0.5 text-xs text-destructive/80">
-                Bloqué le {user.blockedAt ? new Date(user.blockedAt).toLocaleString() : "—"}.
+                Bloqué le {user.blockedAt ? new Date(user.blockedAt).toLocaleString() : "-"}.
                 {user.blockedReason && ` Motif : "${user.blockedReason}"`}
               </p>
             </div>

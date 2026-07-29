@@ -52,7 +52,7 @@ function toEditForm(o: APIAdminJobOffer): EditForm {
 }
 
 function formatDate(dateStr?: string | null): string {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
 }
 
@@ -156,7 +156,7 @@ function JobOfferDetail() {
     const max = offer.salaryMax != null && offer.salaryMax !== "" ? Number(offer.salaryMax).toLocaleString() : null;
     if (min && max) return `${min} - ${max} FCFA`;
     if (min) return `${min} FCFA`;
-    return "—";
+    return "-";
   };
 
   return (
@@ -254,7 +254,7 @@ function JobOfferDetail() {
                       onChange={(e) => setForm({ ...form, educationLevel: e.target.value as JobEducationLevel | "" })}
                       className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     >
-                      <option value="">— Non spécifié —</option>
+                      <option value="">- Non spécifié -</option>
                       {Object.entries(JOB_EDUCATION_LEVEL_LABELS).map(([k, l]) => (<option key={k} value={k}>{l}</option>))}
                     </select>
                   </div>
@@ -360,7 +360,7 @@ function JobOfferDetail() {
                 <ul className="list-inside list-disc text-sm space-y-1.5 text-muted-foreground">
                   {offer.profile.map((p, i) => (<li key={i}>{p}</li>))}
                 </ul>
-                <p className="text-[11px] text-muted-foreground/70">Champ verrouillé après création — non modifiable via l'admin.</p>
+                <p className="text-[11px] text-muted-foreground/70">Champ verrouillé après création - non modifiable via l'admin.</p>
               </div>
             )}
 
@@ -410,24 +410,24 @@ function JobOfferDetail() {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Building2 className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                  <span>Département : <strong className="text-foreground">{offer.department || "—"}</strong></span>
+                  <span>Département : <strong className="text-foreground">{offer.department || "-"}</strong></span>
                 </div>
 
                 {offer.workMode !== "teletravail" && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <MapPin className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                    <span>Lieu : <strong className="text-foreground">{offer.location || "—"}</strong></span>
+                    <span>Lieu : <strong className="text-foreground">{offer.location || "-"}</strong></span>
                   </div>
                 )}
 
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Users2 className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                  <span>Postes ouverts : <strong className="text-foreground">{offer.numPositions ?? "—"}</strong></span>
+                  <span>Postes ouverts : <strong className="text-foreground">{offer.numPositions ?? "-"}</strong></span>
                 </div>
 
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <GraduationCap className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                  <span>Niveau requis : <strong className="text-foreground">{offer.educationLevel ? JOB_EDUCATION_LEVEL_LABELS[offer.educationLevel] : "—"}</strong></span>
+                  <span>Niveau requis : <strong className="text-foreground">{offer.educationLevel ? JOB_EDUCATION_LEVEL_LABELS[offer.educationLevel] : "-"}</strong></span>
                 </div>
 
                 <div className="flex items-center gap-2 text-muted-foreground">

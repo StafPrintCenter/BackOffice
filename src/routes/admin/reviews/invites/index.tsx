@@ -151,7 +151,7 @@ function AdminReviewInvites() {
             ),
           },
           { key: "reviewForm", label: "Formulaire", render: (r) => <span className="text-xs">{r.reviewForm}</span> },
-          { key: "project", label: "Projet", render: (r) => <span className="text-xs">{r.project ?? r.projectName ?? "—"}</span> },
+          { key: "project", label: "Projet", render: (r) => <span className="text-xs">{r.project ?? r.projectName ?? "-"}</span> },
           {
             key: "status",
             label: "Statut",
@@ -209,7 +209,7 @@ function AdminReviewInvites() {
                 onChange={(e) => setForm({ ...form, review_form_id: e.target.value })}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
-                <option value="">— Choisir —</option>
+                <option value="">- Choisir -</option>
                 {forms.map((f) => (<option key={f.id} value={f.id}>{f.title}</option>))}
               </select>
               {errors.review_form_id && <p className="mt-1 text-xs text-destructive">{errors.review_form_id}</p>}
@@ -238,7 +238,7 @@ function AdminReviewInvites() {
                   onChange={(e) => setForm({ ...form, project_id: e.target.value })}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="">— Choisir —</option>
+                  <option value="">- Choisir -</option>
                   {projects.map((p) => (<option key={p.id} value={p.id}>{p.title}</option>))}
                 </select>
                 {errors.project_id && <p className="mt-1 text-xs text-destructive">{errors.project_id}</p>}

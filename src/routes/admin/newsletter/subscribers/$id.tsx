@@ -13,7 +13,7 @@ import { SITE } from "@/data/site";
 export const Route = createFileRoute("/admin/newsletter/subscribers/$id")({
   head: () => ({
     meta: [
-      { title: `Abonné — Admin | ${SITE.name}` },
+      { title: `Abonné - Admin | ${SITE.name}` },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -88,7 +88,7 @@ function SubscriberDetail() {
   };
 
   const formatDate = (dateStr?: string | null) => {
-    if (!dateStr) return "—";
+    if (!dateStr) return "-";
     const cleaned = dateStr.includes("T") ? dateStr.replace("Z", "") : dateStr;
     return new Date(cleaned).toLocaleString("fr-FR", {
       dateStyle: "medium",

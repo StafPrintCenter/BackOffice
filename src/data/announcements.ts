@@ -39,7 +39,7 @@ export interface AdminAnnouncementPayload {
   title: string;
   message: string;
   icon?: string;
-  action?: string; // JSON stringifié — construit dans la route juste avant mutate
+  action?: string; // JSON stringifié - construit dans la route juste avant mutate
   is_closable?: boolean;
   priority?: number;
   is_enabled?: boolean;

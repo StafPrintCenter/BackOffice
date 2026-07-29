@@ -174,7 +174,7 @@ function AdminAnnouncements() {
             label: "Style",
             render: (r) => (
               <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${getAnnouncementStyleBadge(r.style)}`}>
-                {r.style ? ANNOUNCEMENT_STYLE_LABELS[r.style] : "—"}
+                {r.style ? ANNOUNCEMENT_STYLE_LABELS[r.style] : "-"}
               </span>
             ),
           },
@@ -227,7 +227,7 @@ function AdminAnnouncements() {
                   onChange={(e) => setForm({ ...form, style: (e.target.value || undefined) as AnnouncementStyle | undefined })}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="">— Aucun —</option>
+                  <option value="">- Aucun -</option>
                   {Object.entries(ANNOUNCEMENT_STYLE_LABELS).map(([k, l]) => (<option key={k} value={k}>{l}</option>))}
                 </select>
               </div>

@@ -173,7 +173,7 @@ function StudentDetail() {
             <div className="text-sm">
               <p className="font-semibold">Ce compte apprenant est actuellement bloqué.</p>
               <p className="mt-0.5 text-xs text-destructive/80">
-                Bloqué le {student.blockedAt ? new Date(student.blockedAt).toLocaleString() : "—"}.
+                Bloqué le {student.blockedAt ? new Date(student.blockedAt).toLocaleString() : "-"}.
                 {student.blockedReason && ` Motif : "${student.blockedReason}"`}
               </p>
             </div>
@@ -235,7 +235,7 @@ function StudentDetail() {
                 <Phone className="h-5 w-5 text-muted-foreground shrink-0" />
                 <div>
                   <div className="text-xs text-muted-foreground font-medium">Téléphone</div>
-                  <div className="text-sm font-semibold mt-0.5">{student.phone || "—"}</div>
+                  <div className="text-sm font-semibold mt-0.5">{student.phone || "-"}</div>
                 </div>
               </div>
 
@@ -244,7 +244,7 @@ function StudentDetail() {
                 <div>
                   <div className="text-xs text-muted-foreground font-medium">Date de naissance</div>
                   <div className="text-sm font-semibold mt-0.5">
-                    {student.birthDate ? new Date(student.birthDate).toLocaleDateString("fr-FR") : "—"}
+                    {student.birthDate ? new Date(student.birthDate).toLocaleDateString("fr-FR") : "-"}
                   </div>
                 </div>
               </div>
@@ -253,7 +253,7 @@ function StudentDetail() {
                 <Briefcase className="h-5 w-5 text-muted-foreground shrink-0" />
                 <div>
                   <div className="text-xs text-muted-foreground font-medium">Profession</div>
-                  <div className="text-sm font-semibold mt-0.5">{student.occupation || "—"}</div>
+                  <div className="text-sm font-semibold mt-0.5">{student.occupation || "-"}</div>
                 </div>
               </div>
 
@@ -261,7 +261,7 @@ function StudentDetail() {
                 <MapPin className="h-5 w-5 text-muted-foreground shrink-0" />
                 <div>
                   <div className="text-xs text-muted-foreground font-medium">Adresse</div>
-                  <div className="text-sm font-semibold mt-0.5">{student.address || "—"}</div>
+                  <div className="text-sm font-semibold mt-0.5">{student.address || "-"}</div>
                 </div>
               </div>
 

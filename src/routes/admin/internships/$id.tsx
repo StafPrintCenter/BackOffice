@@ -1,23 +1,18 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft, Loader2, Mail, Phone, GraduationCap, Building2, Calendar, UserCheck,
-  Clock, Pencil, Save, X, FileText, Download, CheckCircle2, XCircle, MessageCircleQuestion,
-} from "lucide-react";
-import { AdminShell } from "@/components/site/AdminShell";
+import { ArrowLeft, Loader2, Mail, Phone, GraduationCap, Building2, Calendar, UserCheck, Clock, Pencil, Save, X, FileText, Download, CheckCircle2, XCircle, MessageCircleQuestion, Paperclip, Eye } from "lucide-react";
+import { AdminShell, FilePreviewModal } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  useAdminInternshipRequestDetail, useUpdateAdminInternshipRequestStatus,
-  useRequestInfoAdminInternshipRequest, useAcceptAdminInternshipRequest, useRejectAdminInternshipRequest,
-} from "@/stores/useInternshipRequestsStore";
+import { useAdminInternshipRequestDetail, useUpdateAdminInternshipRequestStatus, useRequestInfoAdminInternshipRequest, useAcceptAdminInternshipRequest, useRejectAdminInternshipRequest, } from "@/stores/useInternshipRequestsStore";
 import type { AdminInternshipRequestStatusPayload, InternshipRequestManualStatus } from "@/data/internshipRequests";
 import { INTERNSHIP_REQUEST_STATUS_LABELS, getInternshipRequestStatusBadge } from "@/data/internshipRequests";
 import { SITE } from "@/data/site";
+import { resolveStorageUrl } from "@/lib/file-url";
 
 export const Route = createFileRoute("/admin/internships/$id")({
   head: () => ({
@@ -51,6 +46,7 @@ function InternshipRequestDetail() {
   const [infoError, setInfoError] = useState("");
 
   const isManualStatus = (s?: string): s is InternshipRequestManualStatus => s === "pending" || s === "under_review";
+  const [previewFile, setPreviewFile] = useState<{ url: string; title: string } | null>(null);
 
   useEffect(() => {
     if (req && !form && isManualStatus(req.status)) {
@@ -110,6 +106,7 @@ function InternshipRequestDetail() {
   };
 
   const isFinalized = req?.status === "accepted" || req?.status === "rejected";
+  const cvUrlResolved = resolveStorageUrl(req?.cvUrl);
 
   return (
     <AdminShell>
@@ -195,16 +192,39 @@ function InternshipRequestDetail() {
                   </div>
                 </div>
 
-                {req.cvUrl && (
-                  <a
-                    href={req.cvUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 rounded-lg border p-3 text-sm hover:bg-muted/40"
-                  >
-                    <Download className="h-4 w-4 text-primary" /> Télécharger le CV
-                  </a>
+                {cvUrlResolved && (
+                  <div className="flex flex-col justify-between rounded-xl border bg-muted/20 p-3 gap-2">
+                    <div className="flex items-center gap-2 text-xs font-medium">
+                      <Paperclip className="h-4 w-4 text-primary" />
+                      <span>Curriculum Vitae (CV)</span>
+                    </div>
+                    <div className="flex items-center gap-2 pt-1">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="w-full text-xs"
+                        onClick={() =>
+                          setPreviewFile({
+                            url: cvUrlResolved,
+                            title: `CV - ${req.firstName} ${req.lastName}`,
+                          })
+                        }
+                      >
+                        <Eye className="h-3.5 w-3.5 mr-1.5" /> Aperçu
+                      </Button>
+                      <a
+                        href={cvUrlResolved}
+                        download
+                        className="inline-flex items-center justify-center rounded-md border border-input bg-background p-2 text-xs font-medium hover:bg-accent transition-colors"
+                        title="Télécharger le CV"
+                      >
+                        <Download className="h-3.5 w-3.5" />
+                      </a>
+                    </div>
+                  </div>
                 )}
+
 
                 {req.message && (
                   <div>
@@ -350,6 +370,13 @@ function InternshipRequestDetail() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Modale d'aperçu du fichier (CV ou Lettre) */}
+      <FilePreviewModal
+        url={previewFile?.url ?? null}
+        title={previewFile?.title ?? ""}
+        onClose={() => setPreviewFile(null)}
+      />
     </AdminShell >
   );
 }

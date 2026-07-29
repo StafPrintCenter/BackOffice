@@ -96,7 +96,7 @@ function AdminNewsletterCampaigns() {
             key: "category",
             label: "Catégorie",
             render: (r) => {
-              if (!r.category) return <span className="text-xs text-muted-foreground">—</span>;
+              if (!r.category) return <span className="text-xs text-muted-foreground">-</span>;
 
               const match = categories.find(
                 (c) => c.name.toLowerCase() === r.category?.toLowerCase()
@@ -112,7 +112,7 @@ function AdminNewsletterCampaigns() {
             },
           },
           { key: "status", label: "Statut", render: (r) => statusBadge(r.status) },
-          { key: "recipientsCount", label: "Destinataires", render: (r) => <span className="text-xs font-medium">{r.recipientsCount ?? "—"}</span> },
+          { key: "recipientsCount", label: "Destinataires", render: (r) => <span className="text-xs font-medium">{r.recipientsCount ?? "-"}</span> },
           {
             key: "scheduledAt",
             label: "Programmée le",
@@ -120,7 +120,7 @@ function AdminNewsletterCampaigns() {
               <span className="text-xs text-muted-foreground">
                 {new Date(r.scheduledAt.replace("Z", "")).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })}
               </span>
-            ) : "—"
+            ) : "-"
           },
         ]}
       />
@@ -141,7 +141,7 @@ function AdminNewsletterCampaigns() {
                 onChange={(e) => setForm({ ...form, category_id: e.target.value })}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm mt-1"
               >
-                <option value="">— Aucune —</option>
+                <option value="">- Aucune -</option>
                 {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
             </div>

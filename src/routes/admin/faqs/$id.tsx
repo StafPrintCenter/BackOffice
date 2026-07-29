@@ -190,7 +190,7 @@ function FaqDetail() {
                     onChange={(e) => setForm({ ...form, category_id: e.target.value })}
                     className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   >
-                    <option value="">— Choisir —</option>
+                    <option value="">- Choisir -</option>
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>
                         {c.name}

@@ -55,7 +55,7 @@ function AdminNewsletterSubscribers() {
             key: "categories", label: "Catégories", render: (r) => (
               <div className="flex flex-wrap gap-1">
                 {r.categories.length === 0
-                  ? <span className="text-xs text-muted-foreground">—</span>
+                  ? <span className="text-xs text-muted-foreground">-</span>
                   : r.categories.map((c) => <span key={c.id} className="rounded-full bg-muted px-2 py-0.5 text-[10px]">{c.name}</span>)}
               </div>
             )

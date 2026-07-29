@@ -434,7 +434,7 @@ function ReviewFormDetail() {
                   onChange={(e) => setForm({ ...form, category_id: e.target.value })}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="">— Aucune —</option>
+                  <option value="">- Aucune -</option>
                   {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
                 </select>
               </div>
@@ -468,7 +468,7 @@ function ReviewFormDetail() {
           </>
         )}
 
-        {/* Questions — remontées en haut */}
+        {/* Questions - remontées en haut */}
         {!isEditing && (
           <div className="rounded-2xl border bg-card p-6">
             <SectionHeader

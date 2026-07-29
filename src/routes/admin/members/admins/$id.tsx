@@ -233,7 +233,7 @@ function AdminDetail() {
                 {isInviteRevoked ? "Cette invitation a été révoquée." : "Cette invitation n'a pas encore été acceptée."}
               </p>
               <p className="mt-0.5 text-xs opacity-80">
-                Invitée le {admin.invitedAt ? new Date(admin.invitedAt).toLocaleString("fr-FR") : "-"} par {admin.invitedBy || "—"}.
+                Invitée le {admin.invitedAt ? new Date(admin.invitedAt).toLocaleString("fr-FR") : "-"} par {admin.invitedBy || "-"}.
                 {isInviteRevoked &&
                   admin.invitationRevokedAt &&
                   ` Révoquée le ${new Date(admin.invitationRevokedAt).toLocaleString("fr-FR")}.`}
@@ -250,7 +250,7 @@ function AdminDetail() {
             <div className="text-sm">
               <p className="font-semibold">Ce compte administrateur est actuellement bloqué.</p>
               <p className="mt-0.5 text-xs text-destructive/80">
-                Bloqué le {admin.blockedAt ? new Date(admin.blockedAt).toLocaleString("fr-FR") : "—"}.
+                Bloqué le {admin.blockedAt ? new Date(admin.blockedAt).toLocaleString("fr-FR") : "-"}.
                 {admin.blockedReason && ` Motif : "${admin.blockedReason}"`}
               </p>
             </div>
@@ -336,7 +336,7 @@ function AdminDetail() {
                 <UserCheck className="h-5 w-5 text-muted-foreground shrink-0" />
                 <div>
                   <div className="text-xs text-muted-foreground font-medium">Invité par</div>
-                  <div className="text-sm font-semibold mt-0.5">{admin.invitedBy || "—"}</div>
+                  <div className="text-sm font-semibold mt-0.5">{admin.invitedBy || "-"}</div>
                 </div>
               </div>
 

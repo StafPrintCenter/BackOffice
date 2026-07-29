@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, CheckCircle, Briefcase, MapPin, Building2, Calendar, FileText, ListChecks, Settings2, Plus, Eye, EyeOff, Link2, Clock, CheckCircle2, GraduationCap, Users2, Laptop, } from "lucide-react";
-import { AdminShell, ConfirmDelete, FilePreviewModal } from "@/components/site";
+import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

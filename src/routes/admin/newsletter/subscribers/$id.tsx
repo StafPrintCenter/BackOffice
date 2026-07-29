@@ -13,7 +13,7 @@ import { SITE } from "@/data/site";
 export const Route = createFileRoute("/admin/newsletter/subscribers/$id")({
   head: () => ({
     meta: [
-      { title: `Abonné - Admin | ${SITE.name}` },
+      { title: `Abonné | ${SITE.name}` },
       { name: "robots", content: "noindex" },
     ],
   }),

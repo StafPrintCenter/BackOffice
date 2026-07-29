@@ -329,7 +329,7 @@ function TrainingDetail() {
             </div>
           </div>
 
-          {/* Sidebar sticky — fiche pratique */}
+          {/* Sidebar sticky - fiche pratique */}
           <div className="lg:sticky lg:top-6 h-fit space-y-4">
             <div className="rounded-2xl border bg-card p-6">
               <div className="font-display text-3xl font-bold text-primary">{training.price.toLocaleString()} FCFA</div>
@@ -337,15 +337,15 @@ function TrainingDetail() {
               <div className="mt-4 space-y-3 text-sm">
                 <div className="flex items-start gap-2 text-muted-foreground">
                   <Users className="h-4 w-4 shrink-0 mt-0.5" />
-                  <span>{training.audience || "—"}</span>
+                  <span>{training.audience || "-"}</span>
                 </div>
                 <div className="flex items-start gap-2 text-muted-foreground">
                   <Award className="h-4 w-4 shrink-0 mt-0.5" />
-                  <span>{training.certification || "—"}</span>
+                  <span>{training.certification || "-"}</span>
                 </div>
                 <div className="flex items-start gap-2 text-muted-foreground">
                   <CalendarClock className="h-4 w-4 shrink-0 mt-0.5" />
-                  <span>{training.schedule || "—"}</span>
+                  <span>{training.schedule || "-"}</span>
                 </div>
               </div>
 

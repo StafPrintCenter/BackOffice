@@ -53,7 +53,7 @@ function AdminReports() {
           {
             key: "reporterEmail",
             label: "Signalé par",
-            render: (r) => <span className="text-xs">{r.reporterEmail || "—"}</span>,
+            render: (r) => <span className="text-xs">{r.reporterEmail || "-"}</span>,
           },
           {
             key: "createdAt",

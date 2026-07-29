@@ -25,7 +25,7 @@ export const Route = createFileRoute("/admin/internships/$id")({
 });
 
 function formatDate(dateStr?: string | null): string {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
 }
 
@@ -172,11 +172,11 @@ function InternshipRequestDetail() {
                 <div className="grid gap-3 text-xs sm:grid-cols-2 text-muted-foreground bg-muted/30 p-3 rounded-xl border">
                   <div className="flex items-center gap-2">
                     <Building2 className="h-4 w-4 text-primary" />
-                    <span>Établissement : <b className="text-foreground">{req.institution || "—"}</b></span>
+                    <span>Établissement : <b className="text-foreground">{req.institution || "-"}</b></span>
                   </div>
                   <div className="flex items-center gap-2">
                     <GraduationCap className="h-4 w-4 text-primary" />
-                    <span>Filière : <b className="text-foreground">{req.fieldOfStudy || "—"}</b></span>
+                    <span>Filière : <b className="text-foreground">{req.fieldOfStudy || "-"}</b></span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-primary" />

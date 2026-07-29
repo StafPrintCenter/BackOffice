@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import { createResourceStore } from "./createResourceStore";
-import type { APIAdminJobOffer, AdminJobOfferCreatePayload, AdminJobOfferUpdatePayload } from "@/data/jobOffers";
+import type { APIAdminJobOffer, AdminJobOfferCreatePayload, AdminJobOfferUpdatePayload, APIAdminJobOfferDetailWithApplicants, APIAdminJobOfferApplicant } from "@/data/jobOffers";
 
 const resourceKey = "job-offers";
 const basePath = "jobs/offers";
@@ -79,6 +79,28 @@ async function reactivateOffer(id: string): Promise<APIAdminJobOffer> {
   if (!response.ok) throw new Error("Erreur lors de la réactivation de l'offre");
   const json = await response.json();
   return json.data;
+}
+
+async function fetchOfferWithApplicants(id: string): Promise<APIAdminJobOfferDetailWithApplicants> {
+  const response = await adminFetch(`/api/admin/${basePath}/${id}`);
+  if (!response.ok) throw new Error("Erreur lors de la récupération de l'offre");
+  const json: { data: APIAdminJobOffer; applicants: APIAdminJobOfferApplicant[] } = await response.json();
+  return { offer: json.data, applicants: json.applicants ?? [] };
+}
+
+export function useAdminJobOfferDetailWithApplicants(id: string | undefined) {
+  const query = useQuery({
+    queryKey: [resourceKey, "admin-detail-applicants", id],
+    queryFn: () => fetchOfferWithApplicants(id as string),
+    enabled: !!id,
+  });
+  return {
+    offer: query.data?.offer ?? null,
+    applicants: query.data?.applicants ?? [],
+    isLoading: query.isLoading,
+    isError: query.isError,
+    refetch: query.refetch,
+  };
 }
 
 export const publishAdminJobOffer = publishOffer;

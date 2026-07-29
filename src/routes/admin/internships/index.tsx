@@ -43,7 +43,7 @@ function AdminInternshipRequests() {
             label: "Établissement",
             render: (r) => (
               <div>
-                <div className="text-xs font-medium">{r.institution || "—"}</div>
+                <div className="text-xs font-medium">{r.institution || "-"}</div>
                 <div className="text-xs text-muted-foreground">{r.fieldOfStudy || ""}</div>
               </div>
             ),
@@ -51,7 +51,7 @@ function AdminInternshipRequests() {
           {
             key: "duration",
             label: "Durée souhaitée",
-            render: (r) => <span className="text-xs">{r.duration || "—"}</span>,
+            render: (r) => <span className="text-xs">{r.duration || "-"}</span>,
           },
           {
             key: "createdAt",

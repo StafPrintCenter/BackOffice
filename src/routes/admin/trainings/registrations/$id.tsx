@@ -39,7 +39,7 @@ function TrainingRegistrationDetail() {
   }, [reg, form]);
 
   const formatDate = (dateStr?: string | null) => {
-    if (!dateStr) return "—";
+    if (!dateStr) return "-";
     return new Date(dateStr.replace("Z", "")).toLocaleString("fr-FR", {
       dateStyle: "medium",
       timeStyle: "short",

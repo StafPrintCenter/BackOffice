@@ -176,7 +176,7 @@ function AdminShortLinks() {
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="">— Choisir —</option>
+                  <option value="">- Choisir -</option>
                   {SHORT_LINK_CATEGORIES.map((c) => (
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}

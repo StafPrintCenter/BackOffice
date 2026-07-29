@@ -101,9 +101,9 @@ function InvitationDetail() {
           <div className="text-sm text-muted-foreground">{invitation.clientEmail}</div>
           <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
             <div>Formulaire : <b>{invitation.reviewForm}</b></div>
-            <div>Projet : <b>{invitation.project ?? invitation.projectName ?? "—"}</b></div>
+            <div>Projet : <b>{invitation.project ?? invitation.projectName ?? "-"}</b></div>
             <div>Réponses : <b>{invitation.responsesCount} / {invitation.maxResponses}</b></div>
-            <div>Expire le : <b>{invitation.expiresAt ? new Date(invitation.expiresAt).toLocaleString() : "—"}</b></div>
+            <div>Expire le : <b>{invitation.expiresAt ? new Date(invitation.expiresAt).toLocaleString() : "-"}</b></div>
             <div>Créée le : <b>{new Date(invitation.createdAt).toLocaleString()}</b></div>
           </div>
           <div className="mt-4 rounded-lg bg-muted/50 p-3 font-mono text-xs break-all">{invitation.link}</div>

@@ -180,11 +180,11 @@ function InternshipRequestDetail() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-primary" />
-                    <span>Début souhaité : <b className="text-foreground">{req.desiredStartDate ? new Date(req.desiredStartDate).toLocaleDateString("fr-FR") : "—"}</b></span>
+                    <span>Début souhaité : <b className="text-foreground">{req.desiredStartDate ? new Date(req.desiredStartDate).toLocaleDateString("fr-FR") : "-"}</b></span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-primary" />
-                    <span>Durée : <b className="text-foreground">{req.duration || "—"}</b></span>
+                    <span>Durée : <b className="text-foreground">{req.duration || "-"}</b></span>
                   </div>
                   <div className="flex items-center gap-2 sm:col-span-2">
                     <Calendar className="h-4 w-4 text-primary" />

@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { useAdminJobOfferDetail, useUpdateAdminJobOffer, useDeleteAdminJobOffer, usePublishAdminJobOffer, useDisableAdminJobOffer, useReactivateAdminJobOffer, } from "@/stores/useJobOffersStore";
 import type { AdminJobOfferUpdatePayload, APIAdminJobOffer, JobOfferWorkMode, JobEducationLevel } from "@/data/jobOffers";
 import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_WORK_MODE_LABELS, JOB_EDUCATION_LEVEL_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge, } from "@/data/jobOffers";
-import { resolveStorageUrl } from "@/lib/file-url";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/jobs/offers/$id")({

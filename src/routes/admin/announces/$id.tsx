@@ -469,7 +469,7 @@ function AnnouncementDetail() {
                     }
                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm mt-1"
                   >
-                    <option value="">— Aucun —</option>
+                    <option value="">- Aucun -</option>
                     {Object.entries(ANNOUNCEMENT_STYLE_LABELS).map(([k, l]) => (
                       <option key={k} value={k}>{l}</option>
                     ))}
@@ -541,7 +541,7 @@ function AnnouncementDetail() {
 
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">Icône</span>
-                  <span className="font-mono text-xs">{announcement.icon || "—"}</span>
+                  <span className="font-mono text-xs">{announcement.icon || "-"}</span>
                 </div>
 
                 <div className="flex items-center justify-between">

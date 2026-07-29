@@ -126,7 +126,7 @@ function CampaignDetail() {
   };
 
   const formatDate = (dateStr?: string | null) => {
-    if (!dateStr) return "—";
+    if (!dateStr) return "-";
     return new Date(dateStr.replace("Z", "")).toLocaleString("fr-FR", {
       dateStyle: "medium",
       timeStyle: "short",
@@ -217,7 +217,7 @@ function CampaignDetail() {
                 onChange={(e) => setForm({ ...form, category_id: e.target.value })}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm mt-1"
               >
-                <option value="">— Aucune —</option>
+                <option value="">- Aucune -</option>
                 {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
             </div>

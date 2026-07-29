@@ -52,7 +52,7 @@ function ResponseDetail() {
   };
 
   const formatDate = (dateStr?: string) => {
-    if (!dateStr) return "—";
+    if (!dateStr) return "-";
     return new Date(dateStr.replace("Z", "")).toLocaleString("fr-FR", {
       dateStyle: "medium",
       timeStyle: "short",
@@ -91,7 +91,7 @@ function ResponseDetail() {
 
   const formatAnswer = (value: unknown, questionType?: string) => {
     if (value === null || value === undefined || value === "") {
-      return <span className="text-muted-foreground italic">— Non renseigné —</span>;
+      return <span className="text-muted-foreground italic">- Non renseigné -</span>;
     }
 
     if (questionType === "rating" && typeof value === "number") {
@@ -225,7 +225,7 @@ function ResponseDetail() {
                 <div className="flex items-center gap-2">
                   <Folder className="h-4 w-4 text-primary" />
                   <span>
-                    Projet : <b className="text-foreground">{response.project ?? response.projectName ?? "—"}</b>
+                    Projet : <b className="text-foreground">{response.project ?? response.projectName ?? "-"}</b>
                   </span>
                 </div>
                 <div className="flex items-center gap-2 sm:col-span-2">

@@ -2,6 +2,7 @@ export type JobOfferContractType = "cdi" | "cdd" | "stage" | "freelance" | "alte
 export type JobOfferWorkMode = "presentiel" | "hybride" | "teletravail";
 export type JobOfferStatus = "draft" | "published" | "disabled";
 export type JobEducationLevel = "sans_diplome" | "bepc" | "bac" | "bac+2" | "bac+3" | "master" | "doctorat";
+import type { JobApplicationStatus } from "@/data/jobApplications";
 
 // Liste et détail renvoient les mêmes champs → un seul type.
 export type APIAdminJobOffer = {
@@ -101,4 +102,16 @@ export const JOB_OFFER_STATUS_BADGES: Record<JobOfferStatus, string> = {
 
 export function getJobOfferStatusBadge(status: JobOfferStatus): string {
   return JOB_OFFER_STATUS_BADGES[status] ?? "bg-muted text-muted-foreground border-transparent";
+}
+
+export interface APIAdminJobOfferApplicant {
+  id: string;
+  firstName: string;
+  lastName: string;
+  status: JobApplicationStatus;
+  submittedAt: string;
+}
+export interface APIAdminJobOfferDetailWithApplicants {
+  offer: APIAdminJobOffer;
+  applicants: APIAdminJobOfferApplicant[];
 }

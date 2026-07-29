@@ -60,7 +60,7 @@ function AdminReviewResponses() {
             ),
           },
           { key: "reviewForm", label: "Formulaire", render: (r) => <span className="text-xs">{r.reviewForm}</span> },
-          { key: "project", label: "Projet", render: (r) => <span className="text-xs">{r.project ?? r.projectName ?? "—"}</span> },
+          { key: "project", label: "Projet", render: (r) => <span className="text-xs">{r.project ?? r.projectName ?? "-"}</span> },
           {
             key: "allowPublication",
             label: "Publication",

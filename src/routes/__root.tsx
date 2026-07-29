@@ -6,7 +6,7 @@ import appCss from "../styles.css?url";
 import { SITE } from "@/data/site";
 import { NotFoundComponent, ErrorComponent } from "@/components/errors";
 
-const DEFAULT_TITLE = `${SITE.name} — Backoffice`;
+const DEFAULT_TITLE = `${SITE.name} - Backoffice`;
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({

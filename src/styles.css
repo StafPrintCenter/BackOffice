@@ -55,7 +55,7 @@
 :root {
   --radius: 0.75rem;
 
-  /* Warm editorial palette — ivory canvas, deep ink, terracotta accent */
+  /* Warm editorial palette - ivory canvas, deep ink, terracotta accent */
   --ivory: oklch(0.985 0.012 85);
   --ink: oklch(0.18 0.02 45);
   --terracotta: oklch(0.68 0.16 45);

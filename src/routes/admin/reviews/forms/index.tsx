@@ -119,7 +119,7 @@ function AdminReviewForms() {
             key: "category",
             label: "Catégorie",
             render: (r) => {
-              if (!r.category) return <span className="text-xs text-muted-foreground">—</span>;
+              if (!r.category) return <span className="text-xs text-muted-foreground">-</span>;
               const catObj = categories.find((c) => c.id === r.categoryId || c.name === r.category);
               return (
                 <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${catObj?.colorClass ?? "bg-muted text-muted-foreground"}`}>
@@ -145,7 +145,7 @@ function AdminReviewForms() {
           {
             key: "expiresAt",
             label: "Expire le",
-            render: (r) => r.expiresAt ? new Date(r.expiresAt).toLocaleDateString("fr-FR") : "—",
+            render: (r) => r.expiresAt ? new Date(r.expiresAt).toLocaleDateString("fr-FR") : "-",
           },
         ]}
       />
@@ -172,7 +172,7 @@ function AdminReviewForms() {
                   onChange={(e) => setForm({ ...form, category_id: e.target.value })}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="">— Aucune —</option>
+                  <option value="">- Aucune -</option>
                   {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
                 </select>
               </div>

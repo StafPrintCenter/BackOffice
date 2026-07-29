@@ -1,15 +1,16 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, CheckCircle, Briefcase, MapPin, Building2, Calendar, FileText, ListChecks, Settings2, Plus, Eye, EyeOff, Link2, Clock, CheckCircle2, GraduationCap, Users2, Laptop, } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, CheckCircle, Briefcase, MapPin, Building2, Calendar, FileText, ListChecks, Settings2, Plus, Eye, EyeOff, Link2, Clock, CheckCircle2, GraduationCap, Users2, Laptop, ChevronRight, } from "lucide-react";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { useAdminJobOfferDetail, useUpdateAdminJobOffer, useDeleteAdminJobOffer, usePublishAdminJobOffer, useDisableAdminJobOffer, useReactivateAdminJobOffer, } from "@/stores/useJobOffersStore";
+import { useAdminJobOfferDetailWithApplicants, useUpdateAdminJobOffer, useDeleteAdminJobOffer, usePublishAdminJobOffer, useDisableAdminJobOffer, useReactivateAdminJobOffer, } from "@/stores/useJobOffersStore";
 import type { AdminJobOfferUpdatePayload, APIAdminJobOffer, JobOfferWorkMode, JobEducationLevel } from "@/data/jobOffers";
 import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_WORK_MODE_LABELS, JOB_EDUCATION_LEVEL_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge, } from "@/data/jobOffers";
+import { JOB_APPLICATION_STATUS_LABELS, getJobApplicationStatusBadge } from "@/data/jobApplications";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/jobs/offers/$id")({
@@ -51,7 +52,7 @@ function toEditForm(o: APIAdminJobOffer): EditForm {
 }
 
 function formatDate(dateStr?: string | null): string {
-  if (!dateStr) return "-";
+  if (!dateStr) return "—";
   return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
 }
 
@@ -59,7 +60,7 @@ function JobOfferDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
 
-  const { item: offer, isLoading } = useAdminJobOfferDetail(id);
+  const { offer, applicants, isLoading } = useAdminJobOfferDetailWithApplicants(id);
   const updateMutation = useUpdateAdminJobOffer();
   const removeMutation = useDeleteAdminJobOffer();
   const publishMutation = usePublishAdminJobOffer();
@@ -155,7 +156,7 @@ function JobOfferDetail() {
     const max = offer.salaryMax != null && offer.salaryMax !== "" ? Number(offer.salaryMax).toLocaleString() : null;
     if (min && max) return `${min} - ${max} FCFA`;
     if (min) return `${min} FCFA`;
-    return "-";
+    return "—";
   };
 
   return (
@@ -203,7 +204,6 @@ function JobOfferDetail() {
       </div>
 
       {isEditing ? (
-        /* MODE ÉDITION - seulement les champs acceptés par UpdateController */
         <div className="grid gap-6 lg:grid-cols-12">
           <div className="lg:col-span-8 space-y-6">
             <div className="rounded-2xl border bg-card p-6 space-y-4">
@@ -254,7 +254,7 @@ function JobOfferDetail() {
                       onChange={(e) => setForm({ ...form, educationLevel: e.target.value as JobEducationLevel | "" })}
                       className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     >
-                      <option value="">- Non spécifié -</option>
+                      <option value="">— Non spécifié —</option>
                       {Object.entries(JOB_EDUCATION_LEVEL_LABELS).map(([k, l]) => (<option key={k} value={k}>{l}</option>))}
                     </select>
                   </div>
@@ -315,7 +315,6 @@ function JobOfferDetail() {
           </div>
         </div>
       ) : (
-        /* MODE LECTURE (toutes les données de l'API y sont, y compris les champs verrouillés) */
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             <div>
@@ -361,9 +360,43 @@ function JobOfferDetail() {
                 <ul className="list-inside list-disc text-sm space-y-1.5 text-muted-foreground">
                   {offer.profile.map((p, i) => (<li key={i}>{p}</li>))}
                 </ul>
-                <p className="text-[11px] text-muted-foreground/70">Champ verrouillé après création - non modifiable via l'admin.</p>
+                <p className="text-[11px] text-muted-foreground/70">Champ verrouillé après création — non modifiable via l'admin.</p>
               </div>
             )}
+
+            {/* Candidatures reçues */}
+            <div className="rounded-2xl border bg-card p-6 space-y-3">
+              <div className="flex items-center gap-2 font-semibold text-base">
+                <Users2 className="h-4 w-4 text-primary" /> Candidatures ({applicants.length})
+              </div>
+              {applicants.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Aucune candidature reçue pour le moment.</p>
+              ) : (
+                <div className="divide-y rounded-lg border">
+                  {applicants.map((a) => (
+                    <Link
+                      key={a.id}
+                      to="/admin/jobs/applications/$id"
+                      params={{ id: a.id }}
+                      className="flex items-center justify-between gap-3 p-3 text-sm hover:bg-muted/40"
+                    >
+                      <div>
+                        <div className="font-medium">{a.firstName} {a.lastName}</div>
+                        <div className="text-xs text-muted-foreground">
+                          Envoyée le {new Date(a.submittedAt).toLocaleDateString("fr-FR")}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getJobApplicationStatusBadge(a.status)}`}>
+                          {JOB_APPLICATION_STATUS_LABELS[a.status]}
+                        </span>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="lg:sticky lg:top-6 h-fit space-y-4">
@@ -377,24 +410,24 @@ function JobOfferDetail() {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Building2 className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                  <span>Département : <strong className="text-foreground">{offer.department || "-"}</strong></span>
+                  <span>Département : <strong className="text-foreground">{offer.department || "—"}</strong></span>
                 </div>
 
                 {offer.workMode !== "teletravail" && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <MapPin className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                    <span>Lieu : <strong className="text-foreground">{offer.location || "-"}</strong></span>
+                    <span>Lieu : <strong className="text-foreground">{offer.location || "—"}</strong></span>
                   </div>
                 )}
 
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Users2 className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                  <span>Postes ouverts : <strong className="text-foreground">{offer.numPositions ?? "-"}</strong></span>
+                  <span>Postes ouverts : <strong className="text-foreground">{offer.numPositions ?? "—"}</strong></span>
                 </div>
 
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <GraduationCap className="h-4 w-4 shrink-0 text-muted-foreground/70" />
-                  <span>Niveau requis : <strong className="text-foreground">{offer.educationLevel ? JOB_EDUCATION_LEVEL_LABELS[offer.educationLevel] : "-"}</strong></span>
+                  <span>Niveau requis : <strong className="text-foreground">{offer.educationLevel ? JOB_EDUCATION_LEVEL_LABELS[offer.educationLevel] : "—"}</strong></span>
                 </div>
 
                 <div className="flex items-center gap-2 text-muted-foreground">

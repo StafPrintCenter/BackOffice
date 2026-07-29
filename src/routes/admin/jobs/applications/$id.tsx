@@ -84,8 +84,6 @@ function JobApplicationDetail() {
   };
 
   const isFinalized = app?.status === "accepted" || app?.status === "rejected";
-
-  // Résolution des URLs sécurisées/complètes des fichiers joints
   const cvUrlResolved = resolveStorageUrl(app?.cvUrl);
   const coverLetterUrlResolved = resolveStorageUrl(app?.coverLetterFileUrl);
 

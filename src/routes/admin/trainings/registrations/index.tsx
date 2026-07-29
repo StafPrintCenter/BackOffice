@@ -61,7 +61,7 @@ function AdminTrainingRegistrations() {
           {
             key: "schedulePreference",
             label: "Créneau souhaité",
-            render: (r) => <span className="text-xs text-muted-foreground">{r.schedulePreference || "—"}</span>,
+            render: (r) => <span className="text-xs text-muted-foreground">{r.schedulePreference || "-"}</span>,
           },
           {
             key: "createdAt",

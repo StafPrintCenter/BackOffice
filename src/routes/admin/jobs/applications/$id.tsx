@@ -24,7 +24,7 @@ export const Route = createFileRoute("/admin/jobs/applications/$id")({
 });
 
 function formatDate(dateStr?: string | null): string {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
 }
 

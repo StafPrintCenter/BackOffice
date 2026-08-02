@@ -462,7 +462,7 @@ function InstructorDetail() {
       {/* Confirmation retrait d'une formation assignée */}
       <ConfirmDelete
         open={!!assignmentToRemove}
-        onOpenChange={(v) => !v && setAssignmentToRemove(null)}
+        onOpenChange={(v) => { if (!v) setAssignmentToRemove(null); }}
         onConfirm={() => {
           if (!assignmentToRemove) return;
           removeAssignmentMutation.mutate(assignmentToRemove, {

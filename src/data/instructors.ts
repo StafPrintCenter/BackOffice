@@ -30,7 +30,6 @@ export type APIAdminInstructor = {
   acceptedAt: string | null;
   approvedAt: string | null;
   trainings: APIAdminInstructorTrainingAssignment[];
-  approvedAt: string | null;
   createdAt: string;
 };
 

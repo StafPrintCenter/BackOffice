@@ -28,6 +28,7 @@ export type APIAdminInstructor = {
   blockedReason: string | null;
   invitedAt: string | null;
   acceptedAt: string | null;
+  approvedAt: string | null;
   trainings: APIAdminInstructorTrainingAssignment[];
   approvedAt: string | null;
   createdAt: string;

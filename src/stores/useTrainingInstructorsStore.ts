@@ -2,9 +2,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import type { APITrainingInstructorAssignment, AdminTrainingInstructorAssignPayload } from "@/data/trainingInstructors";
 
-// Ressource imbriquée avec basePath dynamique (par trainingId) pour list/assign,
-// mais l'endpoint de retrait est une route PLATE indépendante du trainingId.
-// createResourceStore ne convient à aucun des deux cas → store entièrement manuel.
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();

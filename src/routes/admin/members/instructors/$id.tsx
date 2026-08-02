@@ -343,7 +343,6 @@ function InstructorDetail() {
         </div>
 
         {/* Formations assignées */}
-        {/* Formations assignées */}
         <div className="rounded-2xl border bg-card p-6">
           <div className="mb-4 flex items-center gap-2 font-semibold">
             <GraduationCap className="h-4 w-4 text-primary" /> Formations assignées

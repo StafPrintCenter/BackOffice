@@ -341,6 +341,46 @@ function InstructorDetail() {
             )}
           </div>
         </div>
+
+        {/* Formations assignées */}
+        <div className="rounded-2xl border bg-card p-6">
+          <div className="mb-4 flex items-center gap-2 font-semibold">
+            <GraduationCap className="h-4 w-4 text-primary" /> Formations assignées
+          </div>
+          {instructor.trainings.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Aucune formation assignée pour le moment.</p>
+          ) : (
+            <div className="space-y-2">
+              {instructor.trainings.map((t) => (
+                <div key={t.assignmentId} className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm">
+                  <div className="min-w-0 flex-1">
+                    <Link
+                      to="/admin/trainings/catalogs/$id"
+                      params={{ id: t.trainingId }}
+                      className="font-medium text-primary hover:underline truncate"
+                    >
+                      {t.trainingTitle}
+                    </Link>
+                    <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium">
+                        {TRAINING_INSTRUCTOR_ROLE_LABELS[t.role]}
+                      </span>
+                      <span>Assigné le {formatDate(t.assignedAt)}</span>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="shrink-0 text-destructive hover:bg-destructive/10"
+                    onClick={() => setAssignmentToRemove({ trainingId: t.trainingId, assignmentId: t.assignmentId })}
+                  >
+                    <XIcon className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Dialog Alerte */}

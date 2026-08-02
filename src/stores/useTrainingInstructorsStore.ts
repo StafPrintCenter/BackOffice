@@ -53,8 +53,6 @@ export function useAssignAdminTrainingInstructor() {
   });
 }
 
-// ⚠️ Endpoint supposé par analogie REST (assign = create, list = index, delete {id} = remove) —
-// aucun curl explicite fourni pour cette étape, à confirmer.
 async function removeInstructorAssignment(trainingId: string, assignmentId: string): Promise<void> {
   const response = await adminFetch(`/api/admin/trainings/${trainingId}/instructors/${assignmentId}`, {
     method: "DELETE",

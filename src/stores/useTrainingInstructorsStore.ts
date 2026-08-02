@@ -33,7 +33,16 @@ async function assignInstructor(trainingId: string, payload: AdminTrainingInstru
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de l'assignation du formateur");
+  if (!response.ok) {
+    let message = "Erreur lors de l'assignation du formateur";
+    try {
+      const json = await response.json();
+      if (json?.message) message = json.message;
+    } catch {
+      // réponse non-JSON, on garde le message générique
+    }
+    throw new Error(message);
+  }
   return response.json();
 }
 

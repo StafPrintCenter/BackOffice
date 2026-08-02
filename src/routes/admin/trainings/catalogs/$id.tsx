@@ -428,58 +428,6 @@ function TrainingDetail() {
                 </div>
               )}
             </div>
-
-            {/* Formateurs assignés */}
-            <div className="rounded-2xl border bg-card p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="flex items-center gap-2 font-semibold">
-                  <UserCheck className="h-4 w-4 text-primary" /> Formateurs assignés
-                </div>
-                <Button size="sm" variant="outline" onClick={() => setAssignOpen(true)}>
-                  <UserPlus className="h-3.5 w-3.5 mr-1" /> Assigner
-                </Button>
-              </div>
-
-              {assignmentsLoading ? (
-                <div className="text-sm text-muted-foreground">Chargement...</div>
-              ) : assignments.length === 0 ? (
-                <p className="text-sm text-muted-foreground">Aucun formateur assigné pour le moment.</p>
-              ) : (
-                <div className="space-y-2">
-                  {assignments.map((a) => (
-                    <div key={a.assignmentId} className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm">
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium truncate">{a.instructorName}</span>
-                          <span className="inline-flex shrink-0 items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium">
-                            {TRAINING_INSTRUCTOR_ROLE_LABELS[a.role]}
-                          </span>
-                          {a.instructorIsBlocked && (
-                            <span className="inline-flex shrink-0 items-center rounded-full bg-destructive/10 text-destructive px-2 py-0.5 text-[10px] font-medium">
-                              Bloqué
-                            </span>
-                          )}
-                        </div>
-                        <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <MailIcon className="h-3 w-3" /> {a.instructorEmail}
-                        </div>
-                        <div className="mt-0.5 text-[11px] text-muted-foreground/70">
-                          Assigné le {formatAssignedAt(a.assignedAt)} par {a.assignedBy}
-                        </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="shrink-0 text-destructive hover:bg-destructive/10"
-                        onClick={() => setAssignmentToRemove(a.assignmentId)}
-                      >
-                        <XIcon className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Sidebar sticky - fiche pratique */}

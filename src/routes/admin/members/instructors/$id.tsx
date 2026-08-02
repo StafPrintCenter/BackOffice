@@ -8,10 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
-import {
-  useAdminInstructorDetail, useApproveAdminInstructor, useResendAdminInstructorInvite,
-  useRevokeAdminInstructorInvite, useAlertAdminInstructor, useBlockAdminInstructor, useReactivateAdminInstructor,
-} from "@/stores/useInstructorsStore";
+import { useAdminInstructorDetail, useApproveAdminInstructor, useResendAdminInstructorInvite, useRevokeAdminInstructorInvite, useAlertAdminInstructor, useBlockAdminInstructor, useReactivateAdminInstructor, } from "@/stores/useInstructorsStore";
 import { useRemoveAdminTrainingInstructorAssignment } from "@/stores/useTrainingInstructorsStore";
 import { TRAINING_INSTRUCTOR_ROLE_LABELS } from "@/data/trainingInstructors";
 import { SITE } from "@/data/site";

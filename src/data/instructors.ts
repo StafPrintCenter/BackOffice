@@ -1,3 +1,4 @@
+import type { TrainingInstructorRole } from "@/data/trainingInstructors";
 export type InstructorRegistrationSource = "invited" | "self_registered";
 
 export type APIAdminInstructor = {

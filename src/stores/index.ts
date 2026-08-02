@@ -23,5 +23,6 @@ export * from "./useServicesStore";
 export * from "./useStatsStore";
 export * from "./useStudentsStore";
 export * from "./useTestimonialsStore";
+export * from "./useTrainingInstructorsStore";
 export * from "./useTrainingsStore";
 export * from "./useUsersStore";

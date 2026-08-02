@@ -61,7 +61,6 @@ async function approveInstructor(id: string): Promise<APIAdminInstructor> {
   return json.data;
 }
 
-// ⚠️ Réponse observée = { message } uniquement, pas d'enveloppe { data }.
 async function resendInstructorInvite(id: string): Promise<{ message: string }> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/invite/resend`, { method: "POST" });
   if (!response.ok) throw new Error("Erreur lors du renvoi de l'invitation");

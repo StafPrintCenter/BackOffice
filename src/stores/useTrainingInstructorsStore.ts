@@ -2,8 +2,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import type { APITrainingInstructorAssignment, AdminTrainingInstructorAssignPayload } from "@/data/trainingInstructors";
 
-// Ressource imbriquée avec basePath dynamique (par trainingId) : createResourceStore
-// suppose un basePath fixe, donc ce store est écrit intégralement à la main.
+// Ressource imbriquée avec basePath dynamique (par trainingId) pour list/assign,
+// mais l'endpoint de retrait est une route PLATE indépendante du trainingId.
+// createResourceStore ne convient à aucun des deux cas → store entièrement manuel.
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();
@@ -53,8 +54,8 @@ export function useAssignAdminTrainingInstructor() {
   });
 }
 
-async function removeInstructorAssignment(trainingId: string, assignmentId: string): Promise<void> {
-  const response = await adminFetch(`/api/admin/trainings/${trainingId}/instructors/${assignmentId}`, {
+async function removeInstructorAssignment(assignmentId: string): Promise<void> {
+  const response = await adminFetch(`/api/admin/trainings/instructors/${assignmentId}`, {
     method: "DELETE",
   });
   if (!response.ok && response.status !== 204) throw new Error("Erreur lors du retrait du formateur");
@@ -65,8 +66,8 @@ export const removeAdminTrainingInstructorAssignment = removeInstructorAssignmen
 export function useRemoveAdminTrainingInstructorAssignment() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ trainingId, assignmentId }: { trainingId: string; assignmentId: string }) =>
-      removeInstructorAssignment(trainingId, assignmentId),
+    mutationFn: ({ assignmentId }: { trainingId: string; assignmentId: string }) =>
+      removeInstructorAssignment(assignmentId),
     onSuccess: (_data, variables) => {
       qc.invalidateQueries({ queryKey: ["trainings", "instructors", variables.trainingId] });
       qc.invalidateQueries({ queryKey: ["instructors"] });

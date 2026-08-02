@@ -120,6 +120,21 @@ function TrainingDetail() {
     setIsEditing(false);
   };
 
+  const submitAssign = () => {
+    if (!assignForm.instructorId) return;
+    assignMutation.mutate(
+      { trainingId: id, payload: { instructor_id: assignForm.instructorId, role: assignForm.role } },
+      {
+        onSuccess: () => {
+          toast.success("Formateur assigné");
+          setAssignOpen(false);
+          setAssignForm({ instructorId: "", role: "lead" });
+        },
+        onError: () => toast.error("Erreur lors de l'assignation"),
+      }
+    );
+  };
+
   return (
     <AdminShell>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">

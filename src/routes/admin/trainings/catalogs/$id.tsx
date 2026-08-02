@@ -66,7 +66,6 @@ function TrainingDetail() {
   const [form, setForm] = useState<AdminTrainingPayload | null>(null);
   const [toDelete, setToDelete] = useState(false);
 
-  // --- Formateurs assignés ---
   const { assignments, isLoading: assignmentsLoading } = useTrainingInstructorsList(id);
   const { items: allInstructors } = useAdminInstructorsList({ perPage: 100 });
   const assignMutation = useAssignAdminTrainingInstructor();

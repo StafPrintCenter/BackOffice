@@ -107,7 +107,10 @@ function TrainingDetail() {
   const themeColorClass = themeMeta?.colorClass ?? "bg-slate-100 text-slate-700";
 
   const assignedInstructorIds = new Set(assignments.map((a) => a.instructorId));
-  const availableInstructors = allInstructors.filter((i) => !assignedInstructorIds.has(i.id));
+
+  const availableInstructors = allInstructors.filter(
+    (i) => !assignedInstructorIds.has(i.id) && i.isActive && !i.isBlocked && !i.isPending && !i.needsApproval
+  );
 
   const handleSave = () => {
     updateMutation.mutate({ id: training.id, payload: form }, {

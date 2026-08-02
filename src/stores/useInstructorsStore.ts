@@ -8,8 +8,6 @@ import type {
 const resourceKey = "instructors";
 const basePath = "instructors";
 
-// Pas de create/update/delete standards — l'ajout se fait via /invite (route et payload différents).
-// La factory ne sert qu'à list/detail.
 const store = createResourceStore<APIAdminInstructor, AdminInstructorInvitePayload>({
   resourceKey,
   basePath,

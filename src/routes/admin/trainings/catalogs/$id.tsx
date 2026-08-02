@@ -11,9 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAdminTrainingDetail, useUpdateAdminTraining, useDeleteAdminTraining } from "@/stores/useTrainingsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import {
-  useTrainingInstructorsList, useAssignAdminTrainingInstructor, useRemoveAdminTrainingInstructorAssignment,
-} from "@/stores/useTrainingInstructorsStore";
+import { useTrainingInstructorsList, useAssignAdminTrainingInstructor, useRemoveAdminTrainingInstructorAssignment, } from "@/stores/useTrainingInstructorsStore";
 import { useAdminInstructorsList } from "@/stores/useInstructorsStore";
 import { TRAINING_INSTRUCTOR_ROLE_LABELS } from "@/data/trainingInstructors";
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";

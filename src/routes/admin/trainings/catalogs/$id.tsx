@@ -49,6 +49,10 @@ function toPayload(t: NonNullable<ReturnType<typeof useAdminTrainingDetail>["ite
   };
 }
 
+function formatAssignedAt(dateStr: string): string {
+  return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
+}
+
 function TrainingDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
@@ -61,6 +65,19 @@ function TrainingDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState<AdminTrainingPayload | null>(null);
   const [toDelete, setToDelete] = useState(false);
+
+  // --- Formateurs assignés ---
+  const { assignments, isLoading: assignmentsLoading } = useTrainingInstructorsList(id);
+  const { items: allInstructors } = useAdminInstructorsList({ perPage: 100 });
+  const assignMutation = useAssignAdminTrainingInstructor();
+  const removeAssignmentMutation = useRemoveAdminTrainingInstructorAssignment();
+
+  const [assignOpen, setAssignOpen] = useState(false);
+  const [assignForm, setAssignForm] = useState<{ instructorId: string; role: TrainingInstructorRole }>({
+    instructorId: "",
+    role: "lead",
+  });
+  const [assignmentToRemove, setAssignmentToRemove] = useState<string | null>(null);
 
   useEffect(() => {
     if (training && !form) setForm(toPayload(training));

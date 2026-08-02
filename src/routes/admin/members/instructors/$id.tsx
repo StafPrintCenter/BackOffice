@@ -262,18 +262,40 @@ function InstructorDetail() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-1.5">
                 <span
-                  className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${instructor.isBlocked
-                    ? "bg-rose-500/10 text-rose-600 border-rose-500/20"
-                    : instructor.isActive
-                      ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-                      : "bg-muted text-muted-foreground border-border"
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${instructor.isActive
+                    ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+                    : "bg-muted text-muted-foreground border-border"
                     }`}
                 >
-                  <span className={`h-1.5 w-1.5 rounded-full ${instructor.isBlocked ? "bg-rose-500" : instructor.isActive ? "bg-emerald-500" : "bg-muted-foreground"}`} />
-                  {instructor.isBlocked ? "Bloqué" : instructor.isActive ? "Actif" : instructor.isPending ? "Invitation en attente" : "Inactif"}
+                  <span className={`h-1.5 w-1.5 rounded-full ${instructor.isActive ? "bg-emerald-500" : "bg-muted-foreground"}`} />
+                  {instructor.isActive ? "Actif" : "Inactif"}
                 </span>
+
+                <span
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${instructor.isBlocked
+                    ? "bg-rose-500/10 text-rose-600 border-rose-500/20"
+                    : "bg-muted/50 text-muted-foreground/70 border-transparent"
+                    }`}
+                >
+                  <span className={`h-1.5 w-1.5 rounded-full ${instructor.isBlocked ? "bg-rose-500" : "bg-muted-foreground/40"}`} />
+                  {instructor.isBlocked ? "Bloqué" : "Non bloqué"}
+                </span>
+
+                {instructor.isPending && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-500/20 bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-600">
+                    <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
+                    Invitation en attente
+                  </span>
+                )}
+
+                {instructor.needsApproval && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-1 text-xs font-semibold text-amber-600">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                    Approbation requise
+                  </span>
+                )}
               </div>
             </div>
           </div>

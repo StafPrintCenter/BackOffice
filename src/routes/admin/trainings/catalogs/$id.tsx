@@ -511,7 +511,7 @@ function TrainingDetail() {
 
       <ConfirmDelete
         open={!!assignmentToRemove}
-        onOpenChange={(v) => !v && setAssignmentToRemove(null)}
+        onOpenChange={(v) => { if (!v) setAssignmentToRemove(null); }}
         onConfirm={() => {
           if (!assignmentToRemove) return;
           removeAssignmentMutation.mutate(

@@ -46,10 +46,10 @@ import { Route as AdminJobsOffersIndexRouteImport } from './routes/admin/jobs/of
 import { Route as AdminJobsOffersIdRouteImport } from './routes/admin/jobs/offers/$id'
 import { Route as AdminMembersAdminsIndexRouteImport } from './routes/admin/members/admins/index'
 import { Route as AdminMembersAdminsIdRouteImport } from './routes/admin/members/admins/$id'
+import { Route as AdminMembersInstructorsIndexRouteImport } from './routes/admin/members/instructors/index'
+import { Route as AdminMembersInstructorsIdRouteImport } from './routes/admin/members/instructors/$id'
 import { Route as AdminMembersStudentsIndexRouteImport } from './routes/admin/members/students/index'
 import { Route as AdminMembersStudentsIdRouteImport } from './routes/admin/members/students/$id'
-import { Route as AdminMembersUserscopyIndexRouteImport } from './routes/admin/members/users copy/index'
-import { Route as AdminMembersUserscopyIdRouteImport } from './routes/admin/members/users copy/$id'
 import { Route as AdminMembersUsersIndexRouteImport } from './routes/admin/members/users/index'
 import { Route as AdminMembersUsersIdRouteImport } from './routes/admin/members/users/$id'
 import { Route as AdminNewsletterCampaignsIndexRouteImport } from './routes/admin/newsletter/campaigns/index'
@@ -253,6 +253,18 @@ const AdminMembersAdminsIdRoute = AdminMembersAdminsIdRouteImport.update({
   path: '/admin/members/admins/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminMembersInstructorsIndexRoute =
+  AdminMembersInstructorsIndexRouteImport.update({
+    id: '/admin/members/instructors/',
+    path: '/admin/members/instructors/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminMembersInstructorsIdRoute =
+  AdminMembersInstructorsIdRouteImport.update({
+    id: '/admin/members/instructors/$id',
+    path: '/admin/members/instructors/$id',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminMembersStudentsIndexRoute =
   AdminMembersStudentsIndexRouteImport.update({
     id: '/admin/members/students/',
@@ -262,17 +274,6 @@ const AdminMembersStudentsIndexRoute =
 const AdminMembersStudentsIdRoute = AdminMembersStudentsIdRouteImport.update({
   id: '/admin/members/students/$id',
   path: '/admin/members/students/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminMembersUserscopyIndexRoute =
-  AdminMembersUserscopyIndexRouteImport.update({
-    id: '/admin/members/users copy/',
-    path: '/admin/members/users copy/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AdminMembersUserscopyIdRoute = AdminMembersUserscopyIdRouteImport.update({
-  id: '/admin/members/users copy/$id',
-  path: '/admin/members/users copy/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMembersUsersIndexRoute = AdminMembersUsersIndexRouteImport.update({
@@ -401,8 +402,8 @@ export interface FileRoutesByFullPath {
   '/admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
+  '/admin/members/instructors/$id': typeof AdminMembersInstructorsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
-  '/admin/members/users copy/$id': typeof AdminMembersUserscopyIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
@@ -414,8 +415,8 @@ export interface FileRoutesByFullPath {
   '/admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
   '/admin/jobs/offers/': typeof AdminJobsOffersIndexRoute
   '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
+  '/admin/members/instructors/': typeof AdminMembersInstructorsIndexRoute
   '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
-  '/admin/members/users copy/': typeof AdminMembersUserscopyIndexRoute
   '/admin/members/users/': typeof AdminMembersUsersIndexRoute
   '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
   '/admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
@@ -460,8 +461,8 @@ export interface FileRoutesByTo {
   '/admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
+  '/admin/members/instructors/$id': typeof AdminMembersInstructorsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
-  '/admin/members/users copy/$id': typeof AdminMembersUserscopyIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
@@ -473,8 +474,8 @@ export interface FileRoutesByTo {
   '/admin/jobs/applications': typeof AdminJobsApplicationsIndexRoute
   '/admin/jobs/offers': typeof AdminJobsOffersIndexRoute
   '/admin/members/admins': typeof AdminMembersAdminsIndexRoute
+  '/admin/members/instructors': typeof AdminMembersInstructorsIndexRoute
   '/admin/members/students': typeof AdminMembersStudentsIndexRoute
-  '/admin/members/users copy': typeof AdminMembersUserscopyIndexRoute
   '/admin/members/users': typeof AdminMembersUsersIndexRoute
   '/admin/newsletter/campaigns': typeof AdminNewsletterCampaignsIndexRoute
   '/admin/newsletter/subscribers': typeof AdminNewsletterSubscribersIndexRoute
@@ -520,8 +521,8 @@ export interface FileRoutesById {
   '/admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
+  '/admin/members/instructors/$id': typeof AdminMembersInstructorsIdRoute
   '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
-  '/admin/members/users copy/$id': typeof AdminMembersUserscopyIdRoute
   '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
   '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
@@ -533,8 +534,8 @@ export interface FileRoutesById {
   '/admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
   '/admin/jobs/offers/': typeof AdminJobsOffersIndexRoute
   '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
+  '/admin/members/instructors/': typeof AdminMembersInstructorsIndexRoute
   '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
-  '/admin/members/users copy/': typeof AdminMembersUserscopyIndexRoute
   '/admin/members/users/': typeof AdminMembersUsersIndexRoute
   '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
   '/admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
@@ -581,8 +582,8 @@ export interface FileRouteTypes {
     | '/admin/jobs/applications/$id'
     | '/admin/jobs/offers/$id'
     | '/admin/members/admins/$id'
+    | '/admin/members/instructors/$id'
     | '/admin/members/students/$id'
-    | '/admin/members/users copy/$id'
     | '/admin/members/users/$id'
     | '/admin/newsletter/campaigns/$id'
     | '/admin/newsletter/subscribers/$id'
@@ -594,8 +595,8 @@ export interface FileRouteTypes {
     | '/admin/jobs/applications/'
     | '/admin/jobs/offers/'
     | '/admin/members/admins/'
+    | '/admin/members/instructors/'
     | '/admin/members/students/'
-    | '/admin/members/users copy/'
     | '/admin/members/users/'
     | '/admin/newsletter/campaigns/'
     | '/admin/newsletter/subscribers/'
@@ -640,8 +641,8 @@ export interface FileRouteTypes {
     | '/admin/jobs/applications/$id'
     | '/admin/jobs/offers/$id'
     | '/admin/members/admins/$id'
+    | '/admin/members/instructors/$id'
     | '/admin/members/students/$id'
-    | '/admin/members/users copy/$id'
     | '/admin/members/users/$id'
     | '/admin/newsletter/campaigns/$id'
     | '/admin/newsletter/subscribers/$id'
@@ -653,8 +654,8 @@ export interface FileRouteTypes {
     | '/admin/jobs/applications'
     | '/admin/jobs/offers'
     | '/admin/members/admins'
+    | '/admin/members/instructors'
     | '/admin/members/students'
-    | '/admin/members/users copy'
     | '/admin/members/users'
     | '/admin/newsletter/campaigns'
     | '/admin/newsletter/subscribers'
@@ -699,8 +700,8 @@ export interface FileRouteTypes {
     | '/admin/jobs/applications/$id'
     | '/admin/jobs/offers/$id'
     | '/admin/members/admins/$id'
+    | '/admin/members/instructors/$id'
     | '/admin/members/students/$id'
-    | '/admin/members/users copy/$id'
     | '/admin/members/users/$id'
     | '/admin/newsletter/campaigns/$id'
     | '/admin/newsletter/subscribers/$id'
@@ -712,8 +713,8 @@ export interface FileRouteTypes {
     | '/admin/jobs/applications/'
     | '/admin/jobs/offers/'
     | '/admin/members/admins/'
+    | '/admin/members/instructors/'
     | '/admin/members/students/'
-    | '/admin/members/users copy/'
     | '/admin/members/users/'
     | '/admin/newsletter/campaigns/'
     | '/admin/newsletter/subscribers/'
@@ -759,8 +760,8 @@ export interface RootRouteChildren {
   AdminJobsApplicationsIdRoute: typeof AdminJobsApplicationsIdRoute
   AdminJobsOffersIdRoute: typeof AdminJobsOffersIdRoute
   AdminMembersAdminsIdRoute: typeof AdminMembersAdminsIdRoute
+  AdminMembersInstructorsIdRoute: typeof AdminMembersInstructorsIdRoute
   AdminMembersStudentsIdRoute: typeof AdminMembersStudentsIdRoute
-  AdminMembersUserscopyIdRoute: typeof AdminMembersUserscopyIdRoute
   AdminMembersUsersIdRoute: typeof AdminMembersUsersIdRoute
   AdminNewsletterCampaignsIdRoute: typeof AdminNewsletterCampaignsIdRoute
   AdminNewsletterSubscribersIdRoute: typeof AdminNewsletterSubscribersIdRoute
@@ -772,8 +773,8 @@ export interface RootRouteChildren {
   AdminJobsApplicationsIndexRoute: typeof AdminJobsApplicationsIndexRoute
   AdminJobsOffersIndexRoute: typeof AdminJobsOffersIndexRoute
   AdminMembersAdminsIndexRoute: typeof AdminMembersAdminsIndexRoute
+  AdminMembersInstructorsIndexRoute: typeof AdminMembersInstructorsIndexRoute
   AdminMembersStudentsIndexRoute: typeof AdminMembersStudentsIndexRoute
-  AdminMembersUserscopyIndexRoute: typeof AdminMembersUserscopyIndexRoute
   AdminMembersUsersIndexRoute: typeof AdminMembersUsersIndexRoute
   AdminNewsletterCampaignsIndexRoute: typeof AdminNewsletterCampaignsIndexRoute
   AdminNewsletterSubscribersIndexRoute: typeof AdminNewsletterSubscribersIndexRoute
@@ -1045,6 +1046,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMembersAdminsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/members/instructors/': {
+      id: '/admin/members/instructors/'
+      path: '/admin/members/instructors'
+      fullPath: '/admin/members/instructors/'
+      preLoaderRoute: typeof AdminMembersInstructorsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/members/instructors/$id': {
+      id: '/admin/members/instructors/$id'
+      path: '/admin/members/instructors/$id'
+      fullPath: '/admin/members/instructors/$id'
+      preLoaderRoute: typeof AdminMembersInstructorsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/members/students/': {
       id: '/admin/members/students/'
       path: '/admin/members/students'
@@ -1057,20 +1072,6 @@ declare module '@tanstack/react-router' {
       path: '/admin/members/students/$id'
       fullPath: '/admin/members/students/$id'
       preLoaderRoute: typeof AdminMembersStudentsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/members/users copy/': {
-      id: '/admin/members/users copy/'
-      path: '/admin/members/users copy'
-      fullPath: '/admin/members/users copy/'
-      preLoaderRoute: typeof AdminMembersUserscopyIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/members/users copy/$id': {
-      id: '/admin/members/users copy/$id'
-      path: '/admin/members/users copy/$id'
-      fullPath: '/admin/members/users copy/$id'
-      preLoaderRoute: typeof AdminMembersUserscopyIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/members/users/': {
@@ -1223,8 +1224,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminJobsApplicationsIdRoute: AdminJobsApplicationsIdRoute,
   AdminJobsOffersIdRoute: AdminJobsOffersIdRoute,
   AdminMembersAdminsIdRoute: AdminMembersAdminsIdRoute,
+  AdminMembersInstructorsIdRoute: AdminMembersInstructorsIdRoute,
   AdminMembersStudentsIdRoute: AdminMembersStudentsIdRoute,
-  AdminMembersUserscopyIdRoute: AdminMembersUserscopyIdRoute,
   AdminMembersUsersIdRoute: AdminMembersUsersIdRoute,
   AdminNewsletterCampaignsIdRoute: AdminNewsletterCampaignsIdRoute,
   AdminNewsletterSubscribersIdRoute: AdminNewsletterSubscribersIdRoute,
@@ -1236,8 +1237,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminJobsApplicationsIndexRoute: AdminJobsApplicationsIndexRoute,
   AdminJobsOffersIndexRoute: AdminJobsOffersIndexRoute,
   AdminMembersAdminsIndexRoute: AdminMembersAdminsIndexRoute,
+  AdminMembersInstructorsIndexRoute: AdminMembersInstructorsIndexRoute,
   AdminMembersStudentsIndexRoute: AdminMembersStudentsIndexRoute,
-  AdminMembersUserscopyIndexRoute: AdminMembersUserscopyIndexRoute,
   AdminMembersUsersIndexRoute: AdminMembersUsersIndexRoute,
   AdminNewsletterCampaignsIndexRoute: AdminNewsletterCampaignsIndexRoute,
   AdminNewsletterSubscribersIndexRoute: AdminNewsletterSubscribersIndexRoute,

@@ -413,6 +413,20 @@ function InstructorDetail() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Confirmation retrait d'une formation assignée */}
+      <ConfirmDelete
+        open={!!assignmentToRemove}
+        onOpenChange={(v) => !v && setAssignmentToRemove(null)}
+        onConfirm={() => {
+          if (!assignmentToRemove) return;
+          removeAssignmentMutation.mutate(assignmentToRemove, {
+            onSuccess: () => { toast.success("Formation retirée"); setAssignmentToRemove(null); },
+            onError: () => toast.error("Erreur lors du retrait"),
+          });
+        }}
+        title="Retirer cette formation de l'instructeur ?"
+      />
     </AdminShell>
   );
 }

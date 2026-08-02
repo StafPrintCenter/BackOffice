@@ -131,7 +131,7 @@ function TrainingDetail() {
           setAssignOpen(false);
           setAssignForm({ instructorId: "", role: "lead" });
         },
-        onError: () => toast.error("Erreur lors de l'assignation"),
+        onError: (error) => toast.error(error instanceof Error ? error.message : "Erreur lors de l'assignation"),
       }
     );
   };

@@ -51,6 +51,8 @@ function InstructorDetail() {
   const [blockReason, setBlockReason] = useState("");
   const [blockError, setBlockError] = useState("");
 
+  const [assignmentToRemove, setAssignmentToRemove] = useState<{ trainingId: string; assignmentId: string } | null>(null);
+
   if (isLoading) {
     return (
       <AdminShell>

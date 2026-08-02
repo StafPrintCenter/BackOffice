@@ -41,6 +41,7 @@ function InstructorDetail() {
   const alertMutation = useAlertAdminInstructor();
   const blockMutation = useBlockAdminInstructor();
   const reactivateMutation = useReactivateAdminInstructor();
+  const removeAssignmentMutation = useRemoveAdminTrainingInstructorAssignment();
 
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertForm, setAlertForm] = useState({ subject: "", message: "" });

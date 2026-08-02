@@ -72,7 +72,6 @@ async function revokeInstructorInvite(id: string): Promise<APIAdminInstructor> {
   return json.data;
 }
 
-// ⚠️ Réponse observée = { message } uniquement, pas d'enveloppe { data }.
 async function alertInstructor(id: string, payload: AdminInstructorAlertPayload): Promise<{ message: string }> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/alert`, {
     method: "POST",

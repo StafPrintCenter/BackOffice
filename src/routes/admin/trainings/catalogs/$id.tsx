@@ -488,6 +488,9 @@ function TrainingDetail() {
                   ))}
                 </SelectContent>
               </Select>
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Seuls les formateurs actifs, non bloqués et sans invitation/approbation en attente sont assignables.
+              </p>
             </div>
             <div>
               <Label>Rôle</Label>

@@ -108,6 +108,9 @@ function TrainingDetail() {
   const themeMeta = themes.find((t) => t.id === training.themeId);
   const themeColorClass = themeMeta?.colorClass ?? "bg-slate-100 text-slate-700";
 
+  const assignedInstructorIds = new Set(assignments.map((a) => a.instructorId));
+  const availableInstructors = allInstructors.filter((i) => !assignedInstructorIds.has(i.id));
+
   const handleSave = () => {
     updateMutation.mutate({ id: training.id, payload: form }, {
       onSuccess: () => { toast.success("Formation modifiée"); setIsEditing(false); },

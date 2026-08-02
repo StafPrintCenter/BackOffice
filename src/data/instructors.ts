@@ -1,5 +1,13 @@
-import type { TrainingInstructorRole } from "@/data/trainingInstructors";
 export type InstructorRegistrationSource = "invited" | "self_registered";
+
+export interface APIAdminInstructorTrainingAssignment {
+  assignmentId: string;
+  trainingId: string;
+  trainingTitle: string;
+  trainingStatus: string;
+  role: TrainingInstructorRole;
+  assignedAt: string;
+}
 
 export type APIAdminInstructor = {
   id: string;

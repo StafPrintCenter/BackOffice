@@ -43,7 +43,9 @@ interface EditForm {
   actionTarget: "_self" | "_blank";
 }
 
-function toEditForm(a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>["item"]>): EditForm {
+function toEditForm(
+  a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>["item"]>
+): EditForm {
   return {
     type: a.type,
     position: a.position,

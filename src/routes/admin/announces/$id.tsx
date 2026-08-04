@@ -426,12 +426,12 @@ function AnnouncementDetail() {
                     <div className="text-xs font-medium text-muted-foreground">
                       Évolution quotidienne des événements
                     </div>
-                    <div className="h-72">
-                      <ResponsiveContainer>
-                        <BarChart data={chartData}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                          <XAxis dataKey="dayLabel" stroke="var(--muted-foreground)" fontSize={11} />
-                          <YAxis stroke="var(--muted-foreground)" fontSize={11} allowDecimals={false} />
+                    <div className="h-64 w-full pt-2">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                          <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                           <Tooltip
                             contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }}
                             labelStyle={{ color: "var(--foreground)" }}

@@ -9,9 +9,26 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useAdminAnnouncementDetail, useUpdateAdminAnnouncement, useDeleteAdminAnnouncement, useAdminAnnouncementAnalytics, } from "@/stores/useAnnouncementsStore";
-import type { AnnouncementType, AnnouncementPosition, AnnouncementStyle, AnnouncementActionType, } from "@/data/announcements";
-import { ANNOUNCEMENT_TYPE_LABELS, ANNOUNCEMENT_POSITION_LABELS, ANNOUNCEMENT_STYLE_LABELS, getAnnouncementStyleBadge, ANNOUNCEMENT_EVENT_LABELS, ANNOUNCEMENT_EVENT_BADGES, } from "@/data/announcements";
+import {
+  useAdminAnnouncementDetail,
+  useUpdateAdminAnnouncement,
+  useDeleteAdminAnnouncement,
+  useAdminAnnouncementAnalytics,
+} from "@/stores/useAnnouncementsStore";
+import type {
+  AnnouncementType,
+  AnnouncementPosition,
+  AnnouncementStyle,
+  AnnouncementActionType,
+} from "@/data/announcements";
+import {
+  ANNOUNCEMENT_TYPE_LABELS,
+  ANNOUNCEMENT_POSITION_LABELS,
+  ANNOUNCEMENT_STYLE_LABELS,
+  getAnnouncementStyleBadge,
+  ANNOUNCEMENT_EVENT_LABELS,
+  ANNOUNCEMENT_EVENT_BADGES,
+} from "@/data/announcements";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/announces/$id")({

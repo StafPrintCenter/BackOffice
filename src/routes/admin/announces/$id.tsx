@@ -9,12 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  useAdminAnnouncementDetail,
-  useUpdateAdminAnnouncement,
-  useDeleteAdminAnnouncement,
-  useAdminAnnouncementAnalytics,
-} from "@/stores/useAnnouncementsStore";
+import { useAdminAnnouncementDetail, useUpdateAdminAnnouncement, useDeleteAdminAnnouncement, useAdminAnnouncementAnalytics, } from "@/stores/useAnnouncementsStore";
 import type {
   AnnouncementType,
   AnnouncementPosition,

@@ -381,9 +381,9 @@ function AnnouncementDetail() {
             </div>
           )}
 
-          {/* Module d'analyses & Statistiques */}
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <div className="mb-4 flex items-center gap-2 font-display text-lg font-semibold">
+          {/* Module d'analyses & Engagement */}
+          <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-6">
+            <div className="flex items-center gap-2 font-display text-lg font-semibold">
               <BarChart3 className="h-5 w-5 text-primary" /> Analyses & Engagement
             </div>
             {analytics ? (

@@ -245,7 +245,7 @@ function AnnouncementDetail() {
 
       {/* Grille principale à 2 colonnes */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Colonne Principale (Gauches - 2/3) */}
+        {/* Colonne Principale (Gauche - 2/3) */}
         <div className="lg:col-span-2 space-y-6">
           {isEditing ? (
             <div className="space-y-6 rounded-2xl border bg-card p-6 shadow-sm">

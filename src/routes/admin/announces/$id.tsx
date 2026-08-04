@@ -607,10 +607,10 @@ function AnnouncementDetail() {
                   <span className="text-muted-foreground">Statut</span>
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${announcement.isEnabled
-                        ? announcement.isActive
-                          ? "bg-emerald-500/10 text-emerald-600"
-                          : "bg-amber-500/10 text-amber-600"
-                        : "bg-muted text-muted-foreground"
+                      ? announcement.isActive
+                        ? "bg-emerald-500/10 text-emerald-600"
+                        : "bg-amber-500/10 text-amber-600"
+                      : "bg-muted text-muted-foreground"
                       }`}
                   >
                     {announcement.isEnabled

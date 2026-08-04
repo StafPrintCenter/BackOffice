@@ -65,11 +65,30 @@ function toEditForm(a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>
 }
 
 function formatDay(day: string) {
-  return new Date(day).toLocaleDateString("fr-FR", {
-    weekday: "short",
-    day: "2-digit",
-    month: "short",
-  });
+  return new Date(day).toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short" });
+}
+
+/* Palette de secours pour les barres du graphe, dans l'ordre d'apparition des event_type */
+const EVENT_CHART_COLORS = ["#3C82AB", "#5A9B6E", "#C89A3E", "#E07856", "#8B5CF6"];
+
+/**
+ * Pivote analytics.byDay (liste plate {day, event_type, total})
+ * en une ligne par jour avec une colonne par type d'événement,
+ * pour alimenter un BarChart groupé.
+ */
+function buildDailyChartData(byDay: { day: string; event_type: string; total: number }[]) {
+  const map = new Map<string, Record<string, string | number>>();
+
+  for (const row of byDay) {
+    if (!map.has(row.day)) {
+      map.set(row.day, { day: row.day, dayLabel: formatDay(row.day) });
+    }
+    map.get(row.day)![row.event_type] = row.total;
+  }
+
+  return Array.from(map.values()).sort((a, b) =>
+    String(a.day).localeCompare(String(b.day))
+  );
 }
 
 function AnnouncementDetail() {

@@ -87,13 +87,8 @@ function AnnouncementDetail() {
     }
   }, [announcement, isEditing]);
 
-  /* Données du graphe + liste des types d'événements présents (pour Bar + Legend dynamiques) */
-  const chartData = useMemo(
-    () => (analytics?.byDay ? buildDailyChartData(analytics.byDay) : []),
-    [analytics?.byDay]
-  );
-
-  const eventTypesInData = useMemo(() => {
+  // Pivotement des données pour Recharts (regroupement par date pour les 3 métriques)
+  const chartData = useMemo(() => {
     if (!analytics?.byDay) return [];
     const seen = new Set<string>();
     for (const row of analytics.byDay) seen.add(row.event_type);

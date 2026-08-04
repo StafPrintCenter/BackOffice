@@ -762,7 +762,7 @@ function AnnouncementDetail() {
             ) : announcement.action ? (
               <div className="space-y-2 text-sm">
                 <div>
-                  <div className="text-xs text-muted-foreground">Bouton</div>
+                  <Label className="text-xs text-muted-foreground">Bouton</Label>
                   <div className="font-medium">{announcement.action.label}</div>
                 </div>
                 <div>

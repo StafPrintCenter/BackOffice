@@ -804,6 +804,6 @@ function AnnouncementDetail() {
         }}
         title={`Supprimer "${announcement.title}" ?`}
       />
-    </AdminShell >
+    </AdminShell>
   );
 }

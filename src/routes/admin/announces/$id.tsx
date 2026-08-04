@@ -471,10 +471,6 @@ function AnnouncementDetail() {
                       </ResponsiveContainer>
                     </div>
                   </div>
-                ) : (
-                  <div className="rounded-xl border border-dashed p-6 text-center text-xs text-muted-foreground">
-                    Aucune donnée historique à afficher pour la période.
-                  </div>
                 )}
 
                 {/* Liste synthétique par jour */}

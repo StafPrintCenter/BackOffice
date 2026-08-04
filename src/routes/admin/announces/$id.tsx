@@ -94,29 +94,10 @@ function AnnouncementDetail() {
   // Transformation du tableau plat byDay en données pivotées pour le graphique Recharts
   const chartData = useMemo(() => {
     if (!analytics?.byDay) return [];
-
-    const daysMap = new Map<string, { date: string; view: number; click: number; close: number }>();
-
-    analytics.byDay.forEach((row) => {
-      const dateFormatted = formatDay(row.day);
-      if (!daysMap.has(row.day)) {
-        daysMap.set(row.day, {
-          date: dateFormatted,
-          view: 0,
-          click: 0,
-          close: 0,
-        });
-      }
-      const current = daysMap.get(row.day)!;
-      if (row.event_type === "view") current.view += row.total;
-      else if (row.event_type === "click") current.click += row.total;
-      else if (row.event_type === "close") current.close += row.total;
-    });
-
-    return Array.from(daysMap.entries())
-      .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
-      .map(([, data]) => data);
-  }, [analytics]);
+    const seen = new Set<string>();
+    for (const row of analytics.byDay) seen.add(row.event_type);
+    return Array.from(seen);
+  }, [analytics?.byDay]);
 
   if (isLoading) {
     return (

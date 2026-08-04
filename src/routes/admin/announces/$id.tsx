@@ -420,11 +420,11 @@ function AnnouncementDetail() {
                   </div>
                 </div>
 
-                {/* Graphe : événements par jour */}
-                {chartData.length > 0 && (
-                  <div>
-                    <div className="mb-3 text-sm font-medium text-foreground">
-                      Répartition par jour et par événement
+                {/* Graphique temporel par jour et par événement */}
+                {chartData.length > 0 ? (
+                  <div className="space-y-2">
+                    <div className="text-xs font-medium text-muted-foreground">
+                      Évolution quotidienne des événements
                     </div>
                     <div className="h-72">
                       <ResponsiveContainer>

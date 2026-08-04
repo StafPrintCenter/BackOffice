@@ -151,6 +151,7 @@ function AnnouncementDetail() {
     setIsEditing(false);
   };
 
+  /* Helper fonctions pour la liste dynamique de pages ciblées */
   const handleAddTargetPage = () => {
     setForm({ ...form, targetPages: [...form.targetPages, ""] });
   };

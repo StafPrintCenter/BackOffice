@@ -761,7 +761,7 @@ function AnnouncementDetail() {
             ) : announcement.action ? (
               <div className="space-y-2 text-sm">
                 <div>
-                  <Label className="text-xs text-muted-foreground">Bouton</Label>
+                  <div className="text-xs text-muted-foreground">Bouton</div>
                   <div className="font-medium">{announcement.action.label}</div>
                 </div>
                 <div>
@@ -770,17 +770,15 @@ function AnnouncementDetail() {
                 </div>
                 {announcement.action.url && (
                   <div>
-                    <Label className="text-xs text-muted-foreground">Destination</Label>
-                    <div>
-                      <a
-                        href={announcement.action.url}
-                        target={announcement.action.target ?? "_self"}
-                        rel="noreferrer"
-                        className="text-xs text-primary underline break-all"
-                      >
-                        {announcement.action.url}
-                      </a>
-                    </div>
+                    <div className="text-xs text-muted-foreground">Destination</div>
+                    <a
+                      href={announcement.action.url}
+                      target={announcement.action.target ?? "_self"}
+                      rel="noreferrer"
+                      className="text-xs text-primary underline break-all"
+                    >
+                      {announcement.action.url}
+                    </a>
                   </div>
                 )}
               </div>

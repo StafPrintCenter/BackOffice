@@ -1,16 +1,59 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, BarChart3, Eye, MousePointerClick, XCircle, Plus, Globe, Calendar, Layers, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  Pencil,
+  Trash2,
+  Save,
+  X,
+  Loader2,
+  BarChart3,
+  Eye,
+  MousePointerClick,
+  XCircle,
+  Plus,
+  Globe,
+  Calendar,
+  Layers,
+  Sparkles,
+} from "lucide-react";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Legend,
+} from "recharts";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useAdminAnnouncementDetail, useUpdateAdminAnnouncement, useDeleteAdminAnnouncement, useAdminAnnouncementAnalytics, } from "@/stores/useAnnouncementsStore";
-import type { AnnouncementType, AnnouncementPosition, AnnouncementStyle, AnnouncementActionType, } from "@/data/announcements";
-import { ANNOUNCEMENT_TYPE_LABELS, ANNOUNCEMENT_POSITION_LABELS, ANNOUNCEMENT_STYLE_LABELS, getAnnouncementStyleBadge, ANNOUNCEMENT_EVENT_LABELS, ANNOUNCEMENT_EVENT_BADGES, } from "@/data/announcements";
+import {
+  useAdminAnnouncementDetail,
+  useUpdateAdminAnnouncement,
+  useDeleteAdminAnnouncement,
+  useAdminAnnouncementAnalytics,
+} from "@/stores/useAnnouncementsStore";
+import type {
+  AnnouncementType,
+  AnnouncementPosition,
+  AnnouncementStyle,
+  AnnouncementActionType,
+} from "@/data/announcements";
+import {
+  ANNOUNCEMENT_TYPE_LABELS,
+  ANNOUNCEMENT_POSITION_LABELS,
+  ANNOUNCEMENT_STYLE_LABELS,
+  getAnnouncementStyleBadge,
+  ANNOUNCEMENT_EVENT_LABELS,
+  ANNOUNCEMENT_EVENT_BADGES,
+} from "@/data/announcements";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/admin/announces/$id")({
@@ -42,7 +85,9 @@ interface EditForm {
   actionTarget: "_self" | "_blank";
 }
 
-function toEditForm(a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>["item"]>): EditForm {
+function toEditForm(
+  a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>["item"]>
+): EditForm {
   return {
     type: a.type,
     position: a.position,
@@ -64,7 +109,11 @@ function toEditForm(a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>
 }
 
 function formatDay(day: string) {
-  return new Date(day).toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short" });
+  return new Date(day).toLocaleDateString("fr-FR", {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+  });
 }
 
 function AnnouncementDetail() {
@@ -85,6 +134,33 @@ function AnnouncementDetail() {
       setForm(toEditForm(announcement));
     }
   }, [announcement, isEditing]);
+
+  // Transformation du tableau plat byDay en données pivotées pour le graphique Recharts
+  const chartData = useMemo(() => {
+    if (!analytics?.byDay) return [];
+
+    const daysMap = new Map<string, { date: string; view: number; click: number; close: number }>();
+
+    analytics.byDay.forEach((row) => {
+      const dateFormatted = formatDay(row.day);
+      if (!daysMap.has(row.day)) {
+        daysMap.set(row.day, {
+          date: dateFormatted,
+          view: 0,
+          click: 0,
+          close: 0,
+        });
+      }
+      const current = daysMap.get(row.day)!;
+      if (row.event_type === "view") current.view += row.total;
+      else if (row.event_type === "click") current.click += row.total;
+      else if (row.event_type === "close") current.close += row.total;
+    });
+
+    return Array.from(daysMap.entries())
+      .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
+      .map(([, data]) => data);
+  }, [analytics]);
 
   if (isLoading) {
     return (
@@ -114,7 +190,6 @@ function AnnouncementDetail() {
     setIsEditing(false);
   };
 
-  /* Helper fonctions pour la liste dynamique de pages ciblées */
   const handleAddTargetPage = () => {
     setForm({ ...form, targetPages: [...form.targetPages, ""] });
   };
@@ -217,7 +292,7 @@ function AnnouncementDetail() {
 
       {/* Grille principale à 2 colonnes */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Colonne Principale (Gauches - 2/3) */}
+        {/* Colonne Principale (Gauche - 2/3) */}
         <div className="lg:col-span-2 space-y-6">
           {isEditing ? (
             <div className="space-y-6 rounded-2xl border bg-card p-6 shadow-sm">
@@ -353,13 +428,14 @@ function AnnouncementDetail() {
             </div>
           )}
 
-          {/* Module d'analyses & Statistiques */}
-          <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <div className="mb-4 flex items-center gap-2 font-display text-lg font-semibold">
+          {/* Module d'analyses & Engagement */}
+          <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-6">
+            <div className="flex items-center gap-2 font-display text-lg font-semibold">
               <BarChart3 className="h-5 w-5 text-primary" /> Analyses & Engagement
             </div>
             {analytics ? (
-              <div className="space-y-4">
+              <div className="space-y-6">
+                {/* Métriques globales */}
                 <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
                   <div className="flex items-center gap-2.5 rounded-xl border bg-muted/20 p-3">
                     <Eye className="h-4 w-4 text-sky-600 shrink-0" />
@@ -391,6 +467,65 @@ function AnnouncementDetail() {
                   </div>
                 </div>
 
+                {/* Graphique temporel par jour et par événement */}
+                {chartData.length > 0 ? (
+                  <div className="space-y-2">
+                    <div className="text-xs font-medium text-muted-foreground">
+                      Évolution quotidienne des événements
+                    </div>
+                    <div className="h-64 w-full pt-2">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                          <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: "hsl(var(--card))",
+                              borderColor: "hsl(var(--border))",
+                              borderRadius: "0.5rem",
+                              fontSize: "12px",
+                            }}
+                          />
+                          <Legend wrapperStyle={{ fontSize: "12px", pt: "10px" }} />
+                          <Line
+                            type="monotone"
+                            dataKey="view"
+                            name="Vues"
+                            stroke="#0284c7"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            activeDot={{ r: 5 }}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="click"
+                            name="Clics"
+                            stroke="#059669"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            activeDot={{ r: 5 }}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="close"
+                            name="Fermetures"
+                            stroke="#6b7280"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            activeDot={{ r: 5 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-dashed p-6 text-center text-xs text-muted-foreground">
+                    Aucune donnée historique à afficher pour la période.
+                  </div>
+                )}
+
+                {/* Liste synthétique par jour */}
                 {analytics.byDay.length > 0 && (
                   <div className="divide-y rounded-xl border">
                     {analytics.byDay.map((row, i) => (
@@ -520,10 +655,10 @@ function AnnouncementDetail() {
                   <span className="text-muted-foreground">Statut</span>
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${announcement.isEnabled
-                      ? announcement.isActive
-                        ? "bg-emerald-500/10 text-emerald-600"
-                        : "bg-amber-500/10 text-amber-600"
-                      : "bg-muted text-muted-foreground"
+                        ? announcement.isActive
+                          ? "bg-emerald-500/10 text-emerald-600"
+                          : "bg-amber-500/10 text-amber-600"
+                        : "bg-muted text-muted-foreground"
                       }`}
                   >
                     {announcement.isEnabled
@@ -674,24 +809,26 @@ function AnnouncementDetail() {
             ) : announcement.action ? (
               <div className="space-y-2 text-sm">
                 <div>
-                  <div className="text-xs text-muted-foreground">Bouton</div>
+                  <Label className="text-xs text-muted-foreground">Bouton</Label>
                   <div className="font-medium">{announcement.action.label}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-muted-foreground">Type</div>
+                  <Label className="text-xs text-muted-foreground">Type</Label>
                   <div className="font-medium capitalize">{announcement.action.type}</div>
                 </div>
                 {announcement.action.url && (
                   <div>
-                    <div className="text-xs text-muted-foreground">Destination</div>
-                    <a
-                      href={announcement.action.url}
-                      target={announcement.action.target ?? "_self"}
-                      rel="noreferrer"
-                      className="text-xs text-primary underline break-all"
-                    >
-                      {announcement.action.url}
-                    </a>
+                    <Label className="text-xs text-muted-foreground">Destination</Label>
+                    <div>
+                      <a
+                        href={announcement.action.url}
+                        target={announcement.action.target ?? "_self"}
+                        rel="noreferrer"
+                        className="text-xs text-primary underline break-all"
+                      >
+                        {announcement.action.url}
+                      </a>
+                    </div>
                   </div>
                 )}
               </div>

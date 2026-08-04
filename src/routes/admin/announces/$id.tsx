@@ -433,32 +433,42 @@ function AnnouncementDetail() {
                           <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                           <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
                           <Tooltip
-                            contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }}
-                            labelStyle={{ color: "var(--foreground)" }}
-                            formatter={(value: number, key: string) => [
-                              value,
-                              ANNOUNCEMENT_EVENT_LABELS[key as keyof typeof ANNOUNCEMENT_EVENT_LABELS] ?? key,
-                            ]}
+                            contentStyle={{
+                              backgroundColor: "hsl(var(--card))",
+                              borderColor: "hsl(var(--border))",
+                              borderRadius: "0.5rem",
+                              fontSize: "12px",
+                            }}
                           />
-                          <Legend
-                            verticalAlign="bottom"
-                            height={36}
-                            iconType="circle"
-                            wrapperStyle={{ fontSize: 12 }}
-                            formatter={(key: string) =>
-                              ANNOUNCEMENT_EVENT_LABELS[key as keyof typeof ANNOUNCEMENT_EVENT_LABELS] ?? key
-                            }
+                          <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "10px" }} />
+                          <Line
+                            type="monotone"
+                            dataKey="view"
+                            name="Vues"
+                            stroke="#0284c7"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            activeDot={{ r: 5 }}
                           />
-                          {eventTypesInData.map((eventType, i) => (
-                            <Bar
-                              key={eventType}
-                              dataKey={eventType}
-                              name={eventType}
-                              fill={EVENT_CHART_COLORS[i % EVENT_CHART_COLORS.length]}
-                              radius={[4, 4, 0, 0]}
-                            />
-                          ))}
-                        </BarChart>
+                          <Line
+                            type="monotone"
+                            dataKey="click"
+                            name="Clics"
+                            stroke="#059669"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            activeDot={{ r: 5 }}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="close"
+                            name="Fermetures"
+                            stroke="#6b7280"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            activeDot={{ r: 5 }}
+                          />
+                        </LineChart>
                       </ResponsiveContainer>
                     </div>
                   </div>

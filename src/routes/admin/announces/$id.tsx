@@ -91,8 +91,13 @@ function AnnouncementDetail() {
     }
   }, [announcement, isEditing]);
 
-  // Transformation du tableau plat byDay en données pivotées pour le graphique Recharts
-  const chartData = useMemo(() => {
+  /* Données du graphe + liste des types d'événements présents (pour Bar + Legend dynamiques) */
+  const chartData = useMemo(
+    () => (analytics?.byDay ? buildDailyChartData(analytics.byDay) : []),
+    [analytics?.byDay]
+  );
+
+  const eventTypesInData = useMemo(() => {
     if (!analytics?.byDay) return [];
     const seen = new Set<string>();
     for (const row of analytics.byDay) seen.add(row.event_type);

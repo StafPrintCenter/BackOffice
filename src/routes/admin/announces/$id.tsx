@@ -766,7 +766,7 @@ function AnnouncementDetail() {
                   <div className="font-medium">{announcement.action.label}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-muted-foreground">Type</div>
+                  <Label className="text-xs text-muted-foreground">Type</Label>
                   <div className="font-medium capitalize">{announcement.action.type}</div>
                 </div>
                 {announcement.action.url && (

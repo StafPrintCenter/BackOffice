@@ -1,33 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft,
-  Pencil,
-  Trash2,
-  Save,
-  X,
-  Loader2,
-  BarChart3,
-  Eye,
-  MousePointerClick,
-  XCircle,
-  Plus,
-  Globe,
-  Calendar,
-  Layers,
-  Sparkles,
-} from "lucide-react";
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  Legend,
-} from "recharts";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, BarChart3, Eye, MousePointerClick, XCircle, Plus, Globe, Calendar, Layers, Sparkles } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
 import { AdminShell, ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

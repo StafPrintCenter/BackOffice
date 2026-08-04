@@ -66,9 +66,7 @@ function toEditForm(a: NonNullable<ReturnType<typeof useAdminAnnouncementDetail>
 
 function formatDay(day: string) {
   return new Date(day).toLocaleDateString("fr-FR", {
-    weekday: "short",
-    day: "2-digit",
-    month: "short",
+    weekday: "short", day: "2-digit", month: "short",
   });
 }
 

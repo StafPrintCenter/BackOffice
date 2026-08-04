@@ -771,15 +771,17 @@ function AnnouncementDetail() {
                 </div>
                 {announcement.action.url && (
                   <div>
-                    <div className="text-xs text-muted-foreground">Destination</div>
-                    <a
-                      href={announcement.action.url}
-                      target={announcement.action.target ?? "_self"}
-                      rel="noreferrer"
-                      className="text-xs text-primary underline break-all"
-                    >
-                      {announcement.action.url}
-                    </a>
+                    <Label className="text-xs text-muted-foreground">Destination</Label>
+                    <div>
+                      <a
+                        href={announcement.action.url}
+                        target={announcement.action.target ?? "_self"}
+                        rel="noreferrer"
+                        className="text-xs text-primary underline break-all"
+                      >
+                        {announcement.action.url}
+                      </a>
+                    </div>
                   </div>
                 )}
               </div>

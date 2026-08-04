@@ -410,49 +410,39 @@ function AnnouncementDetail() {
                     <div className="text-xs font-medium text-muted-foreground">
                       Évolution quotidienne des événements
                     </div>
-                    <div className="h-64 w-full pt-2">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                          <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-                          <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
+                    <div className="h-72">
+                      <ResponsiveContainer>
+                        <BarChart data={chartData}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                          <XAxis dataKey="dayLabel" stroke="var(--muted-foreground)" fontSize={11} />
+                          <YAxis stroke="var(--muted-foreground)" fontSize={11} allowDecimals={false} />
                           <Tooltip
-                            contentStyle={{
-                              backgroundColor: "hsl(var(--card))",
-                              borderColor: "hsl(var(--border))",
-                              borderRadius: "0.5rem",
-                              fontSize: "12px",
-                            }}
+                            contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }}
+                            labelStyle={{ color: "var(--foreground)" }}
+                            formatter={(value: number, key: string) => [
+                              value,
+                              ANNOUNCEMENT_EVENT_LABELS[key as keyof typeof ANNOUNCEMENT_EVENT_LABELS] ?? key,
+                            ]}
                           />
-                          <Legend wrapperStyle={{ fontSize: "12px", pt: "10px" }} />
-                          <Line
-                            type="monotone"
-                            dataKey="view"
-                            name="Vues"
-                            stroke="#0284c7"
-                            strokeWidth={2}
-                            dot={{ r: 3 }}
-                            activeDot={{ r: 5 }}
+                          <Legend
+                            verticalAlign="bottom"
+                            height={36}
+                            iconType="circle"
+                            wrapperStyle={{ fontSize: 12 }}
+                            formatter={(key: string) =>
+                              ANNOUNCEMENT_EVENT_LABELS[key as keyof typeof ANNOUNCEMENT_EVENT_LABELS] ?? key
+                            }
                           />
-                          <Line
-                            type="monotone"
-                            dataKey="click"
-                            name="Clics"
-                            stroke="#059669"
-                            strokeWidth={2}
-                            dot={{ r: 3 }}
-                            activeDot={{ r: 5 }}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="close"
-                            name="Fermetures"
-                            stroke="#6b7280"
-                            strokeWidth={2}
-                            dot={{ r: 3 }}
-                            activeDot={{ r: 5 }}
-                          />
-                        </LineChart>
+                          {eventTypesInData.map((eventType, i) => (
+                            <Bar
+                              key={eventType}
+                              dataKey={eventType}
+                              name={eventType}
+                              fill={EVENT_CHART_COLORS[i % EVENT_CHART_COLORS.length]}
+                              radius={[4, 4, 0, 0]}
+                            />
+                          ))}
+                        </BarChart>
                       </ResponsiveContainer>
                     </div>
                   </div>

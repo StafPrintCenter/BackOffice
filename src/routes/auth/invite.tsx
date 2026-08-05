@@ -7,7 +7,7 @@ import { adminFetch } from "@/lib/api-url";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { AdminAuthShell } from "@/components/admin/auth-shell";
+import { AdminAuthShell } from "@/components/site/sd";
 import { SITE } from "@/data/site";
 import type { AdminInviteVerifyResponse } from "@/data/auth";
 

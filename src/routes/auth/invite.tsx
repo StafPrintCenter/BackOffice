@@ -7,7 +7,7 @@ import { adminFetch } from "@/lib/api-url";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logos.json";
+import { AdminAuthShell } from "@/components/admin/auth-shell";
 import { SITE } from "@/data/site";
 import type { AdminInviteVerifyResponse } from "@/data/auth";
 
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/auth/invite")({
   head: () => ({
     meta: [
       { title: `Accepter l'invitation | ${SITE.name}` },
-      { name: "robots", content: "noindex" }
+      { name: "robots", content: "noindex" },
     ],
   }),
   validateSearch: searchSchema,
@@ -62,6 +62,7 @@ async function acceptInvite(params: {
 
   const response = await adminFetch(`/api/admin/auth/invite-accept?${inviteQuery(params)}`, {
     method: "POST",
+
     body: fd,
   });
   const body = await response.json().catch(() => null);
@@ -89,7 +90,6 @@ function InviteAcceptPage() {
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
 
-  // Vérifie la validité du lien AVANT d'afficher le formulaire de mot de passe.
   useEffect(() => {
     let cancelled = false;
     setVerify({ status: "checking" });
@@ -137,132 +137,105 @@ function InviteAcceptPage() {
     }
   };
 
+  if (verify.status === "checking") {
+    return (
+      <AdminAuthShell title="Vérification..." subtitle="Vérification du lien d'invitation en cours.">
+        <div className="py-6 text-center">
+          <Loader2 className="mx-auto h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </AdminAuthShell>
+    );
+  }
+
+  if (verify.status === "invalid") {
+    return (
+      <AdminAuthShell title="Lien invalide" subtitle={verify.message}>
+        <div className="text-center">
+          <XCircle className="mx-auto h-12 w-12 text-destructive" />
+          <Button variant="outline" className="mt-6 w-full" onClick={() => navigate({ to: "/auth/login" })}>
+            Retour à la connexion
+          </Button>
+        </div>
+      </AdminAuthShell>
+    );
+  }
+
+  if (done) {
+    return (
+      <AdminAuthShell
+        title="Compte activé"
+        subtitle="Vous pouvez maintenant vous connecter avec votre e-mail et votre nouveau mot de passe."
+      >
+        <div className="text-center">
+          <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
+          <Button className="mt-6 w-full" onClick={() => navigate({ to: "/auth/login" })}>
+            Aller à la connexion
+          </Button>
+        </div>
+      </AdminAuthShell>
+    );
+  }
+
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Colonne gauche */}
-      <div className="hidden lg:flex bg-gradient-hero p-12 text-primary-foreground flex-col justify-between">
-        <div className="flex items-center">
-          <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
+    <AdminAuthShell
+      title="Activer votre compte"
+      subtitle={`Bonjour ${verify.invitee.firstName}, choisissez un mot de passe pour finaliser votre invitation en tant qu'administrateur (${verify.invitee.email}).`}
+    >
+      <form onSubmit={onSubmit} className="space-y-4">
+        <div>
+          <Label htmlFor="pw">Mot de passe</Label>
+          <div className="relative mt-1">
+            <Input
+              id="pw"
+              type={showPassword ? "text" : "password"}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="new-password"
+              className="bg-card pr-10"
+              disabled={loading}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50"
+              aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+              disabled={loading}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
 
         <div>
-          <h1 className="font-display text-5xl font-bold tracking-tight text-balance">
-            Bienvenue dans l'équipe.
-          </h1>
-          <p className="mt-4 opacity-90">
-            Créez votre mot de passe pour activer votre accès administrateur.
-          </p>
+          <Label htmlFor="pw-confirm">Confirmer le mot de passe</Label>
+          <Input
+            id="pw-confirm"
+            type={showPassword ? "text" : "password"}
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="••••••••"
+            autoComplete="new-password"
+            className="mt-1 bg-card"
+            disabled={loading}
+          />
         </div>
 
-        <div className="text-sm opacity-70">
-          © {new Date().getFullYear()} {SITE.name}
-        </div>
-      </div>
+        {error && <p className="text-xs text-destructive">{error}</p>}
 
-      {/* Colonne droite */}
-      <div className="flex items-center justify-center p-8 bg-grain">
-        <div className="w-full max-w-md">
-          <div className="lg:hidden mb-8">
-            <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
-          </div>
-
-          {verify.status === "checking" && (
-            <div className="text-center">
-              <Loader2 className="mx-auto h-8 w-8 animate-spin text-muted-foreground" />
-              <p className="mt-4 text-sm text-muted-foreground">Vérification du lien d'invitation...</p>
-            </div>
-          )}
-
-          {verify.status === "invalid" && (
-            <div className="text-center">
-              <XCircle className="mx-auto h-12 w-12 text-destructive" />
-              <h2 className="mt-4 font-display text-2xl font-bold">Lien invalide</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{verify.message}</p>
-              <Button variant="outline" className="mt-6 w-full" onClick={() => navigate({ to: "/auth/login" })}>
-                Retour à la connexion
-              </Button>
-            </div>
-          )}
-
-          {verify.status === "valid" && done && (
-            <div className="text-center">
-              <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
-              <h2 className="mt-4 font-display text-2xl font-bold">Compte activé</h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Vous pouvez maintenant vous connecter avec votre e-mail et votre nouveau mot de passe.
-              </p>
-              <Button className="mt-6 w-full" onClick={() => navigate({ to: "/auth/login" })}>
-                Aller à la connexion
-              </Button>
-            </div>
-          )}
-
-          {verify.status === "valid" && !done && (
+        <Button type="submit" disabled={loading} className="w-full">
+          {loading ? (
             <>
-              <h2 className="font-display text-3xl font-bold">Activer votre compte</h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Bonjour {verify.invitee.firstName}, choisissez un mot de passe pour finaliser votre invitation en tant qu'administrateur ({verify.invitee.email}).
-              </p>
-
-              <form onSubmit={onSubmit} className="mt-8 space-y-4">
-                <div>
-                  <Label htmlFor="pw">Mot de passe</Label>
-                  <div className="relative mt-1">
-                    <Input
-                      id="pw"
-                      type={showPassword ? "text" : "password"}
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      autoComplete="new-password"
-                      className="bg-card pr-10"
-                      disabled={loading}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50"
-                      aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
-                      disabled={loading}
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="pw-confirm">Confirmer le mot de passe</Label>
-                  <Input
-                    id="pw-confirm"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••"
-                    autoComplete="new-password"
-                    className="mt-1 bg-card"
-                    disabled={loading}
-                  />
-                </div>
-
-                {error && <p className="text-xs text-destructive">{error}</p>}
-
-                <Button type="submit" disabled={loading} className="w-full">
-                  {loading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Activation...
-                    </>
-                  ) : (
-                    "Activer mon compte"
-                  )}
-                </Button>
-              </form>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Activation...
             </>
+          ) : (
+            "Activer mon compte"
           )}
-        </div>
-      </div>
-    </div>
+        </Button>
+      </form>
+    </AdminAuthShell>
   );
 }

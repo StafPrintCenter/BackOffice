@@ -162,7 +162,7 @@ function InviteAcceptPage() {
 
   if (done) {
     return (
-      <AdminAuthShell
+      <AuthShell
         title="Compte activé"
         subtitle="Vous pouvez maintenant vous connecter avec votre e-mail et votre nouveau mot de passe."
       >

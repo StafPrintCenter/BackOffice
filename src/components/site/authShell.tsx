@@ -9,12 +9,12 @@ interface AdminAuthShellProps {
   footer?: ReactNode;
 }
 
-export function AuthShell({
+export function AdminAuthShell({
   title,
   subtitle,
   children,
   footer,
-}: AdminAuthShellProps) {
+}: AuthShellProps) {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Colonne gauche (Desktop) */}

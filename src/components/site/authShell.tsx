@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 
-interface AdminAuthShellProps {
+interface AuthShellProps {
   title: string;
   subtitle: string;
   children: ReactNode;
@@ -14,7 +14,7 @@ export function AdminAuthShell({
   subtitle,
   children,
   footer,
-}: AuthShellProps) {
+}: AdminAuthShellProps) {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Colonne gauche (Desktop) */}

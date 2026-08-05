@@ -139,7 +139,7 @@ function InviteAcceptPage() {
 
   if (verify.status === "checking") {
     return (
-      <AdminAuthShell title="Vérification..." subtitle="Vérification du lien d'invitation en cours.">
+      <AuthShell title="Vérification..." subtitle="Vérification du lien d'invitation en cours.">
         <div className="py-6 text-center">
           <Loader2 className="mx-auto h-8 w-8 animate-spin text-muted-foreground" />
         </div>

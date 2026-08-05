@@ -177,7 +177,7 @@ function InviteAcceptPage() {
   }
 
   return (
-    <AdminAuthShell
+    <AuthShell
       title="Activer votre compte"
       subtitle={`Bonjour ${verify.invitee.firstName}, choisissez un mot de passe pour finaliser votre invitation en tant qu'administrateur (${verify.invitee.email}).`}
     >

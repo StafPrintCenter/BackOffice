@@ -149,7 +149,7 @@ function InviteAcceptPage() {
 
   if (verify.status === "invalid") {
     return (
-      <AdminAuthShell title="Lien invalide" subtitle={verify.message}>
+      <AuthShell title="Lien invalide" subtitle={verify.message}>
         <div className="text-center">
           <XCircle className="mx-auto h-12 w-12 text-destructive" />
           <Button variant="outline" className="mt-6 w-full" onClick={() => navigate({ to: "/auth/login" })}>

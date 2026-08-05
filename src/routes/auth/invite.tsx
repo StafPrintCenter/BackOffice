@@ -236,6 +236,6 @@ function InviteAcceptPage() {
           )}
         </Button>
       </form>
-    </AdminAuthShell>
+    </AuthShell>
   );
 }

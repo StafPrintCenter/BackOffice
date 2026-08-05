@@ -172,7 +172,7 @@ function InviteAcceptPage() {
             Aller à la connexion
           </Button>
         </div>
-      </AdminAuthShell>
+      </AuthShell>
     );
   }
 

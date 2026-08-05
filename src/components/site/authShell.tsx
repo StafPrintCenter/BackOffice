@@ -2,14 +2,14 @@ import type { ReactNode } from "react";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 
-interface AuthShellProps {
+interface AdminAuthShellProps {
   title: string;
   subtitle: string;
   children: ReactNode;
   footer?: ReactNode;
 }
 
-export function AdminAuthShell({
+export function AuthShell({
   title,
   subtitle,
   children,

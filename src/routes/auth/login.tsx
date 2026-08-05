@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { AdminAuthShell } from "@/components/site/AuthShell";
+import { AuthShell } from "@/components/site/AuthShell";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/auth/login")({
@@ -48,7 +48,7 @@ function LoginPage() {
   };
 
   return (
-    <AdminAuthShell
+    <AuthShell
       title="Connexion admin"
       subtitle="Connectez-vous avec vos identifiants administrateur."
     >
@@ -109,6 +109,6 @@ function LoginPage() {
           )}
         </Button>
       </form>
-    </AdminAuthShell>
+    </AuthShell>
   );
 }

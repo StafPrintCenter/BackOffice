@@ -6,15 +6,15 @@ import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logos.json";
+import { AdminAuthShell } from "@/components/admin/auth-shell";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/auth/login")({
   head: () => ({
     meta: [
       { title: `Connexion | ${SITE.name}` },
-      { name: "robots", content: "noindex" }
-    ]
+      { name: "robots", content: "noindex" },
+    ],
   }),
   component: LoginPage,
 });
@@ -28,7 +28,6 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Redirection automatique si l'utilisateur est déjà connecté
   useEffect(() => {
     if (ready && isAuthenticated) navigate({ to: "/admin" });
   }, [ready, isAuthenticated, navigate]);
@@ -49,98 +48,67 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Colonne gauche */}
-      <div className="hidden lg:flex bg-gradient-hero p-12 text-primary-foreground flex-col justify-between">
-        <div className="flex items-center">
-          <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
+    <AdminAuthShell
+      title="Connexion admin"
+      subtitle="Connectez-vous avec vos identifiants administrateur."
+    >
+      <form onSubmit={onSubmit} className="space-y-4">
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="vous@stafprintcenter.com"
+            autoComplete="email"
+            className="mt-1 bg-card"
+            disabled={loading}
+          />
         </div>
 
         <div>
-          <h1 className="font-display text-5xl font-bold tracking-tight text-balance">
-            Pilotez votre studio en un coup d'œil.
-          </h1>
-          <p className="mt-4 opacity-90">
-            Tableau de bord centralisé pour services, formations, projets, articles et témoignages.
-          </p>
-        </div>
-
-        <div className="text-sm opacity-70">
-          © {new Date().getFullYear()} {SITE.name}
-        </div>
-      </div>
-
-      {/* Colonne droite */}
-      <div className="flex items-center justify-center p-8 bg-grain">
-        <div className="w-full max-w-md">
-          <div className="lg:hidden mb-8">
-            <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
-          </div>
-
-          <h2 className="font-display text-3xl font-bold">Connexion admin</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Connectez-vous avec vos identifiants administrateur.
-          </p>
-
-          <form onSubmit={onSubmit} className="mt-8 space-y-4">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="vous@stafprintcenter.com"
-                autoComplete="email"
-                className="mt-1 bg-card"
-                disabled={loading}
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="pw">Mot de passe</Label>
-              <div className="relative mt-1">
-                <Input
-                  id="pw"
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                  className="bg-card pr-10"
-                  disabled={loading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50"
-                  aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
-                  disabled={loading}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <Button type="submit" disabled={loading} className="w-full">
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Connexion...
-                </>
+          <Label htmlFor="pw">Mot de passe</Label>
+          <div className="relative mt-1">
+            <Input
+              id="pw"
+              type={showPassword ? "text" : "password"}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+              className="bg-card pr-10"
+              disabled={loading}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50"
+              aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+              disabled={loading}
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" />
               ) : (
-                "Se connecter"
+                <Eye className="h-4 w-4" />
               )}
-            </Button>
-          </form>
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
+
+        <Button type="submit" disabled={loading} className="w-full">
+          {loading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Connexion...
+            </>
+          ) : (
+            "Se connecter"
+          )}
+        </Button>
+      </form>
+    </AdminAuthShell>
   );
 }

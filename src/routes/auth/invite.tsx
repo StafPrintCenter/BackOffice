@@ -143,7 +143,7 @@ function InviteAcceptPage() {
         <div className="py-6 text-center">
           <Loader2 className="mx-auto h-8 w-8 animate-spin text-muted-foreground" />
         </div>
-      </AdminAuthShell>
+      </AuthShell>
     );
   }
 

@@ -323,7 +323,10 @@ function ArticleDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(article.id, {
-            onSuccess: () => { toast.success("Article supprimé"); navigate({ to: "/admin/articles" }); },
+            onSuccess: () => {
+              toast.success("Article supprimé");
+              navigate({ to: "/articles" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

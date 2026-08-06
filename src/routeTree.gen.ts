@@ -82,9 +82,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/_admin/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminProfileRoute = AdminProfileRouteImport.update({

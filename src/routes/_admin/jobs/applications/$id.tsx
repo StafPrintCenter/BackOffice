@@ -90,7 +90,7 @@ function JobApplicationDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/jobs/applications" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/jobs/applications" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         {app && !isFinalized && (

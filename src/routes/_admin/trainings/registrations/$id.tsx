@@ -314,7 +314,7 @@ function TrainingRegistrationDetail() {
           removeMutation.mutate(reg.id, {
             onSuccess: () => {
               toast.success("Inscription supprimée");
-              navigate({ to: "/admin/trainings/registrations" });
+              navigate({ to: "/trainings/registrations" });
             },
             onError: () => toast.error("Erreur lors de la suppression"),
           });

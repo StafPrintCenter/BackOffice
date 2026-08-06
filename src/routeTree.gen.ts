@@ -608,6 +608,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dashboard'
     | '/admin/profile'
     | '/auth/invite'
     | '/auth/login'

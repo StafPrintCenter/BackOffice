@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
-import type { APIAdminUser, APILoginResponse } from "@/data/auth";
+import type { APIAdminUser, APILoginResponse, AdminInviteVerifyResponse } from "@/data/auth";
 
 export class AdminAuthApiError extends Error { }
 
@@ -32,6 +32,47 @@ export async function fetchAdminMe(): Promise<APIAdminUser | null> {
 
 export async function logoutAdmin(): Promise<void> {
   await adminFetch(`/api/admin/auth/logout`, { method: "POST" });
+}
+
+function buildInviteQuery(params: { admin: string; expires: string; signature: string }) {
+  return new URLSearchParams({
+    admin: params.admin,
+    expires: params.expires,
+    signature: params.signature,
+  }).toString();
+}
+
+export async function verifyAdminInvite(params: {
+  admin: string;
+  expires: string;
+  signature: string;
+}): Promise<AdminInviteVerifyResponse> {
+  const response = await adminFetch(`/api/admin/auth/invite-accept?${buildInviteQuery(params)}`);
+  const body = await response.json().catch(() => null);
+  if (!response.ok) {
+    throw new AdminAuthApiError(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
+  }
+  return body.data as AdminInviteVerifyResponse;
+}
+
+export async function acceptAdminInvite(params: {
+  admin: string;
+  expires: string;
+  signature: string;
+  password: string;
+}): Promise<{ message: string }> {
+  const fd = new FormData();
+  fd.append("password", params.password);
+
+  const response = await adminFetch(`/api/admin/auth/invite-accept?${buildInviteQuery(params)}`, {
+    method: "POST",
+    body: fd,
+  });
+  const body = await response.json().catch(() => null);
+  if (!response.ok) {
+    throw new AdminAuthApiError(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
+  }
+  return body as { message: string };
 }
 
 /**

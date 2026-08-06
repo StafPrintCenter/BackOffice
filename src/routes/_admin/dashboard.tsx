@@ -110,7 +110,7 @@ function DashboardPage() {
         <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
         <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
         <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${shortLinks.length} liens`} />
-        <StatCard label="Note moyenne" value={testimonialsLoading ? "…" : avgRating + " / 5"} icon={<Star className="h-5 w-5" />} hint={`${testimonials.length} témoignages`} />
+        <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />
       </div>
 
       {/* KPIs Membres (Grille de 5 colonnes) */}

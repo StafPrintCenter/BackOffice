@@ -73,7 +73,7 @@ function AdminArticles() {
         isLoading={isLoading}
         searchKeys={["title", "category", "author"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/articles/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/articles/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "cover", label: "", render: (r) => <img src={r.cover} alt="" className="h-10 w-14 rounded object-cover" /> },

@@ -1224,6 +1224,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
+  AdminServicesIndexRoute: AdminServicesIndexRoute,
   AdminFaqsIndexRoute: AdminFaqsIndexRoute,
   AdminInternshipsIndexRoute: AdminInternshipsIndexRoute,
   AdminMessagesIndexRoute: AdminMessagesIndexRoute,

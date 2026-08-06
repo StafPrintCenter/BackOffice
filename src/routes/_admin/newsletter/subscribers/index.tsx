@@ -35,7 +35,7 @@ function AdminNewsletterSubscribers() {
 
       {/* Raccourci */}
       <div className="mb-4">
-        <Link to="/admin/newsletter/campaigns"
+        <Link to="/newsletter/campaigns"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <Megaphone className="h-4 w-4"
           />
@@ -47,7 +47,7 @@ function AdminNewsletterSubscribers() {
         data={items}
         isLoading={isLoading}
         searchKeys={["email", "firstName", "lastName"]}
-        onView={(r) => navigate({ to: "/admin/newsletter/subscribers/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/newsletter/subscribers/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "email", label: "Email", render: (r) => <div><div className="font-medium">{r.firstName} {r.lastName}</div><div className="text-xs text-muted-foreground">{r.email}</div></div> },

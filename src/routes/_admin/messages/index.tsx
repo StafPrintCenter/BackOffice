@@ -25,7 +25,7 @@ function AdminMessages() {
         data={items}
         isLoading={isLoading}
         searchKeys={["name", "email", "ticketNumber", "service"]}
-        onView={(r) => navigate({ to: "/admin/messages/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/messages/$id", params: { id: r.id } })}
         columns={[
           {
             key: "ticketNumber",

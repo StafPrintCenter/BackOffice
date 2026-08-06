@@ -24,7 +24,7 @@ function AdminReports() {
         data={items}
         isLoading={isLoading}
         searchKeys={["reason", "reportableType", "reporterEmail"]}
-        onView={(r) => navigate({ to: "/admin/reports/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/reports/$id", params: { id: r.id } })}
         columns={[
           {
             key: "id",

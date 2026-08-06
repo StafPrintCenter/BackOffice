@@ -284,7 +284,10 @@ function CampaignDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(campaign.id, {
-            onSuccess: () => { toast.success("Campagne supprimée"); navigate({ to: "/newsletter/campaigns" }); },
+            onSuccess: () => {
+              toast.success("Campagne supprimée");
+              navigate({ to: "/newsletter/campaigns" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

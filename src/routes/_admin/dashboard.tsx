@@ -37,6 +37,7 @@ function DashboardPage() {
 
   const activeUsers = users.filter((u) => u.isActive && !u.isBlocked).length;
   const activeStudents = students.filter((s) => s.isActive && !s.isBlocked).length;
+  const activeInstructors = instructors.filter((i) => i.isActive && !i.isBlocked && !i.isPending).length;
   const activeAdmins = admins.filter((a) => a.isActive && !a.isBlocked && !a.isPending).length;
   const totalMembers = users.length + students.length + admins.length;
 

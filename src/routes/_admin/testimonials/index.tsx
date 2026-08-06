@@ -69,7 +69,7 @@ function AdminTestimonials() {
         isLoading={isLoading}
         searchKeys={["name", "role"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/testimonials/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/testimonials/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           {

@@ -67,7 +67,7 @@ function ServiceDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/services" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/services" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
@@ -118,7 +118,7 @@ function ServiceDetail() {
     <AdminShell>
       {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/services" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/services" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">
@@ -332,7 +332,7 @@ function ServiceDetail() {
           removeMutation.mutate(service.id, {
             onSuccess: () => {
               toast.success("Service supprimé");
-              navigate({ to: "/admin/services" });
+              navigate({ to: "/services" });
             },
             onError: () => toast.error("Erreur lors de la suppression"),
           });

@@ -14,7 +14,7 @@ export function AuthShell({
   subtitle,
   children,
   footer,
-}: AdminAuthShellProps) {
+}: AuthShellProps) {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Colonne gauche (Desktop) */}

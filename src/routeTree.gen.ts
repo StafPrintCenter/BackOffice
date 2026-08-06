@@ -446,10 +446,11 @@ export interface FileRoutesByTo {
   '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
-  '/admin/announces': typeof AdminAnnouncesIndexRoute
-  '/admin/appointments': typeof AdminAppointmentsIndexRoute
-  '/admin/articles': typeof AdminArticlesIndexRoute
-  '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/announces': typeof AdminAnnouncesIndexRoute
+  '/appointments': typeof AdminAppointmentsIndexRoute
+  '/articles': typeof AdminArticlesIndexRoute
+  '/categories': typeof AdminCategoriesIndexRoute
+  '/services': typeof AdminServicesIndexRoute
   '/admin/faqs': typeof AdminFaqsIndexRoute
   '/admin/internships': typeof AdminInternshipsIndexRoute
   '/admin/messages': typeof AdminMessagesIndexRoute

@@ -62,6 +62,7 @@ function DashboardPage() {
   const membersByType = [
     { type: "Utilisateurs", value: users.length },
     { type: "Apprenants", value: students.length },
+    { type: "Formateurs", value: instructors.length },
     { type: "Administrateurs", value: admins.length },
   ];
 

@@ -61,7 +61,7 @@ function StudentDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/members/students" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/members/students" })}>
             <ArrowLeft className="mr-1 h-4 w-4" /> Retour à la liste
           </Button>
         </div>
@@ -131,7 +131,7 @@ function StudentDetail() {
     <AdminShell>
       {/* Top Bar */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/members/students" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/members/students" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
         <div className="flex flex-wrap gap-2">

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import { loginAdmin, fetchAdminMe, logoutAdmin, AdminAuthApiError } from "@/stores/useAuthStore";
-import type { APIAdminUser } from "@/data/auth";
+import { loginAdmin, fetchAdminMe, logoutAdmin, verifyAdminInvite, acceptAdminInvite, AdminAuthApiError, } from "@/stores/useAuthStore";
+import type { APIAdminUser, AdminInviteVerifyResponse } from "@/data/auth";
 
 export interface AuthUser {
   id: string;
@@ -44,8 +44,6 @@ function toAuthUser(admin: APIAdminUser): AuthUser {
   };
 }
 
-// État partagé en dehors du hook pour que tous les composants qui l'utilisent
-// restent synchronisés sans avoir besoin d'un vrai Context/Provider.
 let sharedUser: AuthUser | null = null;
 let sharedReady = false;
 const listeners = new Set<() => void>();
@@ -104,11 +102,32 @@ export function useAuth() {
     notify();
   }, []);
 
+  const verifyInvite = useCallback(
+    async (params: { admin: string; expires: string; signature: string }): Promise<AdminInviteVerifyResponse> => {
+      return verifyAdminInvite(params);
+    },
+    []
+  );
+
+  const acceptInvite = useCallback(
+    async (params: {
+      admin: string;
+      expires: string;
+      signature: string;
+      password: string;
+    }): Promise<{ message: string }> => {
+      return acceptAdminInvite(params);
+    },
+    []
+  );
+
   return {
     user: sharedUser,
     isAuthenticated: !!sharedUser,
     ready: sharedReady,
     login,
     logout,
+    verifyInvite,
+    acceptInvite,
   };
 }

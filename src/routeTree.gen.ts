@@ -11,9 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+import { Route as AuthInviteRouteImport } from './routes/_auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AdminProfileRouteImport } from './routes/admin.profile'
-import { Route as AuthInviteRouteImport } from './routes/auth/invite'
 import { Route as AdminAnnouncesIndexRouteImport } from './routes/_admin/announces/index'
 import { Route as AdminAnnouncesIdRouteImport } from './routes/_admin/announces/$id'
 import { Route as AdminAppointmentsIndexRouteImport } from './routes/_admin/appointments/index'
@@ -77,6 +77,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthInviteRoute = AuthInviteRouteImport.update({
+  id: '/_auth/invite',
+  path: '/invite',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/_auth/login',
   path: '/login',
@@ -85,11 +90,6 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 const AdminProfileRoute = AdminProfileRouteImport.update({
   id: '/admin/profile',
   path: '/admin/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthInviteRoute = AuthInviteRouteImport.update({
-  id: '/auth/invite',
-  path: '/auth/invite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnnouncesIndexRoute = AdminAnnouncesIndexRouteImport.update({
@@ -370,9 +370,9 @@ const AdminTrainingsRegistrationsIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AdminDashboardRoute
+  '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
   '/admin/profile': typeof AdminProfileRoute
-  '/auth/invite': typeof AuthInviteRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
@@ -429,9 +429,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AdminDashboardRoute
+  '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
   '/admin/profile': typeof AdminProfileRoute
-  '/auth/invite': typeof AuthInviteRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
@@ -489,9 +489,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
+  '/_auth/invite': typeof AuthInviteRoute
   '/_auth/login': typeof AuthLoginRoute
   '/admin/profile': typeof AdminProfileRoute
-  '/auth/invite': typeof AuthInviteRoute
   '/_admin/announces/$id': typeof AdminAnnouncesIdRoute
   '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/_admin/articles/$id': typeof AdminArticlesIdRoute
@@ -550,9 +550,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/invite'
     | '/login'
     | '/admin/profile'
-    | '/auth/invite'
     | '/announces/$id'
     | '/appointments/$id'
     | '/articles/$id'
@@ -609,9 +609,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dashboard'
+    | '/invite'
     | '/login'
     | '/admin/profile'
-    | '/auth/invite'
     | '/announces/$id'
     | '/appointments/$id'
     | '/articles/$id'
@@ -668,9 +668,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_admin/dashboard'
+    | '/_auth/invite'
     | '/_auth/login'
     | '/admin/profile'
-    | '/auth/invite'
     | '/_admin/announces/$id'
     | '/_admin/appointments/$id'
     | '/_admin/articles/$id'
@@ -728,9 +728,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AuthInviteRoute: typeof AuthInviteRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AdminProfileRoute: typeof AdminProfileRoute
-  AuthInviteRoute: typeof AuthInviteRoute
   AdminAnnouncesIdRoute: typeof AdminAnnouncesIdRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
@@ -801,6 +801,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/invite': {
+      id: '/_auth/invite'
+      path: '/invite'
+      fullPath: '/invite'
+      preLoaderRoute: typeof AuthInviteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
@@ -813,13 +820,6 @@ declare module '@tanstack/react-router' {
       path: '/admin/profile'
       fullPath: '/admin/profile'
       preLoaderRoute: typeof AdminProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth/invite': {
-      id: '/auth/invite'
-      path: '/auth/invite'
-      fullPath: '/auth/invite'
-      preLoaderRoute: typeof AuthInviteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_admin/announces/': {
@@ -1192,9 +1192,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminDashboardRoute: AdminDashboardRoute,
+  AuthInviteRoute: AuthInviteRoute,
   AuthLoginRoute: AuthLoginRoute,
   AdminProfileRoute: AdminProfileRoute,
-  AuthInviteRoute: AuthInviteRoute,
   AdminAnnouncesIdRoute: AdminAnnouncesIdRoute,
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,

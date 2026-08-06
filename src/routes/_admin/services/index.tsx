@@ -138,7 +138,7 @@ function AdminServices() {
         isLoading={isLoading}
         searchKeys={["title", "category", "short"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/services/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/services/$id", params: { id: r.id } })}
         onEdit={openEdit}
         onDelete={(r) => setToDelete(r)}
         columns={[

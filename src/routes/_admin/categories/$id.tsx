@@ -60,7 +60,7 @@ function CategoryDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/categories" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/categories" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>

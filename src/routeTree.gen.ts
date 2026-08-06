@@ -671,6 +671,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_admin/dashboard'
     | '/admin/profile'
     | '/auth/invite'
     | '/auth/login'

@@ -73,7 +73,7 @@ function TrainingRegistrationDetail() {
           variant="ghost"
           size="sm"
           className="text-muted-foreground hover:text-foreground"
-          onClick={() => navigate({ to: "/admin/trainings/registrations" })}
+          onClick={() => navigate({ to: "/trainings/registrations" })}
         >
           <ArrowLeft className="h-4 w-4 mr-1.5" /> Retour aux inscriptions
         </Button>

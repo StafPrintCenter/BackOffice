@@ -24,48 +24,48 @@ import { Route as AdminCategoriesIndexRouteImport } from './routes/_admin/catego
 import { Route as AdminCategoriesIdRouteImport } from './routes/_admin/categories/$id'
 import { Route as AdminFaqsIndexRouteImport } from './routes/_admin/faqs/index'
 import { Route as AdminFaqsIdRouteImport } from './routes/_admin/faqs/$id'
+import { Route as AdminInternshipsIndexRouteImport } from './routes/_admin/internships/index'
+import { Route as AdminInternshipsIdRouteImport } from './routes/_admin/internships/$id'
+import { Route as AdminMessagesIndexRouteImport } from './routes/_admin/messages/index'
+import { Route as AdminMessagesIdRouteImport } from './routes/_admin/messages/$id'
+import { Route as AdminProjectsIndexRouteImport } from './routes/_admin/projects/index'
+import { Route as AdminProjectsIdRouteImport } from './routes/_admin/projects/$id'
+import { Route as AdminReportsIndexRouteImport } from './routes/_admin/reports/index'
+import { Route as AdminReportsIdRouteImport } from './routes/_admin/reports/$id'
 import { Route as AdminServicesIndexRouteImport } from './routes/_admin/services/index'
 import { Route as AdminServicesIdRouteImport } from './routes/_admin/services/$id'
-import { Route as AdminInternshipsIndexRouteImport } from './routes/admin/internships/index'
-import { Route as AdminInternshipsIdRouteImport } from './routes/admin/internships/$id'
-import { Route as AdminMessagesIndexRouteImport } from './routes/admin/messages/index'
-import { Route as AdminMessagesIdRouteImport } from './routes/admin/messages/$id'
-import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/index'
-import { Route as AdminProjectsIdRouteImport } from './routes/admin/projects/$id'
-import { Route as AdminReportsIndexRouteImport } from './routes/admin/reports/index'
-import { Route as AdminReportsIdRouteImport } from './routes/admin/reports/$id'
-import { Route as AdminShortlinksIndexRouteImport } from './routes/admin/shortlinks/index'
-import { Route as AdminShortlinksIdRouteImport } from './routes/admin/shortlinks/$id'
-import { Route as AdminStatsIndexRouteImport } from './routes/admin/stats/index'
-import { Route as AdminStatsIdRouteImport } from './routes/admin/stats/$id'
-import { Route as AdminTestimonialsIndexRouteImport } from './routes/admin/testimonials/index'
-import { Route as AdminTestimonialsIdRouteImport } from './routes/admin/testimonials/$id'
-import { Route as AdminJobsApplicationsIndexRouteImport } from './routes/admin/jobs/applications/index'
-import { Route as AdminJobsApplicationsIdRouteImport } from './routes/admin/jobs/applications/$id'
-import { Route as AdminJobsOffersIndexRouteImport } from './routes/admin/jobs/offers/index'
-import { Route as AdminJobsOffersIdRouteImport } from './routes/admin/jobs/offers/$id'
-import { Route as AdminMembersAdminsIndexRouteImport } from './routes/admin/members/admins/index'
-import { Route as AdminMembersAdminsIdRouteImport } from './routes/admin/members/admins/$id'
-import { Route as AdminMembersInstructorsIndexRouteImport } from './routes/admin/members/instructors/index'
-import { Route as AdminMembersInstructorsIdRouteImport } from './routes/admin/members/instructors/$id'
-import { Route as AdminMembersStudentsIndexRouteImport } from './routes/admin/members/students/index'
-import { Route as AdminMembersStudentsIdRouteImport } from './routes/admin/members/students/$id'
-import { Route as AdminMembersUsersIndexRouteImport } from './routes/admin/members/users/index'
-import { Route as AdminMembersUsersIdRouteImport } from './routes/admin/members/users/$id'
-import { Route as AdminNewsletterCampaignsIndexRouteImport } from './routes/admin/newsletter/campaigns/index'
-import { Route as AdminNewsletterCampaignsIdRouteImport } from './routes/admin/newsletter/campaigns/$id'
-import { Route as AdminNewsletterSubscribersIndexRouteImport } from './routes/admin/newsletter/subscribers/index'
-import { Route as AdminNewsletterSubscribersIdRouteImport } from './routes/admin/newsletter/subscribers/$id'
-import { Route as AdminReviewsFormsIndexRouteImport } from './routes/admin/reviews/forms/index'
-import { Route as AdminReviewsFormsIdRouteImport } from './routes/admin/reviews/forms/$id'
-import { Route as AdminReviewsInvitesIndexRouteImport } from './routes/admin/reviews/invites/index'
-import { Route as AdminReviewsInvitesIdRouteImport } from './routes/admin/reviews/invites/$id'
-import { Route as AdminReviewsResponsesIndexRouteImport } from './routes/admin/reviews/responses/index'
-import { Route as AdminReviewsResponsesIdRouteImport } from './routes/admin/reviews/responses/$id'
-import { Route as AdminTrainingsCatalogsIndexRouteImport } from './routes/admin/trainings/catalogs/index'
-import { Route as AdminTrainingsCatalogsIdRouteImport } from './routes/admin/trainings/catalogs/$id'
-import { Route as AdminTrainingsRegistrationsIndexRouteImport } from './routes/admin/trainings/registrations/index'
-import { Route as AdminTrainingsRegistrationsIdRouteImport } from './routes/admin/trainings/registrations/$id'
+import { Route as AdminShortlinksIndexRouteImport } from './routes/_admin/shortlinks/index'
+import { Route as AdminShortlinksIdRouteImport } from './routes/_admin/shortlinks/$id'
+import { Route as AdminStatsIndexRouteImport } from './routes/_admin/stats/index'
+import { Route as AdminStatsIdRouteImport } from './routes/_admin/stats/$id'
+import { Route as AdminTestimonialsIndexRouteImport } from './routes/_admin/testimonials/index'
+import { Route as AdminTestimonialsIdRouteImport } from './routes/_admin/testimonials/$id'
+import { Route as AdminJobsApplicationsIndexRouteImport } from './routes/_admin/jobs/applications/index'
+import { Route as AdminJobsApplicationsIdRouteImport } from './routes/_admin/jobs/applications/$id'
+import { Route as AdminJobsOffersIndexRouteImport } from './routes/_admin/jobs/offers/index'
+import { Route as AdminJobsOffersIdRouteImport } from './routes/_admin/jobs/offers/$id'
+import { Route as AdminMembersAdminsIndexRouteImport } from './routes/_admin/members/admins/index'
+import { Route as AdminMembersAdminsIdRouteImport } from './routes/_admin/members/admins/$id'
+import { Route as AdminMembersInstructorsIndexRouteImport } from './routes/_admin/members/instructors/index'
+import { Route as AdminMembersInstructorsIdRouteImport } from './routes/_admin/members/instructors/$id'
+import { Route as AdminMembersStudentsIndexRouteImport } from './routes/_admin/members/students/index'
+import { Route as AdminMembersStudentsIdRouteImport } from './routes/_admin/members/students/$id'
+import { Route as AdminMembersUsersIndexRouteImport } from './routes/_admin/members/users/index'
+import { Route as AdminMembersUsersIdRouteImport } from './routes/_admin/members/users/$id'
+import { Route as AdminNewsletterCampaignsIndexRouteImport } from './routes/_admin/newsletter/campaigns/index'
+import { Route as AdminNewsletterCampaignsIdRouteImport } from './routes/_admin/newsletter/campaigns/$id'
+import { Route as AdminNewsletterSubscribersIndexRouteImport } from './routes/_admin/newsletter/subscribers/index'
+import { Route as AdminNewsletterSubscribersIdRouteImport } from './routes/_admin/newsletter/subscribers/$id'
+import { Route as AdminReviewsFormsIndexRouteImport } from './routes/_admin/reviews/forms/index'
+import { Route as AdminReviewsFormsIdRouteImport } from './routes/_admin/reviews/forms/$id'
+import { Route as AdminReviewsInvitesIndexRouteImport } from './routes/_admin/reviews/invites/index'
+import { Route as AdminReviewsInvitesIdRouteImport } from './routes/_admin/reviews/invites/$id'
+import { Route as AdminReviewsResponsesIndexRouteImport } from './routes/_admin/reviews/responses/index'
+import { Route as AdminReviewsResponsesIdRouteImport } from './routes/_admin/reviews/responses/$id'
+import { Route as AdminTrainingsCatalogsIndexRouteImport } from './routes/_admin/trainings/catalogs/index'
+import { Route as AdminTrainingsCatalogsIdRouteImport } from './routes/_admin/trainings/catalogs/$id'
+import { Route as AdminTrainingsRegistrationsIndexRouteImport } from './routes/_admin/trainings/registrations/index'
+import { Route as AdminTrainingsRegistrationsIdRouteImport } from './routes/_admin/trainings/registrations/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -142,6 +142,46 @@ const AdminFaqsIdRoute = AdminFaqsIdRouteImport.update({
   path: '/faqs/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminInternshipsIndexRoute = AdminInternshipsIndexRouteImport.update({
+  id: '/_admin/internships/',
+  path: '/internships/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminInternshipsIdRoute = AdminInternshipsIdRouteImport.update({
+  id: '/_admin/internships/$id',
+  path: '/internships/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMessagesIndexRoute = AdminMessagesIndexRouteImport.update({
+  id: '/_admin/messages/',
+  path: '/messages/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMessagesIdRoute = AdminMessagesIdRouteImport.update({
+  id: '/_admin/messages/$id',
+  path: '/messages/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
+  id: '/_admin/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProjectsIdRoute = AdminProjectsIdRouteImport.update({
+  id: '/_admin/projects/$id',
+  path: '/projects/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminReportsIndexRoute = AdminReportsIndexRouteImport.update({
+  id: '/_admin/reports/',
+  path: '/reports/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminReportsIdRoute = AdminReportsIdRouteImport.update({
+  id: '/_admin/reports/$id',
+  path: '/reports/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminServicesIndexRoute = AdminServicesIndexRouteImport.update({
   id: '/_admin/services/',
   path: '/services/',
@@ -152,218 +192,178 @@ const AdminServicesIdRoute = AdminServicesIdRouteImport.update({
   path: '/services/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminInternshipsIndexRoute = AdminInternshipsIndexRouteImport.update({
-  id: '/admin/internships/',
-  path: '/admin/internships/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminInternshipsIdRoute = AdminInternshipsIdRouteImport.update({
-  id: '/admin/internships/$id',
-  path: '/admin/internships/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminMessagesIndexRoute = AdminMessagesIndexRouteImport.update({
-  id: '/admin/messages/',
-  path: '/admin/messages/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminMessagesIdRoute = AdminMessagesIdRouteImport.update({
-  id: '/admin/messages/$id',
-  path: '/admin/messages/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
-  id: '/admin/projects/',
-  path: '/admin/projects/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminProjectsIdRoute = AdminProjectsIdRouteImport.update({
-  id: '/admin/projects/$id',
-  path: '/admin/projects/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminReportsIndexRoute = AdminReportsIndexRouteImport.update({
-  id: '/admin/reports/',
-  path: '/admin/reports/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminReportsIdRoute = AdminReportsIdRouteImport.update({
-  id: '/admin/reports/$id',
-  path: '/admin/reports/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminShortlinksIndexRoute = AdminShortlinksIndexRouteImport.update({
-  id: '/admin/shortlinks/',
-  path: '/admin/shortlinks/',
+  id: '/_admin/shortlinks/',
+  path: '/shortlinks/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminShortlinksIdRoute = AdminShortlinksIdRouteImport.update({
-  id: '/admin/shortlinks/$id',
-  path: '/admin/shortlinks/$id',
+  id: '/_admin/shortlinks/$id',
+  path: '/shortlinks/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminStatsIndexRoute = AdminStatsIndexRouteImport.update({
-  id: '/admin/stats/',
-  path: '/admin/stats/',
+  id: '/_admin/stats/',
+  path: '/stats/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminStatsIdRoute = AdminStatsIdRouteImport.update({
-  id: '/admin/stats/$id',
-  path: '/admin/stats/$id',
+  id: '/_admin/stats/$id',
+  path: '/stats/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminTestimonialsIndexRoute = AdminTestimonialsIndexRouteImport.update({
-  id: '/admin/testimonials/',
-  path: '/admin/testimonials/',
+  id: '/_admin/testimonials/',
+  path: '/testimonials/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminTestimonialsIdRoute = AdminTestimonialsIdRouteImport.update({
-  id: '/admin/testimonials/$id',
-  path: '/admin/testimonials/$id',
+  id: '/_admin/testimonials/$id',
+  path: '/testimonials/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminJobsApplicationsIndexRoute =
   AdminJobsApplicationsIndexRouteImport.update({
-    id: '/admin/jobs/applications/',
-    path: '/admin/jobs/applications/',
+    id: '/_admin/jobs/applications/',
+    path: '/jobs/applications/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminJobsApplicationsIdRoute = AdminJobsApplicationsIdRouteImport.update({
-  id: '/admin/jobs/applications/$id',
-  path: '/admin/jobs/applications/$id',
+  id: '/_admin/jobs/applications/$id',
+  path: '/jobs/applications/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminJobsOffersIndexRoute = AdminJobsOffersIndexRouteImport.update({
-  id: '/admin/jobs/offers/',
-  path: '/admin/jobs/offers/',
+  id: '/_admin/jobs/offers/',
+  path: '/jobs/offers/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminJobsOffersIdRoute = AdminJobsOffersIdRouteImport.update({
-  id: '/admin/jobs/offers/$id',
-  path: '/admin/jobs/offers/$id',
+  id: '/_admin/jobs/offers/$id',
+  path: '/jobs/offers/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMembersAdminsIndexRoute = AdminMembersAdminsIndexRouteImport.update({
-  id: '/admin/members/admins/',
-  path: '/admin/members/admins/',
+  id: '/_admin/members/admins/',
+  path: '/members/admins/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMembersAdminsIdRoute = AdminMembersAdminsIdRouteImport.update({
-  id: '/admin/members/admins/$id',
-  path: '/admin/members/admins/$id',
+  id: '/_admin/members/admins/$id',
+  path: '/members/admins/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMembersInstructorsIndexRoute =
   AdminMembersInstructorsIndexRouteImport.update({
-    id: '/admin/members/instructors/',
-    path: '/admin/members/instructors/',
+    id: '/_admin/members/instructors/',
+    path: '/members/instructors/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminMembersInstructorsIdRoute =
   AdminMembersInstructorsIdRouteImport.update({
-    id: '/admin/members/instructors/$id',
-    path: '/admin/members/instructors/$id',
+    id: '/_admin/members/instructors/$id',
+    path: '/members/instructors/$id',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminMembersStudentsIndexRoute =
   AdminMembersStudentsIndexRouteImport.update({
-    id: '/admin/members/students/',
-    path: '/admin/members/students/',
+    id: '/_admin/members/students/',
+    path: '/members/students/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminMembersStudentsIdRoute = AdminMembersStudentsIdRouteImport.update({
-  id: '/admin/members/students/$id',
-  path: '/admin/members/students/$id',
+  id: '/_admin/members/students/$id',
+  path: '/members/students/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMembersUsersIndexRoute = AdminMembersUsersIndexRouteImport.update({
-  id: '/admin/members/users/',
-  path: '/admin/members/users/',
+  id: '/_admin/members/users/',
+  path: '/members/users/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMembersUsersIdRoute = AdminMembersUsersIdRouteImport.update({
-  id: '/admin/members/users/$id',
-  path: '/admin/members/users/$id',
+  id: '/_admin/members/users/$id',
+  path: '/members/users/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminNewsletterCampaignsIndexRoute =
   AdminNewsletterCampaignsIndexRouteImport.update({
-    id: '/admin/newsletter/campaigns/',
-    path: '/admin/newsletter/campaigns/',
+    id: '/_admin/newsletter/campaigns/',
+    path: '/newsletter/campaigns/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminNewsletterCampaignsIdRoute =
   AdminNewsletterCampaignsIdRouteImport.update({
-    id: '/admin/newsletter/campaigns/$id',
-    path: '/admin/newsletter/campaigns/$id',
+    id: '/_admin/newsletter/campaigns/$id',
+    path: '/newsletter/campaigns/$id',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminNewsletterSubscribersIndexRoute =
   AdminNewsletterSubscribersIndexRouteImport.update({
-    id: '/admin/newsletter/subscribers/',
-    path: '/admin/newsletter/subscribers/',
+    id: '/_admin/newsletter/subscribers/',
+    path: '/newsletter/subscribers/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminNewsletterSubscribersIdRoute =
   AdminNewsletterSubscribersIdRouteImport.update({
-    id: '/admin/newsletter/subscribers/$id',
-    path: '/admin/newsletter/subscribers/$id',
+    id: '/_admin/newsletter/subscribers/$id',
+    path: '/newsletter/subscribers/$id',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminReviewsFormsIndexRoute = AdminReviewsFormsIndexRouteImport.update({
-  id: '/admin/reviews/forms/',
-  path: '/admin/reviews/forms/',
+  id: '/_admin/reviews/forms/',
+  path: '/reviews/forms/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminReviewsFormsIdRoute = AdminReviewsFormsIdRouteImport.update({
-  id: '/admin/reviews/forms/$id',
-  path: '/admin/reviews/forms/$id',
+  id: '/_admin/reviews/forms/$id',
+  path: '/reviews/forms/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminReviewsInvitesIndexRoute =
   AdminReviewsInvitesIndexRouteImport.update({
-    id: '/admin/reviews/invites/',
-    path: '/admin/reviews/invites/',
+    id: '/_admin/reviews/invites/',
+    path: '/reviews/invites/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminReviewsInvitesIdRoute = AdminReviewsInvitesIdRouteImport.update({
-  id: '/admin/reviews/invites/$id',
-  path: '/admin/reviews/invites/$id',
+  id: '/_admin/reviews/invites/$id',
+  path: '/reviews/invites/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminReviewsResponsesIndexRoute =
   AdminReviewsResponsesIndexRouteImport.update({
-    id: '/admin/reviews/responses/',
-    path: '/admin/reviews/responses/',
+    id: '/_admin/reviews/responses/',
+    path: '/reviews/responses/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminReviewsResponsesIdRoute = AdminReviewsResponsesIdRouteImport.update({
-  id: '/admin/reviews/responses/$id',
-  path: '/admin/reviews/responses/$id',
+  id: '/_admin/reviews/responses/$id',
+  path: '/reviews/responses/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminTrainingsCatalogsIndexRoute =
   AdminTrainingsCatalogsIndexRouteImport.update({
-    id: '/admin/trainings/catalogs/',
-    path: '/admin/trainings/catalogs/',
+    id: '/_admin/trainings/catalogs/',
+    path: '/trainings/catalogs/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminTrainingsCatalogsIdRoute =
   AdminTrainingsCatalogsIdRouteImport.update({
-    id: '/admin/trainings/catalogs/$id',
-    path: '/admin/trainings/catalogs/$id',
+    id: '/_admin/trainings/catalogs/$id',
+    path: '/trainings/catalogs/$id',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminTrainingsRegistrationsIndexRoute =
   AdminTrainingsRegistrationsIndexRouteImport.update({
-    id: '/admin/trainings/registrations/',
-    path: '/admin/trainings/registrations/',
+    id: '/_admin/trainings/registrations/',
+    path: '/trainings/registrations/',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AdminTrainingsRegistrationsIdRoute =
   AdminTrainingsRegistrationsIdRouteImport.update({
-    id: '/admin/trainings/registrations/$id',
-    path: '/admin/trainings/registrations/$id',
+    id: '/_admin/trainings/registrations/$id',
+    path: '/trainings/registrations/$id',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -377,54 +377,54 @@ export interface FileRoutesByFullPath {
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
+  '/faqs/$id': typeof AdminFaqsIdRoute
+  '/internships/$id': typeof AdminInternshipsIdRoute
+  '/messages/$id': typeof AdminMessagesIdRoute
+  '/projects/$id': typeof AdminProjectsIdRoute
+  '/reports/$id': typeof AdminReportsIdRoute
   '/services/$id': typeof AdminServicesIdRoute
-  '/admin/faqs/$id': typeof AdminFaqsIdRoute
-  '/admin/internships/$id': typeof AdminInternshipsIdRoute
-  '/admin/messages/$id': typeof AdminMessagesIdRoute
-  '/admin/projects/$id': typeof AdminProjectsIdRoute
-  '/admin/reports/$id': typeof AdminReportsIdRoute
-  '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
-  '/admin/stats/$id': typeof AdminStatsIdRoute
-  '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/shortlinks/$id': typeof AdminShortlinksIdRoute
+  '/stats/$id': typeof AdminStatsIdRoute
+  '/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/announces/': typeof AdminAnnouncesIndexRoute
   '/appointments/': typeof AdminAppointmentsIndexRoute
   '/articles/': typeof AdminArticlesIndexRoute
   '/categories/': typeof AdminCategoriesIndexRoute
+  '/faqs/': typeof AdminFaqsIndexRoute
+  '/internships/': typeof AdminInternshipsIndexRoute
+  '/messages/': typeof AdminMessagesIndexRoute
+  '/projects/': typeof AdminProjectsIndexRoute
+  '/reports/': typeof AdminReportsIndexRoute
   '/services/': typeof AdminServicesIndexRoute
-  '/admin/faqs/': typeof AdminFaqsIndexRoute
-  '/admin/internships/': typeof AdminInternshipsIndexRoute
-  '/admin/messages/': typeof AdminMessagesIndexRoute
-  '/admin/projects/': typeof AdminProjectsIndexRoute
-  '/admin/reports/': typeof AdminReportsIndexRoute
-  '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
-  '/admin/stats/': typeof AdminStatsIndexRoute
-  '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
-  '/admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
-  '/admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
-  '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
-  '/admin/members/instructors/$id': typeof AdminMembersInstructorsIdRoute
-  '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
-  '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
-  '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
-  '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
-  '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
-  '/admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
-  '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
-  '/admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
-  '/admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
-  '/admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
-  '/admin/jobs/offers/': typeof AdminJobsOffersIndexRoute
-  '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
-  '/admin/members/instructors/': typeof AdminMembersInstructorsIndexRoute
-  '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
-  '/admin/members/users/': typeof AdminMembersUsersIndexRoute
-  '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
-  '/admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
-  '/admin/reviews/forms/': typeof AdminReviewsFormsIndexRoute
-  '/admin/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
-  '/admin/reviews/responses/': typeof AdminReviewsResponsesIndexRoute
-  '/admin/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
-  '/admin/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
+  '/shortlinks/': typeof AdminShortlinksIndexRoute
+  '/stats/': typeof AdminStatsIndexRoute
+  '/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
+  '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
+  '/members/admins/$id': typeof AdminMembersAdminsIdRoute
+  '/members/instructors/$id': typeof AdminMembersInstructorsIdRoute
+  '/members/students/$id': typeof AdminMembersStudentsIdRoute
+  '/members/users/$id': typeof AdminMembersUsersIdRoute
+  '/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
+  '/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
+  '/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
+  '/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
+  '/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
+  '/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
+  '/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
+  '/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
+  '/jobs/offers/': typeof AdminJobsOffersIndexRoute
+  '/members/admins/': typeof AdminMembersAdminsIndexRoute
+  '/members/instructors/': typeof AdminMembersInstructorsIndexRoute
+  '/members/students/': typeof AdminMembersStudentsIndexRoute
+  '/members/users/': typeof AdminMembersUsersIndexRoute
+  '/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
+  '/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
+  '/reviews/forms/': typeof AdminReviewsFormsIndexRoute
+  '/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
+  '/reviews/responses/': typeof AdminReviewsResponsesIndexRoute
+  '/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
+  '/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -436,54 +436,54 @@ export interface FileRoutesByTo {
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
+  '/faqs/$id': typeof AdminFaqsIdRoute
+  '/internships/$id': typeof AdminInternshipsIdRoute
+  '/messages/$id': typeof AdminMessagesIdRoute
+  '/projects/$id': typeof AdminProjectsIdRoute
+  '/reports/$id': typeof AdminReportsIdRoute
   '/services/$id': typeof AdminServicesIdRoute
-  '/admin/faqs/$id': typeof AdminFaqsIdRoute
-  '/admin/internships/$id': typeof AdminInternshipsIdRoute
-  '/admin/messages/$id': typeof AdminMessagesIdRoute
-  '/admin/projects/$id': typeof AdminProjectsIdRoute
-  '/admin/reports/$id': typeof AdminReportsIdRoute
-  '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
-  '/admin/stats/$id': typeof AdminStatsIdRoute
-  '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/shortlinks/$id': typeof AdminShortlinksIdRoute
+  '/stats/$id': typeof AdminStatsIdRoute
+  '/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/announces': typeof AdminAnnouncesIndexRoute
   '/appointments': typeof AdminAppointmentsIndexRoute
   '/articles': typeof AdminArticlesIndexRoute
   '/categories': typeof AdminCategoriesIndexRoute
+  '/faqs': typeof AdminFaqsIndexRoute
+  '/internships': typeof AdminInternshipsIndexRoute
+  '/messages': typeof AdminMessagesIndexRoute
+  '/projects': typeof AdminProjectsIndexRoute
+  '/reports': typeof AdminReportsIndexRoute
   '/services': typeof AdminServicesIndexRoute
-  '/admin/faqs': typeof AdminFaqsIndexRoute
-  '/admin/internships': typeof AdminInternshipsIndexRoute
-  '/admin/messages': typeof AdminMessagesIndexRoute
-  '/admin/projects': typeof AdminProjectsIndexRoute
-  '/admin/reports': typeof AdminReportsIndexRoute
-  '/admin/shortlinks': typeof AdminShortlinksIndexRoute
-  '/admin/stats': typeof AdminStatsIndexRoute
-  '/admin/testimonials': typeof AdminTestimonialsIndexRoute
-  '/admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
-  '/admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
-  '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
-  '/admin/members/instructors/$id': typeof AdminMembersInstructorsIdRoute
-  '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
-  '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
-  '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
-  '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
-  '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
-  '/admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
-  '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
-  '/admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
-  '/admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
-  '/admin/jobs/applications': typeof AdminJobsApplicationsIndexRoute
-  '/admin/jobs/offers': typeof AdminJobsOffersIndexRoute
-  '/admin/members/admins': typeof AdminMembersAdminsIndexRoute
-  '/admin/members/instructors': typeof AdminMembersInstructorsIndexRoute
-  '/admin/members/students': typeof AdminMembersStudentsIndexRoute
-  '/admin/members/users': typeof AdminMembersUsersIndexRoute
-  '/admin/newsletter/campaigns': typeof AdminNewsletterCampaignsIndexRoute
-  '/admin/newsletter/subscribers': typeof AdminNewsletterSubscribersIndexRoute
-  '/admin/reviews/forms': typeof AdminReviewsFormsIndexRoute
-  '/admin/reviews/invites': typeof AdminReviewsInvitesIndexRoute
-  '/admin/reviews/responses': typeof AdminReviewsResponsesIndexRoute
-  '/admin/trainings/catalogs': typeof AdminTrainingsCatalogsIndexRoute
-  '/admin/trainings/registrations': typeof AdminTrainingsRegistrationsIndexRoute
+  '/shortlinks': typeof AdminShortlinksIndexRoute
+  '/stats': typeof AdminStatsIndexRoute
+  '/testimonials': typeof AdminTestimonialsIndexRoute
+  '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
+  '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
+  '/members/admins/$id': typeof AdminMembersAdminsIdRoute
+  '/members/instructors/$id': typeof AdminMembersInstructorsIdRoute
+  '/members/students/$id': typeof AdminMembersStudentsIdRoute
+  '/members/users/$id': typeof AdminMembersUsersIdRoute
+  '/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
+  '/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
+  '/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
+  '/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
+  '/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
+  '/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
+  '/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
+  '/jobs/applications': typeof AdminJobsApplicationsIndexRoute
+  '/jobs/offers': typeof AdminJobsOffersIndexRoute
+  '/members/admins': typeof AdminMembersAdminsIndexRoute
+  '/members/instructors': typeof AdminMembersInstructorsIndexRoute
+  '/members/students': typeof AdminMembersStudentsIndexRoute
+  '/members/users': typeof AdminMembersUsersIndexRoute
+  '/newsletter/campaigns': typeof AdminNewsletterCampaignsIndexRoute
+  '/newsletter/subscribers': typeof AdminNewsletterSubscribersIndexRoute
+  '/reviews/forms': typeof AdminReviewsFormsIndexRoute
+  '/reviews/invites': typeof AdminReviewsInvitesIndexRoute
+  '/reviews/responses': typeof AdminReviewsResponsesIndexRoute
+  '/trainings/catalogs': typeof AdminTrainingsCatalogsIndexRoute
+  '/trainings/registrations': typeof AdminTrainingsRegistrationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -496,54 +496,54 @@ export interface FileRoutesById {
   '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/_admin/articles/$id': typeof AdminArticlesIdRoute
   '/_admin/categories/$id': typeof AdminCategoriesIdRoute
+  '/_admin/faqs/$id': typeof AdminFaqsIdRoute
+  '/_admin/internships/$id': typeof AdminInternshipsIdRoute
+  '/_admin/messages/$id': typeof AdminMessagesIdRoute
+  '/_admin/projects/$id': typeof AdminProjectsIdRoute
+  '/_admin/reports/$id': typeof AdminReportsIdRoute
   '/_admin/services/$id': typeof AdminServicesIdRoute
-  '/admin/faqs/$id': typeof AdminFaqsIdRoute
-  '/admin/internships/$id': typeof AdminInternshipsIdRoute
-  '/admin/messages/$id': typeof AdminMessagesIdRoute
-  '/admin/projects/$id': typeof AdminProjectsIdRoute
-  '/admin/reports/$id': typeof AdminReportsIdRoute
-  '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
-  '/admin/stats/$id': typeof AdminStatsIdRoute
-  '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/_admin/shortlinks/$id': typeof AdminShortlinksIdRoute
+  '/_admin/stats/$id': typeof AdminStatsIdRoute
+  '/_admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/_admin/announces/': typeof AdminAnnouncesIndexRoute
   '/_admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/_admin/articles/': typeof AdminArticlesIndexRoute
   '/_admin/categories/': typeof AdminCategoriesIndexRoute
+  '/_admin/faqs/': typeof AdminFaqsIndexRoute
+  '/_admin/internships/': typeof AdminInternshipsIndexRoute
+  '/_admin/messages/': typeof AdminMessagesIndexRoute
+  '/_admin/projects/': typeof AdminProjectsIndexRoute
+  '/_admin/reports/': typeof AdminReportsIndexRoute
   '/_admin/services/': typeof AdminServicesIndexRoute
-  '/admin/faqs/': typeof AdminFaqsIndexRoute
-  '/admin/internships/': typeof AdminInternshipsIndexRoute
-  '/admin/messages/': typeof AdminMessagesIndexRoute
-  '/admin/projects/': typeof AdminProjectsIndexRoute
-  '/admin/reports/': typeof AdminReportsIndexRoute
-  '/admin/shortlinks/': typeof AdminShortlinksIndexRoute
-  '/admin/stats/': typeof AdminStatsIndexRoute
-  '/admin/testimonials/': typeof AdminTestimonialsIndexRoute
-  '/admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
-  '/admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
-  '/admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
-  '/admin/members/instructors/$id': typeof AdminMembersInstructorsIdRoute
-  '/admin/members/students/$id': typeof AdminMembersStudentsIdRoute
-  '/admin/members/users/$id': typeof AdminMembersUsersIdRoute
-  '/admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
-  '/admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
-  '/admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
-  '/admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
-  '/admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
-  '/admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
-  '/admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
-  '/admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
-  '/admin/jobs/offers/': typeof AdminJobsOffersIndexRoute
-  '/admin/members/admins/': typeof AdminMembersAdminsIndexRoute
-  '/admin/members/instructors/': typeof AdminMembersInstructorsIndexRoute
-  '/admin/members/students/': typeof AdminMembersStudentsIndexRoute
-  '/admin/members/users/': typeof AdminMembersUsersIndexRoute
-  '/admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
-  '/admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
-  '/admin/reviews/forms/': typeof AdminReviewsFormsIndexRoute
-  '/admin/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
-  '/admin/reviews/responses/': typeof AdminReviewsResponsesIndexRoute
-  '/admin/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
-  '/admin/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
+  '/_admin/shortlinks/': typeof AdminShortlinksIndexRoute
+  '/_admin/stats/': typeof AdminStatsIndexRoute
+  '/_admin/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/_admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
+  '/_admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
+  '/_admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
+  '/_admin/members/instructors/$id': typeof AdminMembersInstructorsIdRoute
+  '/_admin/members/students/$id': typeof AdminMembersStudentsIdRoute
+  '/_admin/members/users/$id': typeof AdminMembersUsersIdRoute
+  '/_admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
+  '/_admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
+  '/_admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
+  '/_admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
+  '/_admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
+  '/_admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
+  '/_admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
+  '/_admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
+  '/_admin/jobs/offers/': typeof AdminJobsOffersIndexRoute
+  '/_admin/members/admins/': typeof AdminMembersAdminsIndexRoute
+  '/_admin/members/instructors/': typeof AdminMembersInstructorsIndexRoute
+  '/_admin/members/students/': typeof AdminMembersStudentsIndexRoute
+  '/_admin/members/users/': typeof AdminMembersUsersIndexRoute
+  '/_admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
+  '/_admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
+  '/_admin/reviews/forms/': typeof AdminReviewsFormsIndexRoute
+  '/_admin/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
+  '/_admin/reviews/responses/': typeof AdminReviewsResponsesIndexRoute
+  '/_admin/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
+  '/_admin/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -557,54 +557,54 @@ export interface FileRouteTypes {
     | '/appointments/$id'
     | '/articles/$id'
     | '/categories/$id'
+    | '/faqs/$id'
+    | '/internships/$id'
+    | '/messages/$id'
+    | '/projects/$id'
+    | '/reports/$id'
     | '/services/$id'
-    | '/admin/faqs/$id'
-    | '/admin/internships/$id'
-    | '/admin/messages/$id'
-    | '/admin/projects/$id'
-    | '/admin/reports/$id'
-    | '/admin/shortlinks/$id'
-    | '/admin/stats/$id'
-    | '/admin/testimonials/$id'
+    | '/shortlinks/$id'
+    | '/stats/$id'
+    | '/testimonials/$id'
     | '/announces/'
     | '/appointments/'
     | '/articles/'
     | '/categories/'
+    | '/faqs/'
+    | '/internships/'
+    | '/messages/'
+    | '/projects/'
+    | '/reports/'
     | '/services/'
-    | '/admin/faqs/'
-    | '/admin/internships/'
-    | '/admin/messages/'
-    | '/admin/projects/'
-    | '/admin/reports/'
-    | '/admin/shortlinks/'
-    | '/admin/stats/'
-    | '/admin/testimonials/'
-    | '/admin/jobs/applications/$id'
-    | '/admin/jobs/offers/$id'
-    | '/admin/members/admins/$id'
-    | '/admin/members/instructors/$id'
-    | '/admin/members/students/$id'
-    | '/admin/members/users/$id'
-    | '/admin/newsletter/campaigns/$id'
-    | '/admin/newsletter/subscribers/$id'
-    | '/admin/reviews/forms/$id'
-    | '/admin/reviews/invites/$id'
-    | '/admin/reviews/responses/$id'
-    | '/admin/trainings/catalogs/$id'
-    | '/admin/trainings/registrations/$id'
-    | '/admin/jobs/applications/'
-    | '/admin/jobs/offers/'
-    | '/admin/members/admins/'
-    | '/admin/members/instructors/'
-    | '/admin/members/students/'
-    | '/admin/members/users/'
-    | '/admin/newsletter/campaigns/'
-    | '/admin/newsletter/subscribers/'
-    | '/admin/reviews/forms/'
-    | '/admin/reviews/invites/'
-    | '/admin/reviews/responses/'
-    | '/admin/trainings/catalogs/'
-    | '/admin/trainings/registrations/'
+    | '/shortlinks/'
+    | '/stats/'
+    | '/testimonials/'
+    | '/jobs/applications/$id'
+    | '/jobs/offers/$id'
+    | '/members/admins/$id'
+    | '/members/instructors/$id'
+    | '/members/students/$id'
+    | '/members/users/$id'
+    | '/newsletter/campaigns/$id'
+    | '/newsletter/subscribers/$id'
+    | '/reviews/forms/$id'
+    | '/reviews/invites/$id'
+    | '/reviews/responses/$id'
+    | '/trainings/catalogs/$id'
+    | '/trainings/registrations/$id'
+    | '/jobs/applications/'
+    | '/jobs/offers/'
+    | '/members/admins/'
+    | '/members/instructors/'
+    | '/members/students/'
+    | '/members/users/'
+    | '/newsletter/campaigns/'
+    | '/newsletter/subscribers/'
+    | '/reviews/forms/'
+    | '/reviews/invites/'
+    | '/reviews/responses/'
+    | '/trainings/catalogs/'
+    | '/trainings/registrations/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -616,54 +616,54 @@ export interface FileRouteTypes {
     | '/appointments/$id'
     | '/articles/$id'
     | '/categories/$id'
+    | '/faqs/$id'
+    | '/internships/$id'
+    | '/messages/$id'
+    | '/projects/$id'
+    | '/reports/$id'
     | '/services/$id'
-    | '/admin/faqs/$id'
-    | '/admin/internships/$id'
-    | '/admin/messages/$id'
-    | '/admin/projects/$id'
-    | '/admin/reports/$id'
-    | '/admin/shortlinks/$id'
-    | '/admin/stats/$id'
-    | '/admin/testimonials/$id'
+    | '/shortlinks/$id'
+    | '/stats/$id'
+    | '/testimonials/$id'
     | '/announces'
     | '/appointments'
     | '/articles'
     | '/categories'
+    | '/faqs'
+    | '/internships'
+    | '/messages'
+    | '/projects'
+    | '/reports'
     | '/services'
-    | '/admin/faqs'
-    | '/admin/internships'
-    | '/admin/messages'
-    | '/admin/projects'
-    | '/admin/reports'
-    | '/admin/shortlinks'
-    | '/admin/stats'
-    | '/admin/testimonials'
-    | '/admin/jobs/applications/$id'
-    | '/admin/jobs/offers/$id'
-    | '/admin/members/admins/$id'
-    | '/admin/members/instructors/$id'
-    | '/admin/members/students/$id'
-    | '/admin/members/users/$id'
-    | '/admin/newsletter/campaigns/$id'
-    | '/admin/newsletter/subscribers/$id'
-    | '/admin/reviews/forms/$id'
-    | '/admin/reviews/invites/$id'
-    | '/admin/reviews/responses/$id'
-    | '/admin/trainings/catalogs/$id'
-    | '/admin/trainings/registrations/$id'
-    | '/admin/jobs/applications'
-    | '/admin/jobs/offers'
-    | '/admin/members/admins'
-    | '/admin/members/instructors'
-    | '/admin/members/students'
-    | '/admin/members/users'
-    | '/admin/newsletter/campaigns'
-    | '/admin/newsletter/subscribers'
-    | '/admin/reviews/forms'
-    | '/admin/reviews/invites'
-    | '/admin/reviews/responses'
-    | '/admin/trainings/catalogs'
-    | '/admin/trainings/registrations'
+    | '/shortlinks'
+    | '/stats'
+    | '/testimonials'
+    | '/jobs/applications/$id'
+    | '/jobs/offers/$id'
+    | '/members/admins/$id'
+    | '/members/instructors/$id'
+    | '/members/students/$id'
+    | '/members/users/$id'
+    | '/newsletter/campaigns/$id'
+    | '/newsletter/subscribers/$id'
+    | '/reviews/forms/$id'
+    | '/reviews/invites/$id'
+    | '/reviews/responses/$id'
+    | '/trainings/catalogs/$id'
+    | '/trainings/registrations/$id'
+    | '/jobs/applications'
+    | '/jobs/offers'
+    | '/members/admins'
+    | '/members/instructors'
+    | '/members/students'
+    | '/members/users'
+    | '/newsletter/campaigns'
+    | '/newsletter/subscribers'
+    | '/reviews/forms'
+    | '/reviews/invites'
+    | '/reviews/responses'
+    | '/trainings/catalogs'
+    | '/trainings/registrations'
   id:
     | '__root__'
     | '/'
@@ -675,54 +675,54 @@ export interface FileRouteTypes {
     | '/_admin/appointments/$id'
     | '/_admin/articles/$id'
     | '/_admin/categories/$id'
+    | '/_admin/faqs/$id'
+    | '/_admin/internships/$id'
+    | '/_admin/messages/$id'
+    | '/_admin/projects/$id'
+    | '/_admin/reports/$id'
     | '/_admin/services/$id'
-    | '/admin/faqs/$id'
-    | '/admin/internships/$id'
-    | '/admin/messages/$id'
-    | '/admin/projects/$id'
-    | '/admin/reports/$id'
-    | '/admin/shortlinks/$id'
-    | '/admin/stats/$id'
-    | '/admin/testimonials/$id'
+    | '/_admin/shortlinks/$id'
+    | '/_admin/stats/$id'
+    | '/_admin/testimonials/$id'
     | '/_admin/announces/'
     | '/_admin/appointments/'
     | '/_admin/articles/'
     | '/_admin/categories/'
+    | '/_admin/faqs/'
+    | '/_admin/internships/'
+    | '/_admin/messages/'
+    | '/_admin/projects/'
+    | '/_admin/reports/'
     | '/_admin/services/'
-    | '/admin/faqs/'
-    | '/admin/internships/'
-    | '/admin/messages/'
-    | '/admin/projects/'
-    | '/admin/reports/'
-    | '/admin/shortlinks/'
-    | '/admin/stats/'
-    | '/admin/testimonials/'
-    | '/admin/jobs/applications/$id'
-    | '/admin/jobs/offers/$id'
-    | '/admin/members/admins/$id'
-    | '/admin/members/instructors/$id'
-    | '/admin/members/students/$id'
-    | '/admin/members/users/$id'
-    | '/admin/newsletter/campaigns/$id'
-    | '/admin/newsletter/subscribers/$id'
-    | '/admin/reviews/forms/$id'
-    | '/admin/reviews/invites/$id'
-    | '/admin/reviews/responses/$id'
-    | '/admin/trainings/catalogs/$id'
-    | '/admin/trainings/registrations/$id'
-    | '/admin/jobs/applications/'
-    | '/admin/jobs/offers/'
-    | '/admin/members/admins/'
-    | '/admin/members/instructors/'
-    | '/admin/members/students/'
-    | '/admin/members/users/'
-    | '/admin/newsletter/campaigns/'
-    | '/admin/newsletter/subscribers/'
-    | '/admin/reviews/forms/'
-    | '/admin/reviews/invites/'
-    | '/admin/reviews/responses/'
-    | '/admin/trainings/catalogs/'
-    | '/admin/trainings/registrations/'
+    | '/_admin/shortlinks/'
+    | '/_admin/stats/'
+    | '/_admin/testimonials/'
+    | '/_admin/jobs/applications/$id'
+    | '/_admin/jobs/offers/$id'
+    | '/_admin/members/admins/$id'
+    | '/_admin/members/instructors/$id'
+    | '/_admin/members/students/$id'
+    | '/_admin/members/users/$id'
+    | '/_admin/newsletter/campaigns/$id'
+    | '/_admin/newsletter/subscribers/$id'
+    | '/_admin/reviews/forms/$id'
+    | '/_admin/reviews/invites/$id'
+    | '/_admin/reviews/responses/$id'
+    | '/_admin/trainings/catalogs/$id'
+    | '/_admin/trainings/registrations/$id'
+    | '/_admin/jobs/applications/'
+    | '/_admin/jobs/offers/'
+    | '/_admin/members/admins/'
+    | '/_admin/members/instructors/'
+    | '/_admin/members/students/'
+    | '/_admin/members/users/'
+    | '/_admin/newsletter/campaigns/'
+    | '/_admin/newsletter/subscribers/'
+    | '/_admin/reviews/forms/'
+    | '/_admin/reviews/invites/'
+    | '/_admin/reviews/responses/'
+    | '/_admin/trainings/catalogs/'
+    | '/_admin/trainings/registrations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -735,12 +735,12 @@ export interface RootRouteChildren {
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
   AdminCategoriesIdRoute: typeof AdminCategoriesIdRoute
-  AdminServicesIdRoute: typeof AdminServicesIdRoute
   AdminFaqsIdRoute: typeof AdminFaqsIdRoute
   AdminInternshipsIdRoute: typeof AdminInternshipsIdRoute
   AdminMessagesIdRoute: typeof AdminMessagesIdRoute
   AdminProjectsIdRoute: typeof AdminProjectsIdRoute
   AdminReportsIdRoute: typeof AdminReportsIdRoute
+  AdminServicesIdRoute: typeof AdminServicesIdRoute
   AdminShortlinksIdRoute: typeof AdminShortlinksIdRoute
   AdminStatsIdRoute: typeof AdminStatsIdRoute
   AdminTestimonialsIdRoute: typeof AdminTestimonialsIdRoute
@@ -748,12 +748,12 @@ export interface RootRouteChildren {
   AdminAppointmentsIndexRoute: typeof AdminAppointmentsIndexRoute
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
-  AdminServicesIndexRoute: typeof AdminServicesIndexRoute
   AdminFaqsIndexRoute: typeof AdminFaqsIndexRoute
   AdminInternshipsIndexRoute: typeof AdminInternshipsIndexRoute
   AdminMessagesIndexRoute: typeof AdminMessagesIndexRoute
   AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
   AdminReportsIndexRoute: typeof AdminReportsIndexRoute
+  AdminServicesIndexRoute: typeof AdminServicesIndexRoute
   AdminShortlinksIndexRoute: typeof AdminShortlinksIndexRoute
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
@@ -878,6 +878,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCategoriesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin/faqs/': {
+      id: '/_admin/faqs/'
+      path: '/faqs'
+      fullPath: '/faqs/'
+      preLoaderRoute: typeof AdminFaqsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/faqs/$id': {
+      id: '/_admin/faqs/$id'
+      path: '/faqs/$id'
+      fullPath: '/faqs/$id'
+      preLoaderRoute: typeof AdminFaqsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/internships/': {
+      id: '/_admin/internships/'
+      path: '/internships'
+      fullPath: '/internships/'
+      preLoaderRoute: typeof AdminInternshipsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/internships/$id': {
+      id: '/_admin/internships/$id'
+      path: '/internships/$id'
+      fullPath: '/internships/$id'
+      preLoaderRoute: typeof AdminInternshipsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/messages/': {
+      id: '/_admin/messages/'
+      path: '/messages'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof AdminMessagesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/messages/$id': {
+      id: '/_admin/messages/$id'
+      path: '/messages/$id'
+      fullPath: '/messages/$id'
+      preLoaderRoute: typeof AdminMessagesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/projects/': {
+      id: '/_admin/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof AdminProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/projects/$id': {
+      id: '/_admin/projects/$id'
+      path: '/projects/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof AdminProjectsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/reports/': {
+      id: '/_admin/reports/'
+      path: '/reports'
+      fullPath: '/reports/'
+      preLoaderRoute: typeof AdminReportsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/reports/$id': {
+      id: '/_admin/reports/$id'
+      path: '/reports/$id'
+      fullPath: '/reports/$id'
+      preLoaderRoute: typeof AdminReportsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_admin/services/': {
       id: '/_admin/services/'
       path: '/services'
@@ -892,297 +962,227 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminServicesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/faqs/': {
-      id: '/admin/faqs/'
-      path: '/admin/faqs'
-      fullPath: '/admin/faqs/'
-      preLoaderRoute: typeof AdminFaqsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/faqs/$id': {
-      id: '/admin/faqs/$id'
-      path: '/admin/faqs/$id'
-      fullPath: '/admin/faqs/$id'
-      preLoaderRoute: typeof AdminFaqsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/internships/': {
-      id: '/admin/internships/'
-      path: '/admin/internships'
-      fullPath: '/admin/internships/'
-      preLoaderRoute: typeof AdminInternshipsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/internships/$id': {
-      id: '/admin/internships/$id'
-      path: '/admin/internships/$id'
-      fullPath: '/admin/internships/$id'
-      preLoaderRoute: typeof AdminInternshipsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/messages/': {
-      id: '/admin/messages/'
-      path: '/admin/messages'
-      fullPath: '/admin/messages/'
-      preLoaderRoute: typeof AdminMessagesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/messages/$id': {
-      id: '/admin/messages/$id'
-      path: '/admin/messages/$id'
-      fullPath: '/admin/messages/$id'
-      preLoaderRoute: typeof AdminMessagesIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/projects/': {
-      id: '/admin/projects/'
-      path: '/admin/projects'
-      fullPath: '/admin/projects/'
-      preLoaderRoute: typeof AdminProjectsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/projects/$id': {
-      id: '/admin/projects/$id'
-      path: '/admin/projects/$id'
-      fullPath: '/admin/projects/$id'
-      preLoaderRoute: typeof AdminProjectsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/reports/': {
-      id: '/admin/reports/'
-      path: '/admin/reports'
-      fullPath: '/admin/reports/'
-      preLoaderRoute: typeof AdminReportsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/reports/$id': {
-      id: '/admin/reports/$id'
-      path: '/admin/reports/$id'
-      fullPath: '/admin/reports/$id'
-      preLoaderRoute: typeof AdminReportsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/shortlinks/': {
-      id: '/admin/shortlinks/'
-      path: '/admin/shortlinks'
-      fullPath: '/admin/shortlinks/'
+    '/_admin/shortlinks/': {
+      id: '/_admin/shortlinks/'
+      path: '/shortlinks'
+      fullPath: '/shortlinks/'
       preLoaderRoute: typeof AdminShortlinksIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/shortlinks/$id': {
-      id: '/admin/shortlinks/$id'
-      path: '/admin/shortlinks/$id'
-      fullPath: '/admin/shortlinks/$id'
+    '/_admin/shortlinks/$id': {
+      id: '/_admin/shortlinks/$id'
+      path: '/shortlinks/$id'
+      fullPath: '/shortlinks/$id'
       preLoaderRoute: typeof AdminShortlinksIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/stats/': {
-      id: '/admin/stats/'
-      path: '/admin/stats'
-      fullPath: '/admin/stats/'
+    '/_admin/stats/': {
+      id: '/_admin/stats/'
+      path: '/stats'
+      fullPath: '/stats/'
       preLoaderRoute: typeof AdminStatsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/stats/$id': {
-      id: '/admin/stats/$id'
-      path: '/admin/stats/$id'
-      fullPath: '/admin/stats/$id'
+    '/_admin/stats/$id': {
+      id: '/_admin/stats/$id'
+      path: '/stats/$id'
+      fullPath: '/stats/$id'
       preLoaderRoute: typeof AdminStatsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/testimonials/': {
-      id: '/admin/testimonials/'
-      path: '/admin/testimonials'
-      fullPath: '/admin/testimonials/'
+    '/_admin/testimonials/': {
+      id: '/_admin/testimonials/'
+      path: '/testimonials'
+      fullPath: '/testimonials/'
       preLoaderRoute: typeof AdminTestimonialsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/testimonials/$id': {
-      id: '/admin/testimonials/$id'
-      path: '/admin/testimonials/$id'
-      fullPath: '/admin/testimonials/$id'
+    '/_admin/testimonials/$id': {
+      id: '/_admin/testimonials/$id'
+      path: '/testimonials/$id'
+      fullPath: '/testimonials/$id'
       preLoaderRoute: typeof AdminTestimonialsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/jobs/applications/': {
-      id: '/admin/jobs/applications/'
-      path: '/admin/jobs/applications'
-      fullPath: '/admin/jobs/applications/'
+    '/_admin/jobs/applications/': {
+      id: '/_admin/jobs/applications/'
+      path: '/jobs/applications'
+      fullPath: '/jobs/applications/'
       preLoaderRoute: typeof AdminJobsApplicationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/jobs/applications/$id': {
-      id: '/admin/jobs/applications/$id'
-      path: '/admin/jobs/applications/$id'
-      fullPath: '/admin/jobs/applications/$id'
+    '/_admin/jobs/applications/$id': {
+      id: '/_admin/jobs/applications/$id'
+      path: '/jobs/applications/$id'
+      fullPath: '/jobs/applications/$id'
       preLoaderRoute: typeof AdminJobsApplicationsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/jobs/offers/': {
-      id: '/admin/jobs/offers/'
-      path: '/admin/jobs/offers'
-      fullPath: '/admin/jobs/offers/'
+    '/_admin/jobs/offers/': {
+      id: '/_admin/jobs/offers/'
+      path: '/jobs/offers'
+      fullPath: '/jobs/offers/'
       preLoaderRoute: typeof AdminJobsOffersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/jobs/offers/$id': {
-      id: '/admin/jobs/offers/$id'
-      path: '/admin/jobs/offers/$id'
-      fullPath: '/admin/jobs/offers/$id'
+    '/_admin/jobs/offers/$id': {
+      id: '/_admin/jobs/offers/$id'
+      path: '/jobs/offers/$id'
+      fullPath: '/jobs/offers/$id'
       preLoaderRoute: typeof AdminJobsOffersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/admins/': {
-      id: '/admin/members/admins/'
-      path: '/admin/members/admins'
-      fullPath: '/admin/members/admins/'
+    '/_admin/members/admins/': {
+      id: '/_admin/members/admins/'
+      path: '/members/admins'
+      fullPath: '/members/admins/'
       preLoaderRoute: typeof AdminMembersAdminsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/admins/$id': {
-      id: '/admin/members/admins/$id'
-      path: '/admin/members/admins/$id'
-      fullPath: '/admin/members/admins/$id'
+    '/_admin/members/admins/$id': {
+      id: '/_admin/members/admins/$id'
+      path: '/members/admins/$id'
+      fullPath: '/members/admins/$id'
       preLoaderRoute: typeof AdminMembersAdminsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/instructors/': {
-      id: '/admin/members/instructors/'
-      path: '/admin/members/instructors'
-      fullPath: '/admin/members/instructors/'
+    '/_admin/members/instructors/': {
+      id: '/_admin/members/instructors/'
+      path: '/members/instructors'
+      fullPath: '/members/instructors/'
       preLoaderRoute: typeof AdminMembersInstructorsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/instructors/$id': {
-      id: '/admin/members/instructors/$id'
-      path: '/admin/members/instructors/$id'
-      fullPath: '/admin/members/instructors/$id'
+    '/_admin/members/instructors/$id': {
+      id: '/_admin/members/instructors/$id'
+      path: '/members/instructors/$id'
+      fullPath: '/members/instructors/$id'
       preLoaderRoute: typeof AdminMembersInstructorsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/students/': {
-      id: '/admin/members/students/'
-      path: '/admin/members/students'
-      fullPath: '/admin/members/students/'
+    '/_admin/members/students/': {
+      id: '/_admin/members/students/'
+      path: '/members/students'
+      fullPath: '/members/students/'
       preLoaderRoute: typeof AdminMembersStudentsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/students/$id': {
-      id: '/admin/members/students/$id'
-      path: '/admin/members/students/$id'
-      fullPath: '/admin/members/students/$id'
+    '/_admin/members/students/$id': {
+      id: '/_admin/members/students/$id'
+      path: '/members/students/$id'
+      fullPath: '/members/students/$id'
       preLoaderRoute: typeof AdminMembersStudentsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/users/': {
-      id: '/admin/members/users/'
-      path: '/admin/members/users'
-      fullPath: '/admin/members/users/'
+    '/_admin/members/users/': {
+      id: '/_admin/members/users/'
+      path: '/members/users'
+      fullPath: '/members/users/'
       preLoaderRoute: typeof AdminMembersUsersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/members/users/$id': {
-      id: '/admin/members/users/$id'
-      path: '/admin/members/users/$id'
-      fullPath: '/admin/members/users/$id'
+    '/_admin/members/users/$id': {
+      id: '/_admin/members/users/$id'
+      path: '/members/users/$id'
+      fullPath: '/members/users/$id'
       preLoaderRoute: typeof AdminMembersUsersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/newsletter/campaigns/': {
-      id: '/admin/newsletter/campaigns/'
-      path: '/admin/newsletter/campaigns'
-      fullPath: '/admin/newsletter/campaigns/'
+    '/_admin/newsletter/campaigns/': {
+      id: '/_admin/newsletter/campaigns/'
+      path: '/newsletter/campaigns'
+      fullPath: '/newsletter/campaigns/'
       preLoaderRoute: typeof AdminNewsletterCampaignsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/newsletter/campaigns/$id': {
-      id: '/admin/newsletter/campaigns/$id'
-      path: '/admin/newsletter/campaigns/$id'
-      fullPath: '/admin/newsletter/campaigns/$id'
+    '/_admin/newsletter/campaigns/$id': {
+      id: '/_admin/newsletter/campaigns/$id'
+      path: '/newsletter/campaigns/$id'
+      fullPath: '/newsletter/campaigns/$id'
       preLoaderRoute: typeof AdminNewsletterCampaignsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/newsletter/subscribers/': {
-      id: '/admin/newsletter/subscribers/'
-      path: '/admin/newsletter/subscribers'
-      fullPath: '/admin/newsletter/subscribers/'
+    '/_admin/newsletter/subscribers/': {
+      id: '/_admin/newsletter/subscribers/'
+      path: '/newsletter/subscribers'
+      fullPath: '/newsletter/subscribers/'
       preLoaderRoute: typeof AdminNewsletterSubscribersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/newsletter/subscribers/$id': {
-      id: '/admin/newsletter/subscribers/$id'
-      path: '/admin/newsletter/subscribers/$id'
-      fullPath: '/admin/newsletter/subscribers/$id'
+    '/_admin/newsletter/subscribers/$id': {
+      id: '/_admin/newsletter/subscribers/$id'
+      path: '/newsletter/subscribers/$id'
+      fullPath: '/newsletter/subscribers/$id'
       preLoaderRoute: typeof AdminNewsletterSubscribersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/reviews/forms/': {
-      id: '/admin/reviews/forms/'
-      path: '/admin/reviews/forms'
-      fullPath: '/admin/reviews/forms/'
+    '/_admin/reviews/forms/': {
+      id: '/_admin/reviews/forms/'
+      path: '/reviews/forms'
+      fullPath: '/reviews/forms/'
       preLoaderRoute: typeof AdminReviewsFormsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/reviews/forms/$id': {
-      id: '/admin/reviews/forms/$id'
-      path: '/admin/reviews/forms/$id'
-      fullPath: '/admin/reviews/forms/$id'
+    '/_admin/reviews/forms/$id': {
+      id: '/_admin/reviews/forms/$id'
+      path: '/reviews/forms/$id'
+      fullPath: '/reviews/forms/$id'
       preLoaderRoute: typeof AdminReviewsFormsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/reviews/invites/': {
-      id: '/admin/reviews/invites/'
-      path: '/admin/reviews/invites'
-      fullPath: '/admin/reviews/invites/'
+    '/_admin/reviews/invites/': {
+      id: '/_admin/reviews/invites/'
+      path: '/reviews/invites'
+      fullPath: '/reviews/invites/'
       preLoaderRoute: typeof AdminReviewsInvitesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/reviews/invites/$id': {
-      id: '/admin/reviews/invites/$id'
-      path: '/admin/reviews/invites/$id'
-      fullPath: '/admin/reviews/invites/$id'
+    '/_admin/reviews/invites/$id': {
+      id: '/_admin/reviews/invites/$id'
+      path: '/reviews/invites/$id'
+      fullPath: '/reviews/invites/$id'
       preLoaderRoute: typeof AdminReviewsInvitesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/reviews/responses/': {
-      id: '/admin/reviews/responses/'
-      path: '/admin/reviews/responses'
-      fullPath: '/admin/reviews/responses/'
+    '/_admin/reviews/responses/': {
+      id: '/_admin/reviews/responses/'
+      path: '/reviews/responses'
+      fullPath: '/reviews/responses/'
       preLoaderRoute: typeof AdminReviewsResponsesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/reviews/responses/$id': {
-      id: '/admin/reviews/responses/$id'
-      path: '/admin/reviews/responses/$id'
-      fullPath: '/admin/reviews/responses/$id'
+    '/_admin/reviews/responses/$id': {
+      id: '/_admin/reviews/responses/$id'
+      path: '/reviews/responses/$id'
+      fullPath: '/reviews/responses/$id'
       preLoaderRoute: typeof AdminReviewsResponsesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/trainings/catalogs/': {
-      id: '/admin/trainings/catalogs/'
-      path: '/admin/trainings/catalogs'
-      fullPath: '/admin/trainings/catalogs/'
+    '/_admin/trainings/catalogs/': {
+      id: '/_admin/trainings/catalogs/'
+      path: '/trainings/catalogs'
+      fullPath: '/trainings/catalogs/'
       preLoaderRoute: typeof AdminTrainingsCatalogsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/trainings/catalogs/$id': {
-      id: '/admin/trainings/catalogs/$id'
-      path: '/admin/trainings/catalogs/$id'
-      fullPath: '/admin/trainings/catalogs/$id'
+    '/_admin/trainings/catalogs/$id': {
+      id: '/_admin/trainings/catalogs/$id'
+      path: '/trainings/catalogs/$id'
+      fullPath: '/trainings/catalogs/$id'
       preLoaderRoute: typeof AdminTrainingsCatalogsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/trainings/registrations/': {
-      id: '/admin/trainings/registrations/'
-      path: '/admin/trainings/registrations'
-      fullPath: '/admin/trainings/registrations/'
+    '/_admin/trainings/registrations/': {
+      id: '/_admin/trainings/registrations/'
+      path: '/trainings/registrations'
+      fullPath: '/trainings/registrations/'
       preLoaderRoute: typeof AdminTrainingsRegistrationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/trainings/registrations/$id': {
-      id: '/admin/trainings/registrations/$id'
-      path: '/admin/trainings/registrations/$id'
-      fullPath: '/admin/trainings/registrations/$id'
+    '/_admin/trainings/registrations/$id': {
+      id: '/_admin/trainings/registrations/$id'
+      path: '/trainings/registrations/$id'
+      fullPath: '/trainings/registrations/$id'
       preLoaderRoute: typeof AdminTrainingsRegistrationsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -1199,12 +1199,12 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,
   AdminCategoriesIdRoute: AdminCategoriesIdRoute,
-  AdminServicesIdRoute: AdminServicesIdRoute,
   AdminFaqsIdRoute: AdminFaqsIdRoute,
   AdminInternshipsIdRoute: AdminInternshipsIdRoute,
   AdminMessagesIdRoute: AdminMessagesIdRoute,
   AdminProjectsIdRoute: AdminProjectsIdRoute,
   AdminReportsIdRoute: AdminReportsIdRoute,
+  AdminServicesIdRoute: AdminServicesIdRoute,
   AdminShortlinksIdRoute: AdminShortlinksIdRoute,
   AdminStatsIdRoute: AdminStatsIdRoute,
   AdminTestimonialsIdRoute: AdminTestimonialsIdRoute,
@@ -1212,12 +1212,12 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
-  AdminServicesIndexRoute: AdminServicesIndexRoute,
   AdminFaqsIndexRoute: AdminFaqsIndexRoute,
   AdminInternshipsIndexRoute: AdminInternshipsIndexRoute,
   AdminMessagesIndexRoute: AdminMessagesIndexRoute,
   AdminProjectsIndexRoute: AdminProjectsIndexRoute,
   AdminReportsIndexRoute: AdminReportsIndexRoute,
+  AdminServicesIndexRoute: AdminServicesIndexRoute,
   AdminShortlinksIndexRoute: AdminShortlinksIndexRoute,
   AdminStatsIndexRoute: AdminStatsIndexRoute,
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,

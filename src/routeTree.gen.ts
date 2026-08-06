@@ -42,8 +42,6 @@ import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/
 import { Route as AdminProjectsIdRouteImport } from './routes/admin/projects/$id'
 import { Route as AdminReportsIndexRouteImport } from './routes/admin/reports/index'
 import { Route as AdminReportsIdRouteImport } from './routes/admin/reports/$id'
-import { Route as AdminServicesIndexRouteImport } from './routes/admin/services/index'
-import { Route as AdminServicesIdRouteImport } from './routes/admin/services/$id'
 import { Route as AdminShortlinksIndexRouteImport } from './routes/admin/shortlinks/index'
 import { Route as AdminShortlinksIdRouteImport } from './routes/admin/shortlinks/$id'
 import { Route as AdminStatsIndexRouteImport } from './routes/admin/stats/index'

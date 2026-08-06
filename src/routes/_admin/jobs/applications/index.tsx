@@ -26,7 +26,7 @@ function AdminJobApplications() {
 
       <div className="mb-4">
         <Link
-          to="/admin/jobs/offers"
+          to="/jobs/offers"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <Briefcase className="h-4 w-4" /> Voir les offres d'emploi
         </Link>

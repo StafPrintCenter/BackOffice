@@ -128,7 +128,7 @@ function AdminCategories() {
         onCreate={openCreate}
         onEdit={openEdit}
         onDelete={(r) => setToDelete(r)}
-        onView={(r) => navigate({ to: "/admin/categories/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/categories/$id", params: { id: r.id } })}
         columns={[
           {
             key: "slug",

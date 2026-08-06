@@ -48,7 +48,7 @@ function SubscriberDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/subscribers" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/newsletter/subscribers" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
@@ -109,7 +109,7 @@ function SubscriberDetail() {
     <AdminShell>
       {/* Barre d'actions */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/subscribers" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/newsletter/subscribers" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
 
@@ -328,7 +328,7 @@ function SubscriberDetail() {
           removeMutation.mutate(subscriber.id, {
             onSuccess: () => {
               toast.success("Abonné supprimé");
-              navigate({ to: "/admin/newsletter/subscribers" });
+              navigate({ to: "/newsletter/subscribers" });
             },
             onError: () => toast.error("Erreur lors de la suppression"),
           });

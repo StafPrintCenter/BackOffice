@@ -40,7 +40,7 @@ function AdminAppointments() {
         data={rows}
         isLoading={isLoading}
         searchKeys={["firstName", "lastName", "email", "subject"]}
-        onView={(r) => navigate({ to: "/admin/appointments/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/appointments/$id", params: { id: r.id } })}
         columns={[
           {
             key: "scheduledAt",

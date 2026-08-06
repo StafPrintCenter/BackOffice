@@ -428,6 +428,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof AdminDashboardRoute
   '/admin/profile': typeof AdminProfileRoute
   '/auth/invite': typeof AuthInviteRoute
   '/auth/login': typeof AuthLoginRoute

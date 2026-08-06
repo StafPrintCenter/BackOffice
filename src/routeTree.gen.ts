@@ -746,7 +746,6 @@ export interface RootRouteChildren {
   AdminMessagesIdRoute: typeof AdminMessagesIdRoute
   AdminProjectsIdRoute: typeof AdminProjectsIdRoute
   AdminReportsIdRoute: typeof AdminReportsIdRoute
-  AdminServicesIdRoute: typeof AdminServicesIdRoute
   AdminShortlinksIdRoute: typeof AdminShortlinksIdRoute
   AdminStatsIdRoute: typeof AdminStatsIdRoute
   AdminTestimonialsIdRoute: typeof AdminTestimonialsIdRoute

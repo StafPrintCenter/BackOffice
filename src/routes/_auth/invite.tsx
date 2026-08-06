@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2, CheckCircle2, XCircle } from "lucide-react";
-import { adminFetch } from "@/lib/api-url";
+import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -28,50 +28,6 @@ export const Route = createFileRoute("/_auth/invite")({
   component: InviteAcceptPage,
 });
 
-class AdminInviteApiError extends Error { }
-
-function inviteQuery(params: { admin: string; expires: string; signature: string }) {
-  return new URLSearchParams({
-    admin: params.admin,
-    expires: params.expires,
-    signature: params.signature,
-  }).toString();
-}
-
-async function verifyInvite(params: {
-  admin: string;
-  expires: string;
-  signature: string;
-}): Promise<AdminInviteVerifyResponse> {
-  const response = await adminFetch(`/api/admin/auth/invite-accept?${inviteQuery(params)}`);
-  const body = await response.json().catch(() => null);
-  if (!response.ok) {
-    throw new AdminInviteApiError(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
-  }
-  return body.data as AdminInviteVerifyResponse;
-}
-
-async function acceptInvite(params: {
-  admin: string;
-  expires: string;
-  signature: string;
-  password: string;
-}): Promise<{ message: string }> {
-  const fd = new FormData();
-  fd.append("password", params.password);
-
-  const response = await adminFetch(`/api/admin/auth/invite-accept?${inviteQuery(params)}`, {
-    method: "POST",
-
-    body: fd,
-  });
-  const body = await response.json().catch(() => null);
-  if (!response.ok) {
-    throw new AdminInviteApiError(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
-  }
-  return body as { message: string };
-}
-
 type VerifyState =
   | { status: "checking" }
   | { status: "valid"; invitee: AdminInviteVerifyResponse }
@@ -79,6 +35,7 @@ type VerifyState =
 
 function InviteAcceptPage() {
   const { admin, expires, signature } = Route.useSearch();
+  const { verifyInvite, acceptInvite } = useAuth();
   const navigate = useNavigate();
 
   const [verify, setVerify] = useState<VerifyState>({ status: "checking" });
@@ -110,7 +67,7 @@ function InviteAcceptPage() {
     return () => {
       cancelled = true;
     };
-  }, [admin, expires, signature]);
+  }, [admin, expires, signature, verifyInvite]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,9 +106,11 @@ function InviteAcceptPage() {
 
   if (verify.status === "invalid") {
     return (
-      <AuthShell title="Lien invalide" subtitle={verify.message}>
+      <AuthShell title="" subtitle="">
         <div className="text-center">
-          <XCircle className="mx-auto h-12 w-12 text-destructive" />
+          <XCircle className="mx-auto h-12 w-12 text-destructive mb-4" />
+          <h2 className="font-display text-2xl font-bold">Lien invalide</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{verify.message}</p>
           <Button variant="outline" className="mt-6 w-full" onClick={() => navigate({ to: "/login" })}>
             Retour à la connexion
           </Button>
@@ -162,12 +121,13 @@ function InviteAcceptPage() {
 
   if (done) {
     return (
-      <AuthShell
-        title="Compte activé"
-        subtitle="Vous pouvez maintenant vous connecter avec votre e-mail et votre nouveau mot de passe."
-      >
+      <AuthShell title="" subtitle="">
         <div className="text-center">
-          <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
+          <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500 mb-4" />
+          <h2 className="font-display text-2xl font-bold">Compte activé</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Vous pouvez maintenant vous connecter avec votre e-mail et votre nouveau mot de passe.
+          </p>
           <Button className="mt-6 w-full" onClick={() => navigate({ to: "/login" })}>
             Aller à la connexion
           </Button>

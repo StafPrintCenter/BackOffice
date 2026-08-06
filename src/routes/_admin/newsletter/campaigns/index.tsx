@@ -75,7 +75,7 @@ function AdminNewsletterCampaigns() {
 
       {/* Raccourci */}
       <div className="mb-4">
-        <Link to="/admin/newsletter/subscribers"
+        <Link to="/newsletter/subscribers"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <Users className="h-4 w-4"
           />
@@ -88,7 +88,7 @@ function AdminNewsletterCampaigns() {
         isLoading={isLoading}
         searchKeys={["subject", "category"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/newsletter/campaigns/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/newsletter/campaigns/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "subject", label: "Sujet", render: (r) => <div className="font-medium text-foreground max-w-sm">{r.subject}</div> },

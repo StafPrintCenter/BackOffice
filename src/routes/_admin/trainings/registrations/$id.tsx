@@ -114,7 +114,7 @@ function TrainingRegistrationDetail() {
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <Link
-                    to="/admin/trainings/catalogs/$id"
+                    to="/trainings/catalogs/$id"
                     params={{ id: reg.trainingId }}
                     className="inline-flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary/20"
                   >

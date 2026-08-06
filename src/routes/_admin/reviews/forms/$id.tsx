@@ -150,7 +150,7 @@ function ReviewFormDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews/forms" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reviews/forms" })}>
             <ArrowLeft className="mr-1 h-4 w-4" /> Retour
           </Button>
         </div>
@@ -223,7 +223,7 @@ function ReviewFormDetail() {
     duplicateMutation.mutate(reviewForm.id, {
       onSuccess: (dup) => {
         toast.success("Formulaire dupliqué");
-        navigate({ to: "/admin/reviews/forms/$id", params: { id: dup.id } });
+        navigate({ to: "/reviews/forms/$id", params: { id: dup.id } });
       },
       onError: () => toast.error("Erreur lors de la duplication"),
     });
@@ -349,7 +349,7 @@ function ReviewFormDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews/forms" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reviews/forms" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
         <div className="flex flex-wrap gap-2">
@@ -754,7 +754,7 @@ function ReviewFormDetail() {
           removeMutation.mutate(reviewForm.id, {
             onSuccess: () => {
               toast.success("Formulaire supprimé");
-              navigate({ to: "/admin/reviews/forms" });
+              navigate({ to: "/reviews/forms" });
             },
             onError: () => toast.error("Erreur lors de la suppression"),
           });

@@ -41,7 +41,7 @@ function AdminTrainingRegistrations() {
         data={items}
         isLoading={isLoading}
         searchKeys={["firstName", "lastName", "email", "training"]}
-        onView={(r) => navigate({ to: "/admin/trainings/registrations/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/trainings/registrations/$id", params: { id: r.id } })}
         columns={[
           {
             key: "training",

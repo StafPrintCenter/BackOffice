@@ -727,7 +727,6 @@ export interface RootRouteChildren {
   AdminProfileRoute: typeof AdminProfileRoute
   AuthInviteRoute: typeof AuthInviteRoute
   AuthLoginRoute: typeof AuthLoginRoute
-  AdminIndexRoute: typeof AdminIndexRoute
   AdminAnnouncesIdRoute: typeof AdminAnnouncesIdRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute

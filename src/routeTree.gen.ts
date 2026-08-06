@@ -723,6 +723,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
   AdminProfileRoute: typeof AdminProfileRoute
   AuthInviteRoute: typeof AuthInviteRoute
   AuthLoginRoute: typeof AuthLoginRoute

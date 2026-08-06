@@ -549,6 +549,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
     | '/admin/profile'
     | '/auth/invite'
     | '/auth/login'

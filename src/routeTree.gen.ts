@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminProfileRouteImport } from './routes/admin.profile'
 import { Route as AuthInviteRouteImport } from './routes/auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'

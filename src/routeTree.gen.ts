@@ -888,6 +888,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCategoriesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin/services/': {
+      id: '/_admin/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof AdminServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin/services/$id': {
+      id: '/_admin/services/$id'
+      path: '/services/$id'
+      fullPath: '/services/$id'
+      preLoaderRoute: typeof AdminServicesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/faqs/': {
       id: '/admin/faqs/'
       path: '/admin/faqs'

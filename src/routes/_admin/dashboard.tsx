@@ -117,6 +117,7 @@ function DashboardPage() {
         <StatCard label="Membres actifs" value={membersLoading ? "…" : activeMembers} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total`} />
         <StatCard label="Utilisateurs actifs" value={usersLoading ? "…" : activeUsers} icon={<SquareUser className="h-5 w-5" />} hint={`${users.length} au total`} />
         <StatCard label="Apprenants actifs" value={studentsLoading ? "…" : activeStudents} icon={<CircleUser className="h-5 w-5" />} hint={`${students.length} au total`} />
+        <StatCard label="Formateurs actifs" value={instructorsLoading ? "…" : activeInstructors} icon={<UserCheck className="h-5 w-5" />} hint={`${instructors.length} au total`} />
         <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldUser className="h-5 w-5" />} hint={`${admins.length} au total`} />
       </div>
 

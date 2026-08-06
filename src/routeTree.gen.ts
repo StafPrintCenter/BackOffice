@@ -972,20 +972,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminReportsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/services/': {
-      id: '/admin/services/'
-      path: '/admin/services'
-      fullPath: '/admin/services/'
-      preLoaderRoute: typeof AdminServicesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/services/$id': {
-      id: '/admin/services/$id'
-      path: '/admin/services/$id'
-      fullPath: '/admin/services/$id'
-      preLoaderRoute: typeof AdminServicesIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/shortlinks/': {
       id: '/admin/shortlinks/'
       path: '/admin/shortlinks'

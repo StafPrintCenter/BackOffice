@@ -39,7 +39,7 @@ function LoginPage() {
     try {
       await login(email, password);
       toast.success("Connexion réussie");
-      navigate({ to: "/admin" });
+      navigate({ to: "/dashboard" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erreur de connexion");
     } finally {

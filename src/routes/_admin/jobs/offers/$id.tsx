@@ -89,7 +89,7 @@ function JobOfferDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/jobs/offers" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/jobs/offers" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
@@ -162,7 +162,7 @@ function JobOfferDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/jobs/offers" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/jobs/offers" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex flex-wrap gap-2">
@@ -376,7 +376,7 @@ function JobOfferDetail() {
                   {applicants.map((a) => (
                     <Link
                       key={a.id}
-                      to="/admin/jobs/applications/$id"
+                      to="/jobs/applications/$id"
                       params={{ id: a.id }}
                       className="flex items-center justify-between gap-3 p-3 text-sm hover:bg-muted/40"
                     >
@@ -466,7 +466,7 @@ function JobOfferDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(offer.id, {
-            onSuccess: () => { toast.success("Offre supprimée"); navigate({ to: "/admin/jobs/offers" }); },
+            onSuccess: () => { toast.success("Offre supprimée"); navigate({ to: "/jobs/offers" }); },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

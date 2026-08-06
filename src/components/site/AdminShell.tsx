@@ -49,7 +49,7 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: "Recruitements",
     items: [
-      { to: "/jobs/offers", label: "Offres d'emploi", icon: BriefcaseBusiness, matchPrefixes: ["/admin/jobs"] },
+      { to: "/jobs/offers", label: "Offres d'emploi", icon: BriefcaseBusiness, matchPrefixes: ["/jobs"] },
       { to: "/internships", label: "Stages", icon: BriefcaseBusiness, },
     ],
   },

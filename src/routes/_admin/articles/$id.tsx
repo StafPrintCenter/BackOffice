@@ -106,7 +106,7 @@ function ArticleDetail() {
     <AdminShell>
       {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/articles" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/articles" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">

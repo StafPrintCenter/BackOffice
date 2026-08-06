@@ -39,7 +39,9 @@ function DashboardPage() {
   const activeStudents = students.filter((s) => s.isActive && !s.isBlocked).length;
   const activeInstructors = instructors.filter((i) => i.isActive && !i.isBlocked && !i.isPending).length;
   const activeAdmins = admins.filter((a) => a.isActive && !a.isBlocked && !a.isPending).length;
-  const totalMembers = users.length + students.length + admins.length;
+
+  const activeMembers = activeUsers + activeStudents + activeInstructors + activeAdmins;
+  const totalMembers = users.length + students.length + instructors.length + admins.length;
 
   const totalClicks = shortLinks.reduce((s, l) => s + l.clicksCount, 0);
   const activeShortLinks = shortLinks.filter((l) => l.isActive).length;

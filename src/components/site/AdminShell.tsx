@@ -109,7 +109,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
     return (
       <Link
         key={n.to}
-        to={n.to as "/admin"}
+        to={n.to as "/dashboard"}
         title={collapsed ? n.label : undefined}
         className={
           "flex items-center gap-3 rounded-lg text-sm transition-colors " +

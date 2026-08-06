@@ -505,10 +505,11 @@ export interface FileRoutesById {
   '/admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/admin/stats/$id': typeof AdminStatsIdRoute
   '/admin/testimonials/$id': typeof AdminTestimonialsIdRoute
-  '/admin/announces/': typeof AdminAnnouncesIndexRoute
-  '/admin/appointments/': typeof AdminAppointmentsIndexRoute
-  '/admin/articles/': typeof AdminArticlesIndexRoute
-  '/admin/categories/': typeof AdminCategoriesIndexRoute
+  '/_admin/announces/': typeof AdminAnnouncesIndexRoute
+  '/_admin/appointments/': typeof AdminAppointmentsIndexRoute
+  '/_admin/articles/': typeof AdminArticlesIndexRoute
+  '/_admin/categories/': typeof AdminCategoriesIndexRoute
+  '/_admin/services/': typeof AdminServicesIndexRoute
   '/admin/faqs/': typeof AdminFaqsIndexRoute
   '/admin/internships/': typeof AdminInternshipsIndexRoute
   '/admin/messages/': typeof AdminMessagesIndexRoute

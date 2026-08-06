@@ -23,7 +23,7 @@ function AdminStudents() {
         data={items}
         isLoading={isLoading}
         searchKeys={["fullname", "email", "occupation"]}
-        onView={(r) => navigate({ to: "/admin/members/students/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/members/students/$id", params: { id: r.id } })}
         columns={[
           {
             key: "fullname",

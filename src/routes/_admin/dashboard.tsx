@@ -4,6 +4,7 @@ import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveCo
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
 import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminInstructorsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList, useAdminArticlesList, useAdminAnnouncementsList } from "@/stores";
 import { SITE } from "@/data/site";
+import { ANNOUNCEMENT_TYPE_LABELS } from "@/data/announcements";
 
 export const Route = createFileRoute("/_admin/dashboard")({
   head: () => ({

@@ -70,7 +70,7 @@ function AdminFaqs() {
         isLoading={isLoading}
         searchKeys={["question", "answer", "category"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/faqs/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/faqs/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "order", label: "#", render: (r) => <span className="font-mono text-xs font-medium text-primary">{r.order}</span> },

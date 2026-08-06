@@ -142,7 +142,7 @@ function AdminAnnouncements() {
         isLoading={isLoading}
         searchKeys={["title", "message", "type"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/announces/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/announces/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           {

@@ -501,11 +501,11 @@ export interface FileRoutesById {
   '/admin/profile': typeof AdminProfileRoute
   '/auth/invite': typeof AuthInviteRoute
   '/auth/login': typeof AuthLoginRoute
-  '/admin/': typeof AdminIndexRoute
-  '/admin/announces/$id': typeof AdminAnnouncesIdRoute
-  '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
-  '/admin/articles/$id': typeof AdminArticlesIdRoute
-  '/admin/categories/$id': typeof AdminCategoriesIdRoute
+  '/_admin/announces/$id': typeof AdminAnnouncesIdRoute
+  '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
+  '/_admin/articles/$id': typeof AdminArticlesIdRoute
+  '/_admin/categories/$id': typeof AdminCategoriesIdRoute
+  '/_admin/services/$id': typeof AdminServicesIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/internships/$id': typeof AdminInternshipsIdRoute
   '/admin/messages/$id': typeof AdminMessagesIdRoute

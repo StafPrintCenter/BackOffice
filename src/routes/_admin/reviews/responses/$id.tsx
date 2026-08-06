@@ -76,7 +76,7 @@ function ResponseDetail() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigate({ to: "/admin/reviews/responses" })}
+            onClick={() => navigate({ to: "/reviews/responses" })}
           >
             <ArrowLeft className="mr-1 h-4 w-4" /> Retour
           </Button>
@@ -153,7 +153,7 @@ function ResponseDetail() {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => navigate({ to: "/admin/reviews/responses" })}
+          onClick={() => navigate({ to: "/reviews/responses" })}
         >
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>

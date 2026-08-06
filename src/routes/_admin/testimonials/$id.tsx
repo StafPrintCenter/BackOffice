@@ -59,7 +59,7 @@ function TestimonialDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/testimonials" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/testimonials" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
@@ -95,7 +95,7 @@ function TestimonialDetail() {
     <AdminShell>
       {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/testimonials" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/testimonials" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">
@@ -288,7 +288,10 @@ function TestimonialDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(testimonial.id, {
-            onSuccess: () => { toast.success("Témoignage supprimé"); navigate({ to: "/admin/testimonials" }); },
+            onSuccess: () => {
+              toast.success("Témoignage supprimé");
+              navigate({ to: "/testimonials" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

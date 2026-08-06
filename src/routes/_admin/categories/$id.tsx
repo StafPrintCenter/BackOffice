@@ -66,7 +66,7 @@ function CategoryDetail() {
         </div>
         <div className="rounded-xl border p-8 text-center text-muted-foreground">
           Catégorie introuvable.
-          <div className="mt-2"><Link to="/admin/categories" className="text-primary underline">Retour à la liste</Link></div>
+          <div className="mt-2"><Link to="/categories" className="text-primary underline">Retour à la liste</Link></div>
         </div>
       </AdminShell>
     );
@@ -103,7 +103,7 @@ function CategoryDetail() {
     <AdminShell>
       {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/categories" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/categories" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">
@@ -300,7 +300,10 @@ function CategoryDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(cat.id, {
-            onSuccess: () => { toast.success("Catégorie supprimée"); navigate({ to: "/admin/categories" }); },
+            onSuccess: () => {
+              toast.success("Catégorie supprimée");
+              navigate({ to: "/categories" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

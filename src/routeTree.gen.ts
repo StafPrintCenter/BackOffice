@@ -103,8 +103,8 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnnouncesIndexRoute = AdminAnnouncesIndexRouteImport.update({
-  id: '/admin/announces/',
-  path: '/admin/announces/',
+  id: '/_admin/announces/',
+  path: '/announces/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnnouncesIdRoute = AdminAnnouncesIdRouteImport.update({

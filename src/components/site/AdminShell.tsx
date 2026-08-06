@@ -73,7 +73,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
   const [confirmDisconnectOpen, setConfirmDisconnectOpen] = useState(false);
 
   useEffect(() => {
-    if (ready && !isAuthenticated) navigate({ to: "/auth/login" });
+    if (ready && !isAuthenticated) navigate({ to: "/login" });
   }, [ready, isAuthenticated, navigate]);
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
   const handleLogout = async () => {
     await logout();
     toast.success("Déconnecté");
-    navigate({ to: "/auth/login" });
+    navigate({ to: "/login" });
   };
 
   const width = collapsed ? "md:w-16" : "md:w-64";

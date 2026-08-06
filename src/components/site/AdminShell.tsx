@@ -19,14 +19,14 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: "Contenu",
     items: [
-      { to: "/admin/categories", label: "Catégories", icon: Tags },
-      { to: "/admin/services", label: "Services", icon: Wrench },
-      { to: "/admin/projects", label: "Projets", icon: FolderKanban },
-      { to: "/admin/trainings/catalogs", label: "Formations", icon: GraduationCap, matchPrefixes: ["/admin/trainings"] },
-      { to: "/admin/articles", label: "Articles", icon: FileText },
-      { to: "/admin/faqs", label: "FAQ", icon: HelpCircle },
-      { to: "/admin/testimonials", label: "Témoignages", icon: MessagesSquare },
-      { to: "/admin/stats", label: "Statistiques", icon: BarChart3 },
+      { to: "/categories", label: "Catégories", icon: Tags },
+      { to: "/services", label: "Services", icon: Wrench },
+      { to: "/projects", label: "Projets", icon: FolderKanban },
+      { to: "/trainings/catalogs", label: "Formations", icon: GraduationCap, matchPrefixes: ["/admin/trainings"] },
+      { to: "/articles", label: "Articles", icon: FileText },
+      { to: "/faqs", label: "FAQ", icon: HelpCircle },
+      { to: "/testimonials", label: "Témoignages", icon: MessagesSquare },
+      { to: "/stats", label: "Statistiques", icon: BarChart3 },
     ],
   },
   {

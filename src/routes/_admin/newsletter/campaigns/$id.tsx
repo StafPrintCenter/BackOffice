@@ -73,7 +73,7 @@ function CampaignDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/campaigns" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/newsletter/campaigns" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
@@ -141,7 +141,7 @@ function CampaignDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/newsletter/campaigns" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/newsletter/campaigns" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex flex-wrap gap-2">
@@ -284,7 +284,7 @@ function CampaignDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(campaign.id, {
-            onSuccess: () => { toast.success("Campagne supprimée"); navigate({ to: "/admin/newsletter/campaigns" }); },
+            onSuccess: () => { toast.success("Campagne supprimée"); navigate({ to: "/newsletter/campaigns" }); },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

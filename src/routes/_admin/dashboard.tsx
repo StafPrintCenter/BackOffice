@@ -29,7 +29,6 @@ function DashboardPage() {
   const { items: services, isLoading: servicesLoading } = useAdminServicesList({ perPage: 100 });
   const { items: trainings, isLoading: trainingsLoading } = useAdminTrainingsList({ perPage: 100 });
   const { items: reports, isLoading: reportsLoading } = useAdminReportsList({ perPage: 100 });
-
   const { items: articles, isLoading: articlesLoading } = useAdminArticlesList({ perPage: 100 });
 
   // --- KPIs ---

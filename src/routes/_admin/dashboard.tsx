@@ -21,6 +21,7 @@ function DashboardPage() {
   const { items: contacts, isLoading: contactsLoading } = useAdminContactsList({ perPage: 100 });
   const { items: users, isLoading: usersLoading } = useAdminUsersList({ perPage: 100 });
   const { items: students, isLoading: studentsLoading } = useAdminStudentsList({ perPage: 100 });
+  const { items: instructors, isLoading: instructorsLoading } = useAdminInstructorsList({ perPage: 100 });
   const { items: admins, isLoading: adminsLoading } = useAdminAdminsList({ perPage: 100 });
   const { items: projects, isLoading: projectsLoading } = useAdminProjectsList({ perPage: 100 });
   const { items: testimonials, isLoading: testimonialsLoading } = useAdminTestimonialsList({ perPage: 100 });

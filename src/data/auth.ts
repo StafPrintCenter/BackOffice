@@ -1,7 +1,7 @@
 export type AdminLevel = "super_admin" | "admin" | string;
 
 /**
- * Type aligné sur la réponse de l'API admin /auth/login (champ "admin")
+ * Type aligné sur la réponse de l'API admin (champ "admin")
  * et /auth/me (racine directe)
  */
 export type APIAdminUser = {

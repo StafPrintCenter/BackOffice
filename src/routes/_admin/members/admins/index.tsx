@@ -61,7 +61,7 @@ function AdminAdmins() {
         isLoading={isLoading}
         searchKeys={["fullname", "email"]}
         onCreate={openInvite}
-        onView={(r) => navigate({ to: "/admin/members/admins/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/members/admins/$id", params: { id: r.id } })}
         columns={[
           {
             key: "fullname",

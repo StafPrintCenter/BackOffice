@@ -366,7 +366,10 @@ function ShortLinkDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(link.id, {
-            onSuccess: () => { toast.success("Lien supprimé"); navigate({ to: "/shortlinks" }); },
+            onSuccess: () => {
+              toast.success("Lien supprimé");
+              navigate({ to: "/shortlinks" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

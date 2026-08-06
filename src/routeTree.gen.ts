@@ -857,10 +857,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminArticlesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/articles/$id': {
-      id: '/admin/articles/$id'
-      path: '/admin/articles/$id'
-      fullPath: '/admin/articles/$id'
+    '/_admin/articles/$id': {
+      id: '/_admin/articles/$id'
+      path: '/articles/$id'
+      fullPath: '/articles/$id'
       preLoaderRoute: typeof AdminArticlesIdRouteImport
       parentRoute: typeof rootRouteImport
     }

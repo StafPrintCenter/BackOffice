@@ -70,7 +70,7 @@ function MessageDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/messages" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/messages" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
       </div>

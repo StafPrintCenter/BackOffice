@@ -128,7 +128,7 @@ function AnnouncementDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/announces" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/announces" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>

@@ -62,7 +62,7 @@ function ProjectDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/projects" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/projects" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour aux projets
           </Button>
         </div>
@@ -105,7 +105,7 @@ function ProjectDetail() {
     <AdminShell>
       {/* Barre d'actions supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <Button variant="ghost" size="sm" onClick={() => navigate({ to: "/admin/projects" })} className="-ml-2 text-muted-foreground hover:text-foreground">
+        <Button variant="ghost" size="sm" onClick={() => navigate({ to: "/projects" })} className="-ml-2 text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4 mr-1.5" /> Retour à la liste
         </Button>
         <div className="flex items-center gap-2">
@@ -320,7 +320,7 @@ function ProjectDetail() {
           removeMutation.mutate(project.id, {
             onSuccess: () => {
               toast.success("Projet supprimé");
-              navigate({ to: "/admin/projects" });
+              navigate({ to: "/projects" });
             },
             onError: () => toast.error("Erreur lors de la suppression"),
           });

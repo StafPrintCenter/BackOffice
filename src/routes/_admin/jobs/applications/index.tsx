@@ -36,7 +36,7 @@ function AdminJobApplications() {
         data={items}
         isLoading={isLoading}
         searchKeys={["firstName", "lastName", "email", "jobOffer"]}
-        onView={(r) => navigate({ to: "/admin/jobs/applications/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/jobs/applications/$id", params: { id: r.id } })}
         columns={[
           {
             key: "jobOffer",

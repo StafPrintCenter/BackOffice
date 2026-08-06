@@ -49,8 +49,8 @@ function AdminJobApplications() {
             render: (r) => <span className="text-xs font-medium">{r.firstName} {r.lastName}</span>,
           },
           {
-            key: "firstName",
-            label: "Candidat",
+            key: "contact",
+            label: "Contacts",
             render: (r) => (
               <div>
                 <div className="font-medium">{r.email}</div>

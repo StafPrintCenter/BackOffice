@@ -96,7 +96,7 @@ function DashboardPage() {
     <AdminShell>
       <PageHeader title="Tableau de bord" description="Vue d'ensemble de votre activité." />
 
-      {/* KPIs */}
+      {/* KPIs Services, Formations, Projets, Articles */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
         <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />

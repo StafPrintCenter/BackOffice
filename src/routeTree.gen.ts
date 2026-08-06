@@ -822,10 +822,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/announces/': {
-      id: '/admin/announces/'
-      path: '/admin/announces'
-      fullPath: '/admin/announces/'
+    '/_admin/announces/': {
+      id: '/_admin/announces/'
+      path: '/announces'
+      fullPath: '/announces/'
       preLoaderRoute: typeof AdminAnnouncesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }

@@ -752,7 +752,10 @@ function ReviewFormDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(reviewForm.id, {
-            onSuccess: () => { toast.success("Formulaire supprimé"); navigate({ to: "/admin/reviews/forms" }); },
+            onSuccess: () => {
+              toast.success("Formulaire supprimé");
+              navigate({ to: "/admin/reviews/forms" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

@@ -1207,7 +1207,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminMessagesIdRoute: AdminMessagesIdRoute,
   AdminProjectsIdRoute: AdminProjectsIdRoute,
   AdminReportsIdRoute: AdminReportsIdRoute,
-  AdminServicesIdRoute: AdminServicesIdRoute,
   AdminShortlinksIdRoute: AdminShortlinksIdRoute,
   AdminStatsIdRoute: AdminStatsIdRoute,
   AdminTestimonialsIdRoute: AdminTestimonialsIdRoute,

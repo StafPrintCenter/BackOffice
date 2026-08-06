@@ -29,7 +29,7 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (ready && isAuthenticated) navigate({ to: "/admin" });
+    if (ready && isAuthenticated) navigate({ to: "/dashboard" });
   }, [ready, isAuthenticated, navigate]);
 
   const onSubmit = async (e: React.FormEvent) => {

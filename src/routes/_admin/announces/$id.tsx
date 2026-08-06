@@ -800,7 +800,7 @@ function AnnouncementDetail() {
           removeMutation.mutate(announcement.id, {
             onSuccess: () => {
               toast.success("Annonce supprimée");
-              navigate({ to: "/admin/announces" });
+              navigate({ to: "/announces" });
             },
             onError: () => toast.error("Erreur lors de la suppression"),
           });

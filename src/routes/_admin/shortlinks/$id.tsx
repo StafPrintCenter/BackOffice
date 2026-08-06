@@ -68,7 +68,7 @@ function ShortLinkDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/shortlinks" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/shortlinks" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
@@ -110,7 +110,7 @@ function ShortLinkDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/shortlinks" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/shortlinks" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">
@@ -366,7 +366,7 @@ function ShortLinkDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(link.id, {
-            onSuccess: () => { toast.success("Lien supprimé"); navigate({ to: "/admin/shortlinks" }); },
+            onSuccess: () => { toast.success("Lien supprimé"); navigate({ to: "/shortlinks" }); },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

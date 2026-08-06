@@ -59,7 +59,7 @@ function FaqDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/faqs" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/faqs" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
@@ -99,7 +99,7 @@ function FaqDetail() {
     <AdminShell>
       {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/faqs" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/faqs" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">
@@ -257,7 +257,10 @@ function FaqDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(faq.id, {
-            onSuccess: () => { toast.success("FAQ supprimée"); navigate({ to: "/admin/faqs" }); },
+            onSuccess: () => {
+              toast.success("FAQ supprimée");
+              navigate({ to: "/faqs" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

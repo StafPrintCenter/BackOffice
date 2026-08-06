@@ -575,7 +575,6 @@ export interface FileRouteTypes {
     | '/admin/messages/'
     | '/admin/projects/'
     | '/admin/reports/'
-    | '/admin/services/'
     | '/admin/shortlinks/'
     | '/admin/stats/'
     | '/admin/testimonials/'

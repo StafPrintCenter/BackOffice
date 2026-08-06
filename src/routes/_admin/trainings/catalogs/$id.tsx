@@ -391,7 +391,7 @@ function TrainingDetail() {
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <Link
-                            to="/admin/members/instructors/$id"
+                            to="/members/instructors/$id"
                             params={{ id: a.instructorId }}
                             className="font-medium text-primary hover:underline truncate"
                           >

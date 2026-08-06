@@ -86,7 +86,7 @@ function AdminInstructors() {
         isLoading={isLoading}
         searchKeys={["name", "email"]}
         onCreate={openInvite}
-        onView={(r) => navigate({ to: "/admin/members/instructors/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/members/instructors/$id", params: { id: r.id } })}
         columns={[
           {
             key: "name",

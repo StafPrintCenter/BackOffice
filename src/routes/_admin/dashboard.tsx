@@ -167,11 +167,13 @@ function DashboardPage() {
           </div>
         </div>
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Signalements par statut</div>
+          <div className="font-display text-lg font-semibold">Annonces par type</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={reportsByStatus} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>{reportsByStatus.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}</Pie>
+                <Pie data={announcementsByType} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
+                  {announcementsByType.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
+                </Pie>
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
               </PieChart>
             </ResponsiveContainer>

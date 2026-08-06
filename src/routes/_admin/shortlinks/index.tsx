@@ -106,7 +106,7 @@ function AdminShortLinks() {
         onCreate={openCreate}
         onEdit={openEdit}
         onDelete={(r) => setToDelete(r)}
-        onView={(r) => navigate({ to: "/admin/shortlinks/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/shortlinks/$id", params: { id: r.id } })}
         columns={[
           {
             key: "alias",

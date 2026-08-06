@@ -26,7 +26,7 @@ function AdminReviewResponses() {
       {/* Raccourci */}
       <div className="flex items-center gap-6 mb-4">
         <div>
-          <Link to="/admin/reviews/forms"
+          <Link to="/reviews/forms"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <FileText className="h-4 w-4"
             />
@@ -34,7 +34,7 @@ function AdminReviewResponses() {
           </Link>
         </div>
         <div>
-          <Link to="/admin/reviews/invites"
+          <Link to="/reviews/invites"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <Send className="h-4 w-4"
             />
@@ -47,7 +47,7 @@ function AdminReviewResponses() {
         data={items}
         isLoading={isLoading}
         searchKeys={["clientName", "clientEmail", "reviewForm", "projectName"]}
-        onView={(r) => navigate({ to: "/admin/reviews/responses/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/reviews/responses/$id", params: { id: r.id } })}
         columns={[
           {
             key: "clientName",

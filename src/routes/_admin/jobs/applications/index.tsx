@@ -53,8 +53,8 @@ function AdminJobApplications() {
             label: "Candidat",
             render: (r) => (
               <div>
-                <div className="font-medium">{r.firstName} {r.lastName}</div>
-                <div className="text-xs text-muted-foreground">{r.email}</div>
+                <div className="font-medium">{r.email}</div>
+                <div className="text-xs text-muted-foreground">{r.phone}</div>
               </div>
             ),
           },

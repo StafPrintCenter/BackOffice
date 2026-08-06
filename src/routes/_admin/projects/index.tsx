@@ -80,7 +80,7 @@ function AdminProjects() {
         isLoading={isLoading}
         searchKeys={["title", "category", "client"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/projects/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/projects/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "cover", label: "", render: (r) => <img src={r.cover} alt="" className="h-10 w-14 rounded object-cover" /> },

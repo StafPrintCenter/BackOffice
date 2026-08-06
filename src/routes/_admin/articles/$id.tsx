@@ -62,7 +62,7 @@ function ArticleDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/articles" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/articles" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>

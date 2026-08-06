@@ -242,6 +242,65 @@ function DashboardPage() {
         </div>
       </div>
 
+      {/* Section Annonces : Dernières annonces & Métriques */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Megaphone className="h-5 w-5 text-primary" />
+              <div className="font-display text-lg font-semibold">Dernières annonces</div>
+            </div>
+            <span className="text-xs text-muted-foreground">{activeAnnouncements} actives sur {announcements.length}</span>
+          </div>
+          <div className="mt-4 divide-y">
+            {announcementsLoading && <div className="py-6 text-center text-sm text-muted-foreground">Chargement des annonces...</div>}
+            {[...announcements]
+              .sort((a, b) => new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime())
+              .slice(0, 4)
+              .map((item) => (
+                <div key={item.id} className="flex items-start justify-between py-3 gap-3">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold truncate">{item.title}</span>
+                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                        {ANNOUNCEMENT_TYPE_LABELS[item.type]}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{item.message}</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs shrink-0">
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${item.isEnabled && item.isActive
+                      ? "bg-emerald-500/10 text-emerald-600"
+                      : "bg-muted text-muted-foreground"
+                      }`}>
+                      {item.isEnabled && item.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            {!announcementsLoading && announcements.length === 0 && (
+              <div className="py-6 text-center text-sm text-muted-foreground">Aucune annonce configurée</div>
+            )}
+          </div>
+        </div>
+
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="flex items-center gap-2 font-display text-lg font-semibold">
+            <ShieldAlert className="h-4 w-4 text-primary" /> Signalements
+          </div>
+          <div className="mt-4 h-56">
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie data={reportsByStatus} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
+                  {reportsByStatus.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
+                </Pie>
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="flex items-center gap-2">

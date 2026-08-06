@@ -32,10 +32,10 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: "Communauté",
     items: [
-      { to: "/admin/messages", label: "Messages", icon: Inbox },
-      { to: "/admin/appointments", label: "Rendez-vous", icon: CalendarClock },
-      { to: "/admin/reports", label: "Signalements", icon: ShieldAlert },
-      { to: "/admin/newsletter/subscribers", label: "Newsletter", icon: Mailbox, matchPrefixes: ["/admin/newsletter"] },
+      { to: "/messages", label: "Messages", icon: Inbox },
+      { to: "/appointments", label: "Rendez-vous", icon: CalendarClock },
+      { to: "/reports", label: "Signalements", icon: ShieldAlert },
+      { to: "/newsletter/subscribers", label: "Newsletter", icon: Mailbox, matchPrefixes: ["/admin/newsletter"] },
     ],
   },
   {

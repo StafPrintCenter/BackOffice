@@ -57,7 +57,7 @@ function StatDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/stats" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/stats" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
@@ -91,7 +91,7 @@ function StatDetail() {
     <AdminShell>
       {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/stats" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/stats" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">
@@ -250,7 +250,10 @@ function StatDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(stat.id, {
-            onSuccess: () => { toast.success("Statistique supprimée"); navigate({ to: "/admin/stats" }); },
+            onSuccess: () => {
+              toast.success("Statistique supprimée");
+              navigate({ to: "/stats" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

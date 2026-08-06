@@ -67,7 +67,7 @@ function InstructorDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/members/instructors" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/members/instructors" })}>
             <ArrowLeft className="mr-1 h-4 w-4" /> Retour à la liste
           </Button>
         </div>
@@ -153,7 +153,7 @@ function InstructorDetail() {
     <AdminShell>
       {/* Top Bar */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/members/instructors" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/members/instructors" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
         <div className="flex flex-wrap gap-2">
@@ -377,7 +377,7 @@ function InstructorDetail() {
                 <div key={t.assignmentId} className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm">
                   <div className="min-w-0 flex-1">
                     <Link
-                      to="/admin/trainings/catalogs/$id"
+                      to="/trainings/catalogs/$id"
                       params={{ id: t.trainingId }}
                       className="font-medium text-primary hover:underline truncate"
                     >

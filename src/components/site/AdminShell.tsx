@@ -22,7 +22,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/categories", label: "Catégories", icon: Tags },
       { to: "/services", label: "Services", icon: Wrench },
       { to: "/projects", label: "Projets", icon: FolderKanban },
-      { to: "/trainings/catalogs", label: "Formations", icon: GraduationCap, matchPrefixes: ["/admin/trainings"] },
+      { to: "/trainings/catalogs", label: "Formations", icon: GraduationCap, matchPrefixes: ["/trainings"] },
       { to: "/articles", label: "Articles", icon: FileText },
       { to: "/faqs", label: "FAQ", icon: HelpCircle },
       { to: "/testimonials", label: "Témoignages", icon: MessagesSquare },

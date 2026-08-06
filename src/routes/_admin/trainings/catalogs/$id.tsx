@@ -536,7 +536,10 @@ function TrainingDetail() {
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(training.id, {
-            onSuccess: () => { toast.success("Formation supprimée"); navigate({ to: "/trainings/catalogs" }); },
+            onSuccess: () => {
+              toast.success("Formation supprimée");
+              navigate({ to: "/trainings/catalogs" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

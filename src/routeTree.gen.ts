@@ -22,6 +22,8 @@ import { Route as AdminArticlesIndexRouteImport } from './routes/_admin/articles
 import { Route as AdminArticlesIdRouteImport } from './routes/_admin/articles/$id'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/_admin/categories/index'
 import { Route as AdminCategoriesIdRouteImport } from './routes/_admin/categories/$id'
+import { Route as AdminFaqsIndexRouteImport } from './routes/_admin/faqs/index'
+import { Route as AdminFaqsIdRouteImport } from './routes/_admin/faqs/$id'
 import { Route as AdminServicesIndexRouteImport } from './routes/_admin/services/index'
 import { Route as AdminServicesIdRouteImport } from './routes/_admin/services/$id'
 import { Route as AdminFaqsIndexRouteImport } from './routes/admin/faqs/index'

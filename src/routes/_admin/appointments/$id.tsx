@@ -70,7 +70,7 @@ function AppointmentDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/appointments" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/appointments" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
       </div>

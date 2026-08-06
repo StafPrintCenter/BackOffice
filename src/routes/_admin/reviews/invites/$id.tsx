@@ -35,7 +35,7 @@ function InvitationDetail() {
     return (
       <AdminShell>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews/invites" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reviews/invites" })}>
             <ArrowLeft className="mr-1 h-4 w-4" /> Retour
           </Button>
         </div>
@@ -69,7 +69,7 @@ function InvitationDetail() {
   return (
     <AdminShell>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/reviews/invites" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reviews/invites" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
         </Button>
         <div className="flex flex-wrap gap-2">

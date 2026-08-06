@@ -80,7 +80,7 @@ function AdminReviewForms() {
       {/* Raccourci */}
       <div className="flex items-center gap-6 mb-4">
         <div>
-          <Link to="/admin/reviews/invites"
+          <Link to="/reviews/invites"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <Send className="h-4 w-4"
             />
@@ -88,7 +88,7 @@ function AdminReviewForms() {
           </Link>
         </div>
         <div>
-          <Link to="/admin/reviews/responses"
+          <Link to="/reviews/responses"
             className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
             <MessageSquareText className="h-4 w-4"
             />
@@ -102,7 +102,7 @@ function AdminReviewForms() {
         isLoading={isLoading}
         searchKeys={["title", "description"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/reviews/forms/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/reviews/forms/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           {

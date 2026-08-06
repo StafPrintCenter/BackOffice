@@ -26,7 +26,7 @@ function AdminInternshipRequests() {
         data={items}
         isLoading={isLoading}
         searchKeys={["firstName", "lastName", "email", "institution", "fieldOfStudy"]}
-        onView={(r) => navigate({ to: "/admin/internships/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/internships/$id", params: { id: r.id } })}
         columns={[
           {
             key: "firstName",

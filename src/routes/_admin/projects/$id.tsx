@@ -108,6 +108,9 @@ function ProjectDetail() {
         <Button variant="ghost" size="sm" onClick={() => navigate({ to: "/projects" })} className="-ml-2 text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4 mr-1.5" /> Retour à la liste
         </Button>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/projects" })}>
+          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+        </Button>
         <div className="flex items-center gap-2">
           {isEditing ? (
             <>

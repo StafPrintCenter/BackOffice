@@ -14,7 +14,7 @@ type NavGroup = { label: string; items: NavItem[] };
 const NAV_GROUPS: NavGroup[] = [
   {
     label: "Général",
-    items: [{ to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true }],
+    items: [{ to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, exact: true }],
   },
   {
     label: "Contenu",

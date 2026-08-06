@@ -133,8 +133,8 @@ const AdminArticlesIdRoute = AdminArticlesIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
-  id: '/admin/categories/',
-  path: '/admin/categories/',
+  id: '/_admin/categories/',
+  path: '/categories/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCategoriesIdRoute = AdminCategoriesIdRouteImport.update({

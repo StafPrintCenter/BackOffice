@@ -455,7 +455,6 @@ export interface FileRoutesByTo {
   '/admin/messages': typeof AdminMessagesIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/reports': typeof AdminReportsIndexRoute
-  '/admin/services': typeof AdminServicesIndexRoute
   '/admin/shortlinks': typeof AdminShortlinksIndexRoute
   '/admin/stats': typeof AdminStatsIndexRoute
   '/admin/testimonials': typeof AdminTestimonialsIndexRoute

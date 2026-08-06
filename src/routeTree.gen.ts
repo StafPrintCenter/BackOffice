@@ -431,11 +431,11 @@ export interface FileRoutesByTo {
   '/admin/profile': typeof AdminProfileRoute
   '/auth/invite': typeof AuthInviteRoute
   '/auth/login': typeof AuthLoginRoute
-  '/admin': typeof AdminIndexRoute
-  '/admin/announces/$id': typeof AdminAnnouncesIdRoute
-  '/admin/appointments/$id': typeof AdminAppointmentsIdRoute
-  '/admin/articles/$id': typeof AdminArticlesIdRoute
-  '/admin/categories/$id': typeof AdminCategoriesIdRoute
+  '/announces/$id': typeof AdminAnnouncesIdRoute
+  '/appointments/$id': typeof AdminAppointmentsIdRoute
+  '/articles/$id': typeof AdminArticlesIdRoute
+  '/categories/$id': typeof AdminCategoriesIdRoute
+  '/services/$id': typeof AdminServicesIdRoute
   '/admin/faqs/$id': typeof AdminFaqsIdRoute
   '/admin/internships/$id': typeof AdminInternshipsIdRoute
   '/admin/messages/$id': typeof AdminMessagesIdRoute

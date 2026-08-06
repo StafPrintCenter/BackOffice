@@ -69,7 +69,7 @@ function AdminStats() {
         isLoading={isLoading}
         searchKeys={["key", "label"]}
         onCreate={openCreate}
-        onView={(r) => navigate({ to: "/admin/stats/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/stats/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "key", label: "Clé", render: (r) => <code className="font-mono text-xs font-medium text-primary">{r.key}</code> },

@@ -90,6 +90,8 @@ function DashboardPage() {
     ...articles.slice(0, 1).map((a) => ({ type: "Article", title: a.title, meta: a.author, icon: FileText })),
   ].slice(0, 6);
 
+  const membersLoading = usersLoading || studentsLoading || instructorsLoading || adminsLoading;
+
   return (
     <AdminShell>
       <PageHeader title="Tableau de bord" description="Vue d'ensemble de votre activité." />

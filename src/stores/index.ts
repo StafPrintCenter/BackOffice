@@ -1,5 +1,6 @@
 export { createResourceStore } from "./createResourceStore";
 export * from "./useAdminsStore"
+export * from "./useAnnouncementsStore";
 export * from "./useAppointmentsStore";
 export * from "./useAuthStore";
 export * from "./useArticlesStore";

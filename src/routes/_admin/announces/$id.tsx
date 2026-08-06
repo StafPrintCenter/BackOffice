@@ -207,7 +207,7 @@ function AnnouncementDetail() {
     <AdminShell>
       {/* Action Bar supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/admin/announces" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/announces" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
         <div className="flex gap-2">

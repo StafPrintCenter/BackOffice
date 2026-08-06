@@ -621,7 +621,6 @@ export interface FileRouteTypes {
     | '/admin/messages/$id'
     | '/admin/projects/$id'
     | '/admin/reports/$id'
-    | '/admin/services/$id'
     | '/admin/shortlinks/$id'
     | '/admin/stats/$id'
     | '/admin/testimonials/$id'

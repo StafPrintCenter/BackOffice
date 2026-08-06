@@ -9,7 +9,7 @@ export async function loginAdmin(email: string, password: string): Promise<APILo
   formData.append("email", email);
   formData.append("password", password);
 
-  const response = await adminFetch(`/api/admin/auth/login`, { method: "POST", body: formData });
+  const response = await adminFetch(`/api/admin/login`, { method: "POST", body: formData });
   if (!response.ok) {
     throw new AdminAuthApiError("Email ou mot de passe incorrect.");
   }

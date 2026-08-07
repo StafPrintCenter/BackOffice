@@ -8,8 +8,10 @@ export const Route = createFileRoute("/_admin")({
   component: AdminLayout,
 });
 
-function InstructorLayout() {
-  const { user, isAuthenticated, ready } = useInstructorAuth();
+function AdminLayout() {
+
+  const { ready, isAuthenticated } = useAdminAuth();
+
   const navigate = useNavigate();
 
   useEffect(() => {

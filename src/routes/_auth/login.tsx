@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAdminAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_auth/login")({
 });
 
 function LoginPage() {
-  const { login, isAuthenticated, ready } = useAuth();
+  const { login, isAuthenticated, ready } = useAdminAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");

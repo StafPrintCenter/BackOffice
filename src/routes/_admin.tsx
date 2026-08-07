@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
-import { InstructorShell } from "@/components/instructor/instructor-shell";
-import { useInstructorAuth } from "@/hooks/useAuth";
+import { AdminShell } from "@/components/site/AdminShell";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 export const Route = createFileRoute("/_admin")({
   component: InstructorLayout,

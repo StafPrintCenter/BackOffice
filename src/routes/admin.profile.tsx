@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { User as UserIcon, Mail, Shield, Calendar, Save, LogOut, CheckCircle2, XCircle, Clock, ShieldAlert, Pencil, X } from "lucide-react";
 import { AdminShell, PageHeader, ConfirmDisconnect } from "@/components/site";
-import { useAuth } from "@/hooks/useAuth";
+import { useAdminAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";

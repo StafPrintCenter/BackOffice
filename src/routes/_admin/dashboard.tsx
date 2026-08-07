@@ -64,8 +64,8 @@ function DashboardPage() {
   const featuredServices = services.filter((s) => s.featured).length;
   const publicProjects = projects.filter((p) => p.isPublic).length;
 
-  // --- Mappings des graphiques ---
-  const topShortLinks = [...shortLinks]
+  // --- Mappings des graphiques & Top 5 Liens ---
+  const topLinks = [...shortLinks]
     .sort((a, b) => b.clicksCount - a.clicksCount)
     .slice(0, 5);
 

@@ -1,11 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck, Megaphone, Briefcase, FileCheck2, UserPlus } from "lucide-react";
+import {
+  Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity,
+  Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser,
+  UserCheck, Megaphone, Briefcase, FileCheck2, UserPlus
+} from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
-import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminInstructorsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList, useAdminArticlesList, useAdminAnnouncementsList, useAdminJobOffersList, useAdminJobApplicationsList, useAdminInternshipRequestsList } from "@/stores";
+import {
+  useAdminContactsList,
+  useAdminUsersList,
+  useAdminStudentsList,
+  useAdminAdminsList,
+  useAdminInstructorsList,
+  useAdminProjectsList,
+  useAdminTestimonialsList,
+  useAdminShortLinksList,
+  useAdminServicesList,
+  useAdminTrainingsList,
+  useAdminReportsList,
+  useAdminArticlesList,
+  useAdminAnnouncementsList,
+  useAdminJobOffersList,
+  useAdminJobApplicationsList,
+  useAdminInternshipRequestsList
+} from "@/stores";
 import { SITE } from "@/data/site";
 import { ANNOUNCEMENT_TYPE_LABELS } from "@/data/announcements";
-import { JOB_OFFER_CONTRACT_LABELS } from "@/data/jobOffers";
+import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge } from "@/data/jobOffers";
 import { JOB_APPLICATION_STATUS_LABELS } from "@/data/jobApplications";
 import { INTERNSHIP_REQUEST_STATUS_LABELS } from "@/data/internshipRequests";
 
@@ -64,15 +85,32 @@ function DashboardPage() {
   const featuredServices = services.filter((s) => s.featured).length;
   const publicProjects = projects.filter((p) => p.isPublic).length;
 
-  // --- Mappings des graphiques & Top 5 Liens ---
+  // --- Mappings des graphiques ---
   const topLinks = [...shortLinks]
     .sort((a, b) => b.clicksCount - a.clicksCount)
     .slice(0, 5)
-    .map((l) => ({ name: l.alias, value: l.clicksCount, url: l.shortUrl || l.longUrl }));
+    .map((l) => ({ name: l.alias, value: l.clicksCount }));
 
-  const reportsByStatus = Object.entries(
-    reports.reduce<Record<string, number>>((acc, r) => {
-      acc[r.status] = (acc[r.status] ?? 0) + 1;
+  const jobOffersByContract = Object.entries(
+    jobOffers.reduce<Record<string, number>>((acc, j) => {
+      const label = JOB_OFFER_CONTRACT_LABELS[j.contractType] || j.contractType;
+      acc[label] = (acc[label] ?? 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  const announcementsByType = Object.entries(
+    announcements.reduce<Record<string, number>>((acc, a) => {
+      const label = ANNOUNCEMENT_TYPE_LABELS[a.type] || a.type;
+      acc[label] = (acc[label] ?? 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  const applicationsByStatus = Object.entries(
+    jobApplications.reduce<Record<string, number>>((acc, a) => {
+      const label = JOB_APPLICATION_STATUS_LABELS[a.status] || a.status;
+      acc[label] = (acc[label] ?? 0) + 1;
       return acc;
     }, {})
   ).map(([name, value]) => ({ name, value }));
@@ -81,6 +119,13 @@ function DashboardPage() {
     internshipRequests.reduce<Record<string, number>>((acc, i) => {
       const label = INTERNSHIP_REQUEST_STATUS_LABELS[i.status] || i.status;
       acc[label] = (acc[label] ?? 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  const reportsByStatus = Object.entries(
+    reports.reduce<Record<string, number>>((acc, r) => {
+      acc[r.status] = (acc[r.status] ?? 0) + 1;
       return acc;
     }, {})
   ).map(([name, value]) => ({ name, value }));
@@ -98,22 +143,6 @@ function DashboardPage() {
 
   const projectsByCategory = Object.entries(
     projects.reduce<Record<string, number>>((acc, p) => { const key = p.category || "Sans catégorie"; acc[key] = (acc[key] ?? 0) + 1; return acc; }, {})
-  ).map(([name, value]) => ({ name, value }));
-
-  const announcementsByType = Object.entries(
-    announcements.reduce<Record<string, number>>((acc, a) => {
-      const label = ANNOUNCEMENT_TYPE_LABELS[a.type] || a.type;
-      acc[label] = (acc[label] ?? 0) + 1;
-      return acc;
-    }, {})
-  ).map(([name, value]) => ({ name, value }));
-
-  const applicationsByStatus = Object.entries(
-    jobApplications.reduce<Record<string, number>>((acc, a) => {
-      const label = JOB_APPLICATION_STATUS_LABELS[a.status] || a.status;
-      acc[label] = (acc[label] ?? 0) + 1;
-      return acc;
-    }, {})
   ).map(([name, value]) => ({ name, value }));
 
   const linksByCategory = Object.entries(
@@ -141,20 +170,20 @@ function DashboardPage() {
     <AdminShell>
       <PageHeader title="Tableau de bord" description="Vue d'ensemble de votre activité." />
 
-      {/* KPIs Services, Formations, Projets, Articles, Liens */}
+      {/* KPIs Annonces, Emplois, Candidatures, Stages */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${activeShortLinks} liens actifs`} />
-        <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
-        <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
-        <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint={`${publicProjects} publics`} />
-        <StatCard label="Articles" value={articlesLoading ? "…" : articles.length} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
-      </div>
-
-      {/* KPIs Emplois, Candidatures, Stages, Messages, Signalements */}
-      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />
         <StatCard label="Offres d'emploi" value={jobOffersLoading ? "…" : publishedJobOffers} icon={<Briefcase className="h-5 w-5" />} hint={`${jobOffers.length} au total`} />
         <StatCard label="Candidatures" value={jobApplicationsLoading ? "…" : jobApplications.length} icon={<FileCheck2 className="h-5 w-5" />} hint={`${pendingJobApplications} à traiter`} />
         <StatCard label="Demandes de stage" value={internshipRequestsLoading ? "…" : internshipRequests.length} icon={<UserPlus className="h-5 w-5" />} hint={`${pendingInternshipRequests} en attente`} />
+        <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${activeShortLinks} liens actifs`} />
+      </div>
+
+      {/* KPIs Services, Formations, Projets, Messages, Signalements */}
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
+        <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
+        <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint={`${publicProjects} publics`} />
         <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
         <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
       </div>
@@ -166,6 +195,125 @@ function DashboardPage() {
         <StatCard label="Apprenants actifs" value={studentsLoading ? "…" : activeStudents} icon={<CircleUser className="h-5 w-5" />} hint={`${students.length} au total`} />
         <StatCard label="Formateurs actifs" value={instructorsLoading ? "…" : activeInstructors} icon={<UserCheck className="h-5 w-5" />} hint={`${instructors.length} au total`} />
         <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldUser className="h-5 w-5" />} hint={`${admins.length} au total`} />
+      </div>
+
+      {/* Graphiques Emplois par Type de Contrat & Annonces par Type */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="font-display text-lg font-semibold">Offres d'emploi par type de contrat</div>
+          <div className="mt-4 h-56">
+            <ResponsiveContainer>
+              <BarChart data={jobOffersByContract}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                <Bar dataKey="value" fill="#3C82AB" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="font-display text-lg font-semibold">Annonces par type</div>
+          <div className="mt-4 h-56">
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie data={announcementsByType} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
+                  {announcementsByType.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
+                </Pie>
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* Graphiques Candidatures & Demandes de Stage */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="font-display text-lg font-semibold">Candidatures par statut</div>
+          <div className="mt-4 h-56">
+            <ResponsiveContainer>
+              <BarChart data={applicationsByStatus}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                <Bar dataKey="value" fill="var(--primary)" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="font-display text-lg font-semibold">Demandes de stage par statut</div>
+          <div className="mt-4 h-56">
+            <ResponsiveContainer>
+              <BarChart data={internshipByStatus}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                <Bar dataKey="value" fill="#8B5CF6" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* Bloc Récapitulatif : Emplois & Recrutement */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="flex items-center gap-2">
+            <Briefcase className="h-5 w-5 text-primary" />
+            <div className="font-display text-lg font-semibold">Dernières offres d'emploi</div>
+          </div>
+          <ul className="mt-4 divide-y">
+            {jobOffersLoading && <li className="py-4 text-center text-sm text-muted-foreground">Chargement...</li>}
+            {jobOffers.slice(0, 4).map((offer) => {
+              const statusBadge = getJobOfferStatusBadge(offer.status);
+              return (
+                <li key={offer.id} className="flex items-center justify-between py-3">
+                  <div className="min-w-0 flex-1 pr-4">
+                    <div className="text-sm font-medium truncate">{offer.title}</div>
+                    <div className="text-xs text-muted-foreground">{JOB_OFFER_CONTRACT_LABELS[offer.contractType] || offer.contractType} • {offer.location}</div>
+                  </div>
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getJobOfferStatusBadge(offer.status)}`}>
+                    {JOB_OFFER_STATUS_LABELS[offer.status] || offer.status}
+                  </span>
+                </li>
+              );
+            })}
+            {!jobOffersLoading && jobOffers.length === 0 && (
+              <li className="py-6 text-center text-sm text-muted-foreground">Aucune offre créée</li>
+            )}
+          </ul>
+        </div>
+
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="flex items-center gap-2">
+            <FileCheck2 className="h-5 w-5 text-primary" />
+            <div className="font-display text-lg font-semibold">Dernières candidatures</div>
+          </div>
+          <ul className="mt-4 divide-y">
+            {jobApplicationsLoading && <li className="py-4 text-center text-sm text-muted-foreground">Chargement...</li>}
+            {jobApplications.slice(0, 4).map((app) => (
+              <li key={app.id} className="flex items-center justify-between py-3">
+                <div className="min-w-0 flex-1 pr-4">
+                  <div className="text-sm font-medium truncate">{app.firstName} {app.lastName}</div>
+                  <div className="text-xs text-muted-foreground">{app.email}</div>
+                </div>
+                <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+                  {JOB_APPLICATION_STATUS_LABELS[app.status] || app.status}
+                </span>
+              </li>
+            ))}
+            {!jobApplicationsLoading && jobApplications.length === 0 && (
+              <li className="py-6 text-center text-sm text-muted-foreground">Aucune candidature reçue</li>
+            )}
+          </ul>
+        </div>
       </div>
 
       {/* Top 5 Liens Courts & Signalements par Statut */}
@@ -201,39 +349,6 @@ function DashboardPage() {
                 </Pie>
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
               </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Candidatures & Demandes de Stage */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Candidatures par statut</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={applicationsByStatus}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="var(--primary)" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Demandes de stage par statut</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={internshipByStatus}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="#8B5CF6" radius={[6, 6, 0, 0]} />
-              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>

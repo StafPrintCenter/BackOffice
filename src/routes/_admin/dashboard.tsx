@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck } from "lucide-react";
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck, Megaphone, Eye, XCircle } from "lucide-react";
+import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line, Legend } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
 import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminInstructorsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList, useAdminArticlesList, useAdminAnnouncementsList } from "@/stores";
 import { SITE } from "@/data/site";
@@ -31,6 +31,7 @@ function DashboardPage() {
   const { items: trainings, isLoading: trainingsLoading } = useAdminTrainingsList({ perPage: 100 });
   const { items: reports, isLoading: reportsLoading } = useAdminReportsList({ perPage: 100 });
   const { items: articles, isLoading: articlesLoading } = useAdminArticlesList({ perPage: 100 });
+  const { items: announcements, isLoading: announcementsLoading } = useAdminAnnouncementsList({ perPage: 100 });
 
   // --- KPIs ---
   const newMessages = contacts.filter((c) => c.status === "new").length;
@@ -46,6 +47,8 @@ function DashboardPage() {
 
   const totalClicks = shortLinks.reduce((s, l) => s + l.clicksCount, 0);
   const activeShortLinks = shortLinks.filter((l) => l.isActive).length;
+
+  const activeAnnouncements = announcements.filter((a) => a.isEnabled && a.isActive).length;
 
   const avgRating = testimonials.length ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length) : "…";
   const featuredTestimonials = testimonials.filter((t) => t.featured).length;
@@ -71,6 +74,14 @@ function DashboardPage() {
     projects.reduce<Record<string, number>>((acc, p) => { const key = p.category || "Sans catégorie"; acc[key] = (acc[key] ?? 0) + 1; return acc; }, {})
   ).map(([name, value]) => ({ name, value }));
 
+  const announcementsByType = Object.entries(
+    announcements.reduce<Record<string, number>>((acc, a) => {
+      const label = ANNOUNCEMENT_TYPE_LABELS[a.type] || a.type;
+      acc[label] = (acc[label] ?? 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
   const topLinks = [...shortLinks].sort((a, b) => b.clicksCount - a.clicksCount).slice(0, 5).map((l) => ({ name: l.alias, value: l.clicksCount }));
 
   const linksByCategory = Object.entries(
@@ -86,8 +97,9 @@ function DashboardPage() {
   ).map(([name, value]) => ({ name, value }));
 
   const recent = [
-    ...projects.slice(0, 3).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
+    ...projects.slice(0, 2).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
     ...trainings.slice(0, 2).map((t) => ({ type: "Formation", title: t.title, meta: t.theme, icon: GraduationCap })),
+    ...announcements.slice(0, 2).map((a) => ({ type: "Annonce", title: a.title, meta: ANNOUNCEMENT_TYPE_LABELS[a.type], icon: Megaphone })),
     ...articles.slice(0, 1).map((a) => ({ type: "Article", title: a.title, meta: a.author, icon: FileText })),
   ].slice(0, 6);
 
@@ -105,7 +117,7 @@ function DashboardPage() {
         <StatCard label="Articles" value={articlesLoading ? "…" : articles.length} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
       </div>
 
-      {/* KPIs Messages, Signalements, Clics, Notes */}
+      {/* KPIs Messages, Signalements, Clics, Annonces */}
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
         <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
@@ -113,7 +125,7 @@ function DashboardPage() {
         <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />
       </div>
 
-      {/* KPIs Membres (Grille de 5 colonnes) */}
+      {/* KPIs Membres */}
       <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         <StatCard label="Membres actifs" value={membersLoading ? "…" : activeMembers} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total`} />
         <StatCard label="Utilisateurs actifs" value={usersLoading ? "…" : activeUsers} icon={<SquareUser className="h-5 w-5" />} hint={`${users.length} au total`} />

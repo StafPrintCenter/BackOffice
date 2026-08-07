@@ -1,8 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Wrench, GraduationCap, FolderKanban, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck, Megaphone, Briefcase, FileCheck2, UserPlus } from "lucide-react";
+import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck, Megaphone, Briefcase, FileCheck2, UserPlus } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
-import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminInstructorsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList, useAdminArticlesList, useAdminAnnouncementsList, useAdminJobOffersList, useAdminJobApplicationsList, useAdminInternshipRequestsList } from "@/stores";
+import {
+  useAdminContactsList, useAdminUsersList, useAdminStudentsList,
+  useAdminAdminsList,
+  useAdminInstructorsList,
+  useAdminProjectsList,
+  useAdminTestimonialsList,
+  useAdminShortLinksList,
+  useAdminServicesList,
+  useAdminTrainingsList,
+  useAdminReportsList,
+  useAdminArticlesList,
+  useAdminAnnouncementsList,
+  useAdminJobOffersList,
+  useAdminJobApplicationsList,
+  useAdminInternshipRequestsList
+} from "@/stores";
 import { SITE } from "@/data/site";
 import { ANNOUNCEMENT_TYPE_LABELS } from "@/data/announcements";
 import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge } from "@/data/jobOffers";
@@ -86,6 +101,14 @@ function DashboardPage() {
     }, {})
   ).map(([name, value]) => ({ name, value }));
 
+  const articlesByAuthor = Object.entries(
+    articles.reduce<Record<string, number>>((acc, a) => {
+      const key = a.author || "Anonyme";
+      acc[key] = (acc[key] ?? 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
   const applicationsByStatus = Object.entries(
     jobApplications.reduce<Record<string, number>>((acc, a) => {
       const label = JOB_APPLICATION_STATUS_LABELS[a.status] || a.status;
@@ -141,6 +164,7 @@ function DashboardPage() {
     ...internshipRequests.slice(0, 2).map((i) => ({ type: "Stage", title: `${i.firstName} ${i.lastName}`, meta: i.institution || "Demande de stage", icon: UserPlus })),
     ...projects.slice(0, 1).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
     ...announcements.slice(0, 1).map((a) => ({ type: "Annonce", title: a.title, meta: ANNOUNCEMENT_TYPE_LABELS[a.type], icon: Megaphone })),
+    ...articles.slice(0, 1).map((a) => ({ type: "Article", title: a.title, meta: a.author, icon: FileText })),
   ].slice(0, 6);
 
   const membersLoading = usersLoading || studentsLoading || instructorsLoading || adminsLoading;
@@ -149,20 +173,25 @@ function DashboardPage() {
     <AdminShell>
       <PageHeader title="Tableau de bord" description="Vue d'ensemble de votre activité." />
 
-      {/* KPIs Annonces, Emplois, Candidatures, Stages */}
+      {/* KPIs Annonces, Emplois, Articles, Candidatures, Stages */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />
         <StatCard label="Offres d'emploi" value={jobOffersLoading ? "…" : publishedJobOffers} icon={<Briefcase className="h-5 w-5" />} hint={`${jobOffers.length} au total`} />
         <StatCard label="Candidatures" value={jobApplicationsLoading ? "…" : jobApplications.length} icon={<FileCheck2 className="h-5 w-5" />} hint={`${pendingJobApplications} à traiter`} />
         <StatCard label="Demandes de stage" value={internshipRequestsLoading ? "…" : internshipRequests.length} icon={<UserPlus className="h-5 w-5" />} hint={`${pendingInternshipRequests} en attente`} />
         <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${activeShortLinks} liens actifs`} />
-        <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />
       </div>
 
-      {/* KPIs Services, Formations, Projets, Messages, Signalements */}
-      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {/* KPIs Services, Formations, Projets, Messages, articles */}
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
         <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
         <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint={`${publicProjects} publics`} />
+        <StatCard label="Articles" value={articlesLoading ? "…" : articles.length} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
+      </div>
+
+      {/* KPIs Messages, Signalements */}
+      <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-2">
         <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
         <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
       </div>
@@ -176,8 +205,8 @@ function DashboardPage() {
         <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldUser className="h-5 w-5" />} hint={`${admins.length} au total`} />
       </div>
 
-      {/* Graphiques Emplois par Type de Contrat & Annonces par Type */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      {/* Graphiques Emplois, Annonces & Articles */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Offres d'emploi par type de contrat</div>
           <div className="mt-4 h-56">
@@ -203,6 +232,21 @@ function DashboardPage() {
                 </Pie>
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
               </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+          <div className="font-display text-lg font-semibold">Articles par auteur</div>
+          <div className="mt-4 h-56">
+            <ResponsiveContainer>
+              <BarChart data={articlesByAuthor}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                <Bar dataKey="value" fill="#EC4899" radius={[6, 6, 0, 0]} />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
@@ -251,7 +295,6 @@ function DashboardPage() {
           <ul className="mt-4 divide-y">
             {jobOffersLoading && <li className="py-4 text-center text-sm text-muted-foreground">Chargement...</li>}
             {jobOffers.slice(0, 4).map((offer) => {
-              const statusBadge = getJobOfferStatusBadge(offer.status);
               return (
                 <li key={offer.id} className="flex items-center justify-between py-3">
                   <div className="min-w-0 flex-1 pr-4">

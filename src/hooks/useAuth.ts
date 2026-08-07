@@ -66,7 +66,7 @@ async function bootstrap() {
 
 let bootstrapped = false;
 
-export function useAuth() {
+export function useAdminAuth() {
   const [, forceRender] = useState(0);
 
   useEffect(() => {

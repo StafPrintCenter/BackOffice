@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, Tags, BarChart3, HelpCircle, Link2, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, UserCircle, } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, Tags, BarChart3, HelpCircle, Link2, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, UserCircle } from "lucide-react";
 
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
@@ -88,6 +88,8 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
   const isLinkActive = (n: NavItem) =>
     n.exact ? pathname === n.to : n.matchPrefixes ? n.matchPrefixes.some((prefix) => pathname.startsWith(prefix)) : pathname.startsWith(n.to);
 
+  const profileActive = pathname.startsWith("/admin/profile");
+
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
@@ -142,12 +144,23 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
         <SidebarFooter className="border-t border-sidebar-border p-2 space-y-1">
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname.startsWith("/admin/profile")} tooltip="Profil">
+              <SidebarMenuButton
+                asChild
+                isActive={profileActive}
+                tooltip="Profil"
+                className={
+                  "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground " +
+                  "data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground " +
+                  "data-[active=true]:hover:bg-sidebar-primary data-[active=true]:hover:text-sidebar-primary-foreground"
+                }
+              >
                 <Link to="/admin/profile">
                   <UserCircle className="size-4 shrink-0" />
-                  <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
-                    <p className="text-xs font-medium truncate">{user?.name ?? "Profil"}</p>
-                    <p className="text-[10px] opacity-60 truncate">{user?.email}</p>
+                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                    <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
+                      <p className="text-xs font-medium truncate">{user?.name ?? "Profil"}</p>
+                      <p className="text-[10px] opacity-60 truncate">{user?.email}</p>
+                    </div>
                   </div>
                 </Link>
               </SidebarMenuButton>

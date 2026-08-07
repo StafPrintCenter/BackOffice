@@ -178,33 +178,16 @@ function DashboardPage() {
             </div>
             <span className="text-xs text-muted-foreground">{totalClicks} clics cumulés</span>
           </div>
-          <div className="mt-4 divide-y">
-            {shortLinksLoading && <div className="py-6 text-center text-sm text-muted-foreground">Chargement des liens...</div>}
-            {topShortLinks.map((link) => (
-              <div key={link.id} className="flex items-center justify-between py-3 gap-3">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold truncate">{link.title || link.slug}</span>
-                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-                      /{link.slug}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground truncate mt-0.5">{link.destinationUrl}</p>
-                </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  <div className="text-right">
-                    <div className="text-sm font-bold">{link.clicksCount}</div>
-                    <div className="text-[10px] text-muted-foreground">clics</div>
-                  </div>
-                  <a href={link.destinationUrl} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground">
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
-            ))}
-            {!shortLinksLoading && topShortLinks.length === 0 && (
-              <div className="py-6 text-center text-sm text-muted-foreground">Aucun lien disponible</div>
-            )}
+          <div className="mt-4 h-56">
+            <ResponsiveContainer>
+              <BarChart data={topLinks} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis type="number" stroke="var(--muted-foreground)" fontSize={11} />
+                <YAxis type="category" dataKey="name" stroke="var(--muted-foreground)" fontSize={11} width={100} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
+                <Bar dataKey="value" fill="var(--primary)" radius={[0, 6, 6, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
 

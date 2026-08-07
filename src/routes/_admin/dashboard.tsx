@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck, Megaphone, Briefcase, UserCheck2, FileCheck2 } from "lucide-react";
+import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck, Megaphone, Briefcase, FileCheck2 } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
 import {
@@ -70,18 +70,16 @@ function DashboardPage() {
 
   const activeAnnouncements = announcements.filter((a) => a.isEnabled && a.isActive).length;
   const publishedJobOffers = jobOffers.filter((j) => j.status === "published").length;
-  const pendingJobApplications = jobApplications.filter((a) => a.status === "submitted" || a.status === "under_review").length;
 
-  const avgRating = testimonials.length ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length) : "…";
+  // Correction des statuts selon JobApplicationStatus
+  const pendingJobApplications = jobApplications.filter((a) => a.status === "pending" || a.status === "reviewing").length;
+
+  const avgRating = testimonials.length ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1) : "…";
   const featuredServices = services.filter((s) => s.featured).length;
   const publicProjects = projects.filter((p) => p.isPublic).length;
 
   const msgByStatus = Object.entries(
     contacts.reduce<Record<string, number>>((a, c) => { a[c.status] = (a[c.status] ?? 0) + 1; return a; }, {})
-  ).map(([name, value]) => ({ name, value }));
-
-  const reportsByStatus = Object.entries(
-    reports.reduce<Record<string, number>>((a, r) => { a[r.status] = (a[r.status] ?? 0) + 1; return a; }, {})
   ).map(([name, value]) => ({ name, value }));
 
   const membersByType = [
@@ -119,8 +117,6 @@ function DashboardPage() {
     }, {})
   ).map(([name, value]) => ({ name, value }));
 
-  const topLinks = [...shortLinks].sort((a, b) => b.clicksCount - a.clicksCount).slice(0, 5).map((l) => ({ name: l.alias, value: l.clicksCount }));
-
   const linksByCategory = Object.entries(
     shortLinks.reduce<Record<string, number>>((acc, l) => { acc[l.category] = (acc[l.category] ?? 0) + 1; return acc; }, {})
   ).map(([name, value]) => ({ name, value }));
@@ -146,8 +142,9 @@ function DashboardPage() {
     <AdminShell>
       <PageHeader title="Tableau de bord" description="Vue d'ensemble de votre activité." />
 
-      {/* KPIs Services, Formations, Projets, Articles */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* KPIs Services, Formations, Projets, Articles, Liens */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${activeShortLinks} liens actifs`} />
         <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
         <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
         <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint={`${publicProjects} publics`} />
@@ -157,7 +154,7 @@ function DashboardPage() {
       {/* KPIs Emplois, Candidatures, Messages, Signalements, Annonces */}
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <StatCard label="Offres d'emploi" value={jobOffersLoading ? "…" : publishedJobOffers} icon={<Briefcase className="h-5 w-5" />} hint={`${jobOffers.length} au total`} />
-        <StatCard label="Candidatures" value={jobApplicationsLoading ? "…" : jobApplications.length} icon={<FileCheck2 className="h-5 w-5" />} hint={`${pendingJobApplications} en attente`} />
+        <StatCard label="Candidatures" value={jobApplicationsLoading ? "…" : jobApplications.length} icon={<FileCheck2 className="h-5 w-5" />} hint={`${pendingJobApplications} en attente/revue`} />
         <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
         <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
         <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />

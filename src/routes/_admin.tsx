@@ -11,7 +11,6 @@ export const Route = createFileRoute("/_admin")({
 function AdminLayout() {
 
   const { ready, isAuthenticated } = useAdminAuth();
-
   const navigate = useNavigate();
 
   useEffect(() => {

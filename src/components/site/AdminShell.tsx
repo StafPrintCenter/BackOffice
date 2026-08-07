@@ -167,7 +167,8 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
           <div className="font-display font-semibold text-sm">Admin</div>
           <div className="ml-auto text-xs text-muted-foreground hidden sm:block">{user?.email}</div>
         </header>
-        <main className="flex-1 p-6 md:p-10 overflow-y-auto overflow-x-hidden">
+
+        <main className="flex-1 p-6 md:p-10 overflow-y-auto overflow-x-hidden bg-muted/30">
           {children ?? <Outlet />}
         </main>
       </div>

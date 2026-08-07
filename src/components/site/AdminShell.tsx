@@ -100,8 +100,8 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
     navigate({ to: "/login" });
   };
 
-  const width = collapsed ? "md:w-16" : "md:w-64";
-  const profileActive = pathname.startsWith("/admin/profile");
+  const isLinkActive = (n: NavItem) =>
+    n.exact ? pathname === n.to : n.matchPrefixes ? n.matchPrefixes.some((prefix) => pathname.startsWith(prefix)) : pathname.startsWith(n.to);
 
   return (
     <SidebarProvider>

@@ -168,7 +168,7 @@ function DashboardPage() {
         <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldUser className="h-5 w-5" />} hint={`${admins.length} au total`} />
       </div>
 
-      {/* Section Top 5 Liens Courts & Signalements par Statut */}
+      {/* Top 5 Liens Courts & Signalements par Statut */}
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="flex items-center justify-between">

@@ -1,5 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck, Megaphone, Briefcase, FileCheck2 } from "lucide-react";
+import {
+  Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity,
+  Star, Inbox, ShieldAlert, MousePointerClick, ShieldUser, CircleUser, SquareUser,
+  UserCheck, Megaphone, Briefcase, FileCheck2, UserPlus, ExternalLink
+} from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { AdminShell, PageHeader, StatCard } from "@/components/site";
 import {
@@ -17,12 +21,14 @@ import {
   useAdminArticlesList,
   useAdminAnnouncementsList,
   useAdminJobOffersList,
-  useAdminJobApplicationsList
+  useAdminJobApplicationsList,
+  useAdminInternshipRequestsList
 } from "@/stores";
 import { SITE } from "@/data/site";
 import { ANNOUNCEMENT_TYPE_LABELS } from "@/data/announcements";
 import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge } from "@/data/jobOffers";
-import { JOB_APPLICATION_STATUS_LABELS, getJobApplicationStatusBadge } from "@/data/jobApplications";
+import { JOB_APPLICATION_STATUS_LABELS } from "@/data/jobApplications";
+import { INTERNSHIP_REQUEST_STATUS_LABELS } from "@/data/internshipRequests";
 
 export const Route = createFileRoute("/_admin/dashboard")({
   head: () => ({
@@ -52,6 +58,7 @@ function DashboardPage() {
   const { items: announcements, isLoading: announcementsLoading } = useAdminAnnouncementsList({ perPage: 100 });
   const { items: jobOffers, isLoading: jobOffersLoading } = useAdminJobOffersList({ perPage: 100 });
   const { items: jobApplications, isLoading: jobApplicationsLoading } = useAdminJobApplicationsList({ perPage: 100 });
+  const { items: internshipRequests, isLoading: internshipRequestsLoading } = useAdminInternshipRequestsList({ perPage: 100 });
 
   // --- KPIs ---
   const newMessages = contacts.filter((c) => c.status === "new").length;
@@ -71,12 +78,32 @@ function DashboardPage() {
   const activeAnnouncements = announcements.filter((a) => a.isEnabled && a.isActive).length;
   const publishedJobOffers = jobOffers.filter((j) => j.status === "published").length;
 
-  // Correction des statuts selon JobApplicationStatus
   const pendingJobApplications = jobApplications.filter((a) => a.status === "pending" || a.status === "reviewing").length;
+  const pendingInternshipRequests = internshipRequests.filter((i) => i.status === "pending" || i.status === "under_review").length;
 
   const avgRating = testimonials.length ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1) : "…";
   const featuredServices = services.filter((s) => s.featured).length;
   const publicProjects = projects.filter((p) => p.isPublic).length;
+
+  // --- Mappings des graphiques ---
+  const topShortLinks = [...shortLinks]
+    .sort((a, b) => b.clicksCount - a.clicksCount)
+    .slice(0, 5);
+
+  const reportsByStatus = Object.entries(
+    reports.reduce<Record<string, number>>((acc, r) => {
+      acc[r.status] = (acc[r.status] ?? 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  const internshipByStatus = Object.entries(
+    internshipRequests.reduce<Record<string, number>>((acc, i) => {
+      const label = INTERNSHIP_REQUEST_STATUS_LABELS[i.status] || i.status;
+      acc[label] = (acc[label] ?? 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
 
   const msgByStatus = Object.entries(
     contacts.reduce<Record<string, number>>((a, c) => { a[c.status] = (a[c.status] ?? 0) + 1; return a; }, {})
@@ -131,8 +158,8 @@ function DashboardPage() {
 
   const recent = [
     ...jobOffers.slice(0, 2).map((j) => ({ type: "Emploi", title: j.title, meta: JOB_OFFER_CONTRACT_LABELS[j.contractType], icon: Briefcase })),
-    ...projects.slice(0, 2).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
-    ...trainings.slice(0, 1).map((t) => ({ type: "Formation", title: t.title, meta: t.theme, icon: GraduationCap })),
+    ...internshipRequests.slice(0, 2).map((i) => ({ type: "Stage", title: `${i.firstName} ${i.lastName}`, meta: i.institution || "Demande de stage", icon: UserPlus })),
+    ...projects.slice(0, 1).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
     ...announcements.slice(0, 1).map((a) => ({ type: "Annonce", title: a.title, meta: ANNOUNCEMENT_TYPE_LABELS[a.type], icon: Megaphone })),
   ].slice(0, 6);
 
@@ -151,13 +178,13 @@ function DashboardPage() {
         <StatCard label="Articles" value={articlesLoading ? "…" : articles.length} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
       </div>
 
-      {/* KPIs Emplois, Candidatures, Messages, Signalements, Annonces */}
+      {/* KPIs Emplois, Candidatures, Stages, Messages, Signalements */}
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <StatCard label="Offres d'emploi" value={jobOffersLoading ? "…" : publishedJobOffers} icon={<Briefcase className="h-5 w-5" />} hint={`${jobOffers.length} au total`} />
-        <StatCard label="Candidatures" value={jobApplicationsLoading ? "…" : jobApplications.length} icon={<FileCheck2 className="h-5 w-5" />} hint={`${pendingJobApplications} en attente/revue`} />
+        <StatCard label="Candidatures" value={jobApplicationsLoading ? "…" : jobApplications.length} icon={<FileCheck2 className="h-5 w-5" />} hint={`${pendingJobApplications} à traiter`} />
+        <StatCard label="Demandes de stage" value={internshipRequestsLoading ? "…" : internshipRequests.length} icon={<UserPlus className="h-5 w-5" />} hint={`${pendingInternshipRequests} en attente`} />
         <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
         <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
-        <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />
       </div>
 
       {/* KPIs Membres */}
@@ -169,53 +196,53 @@ function DashboardPage() {
         <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldUser className="h-5 w-5" />} hint={`${admins.length} au total`} />
       </div>
 
-      {/* Section Offres d'emploi & Candidatures */}
+      {/* Section Top 5 Liens Courts & Signalements par Statut */}
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Briefcase className="h-5 w-5 text-primary" />
-              <div className="font-display text-lg font-semibold">Dernières Offres d'emploi</div>
+              <MousePointerClick className="h-5 w-5 text-primary" />
+              <div className="font-display text-lg font-semibold">Top 5 - Liens les plus cliqués</div>
             </div>
-            <span className="text-xs text-muted-foreground">{publishedJobOffers} publiées sur {jobOffers.length}</span>
+            <span className="text-xs text-muted-foreground">{totalClicks} clics cumulés</span>
           </div>
           <div className="mt-4 divide-y">
-            {jobOffersLoading && <div className="py-6 text-center text-sm text-muted-foreground">Chargement des offres...</div>}
-            {[...jobOffers]
-              .sort((a, b) => new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime())
-              .slice(0, 4)
-              .map((job) => (
-                <div key={job.id} className="flex items-start justify-between py-3 gap-3">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold truncate">{job.title}</span>
-                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                        {JOB_OFFER_CONTRACT_LABELS[job.contractType]}
-                      </span>
-                    </div>
-                    <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{job.department ? `${job.department} • ` : ""}{job.location || "Télétravail"}</p>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs text-muted-foreground">{job.applicationsCount} candidature{job.applicationsCount > 1 ? "s" : ""}</span>
-                    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getJobOfferStatusBadge(job.status)}`}>
-                      {JOB_OFFER_STATUS_LABELS[job.status]}
+            {shortLinksLoading && <div className="py-6 text-center text-sm text-muted-foreground">Chargement des liens...</div>}
+            {topShortLinks.map((link) => (
+              <div key={link.id} className="flex items-center justify-between py-3 gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold truncate">{link.title || link.slug}</span>
+                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                      /{link.slug}
                     </span>
                   </div>
+                  <p className="text-xs text-muted-foreground truncate mt-0.5">{link.destinationUrl}</p>
                 </div>
-              ))}
-            {!jobOffersLoading && jobOffers.length === 0 && (
-              <div className="py-6 text-center text-sm text-muted-foreground">Aucune offre d'emploi disponible</div>
+                <div className="flex items-center gap-3 shrink-0">
+                  <div className="text-right">
+                    <div className="text-sm font-bold">{link.clicksCount}</div>
+                    <div className="text-[10px] text-muted-foreground">clics</div>
+                  </div>
+                  <a href={link.destinationUrl} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground">
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            ))}
+            {!shortLinksLoading && topShortLinks.length === 0 && (
+              <div className="py-6 text-center text-sm text-muted-foreground">Aucun lien disponible</div>
             )}
           </div>
         </div>
 
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Offres par contrat</div>
+          <div className="font-display text-lg font-semibold">Signalements par statut</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={jobsByContract} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
-                  {jobsByContract.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
+                <Pie data={reportsByStatus} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
+                  {reportsByStatus.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
                 </Pie>
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
               </PieChart>
@@ -224,9 +251,9 @@ function DashboardPage() {
         </div>
       </div>
 
-      {/* Candidatures par Statut & Graphiques Liens */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
+      {/* Offres d'emploi & Demandes de Stage */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Candidatures par statut</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
@@ -242,20 +269,22 @@ function DashboardPage() {
         </div>
 
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Annonces par type</div>
+          <div className="font-display text-lg font-semibold">Demandes de stage par statut</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
-              <PieChart>
-                <Pie data={announcementsByType} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
-                  {announcementsByType.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
-                </Pie>
+              <BarChart data={internshipByStatus}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-              </PieChart>
+                <Bar dataKey="value" fill="#8B5CF6" radius={[6, 6, 0, 0]} />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
 
+      {/* Graphiques Liens & Annonces */}
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="font-display text-lg font-semibold">Liens courts par catégorie</div>
@@ -272,11 +301,13 @@ function DashboardPage() {
           </div>
         </div>
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Messages par statut</div>
+          <div className="font-display text-lg font-semibold">Annonces par type</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={msgByStatus} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>{msgByStatus.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}</Pie>
+                <Pie data={announcementsByType} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
+                  {announcementsByType.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
+                </Pie>
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
               </PieChart>
             </ResponsiveContainer>
@@ -284,6 +315,7 @@ function DashboardPage() {
         </div>
       </div>
 
+      {/* Membres & Services */}
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Répartition des membres</div>
@@ -315,6 +347,7 @@ function DashboardPage() {
         </div>
       </div>
 
+      {/* Formations & Projets */}
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Formations par niveau</div>
@@ -347,6 +380,7 @@ function DashboardPage() {
         </div>
       </div>
 
+      {/* Activité récente & Témoignages */}
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="flex items-center gap-2">

@@ -5,7 +5,7 @@ import { AdminShell, PageHeader, StatCard } from "@/components/site";
 import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminInstructorsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList, useAdminArticlesList, useAdminAnnouncementsList, useAdminJobOffersList, useAdminJobApplicationsList, useAdminInternshipRequestsList } from "@/stores";
 import { SITE } from "@/data/site";
 import { ANNOUNCEMENT_TYPE_LABELS } from "@/data/announcements";
-import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge } from "@/data/jobOffers";
+import { JOB_OFFER_CONTRACT_LABELS } from "@/data/jobOffers";
 import { JOB_APPLICATION_STATUS_LABELS } from "@/data/jobApplications";
 import { INTERNSHIP_REQUEST_STATUS_LABELS } from "@/data/internshipRequests";
 

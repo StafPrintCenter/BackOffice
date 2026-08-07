@@ -173,8 +173,8 @@ function DashboardPage() {
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <MousePointerClick className="h-5 w-5 text-primary" />
-              <div className="font-display text-lg font-semibold">Top 5 - Liens les plus cliqués</div>
+              <Link2 className="h-5 w-5 text-primary" />
+              <div className="font-display text-lg font-semibold">Top 5 liens courts</div>
             </div>
             <span className="text-xs text-muted-foreground">{totalClicks} clics cumulés</span>
           </div>

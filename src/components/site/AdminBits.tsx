@@ -65,7 +65,7 @@ export function PageHeader({ title, description, actions }: { title: string; des
 
 export function StatCard({ label, value, icon, hint, className = "" }: { label: string; value: string | number; icon: ReactNode; hint?: string; className?: string; }) {
   return (
-    <div className="rounded-2xl border bg-card p-6 shadow-elegant">
+    <div className={`rounded-2xl border bg-card p-6 shadow-elegant ${className}`}>
       <div className="flex items-start justify-between">
         <div>
           <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</div>

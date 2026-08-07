@@ -516,6 +516,6 @@ function DashboardPage() {
           </ul>
         </div>
       </div>
-    </AdminShell>
+    </AdminShell >
   );
 }

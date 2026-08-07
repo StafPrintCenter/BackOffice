@@ -136,11 +136,10 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
             <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={pathname.startsWith("/admin/profile")} tooltip="Profil">
                 <Link to="/admin/profile">
-                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
-                      <p className="text-xs font-medium truncate">{user?.name ?? "Profil"}</p>
-                      <p className="text-[10px] opacity-60 truncate">{user?.email}</p>
-                    </div>
+                  <UserCircle className="size-4 shrink-0" />
+                  <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
+                    <p className="text-xs font-medium truncate">{user?.name ?? "Profil"}</p>
+                    <p className="text-[10px] opacity-60 truncate">{user?.email}</p>
                   </div>
                 </Link>
               </SidebarMenuButton>

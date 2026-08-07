@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2, CheckCircle2, XCircle } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAdminAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ type VerifyState =
 
 function InviteAcceptPage() {
   const { admin, expires, signature } = Route.useSearch();
-  const { verifyInvite, acceptInvite } = useAuth();
+  const { verifyInvite, acceptInvite } = useAdminAuth();
   const navigate = useNavigate();
 
   const [verify, setVerify] = useState<VerifyState>({ status: "checking" });

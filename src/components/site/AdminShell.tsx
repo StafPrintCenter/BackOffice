@@ -65,7 +65,7 @@ const NAV_GROUPS: NavGroup[] = [
 ];
 
 export function AdminShell({ children }: { children?: React.ReactNode }) {
-  const { user, ready, isAuthenticated, logout } = useAuth();
+  const { user, ready, isAuthenticated, logout } = useAdminAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [collapsed, setCollapsed] = useState(false);

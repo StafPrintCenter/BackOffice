@@ -67,7 +67,8 @@ function DashboardPage() {
   // --- Mappings des graphiques & Top 5 Liens ---
   const topLinks = [...shortLinks]
     .sort((a, b) => b.clicksCount - a.clicksCount)
-    .slice(0, 5);
+    .slice(0, 5)
+    .map((l) => ({ name: l.alias, value: l.clicksCount, url: l.shortUrl || l.longUrl }));
 
   const reportsByStatus = Object.entries(
     reports.reduce<Record<string, number>>((acc, r) => {

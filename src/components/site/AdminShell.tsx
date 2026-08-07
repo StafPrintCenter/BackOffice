@@ -103,48 +103,25 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
   const width = collapsed ? "md:w-16" : "md:w-64";
   const profileActive = pathname.startsWith("/admin/profile");
 
-  const renderItem = (n: NavItem) => {
-    const active = n.exact ? pathname === n.to : n.matchPrefixes ? n.matchPrefixes.some((prefix) => pathname.startsWith(prefix)) : pathname.startsWith(n.to);
-    const Icon = n.icon;
-    return (
-      <Link
-        key={n.to}
-        to={n.to as "/dashboard"}
-        title={collapsed ? n.label : undefined}
-        className={
-          "flex items-center gap-3 rounded-lg text-sm transition-colors " +
-          (collapsed ? "justify-center h-10 w-10 mx-auto" : "px-3 py-2") + " " +
-          (active
-            ? "bg-sidebar-primary text-sidebar-primary-foreground"
-            : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground")
-        }
-      >
-        <Icon className="h-4 w-4 shrink-0" />
-        {!collapsed && <span className="truncate">{n.label}</span>}
-      </Link>
-    );
-  };
+  return (
+    <SidebarProvider>
+      <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
+        <SidebarHeader className="px-3 py-4">
+          <Link to="/dashboard" className="flex items-center gap-2.5">
+            <span className="flex size-9 shrink-0 items-center justify-center">
+              <img src={logo.mw} alt="Logo SPC" className="h-9 w-auto" />
+            </span>
+            <span className="flex flex-col group-data-[collapsible=icon]:hidden min-w-0">
+              <span className="font-display font-bold text-sm truncate">{SITE.name}</span>
+              <span className="text-[10px] opacity-60 truncate">{user?.level}</span>
+            </span>
+          </Link>
+        </SidebarHeader>
 
-  const SidebarInner = (
-    <>
-      <div className={"border-b border-sidebar-border flex items-center gap-2 " + (collapsed ? "p-3 justify-center" : "p-5")}>
-        <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center">
-          <img src={logo.mw} alt="Logo SPC" className="h-10 w-auto" />
-        </span>
-        {!collapsed && (
-          <div className="min-w-0">
-            <div className="font-display font-bold text-sm truncate"> {SITE.name} </div>
-
-            <div className="text-[10px] opacity-60 truncate">{user?.level}</div>
-          </div>
-        )}
-      </div>
-
-      <nav className="flex-1 p-2 space-y-4 overflow-y-auto no-scrollbar">
-        {NAV_GROUPS.map((g) => (
-          <div key={g.label} className="space-y-1">
-            {!collapsed && (
-              <div className="px-3 pt-2 text-[10px] font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+        <SidebarContent>
+          {NAV_GROUPS.map((g) => (
+            <SidebarGroup key={g.label}>
+              <SidebarGroupLabel className="text-sidebar-foreground/50 uppercase tracking-wider text-[10px]">
                 {g.label}
               </SidebarGroupLabel>
               <SidebarGroupContent>

@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminDa2RouteImport } from './routes/_admin/da2'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AuthInviteRouteImport } from './routes/_auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
@@ -71,11 +70,6 @@ import { Route as AdminTrainingsRegistrationsIdRouteImport } from './routes/_adm
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminDa2Route = AdminDa2RouteImport.update({
-  id: '/_admin/da2',
-  path: '/da2',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
@@ -375,7 +369,6 @@ const AdminTrainingsRegistrationsIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/da2': typeof AdminDa2Route
   '/dashboard': typeof AdminDashboardRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
@@ -435,7 +428,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/da2': typeof AdminDa2Route
   '/dashboard': typeof AdminDashboardRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
@@ -496,7 +488,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_admin/da2': typeof AdminDa2Route
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_auth/invite': typeof AuthInviteRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -558,7 +549,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/da2'
     | '/dashboard'
     | '/invite'
     | '/login'
@@ -618,7 +608,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/da2'
     | '/dashboard'
     | '/invite'
     | '/login'
@@ -678,7 +667,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_admin/da2'
     | '/_admin/dashboard'
     | '/_auth/invite'
     | '/_auth/login'
@@ -739,7 +727,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminDa2Route: typeof AdminDa2Route
   AdminDashboardRoute: typeof AdminDashboardRoute
   AuthInviteRoute: typeof AuthInviteRoute
   AuthLoginRoute: typeof AuthLoginRoute
@@ -805,13 +792,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_admin/da2': {
-      id: '/_admin/da2'
-      path: '/da2'
-      fullPath: '/da2'
-      preLoaderRoute: typeof AdminDa2RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_admin/dashboard': {
@@ -1211,7 +1191,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminDa2Route: AdminDa2Route,
   AdminDashboardRoute: AdminDashboardRoute,
   AuthInviteRoute: AuthInviteRoute,
   AuthLoginRoute: AuthLoginRoute,

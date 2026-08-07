@@ -157,37 +157,38 @@ function DashboardPage() {
   return (
     <AdminShell>
       <PageHeader title="Tableau de bord" description="Vue d'ensemble de votre activité." />
+      <div className="space-x-16">
+        {/* KPIs Messages, Signalements */}
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-2">
+          <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
+          <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
+        </div>
 
-      {/* KPIs Annonces, Emplois, Articles, Candidatures, Stages */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />
-        <StatCard label="Offres d'emploi" value={jobOffersLoading ? "…" : publishedJobOffers} icon={<Briefcase className="h-5 w-5" />} hint={`${jobOffers.length} au total`} />
-        <StatCard label="Candidatures" value={jobApplicationsLoading ? "…" : jobApplications.length} icon={<FileCheck2 className="h-5 w-5" />} hint={`${pendingJobApplications} à traiter`} />
-        <StatCard label="Demandes de stage" value={internshipRequestsLoading ? "…" : internshipRequests.length} icon={<UserPlus className="h-5 w-5" />} hint={`${pendingInternshipRequests} en attente`} />
-        <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${activeShortLinks} liens actifs`} />
-      </div>
+        {/* KPIs Annonces, Emplois, Articles, Candidatures, Stages */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />
+          <StatCard label="Offres d'emploi" value={jobOffersLoading ? "…" : publishedJobOffers} icon={<Briefcase className="h-5 w-5" />} hint={`${jobOffers.length} au total`} />
+          <StatCard label="Candidatures" value={jobApplicationsLoading ? "…" : jobApplications.length} icon={<FileCheck2 className="h-5 w-5" />} hint={`${pendingJobApplications} à traiter`} />
+          <StatCard label="Demandes de stage" value={internshipRequestsLoading ? "…" : internshipRequests.length} icon={<UserPlus className="h-5 w-5" />} hint={`${pendingInternshipRequests} en attente`} />
+          <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${activeShortLinks} liens actifs`} />
+        </div>
 
-      {/* KPIs Services, Formations, Projets, Messages, articles */}
-      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
-        <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
-        <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint={`${publicProjects} publics`} />
-        <StatCard label="Articles" value={articlesLoading ? "…" : articles.length} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
-      </div>
+        {/* KPIs Services, Formations, Projets, Messages, articles */}
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
+          <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
+          <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint={`${publicProjects} publics`} />
+          <StatCard label="Articles" value={articlesLoading ? "…" : articles.length} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
+        </div>
 
-      {/* KPIs Messages, Signalements */}
-      <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-2">
-        <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
-        <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
-      </div>
-
-      {/* KPIs Membres */}
-      <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-        <StatCard label="Membres actifs" value={membersLoading ? "…" : activeMembers} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total`} />
-        <StatCard label="Utilisateurs actifs" value={usersLoading ? "…" : activeUsers} icon={<SquareUser className="h-5 w-5" />} hint={`${users.length} au total`} />
-        <StatCard label="Apprenants actifs" value={studentsLoading ? "…" : activeStudents} icon={<CircleUser className="h-5 w-5" />} hint={`${students.length} au total`} />
-        <StatCard label="Formateurs actifs" value={instructorsLoading ? "…" : activeInstructors} icon={<UserCheck className="h-5 w-5" />} hint={`${instructors.length} au total`} />
-        <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldUser className="h-5 w-5" />} hint={`${admins.length} au total`} />
+        {/* KPIs Membres */}
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <StatCard label="Membres actifs" value={membersLoading ? "…" : activeMembers} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total`} />
+          <StatCard label="Utilisateurs actifs" value={usersLoading ? "…" : activeUsers} icon={<SquareUser className="h-5 w-5" />} hint={`${users.length} au total`} />
+          <StatCard label="Apprenants actifs" value={studentsLoading ? "…" : activeStudents} icon={<CircleUser className="h-5 w-5" />} hint={`${students.length} au total`} />
+          <StatCard label="Formateurs actifs" value={instructorsLoading ? "…" : activeInstructors} icon={<UserCheck className="h-5 w-5" />} hint={`${instructors.length} au total`} />
+          <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldUser className="h-5 w-5" />} hint={`${admins.length} au total`} />
+        </div>
       </div>
 
       {/* Graphiques Emplois, Annonces & Articles */}

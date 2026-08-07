@@ -3,7 +3,7 @@ import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-route
 import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, Tags, BarChart3, HelpCircle, Link2, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness } from "lucide-react";
 
 import { useAdminAuth } from "@/hooks/useAdminAuth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
@@ -52,7 +52,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Recrutements",
     items: [
       { to: "/jobs/offers", label: "Offres d'emploi", icon: BriefcaseBusiness, matchPrefixes: ["/jobs"] },
-      { to: "/internships", label: "Stages", icon: BriefcaseBusiness, },
+      { to: "/internships", label: "Stages", icon: BriefcaseBusiness },
     ],
   },
   {
@@ -70,8 +70,6 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
   const { user, ready, isAuthenticated, logout } = useAdminAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [confirmDisconnectOpen, setConfirmDisconnectOpen] = useState(false);
 
   useEffect(() => {
@@ -171,13 +169,13 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
         <main className="flex-1 p-6 md:p-10 overflow-y-auto overflow-x-hidden bg-muted/30">
           {children ?? <Outlet />}
         </main>
-      </div>
+      </SidebarInset>
 
       <ConfirmDisconnect
         open={confirmDisconnectOpen}
         onOpenChange={setConfirmDisconnectOpen}
         onConfirm={handleLogout}
       />
-    </div>
+    </SidebarProvider>
   );
 }

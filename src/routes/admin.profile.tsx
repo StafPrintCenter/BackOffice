@@ -20,7 +20,7 @@ export const Route = createFileRoute("/admin/profile")({
 });
 
 function ProfilePage() {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAdminAuth();
   const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);

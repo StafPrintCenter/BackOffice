@@ -30,7 +30,7 @@ function AdminLayout() {
   }
 
   return (
-    <InstructorShell>
+    <AdminShell>
       <Outlet />
     </InstructorShell>
   );

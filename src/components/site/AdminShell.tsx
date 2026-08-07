@@ -115,7 +115,16 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
                     const active = isLinkActive(item);
                     return (
                       <SidebarMenuItem key={item.to}>
-                        <SidebarMenuButton asChild isActive={active} tooltip={item.label}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={active}
+                          tooltip={item.label}
+                          className={
+                            "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground " +
+                            "data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground " +
+                            "data-[active=true]:hover:bg-sidebar-primary data-[active=true]:hover:text-sidebar-primary-foreground"
+                          }
+                        >
                           <Link to={item.to as "/dashboard"}>
                             <item.icon />
                             <span>{item.label}</span>

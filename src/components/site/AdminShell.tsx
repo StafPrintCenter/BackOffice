@@ -76,20 +76,6 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
     if (ready && !isAuthenticated) navigate({ to: "/login" });
   }, [ready, isAuthenticated, navigate]);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = window.localStorage.getItem("admin_sidebar_collapsed");
-    if (saved === "1") setCollapsed(true);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem("admin_sidebar_collapsed", collapsed ? "1" : "0");
-    }
-  }, [collapsed]);
-
-  useEffect(() => { setMobileOpen(false); }, [pathname]);
-
   if (!ready || !isAuthenticated) {
     return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Chargement...</div>;
   }

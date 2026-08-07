@@ -176,7 +176,7 @@ function DashboardPage() {
               <Link2 className="h-5 w-5 text-primary" />
               <div className="font-display text-lg font-semibold">Top 5 liens courts</div>
             </div>
-            <span className="text-xs text-muted-foreground">{totalClicks} clics cumulés</span>
+            <span className="text-xs text-muted-foreground">{activeShortLinks} liens actifs</span>
           </div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
@@ -206,7 +206,7 @@ function DashboardPage() {
         </div>
       </div>
 
-      {/* Offres d'emploi & Demandes de Stage */}
+      {/* Candidatures & Demandes de Stage */}
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Candidatures par statut</div>
@@ -239,7 +239,7 @@ function DashboardPage() {
         </div>
       </div>
 
-      {/* Graphiques Liens & Annonces */}
+      {/* Liens par Catégorie & Messages */}
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
           <div className="font-display text-lg font-semibold">Liens courts par catégorie</div>
@@ -255,13 +255,14 @@ function DashboardPage() {
             </ResponsiveContainer>
           </div>
         </div>
+
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Annonces par type</div>
+          <div className="font-display text-lg font-semibold">Messages par statut</div>
           <div className="mt-4 h-56">
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={announcementsByType} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
-                  {announcementsByType.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
+                <Pie data={msgByStatus} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
+                  {msgByStatus.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
                 </Pie>
                 <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
               </PieChart>
@@ -286,6 +287,7 @@ function DashboardPage() {
             </ResponsiveContainer>
           </div>
         </div>
+
         <div className="rounded-2xl border bg-card p-6 shadow-elegant">
           <div className="font-display text-lg font-semibold">Services par catégorie</div>
           <div className="mt-4 h-56">

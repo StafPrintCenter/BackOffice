@@ -108,14 +108,6 @@ function DashboardPage() {
     }, {})
   ).map(([name, value]) => ({ name, value }));
 
-  const jobsByContract = Object.entries(
-    jobOffers.reduce<Record<string, number>>((acc, j) => {
-      const label = JOB_OFFER_CONTRACT_LABELS[j.contractType] || j.contractType;
-      acc[label] = (acc[label] ?? 0) + 1;
-      return acc;
-    }, {})
-  ).map(([name, value]) => ({ name, value }));
-
   const applicationsByStatus = Object.entries(
     jobApplications.reduce<Record<string, number>>((acc, a) => {
       const label = JOB_APPLICATION_STATUS_LABELS[a.status] || a.status;

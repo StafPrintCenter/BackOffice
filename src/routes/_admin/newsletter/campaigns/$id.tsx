@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, CalendarClock, Ban, Send, User, Users, Calendar } from "lucide-react";
-import { AdminShell, ConfirmDelete, RichTextEditor } from "@/components/site";
+import { ConfirmDelete, RichTextEditor } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,24 +61,24 @@ function CampaignDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!campaign || !form) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/newsletter/campaigns" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
         <p className="text-muted-foreground">Campagne introuvable.</p>
-      </AdminShell>
+      </>
     );
   }
 
@@ -139,7 +139,7 @@ function CampaignDetail() {
   const categoryColorClass = matchedCategory?.colorClass || "bg-slate-100 text-slate-700";
 
   return (
-    <AdminShell>
+    <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/newsletter/campaigns" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -293,6 +293,6 @@ function CampaignDetail() {
         }}
         title={`Supprimer la campagne "${campaign.subject}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

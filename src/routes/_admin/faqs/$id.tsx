@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, HelpCircle, Tag, Hash, Calendar, Layers } from "lucide-react";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -47,17 +47,17 @@ function FaqDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!faq || !form) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/faqs" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -66,7 +66,7 @@ function FaqDetail() {
         <div className="rounded-xl border p-8 text-center text-muted-foreground">
           FAQ introuvable.
         </div>
-      </AdminShell>
+      </>
     );
   }
 
@@ -96,7 +96,7 @@ function FaqDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/faqs" })}>
@@ -266,6 +266,6 @@ function FaqDetail() {
         }}
         title="Supprimer cette FAQ ?"
       />
-    </AdminShell>
+    </>
   );
 }

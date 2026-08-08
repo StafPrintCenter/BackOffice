@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Plus, Trash2 } from "lucide-react";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -135,7 +135,7 @@ function AdminAnnouncements() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Annonces" description="Bannières, pop-ups et notifications affichées sur le site." />
       <DataTable<APIAdminAnnouncement>
         data={items}
@@ -372,6 +372,6 @@ function AdminAnnouncements() {
         }}
         title={`Supprimer "${toDelete?.title}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

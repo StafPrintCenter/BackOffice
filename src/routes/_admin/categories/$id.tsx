@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, GraduationCap, FolderKanban, FileText, Mail, Tag, Calendar, Layers } from "lucide-react";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,17 +48,17 @@ function CategoryDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!cat || !form) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/categories" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -68,7 +68,7 @@ function CategoryDetail() {
           Catégorie introuvable.
           <div className="mt-2"><Link to="/categories" className="text-primary underline">Retour à la liste</Link></div>
         </div>
-      </AdminShell>
+      </>
     );
   }
 
@@ -100,7 +100,7 @@ function CategoryDetail() {
   ];
 
   return (
-    <AdminShell>
+    <>
       {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/categories" })}>
@@ -309,6 +309,6 @@ function CategoryDetail() {
         }}
         title={`Supprimer "${cat.name}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

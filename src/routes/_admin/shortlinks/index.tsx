@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -97,7 +97,7 @@ function AdminShortLinks() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Liens courts" description="Redirections trackées avec statistiques de clics." />
       <DataTable<APIAdminShortLinkListItem>
         data={items}
@@ -221,6 +221,6 @@ function AdminShortLinks() {
         }}
         title={`Supprimer "${toDelete?.alias}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

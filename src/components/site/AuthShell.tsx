@@ -1,20 +1,59 @@
-import type { ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 
-interface AuthShellProps {
+interface AuthShellContent {
   title: string;
   subtitle: string;
-  children: ReactNode;
   footer?: ReactNode;
 }
 
-export function AuthShell({
-  title,
-  subtitle,
-  children,
-  footer,
-}: AuthShellProps) {
+interface AuthShellContextValue {
+  content: AuthShellContent;
+  setContent: (c: AuthShellContent) => void;
+}
+
+const AuthShellContext = createContext<AuthShellContextValue | null>(null);
+
+/**
+ * À placer dans _auth.tsx, autour du <AuthShell>. Fournit le contexte que chaque page _auth/* alimente via useAuthShellContent().
+ */
+export function AuthShellProvider({ children }: { children: ReactNode }) {
+  const [content, setContent] = useState<AuthShellContent>({ title: "", subtitle: "" });
+  return (
+    <AuthShellContext.Provider value={{ content, setContent }}>
+      {children}
+    </AuthShellContext.Provider>
+  );
+}
+
+/**
+ * À appeler en haut de chaque page _auth/* (login, invite, etc.) pour définir le titre/sous-titre/footer affichés par le AuthShell englobant.
+ * Se met à jour automatiquement à chaque changement d'état de la page (ex: invite.tsx qui passe par plusieurs écrans).
+ */
+export function useAuthShellContent(content: AuthShellContent) {
+  const ctx = useContext(AuthShellContext);
+  if (!ctx) {
+    throw new Error("useAuthShellContent doit être utilisé sous une route _auth (AuthShellProvider manquant).");
+  }
+
+  useEffect(() => {
+    ctx.setContent(content);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content.title, content.subtitle, content.footer]);
+}
+
+/**
+ * Le shell visuel : colonne hero à gauche, formulaire à droite.
+ * title/subtitle/footer sont lus depuis le contexte ; children = <Outlet/>.
+ */
+export function AuthShell({ children }: { children: ReactNode }) {
+  const ctx = useContext(AuthShellContext);
+  if (!ctx) {
+    throw new Error("AuthShell doit être utilisé sous AuthShellProvider (_auth.tsx).");
+  }
+  const { title, subtitle, footer } = ctx.content;
+
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* Colonne gauche (Desktop) */}

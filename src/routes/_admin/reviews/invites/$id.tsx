@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, Ban, Copy, Send } from "lucide-react";
-import { AdminShell } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { useAdminReviewInvitationDetail, useRevokeAdminReviewInvitation, useResendAdminReviewInvitation } from "@/stores/useReviewInvitationsStore";
 import { REVIEW_INVITATION_STATUS_BADGES, REVIEW_INVITATION_STATUS_LABELS } from "@/data/reviewInvitations";
@@ -23,24 +22,24 @@ function InvitationDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!invitation) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reviews/invites" })}>
             <ArrowLeft className="mr-1 h-4 w-4" /> Retour
           </Button>
         </div>
         <p className="text-muted-foreground">Invitation introuvable.</p>
-      </AdminShell>
+      </>
     );
   }
 
@@ -67,7 +66,7 @@ function InvitationDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reviews/invites" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
@@ -109,6 +108,6 @@ function InvitationDetail() {
           <div className="mt-4 rounded-lg bg-muted/50 p-3 font-mono text-xs break-all">{invitation.link}</div>
         </div>
       </div>
-    </AdminShell>
+    </>
   );
 }

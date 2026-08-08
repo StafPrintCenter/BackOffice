@@ -29,6 +29,11 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  useAuthShellContent({
+    title: "Connexion admin",
+    subtitle: "Connectez-vous avec vos identifiants administrateur.",
+  });
+
   useEffect(() => {
     if (ready && isAuthenticated) navigate({ to: "/dashboard" });
   }, [ready, isAuthenticated, navigate]);

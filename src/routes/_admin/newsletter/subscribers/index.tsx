@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Megaphone } from "lucide-react";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminNewsletterSubscribersList, useDeleteAdminNewsletterSubscriber } from "@/stores/useNewsletterSubscribersStore";
 import type { APIAdminNewsletterSubscriberListItem } from "@/data/newsletterSubscriber";
 import { SITE } from "@/data/site";
@@ -30,7 +30,7 @@ function AdminNewsletterSubscribers() {
   const [toDelete, setToDelete] = useState<APIAdminNewsletterSubscriberListItem | null>(null);
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Abonnés newsletter" description="Consultez, bloquez, réactivez ou supprimez les abonnés." />
 
       {/* Raccourci */}
@@ -87,6 +87,6 @@ function AdminNewsletterSubscribers() {
         }}
         title={`Supprimer l'abonné "${toDelete?.email}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

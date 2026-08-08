@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { ArrowLeft, Loader2, Mail, Tag, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
-import { AdminShell } from "@/components/site/AdminShell";
+import { } from "@/components/site/";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -58,7 +58,7 @@ function ReportDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       <div className="mb-6 flex items-center justify-between">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reports" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -192,6 +192,6 @@ function ReportDetail() {
           </div>
         </div>
       )}
-    </AdminShell>
+    </>
   );
 }

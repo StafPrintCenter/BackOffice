@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { ArrowLeft, Loader2, Mail, Phone, GraduationCap, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare, CheckCircle2, XCircle, User, ShieldCheck, Sparkles, Trash2, } from "lucide-react";
 import { toast } from "sonner";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -66,7 +66,7 @@ function TrainingRegistrationDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       {/* Barre supérieure d'actions */}
       <div className="mb-6 flex items-center justify-between">
         <Button
@@ -321,6 +321,6 @@ function TrainingRegistrationDetail() {
         }}
         title={`Supprimer l'inscription de "${reg?.firstName} ${reg?.lastName}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

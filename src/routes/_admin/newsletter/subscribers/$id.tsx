@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Trash2, Ban, RotateCcw, Loader2, Mail, User, Calendar, ShieldAlert, FileText, Tag, Clock, UserX, UserCheck, } from "lucide-react";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,24 +36,24 @@ function SubscriberDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!subscriber) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/newsletter/subscribers" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
         <p className="text-muted-foreground">Abonné introuvable.</p>
-      </AdminShell>
+      </>
     );
   }
 
@@ -106,7 +106,7 @@ function SubscriberDetail() {
   const categories = subscriber.categories ?? [];
 
   return (
-    <AdminShell>
+    <>
       {/* Barre d'actions */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/newsletter/subscribers" })}>
@@ -335,6 +335,6 @@ function SubscriberDetail() {
         }}
         title={`Supprimer l'abonné "${subscriber.email}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

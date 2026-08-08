@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Users } from "lucide-react";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable, RichTextEditor } from "@/components/site";
+import { PageHeader, ConfirmDelete, DataTable, RichTextEditor } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -70,7 +70,7 @@ function AdminNewsletterCampaigns() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Campagnes newsletter" description="Créez, programmez et envoyez vos campagnes d'emailing." />
 
       {/* Raccourci */}
@@ -175,6 +175,6 @@ function AdminNewsletterCampaigns() {
         }}
         title={`Supprimer la campagne "${toDelete?.subject}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

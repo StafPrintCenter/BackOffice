@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { useAdminInternshipRequestsList } from "@/stores/useInternshipRequestsStore";
 import type { APIAdminInternshipRequest } from "@/data/internshipRequests";
 import { INTERNSHIP_REQUEST_STATUS_LABELS, getInternshipRequestStatusBadge } from "@/data/internshipRequests";
@@ -20,7 +20,7 @@ function AdminInternshipRequests() {
   const { items, isLoading } = useAdminInternshipRequestsList({ perPage: 100 });
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Demandes de stage" description="Candidatures reçues pour des stages." />
       <DataTable<APIAdminInternshipRequest>
         data={items}
@@ -73,6 +73,6 @@ function AdminInternshipRequests() {
           },
         ]}
       />
-    </AdminShell>
+    </>
   );
 }

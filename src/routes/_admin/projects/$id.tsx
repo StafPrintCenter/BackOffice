@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Globe, Lock, User, FolderCog, Calendar, Image as ImageIcon } from "lucide-react";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -50,17 +50,17 @@ function ProjectDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex h-96 items-center justify-center text-muted-foreground">
           <Loader2 className="h-6 w-6 animate-spin mr-2 text-primary" /> Chargement du projet...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!project || !form) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/projects" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour aux projets
@@ -69,7 +69,7 @@ function ProjectDetail() {
         <div className="rounded-2xl border bg-card p-12 text-center">
           <p className="text-muted-foreground">Projet introuvable ou supprimé.</p>
         </div>
-      </AdminShell>
+      </>
     );
   }
 
@@ -102,7 +102,7 @@ function ProjectDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       {/* Barre d'actions supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/projects" })}>
@@ -327,6 +327,6 @@ function ProjectDetail() {
         }}
         title={`Supprimer "${project.title}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

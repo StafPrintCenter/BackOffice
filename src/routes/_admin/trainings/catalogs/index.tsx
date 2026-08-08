@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Plus, Trash2, UserRoundPlus } from "lucide-react";
-import { AdminShell, PageHeader, ConfirmDelete } from "@/components/site";
+import { PageHeader, ConfirmDelete } from "@/components/site";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { DataTable } from "@/components/site/DataTable";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -98,7 +98,7 @@ function AdminTrainings() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Formations" description="Programmes proposés au public." />
 
       {/* Raccourci */}
@@ -331,6 +331,6 @@ function AdminTrainings() {
         }}
         title={`Supprimer "${toDelete?.title}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, AlertTriangle, Ban, ShieldCheck, Mail, Calendar, Phone, Briefcase, MapPin, Info, Cake, MailCheck, } from "lucide-react";
-import { AdminShell } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -49,17 +48,17 @@ function StudentDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex h-64 items-center justify-center text-muted-foreground">
           <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement du profil...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!student) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/members/students" })}>
             <ArrowLeft className="mr-1 h-4 w-4" /> Retour à la liste
@@ -68,7 +67,7 @@ function StudentDetail() {
         <div className="rounded-2xl border bg-card p-8 text-center text-muted-foreground">
           <p>Apprenant introuvable.</p>
         </div>
-      </AdminShell>
+      </>
     );
   }
 
@@ -128,7 +127,7 @@ function StudentDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       {/* Top Bar */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/members/students" })}>
@@ -361,6 +360,6 @@ function StudentDetail() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </AdminShell>
+    </>
   );
 }

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, AlertTriangle, Ban, ShieldCheck, Mail, Calendar, Info, MailCheck, MailX, CheckCircle2, UserCheck, GraduationCap, X as XIcon, } from "lucide-react";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,17 +55,17 @@ function InstructorDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex h-64 items-center justify-center text-muted-foreground">
           <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement du profil...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!instructor) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/members/instructors" })}>
             <ArrowLeft className="mr-1 h-4 w-4" /> Retour à la liste
@@ -74,7 +74,7 @@ function InstructorDetail() {
         <div className="rounded-2xl border bg-card p-8 text-center text-muted-foreground">
           <p>Instructeur introuvable.</p>
         </div>
-      </AdminShell>
+      </>
     );
   }
 
@@ -150,7 +150,7 @@ function InstructorDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       {/* Top Bar */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/members/instructors" })}>
@@ -494,6 +494,6 @@ function InstructorDetail() {
         }}
         title="Retirer cette formation de l'instructeur ?"
       />
-    </AdminShell>
+    </>
   );
 }

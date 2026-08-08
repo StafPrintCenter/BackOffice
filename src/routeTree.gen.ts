@@ -13,9 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+import { Route as AdminProfileRouteImport } from './routes/_admin/profile'
 import { Route as AuthInviteRouteImport } from './routes/_auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
-import { Route as AdminAdminProfileRouteImport } from './routes/_admin/admin.profile'
 import { Route as AdminAnnouncesIndexRouteImport } from './routes/_admin/announces/index'
 import { Route as AdminAnnouncesIdRouteImport } from './routes/_admin/announces/$id'
 import { Route as AdminAppointmentsIndexRouteImport } from './routes/_admin/appointments/index'
@@ -87,6 +87,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminProfileRoute = AdminProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AuthInviteRoute = AuthInviteRouteImport.update({
   id: '/invite',
   path: '/invite',
@@ -96,11 +101,6 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRoute,
-} as any)
-const AdminAdminProfileRoute = AdminAdminProfileRouteImport.update({
-  id: '/admin/profile',
-  path: '/admin/profile',
-  getParentRoute: () => AdminRoute,
 } as any)
 const AdminAnnouncesIndexRoute = AdminAnnouncesIndexRouteImport.update({
   id: '/announces/',
@@ -380,9 +380,9 @@ const AdminTrainingsRegistrationsIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AdminDashboardRoute
+  '/profile': typeof AdminProfileRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
-  '/admin/profile': typeof AdminAdminProfileRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
@@ -439,9 +439,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AdminDashboardRoute
+  '/profile': typeof AdminProfileRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
-  '/admin/profile': typeof AdminAdminProfileRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
@@ -501,9 +501,9 @@ export interface FileRoutesById {
   '/_admin': typeof AdminRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
   '/_admin/dashboard': typeof AdminDashboardRoute
+  '/_admin/profile': typeof AdminProfileRoute
   '/_auth/invite': typeof AuthInviteRoute
   '/_auth/login': typeof AuthLoginRoute
-  '/_admin/admin/profile': typeof AdminAdminProfileRoute
   '/_admin/announces/$id': typeof AdminAnnouncesIdRoute
   '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/_admin/articles/$id': typeof AdminArticlesIdRoute
@@ -562,9 +562,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/profile'
     | '/invite'
     | '/login'
-    | '/admin/profile'
     | '/announces/$id'
     | '/appointments/$id'
     | '/articles/$id'
@@ -621,9 +621,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dashboard'
+    | '/profile'
     | '/invite'
     | '/login'
-    | '/admin/profile'
     | '/announces/$id'
     | '/appointments/$id'
     | '/articles/$id'
@@ -682,9 +682,9 @@ export interface FileRouteTypes {
     | '/_admin'
     | '/_auth'
     | '/_admin/dashboard'
+    | '/_admin/profile'
     | '/_auth/invite'
     | '/_auth/login'
-    | '/_admin/admin/profile'
     | '/_admin/announces/$id'
     | '/_admin/appointments/$id'
     | '/_admin/articles/$id'
@@ -775,6 +775,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/profile': {
+      id: '/_admin/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AdminProfileRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_auth/invite': {
       id: '/_auth/invite'
       path: '/invite'
@@ -788,13 +795,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
-    }
-    '/_admin/admin/profile': {
-      id: '/_admin/admin/profile'
-      path: '/admin/profile'
-      fullPath: '/admin/profile'
-      preLoaderRoute: typeof AdminAdminProfileRouteImport
-      parentRoute: typeof AdminRoute
     }
     '/_admin/announces/': {
       id: '/_admin/announces/'
@@ -1165,7 +1165,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
-  AdminAdminProfileRoute: typeof AdminAdminProfileRoute
+  AdminProfileRoute: typeof AdminProfileRoute
   AdminAnnouncesIdRoute: typeof AdminAnnouncesIdRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
@@ -1222,7 +1222,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
-  AdminAdminProfileRoute: AdminAdminProfileRoute,
+  AdminProfileRoute: AdminProfileRoute,
   AdminAnnouncesIdRoute: AdminAnnouncesIdRoute,
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,

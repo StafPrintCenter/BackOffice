@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { useAdminStudentsList } from "@/stores/useStudentsStore";
 import type { APIAdminStudentListItem } from "@/data/students";
 import { SITE } from "@/data/site";
@@ -16,7 +16,7 @@ function AdminStudents() {
   const { items, isLoading } = useAdminStudentsList({ perPage: 100 });
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Apprenants" description="Consultez et modérez les comptes apprenants." />
 
       <DataTable<APIAdminStudentListItem>
@@ -73,6 +73,6 @@ function AdminStudents() {
           },
         ]}
       />
-    </AdminShell>
+    </>
   );
 }

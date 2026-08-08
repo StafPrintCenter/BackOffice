@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Star } from "lucide-react";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -62,7 +62,7 @@ function AdminTestimonials() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Témoignages" description="Retours clients affichés sur le site." />
       <DataTable<APIAdminTestimonial>
         data={items}
@@ -136,6 +136,6 @@ function AdminTestimonials() {
         }}
         title={`Supprimer "${toDelete?.name}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

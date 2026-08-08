@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, Mail, Phone, Briefcase, GraduationCap, Calendar, UserCheck, Clock, Pencil, Save, X, FileText, Download, CheckCircle2, XCircle, Eye, Paperclip, } from "lucide-react";
-import { AdminShell, FilePreviewModal } from "@/components/site";
+import { FilePreviewModal } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -88,7 +88,7 @@ function JobApplicationDetail() {
   const coverLetterUrlResolved = resolveStorageUrl(app?.coverLetterFileUrl);
 
   return (
-    <AdminShell>
+    <>
       <div className="mb-6 flex items-center justify-between">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/jobs/applications" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -370,6 +370,6 @@ function JobApplicationDetail() {
         title={previewFile?.title ?? ""}
         onClose={() => setPreviewFile(null)}
       />
-    </AdminShell>
+    </>
   );
 }

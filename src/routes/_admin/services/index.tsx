@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -130,7 +130,7 @@ function AdminServices() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Services" description="Gérez les prestations affichées sur le site." />
 
       <DataTable<APIAdminServiceListItem>
@@ -278,6 +278,6 @@ function AdminServices() {
         }}
         title={`Supprimer "${toDelete?.title}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

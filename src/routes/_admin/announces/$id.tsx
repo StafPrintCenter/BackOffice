@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, BarChart3, Eye, MousePointerClick, XCircle, Plus, Globe, Calendar, Layers, Sparkles, } from "lucide-react";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend, } from "recharts";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -116,24 +116,24 @@ function AnnouncementDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!announcement || !form) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/announces" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
         <p className="text-muted-foreground">Annonce introuvable.</p>
-      </AdminShell>
+      </>
     );
   }
 
@@ -204,7 +204,7 @@ function AnnouncementDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       {/* Action Bar supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/announces" })}>
@@ -807,6 +807,6 @@ function AnnouncementDetail() {
         }}
         title={`Supprimer "${announcement.title}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

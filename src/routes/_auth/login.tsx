@@ -7,7 +7,6 @@ import { useAuthShellContent } from "@/components/site/AuthShell";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { AuthShell } from "@/components/site/AuthShell";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_auth/login")({
@@ -54,67 +53,58 @@ function LoginPage() {
   };
 
   return (
-    <AuthShell
-      title="Connexion admin"
-      subtitle="Connectez-vous avec vos identifiants administrateur."
-    >
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div>
-          <Label htmlFor="email">Email</Label>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="vous@stafprintcenter.com"
+          autoComplete="email"
+          className="mt-1 bg-card"
+          disabled={loading}
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="pw">Mot de passe</Label>
+        <div className="relative mt-1">
           <Input
-            id="email"
-            type="email"
+            id="pw"
+            type={showPassword ? "text" : "password"}
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="vous@stafprintcenter.com"
-            autoComplete="email"
-            className="mt-1 bg-card"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            autoComplete="current-password"
+            className="bg-card pr-10"
             disabled={loading}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50"
+            aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+            disabled={loading}
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
         </div>
+      </div>
 
-        <div>
-          <Label htmlFor="pw">Mot de passe</Label>
-          <div className="relative mt-1">
-            <Input
-              id="pw"
-              type={showPassword ? "text" : "password"}
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              autoComplete="current-password"
-              className="bg-card pr-10"
-              disabled={loading}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50"
-              aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
-              disabled={loading}
-            >
-              {showPassword ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        <Button type="submit" disabled={loading} className="w-full">
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Connexion...
-            </>
-          ) : (
-            "Se connecter"
-          )}
-        </Button>
-      </form>
-    </AuthShell>
+      <Button type="submit" disabled={loading} className="w-full">
+        {loading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Connexion...
+          </>
+        ) : (
+          "Se connecter"
+        )}
+      </Button>
+    </form>
   );
 }

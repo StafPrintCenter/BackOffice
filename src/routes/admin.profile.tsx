@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { User as UserIcon, Mail, Shield, Calendar, Save, LogOut, CheckCircle2, XCircle, Clock, ShieldAlert, Pencil, X } from "lucide-react";
-import { AdminShell, PageHeader, ConfirmDisconnect } from "@/components/site";
+import { PageHeader, ConfirmDisconnect } from "@/components/site";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -93,7 +93,7 @@ function ProfilePage() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Mon Profil" description="Gérez vos informations d'identification et la sécurité de votre compte." />
 
       {/* En-tête du profil */}
@@ -335,6 +335,6 @@ function ProfilePage() {
         onOpenChange={setConfirmDisconnectOpen}
         onConfirm={handleLogout}
       />
-    </AdminShell>
+    </>
   );
 }

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -63,7 +63,7 @@ function AdminFaqs() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="FAQ" description="Questions fréquentes affichées sur le site." />
       <DataTable<APIAdminFaq>
         data={sorted}
@@ -150,6 +150,6 @@ function AdminFaqs() {
         }}
         title="Supprimer cette FAQ ?"
       />
-    </AdminShell>
+    </>
   );
 }

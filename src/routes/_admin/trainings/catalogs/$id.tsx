@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus, Target, BookOpen, Clock, Signal, Users, Award, CalendarClock, ListChecks, UserCheck, UserPlus, X as XIcon, Mail as MailIcon, } from "lucide-react";
-import { AdminShell } from "@/components/site/AdminShell";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -82,24 +81,24 @@ function TrainingDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!training || !form) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/catalogs" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
         <p className="text-muted-foreground">Formation introuvable.</p>
-      </AdminShell>
+      </>
     );
   }
 
@@ -140,7 +139,7 @@ function TrainingDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/catalogs" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -545,6 +544,6 @@ function TrainingDetail() {
         }}
         title={`Supprimer "${training.title}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

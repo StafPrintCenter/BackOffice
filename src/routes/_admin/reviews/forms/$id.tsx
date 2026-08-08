@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3, CheckCircle, Plus, ArrowUp, ArrowDown, GripVertical, Mail, User, FolderOpen, Calendar, Eye, EyeOff, ChevronDown, ChevronUp, ListChecks, } from "lucide-react";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -138,24 +138,24 @@ function ReviewFormDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!reviewForm || !form) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reviews/forms" })}>
             <ArrowLeft className="mr-1 h-4 w-4" /> Retour
           </Button>
         </div>
         <p className="text-muted-foreground">Formulaire introuvable.</p>
-      </AdminShell>
+      </>
     );
   }
 
@@ -347,7 +347,7 @@ function ReviewFormDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reviews/forms" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
@@ -761,6 +761,6 @@ function ReviewFormDetail() {
         }}
         title={`Supprimer "${reviewForm.title}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

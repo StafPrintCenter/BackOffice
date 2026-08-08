@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -73,7 +73,7 @@ function AdminProjects() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Projets" description="Portfolio du site." />
       <DataTable<APIAdminProject>
         data={items}
@@ -186,6 +186,6 @@ function AdminProjects() {
         }}
         title={`Supprimer "${toDelete?.title}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

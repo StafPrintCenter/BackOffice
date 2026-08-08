@@ -154,7 +154,7 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
                   "data-[active=true]:hover:bg-sidebar-primary data-[active=true]:hover:text-sidebar-primary-foreground"
                 }
               >
-                <Link to="/admin/profile">
+                <Link to="/profile">
                   <UserCircle className="size-4 shrink-0" />
                   <div className="flex items-center gap-2.5 min-w-0 flex-1">
                     <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">

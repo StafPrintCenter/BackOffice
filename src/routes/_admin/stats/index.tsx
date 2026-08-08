@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { AdminShell, PageHeader, ConfirmDelete, DataTable } from "@/components/site";
+import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -62,7 +62,7 @@ function AdminStats() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Statistiques vitrine" description="Chiffres affichés en front (projets, clients, années...)." />
       <DataTable<APIAdminStat>
         data={items}
@@ -132,6 +132,6 @@ function AdminStats() {
         }}
         title={`Supprimer "${toDelete?.label}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

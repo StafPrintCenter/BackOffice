@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { MapPin, Video } from "lucide-react";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { useAdminAppointmentsList } from "@/stores/useAppointmentsStore";
 import {
   APPOINTMENT_MODE_LABELS,
@@ -15,16 +15,15 @@ export const Route = createFileRoute("/_admin/appointments/")({
   head: () => ({
     meta: [
       { title: `Rendez-vous | ${SITE.name}` },
-      { name: "robots", content: "noindex" }]
+      { name: "robots", content: "noindex" }
+    ]
   }),
   component: AdminAppointments,
 });
 
-// Export de modeIcon pour $id.tsx
 export const modeIcon = (m: AppointmentMode) =>
   ({ presentiel: MapPin, en_ligne: Video }[m]);
 
-// Export de modeLabel pour $id.tsx
 export const modeLabel = (m: AppointmentMode) => APPOINTMENT_MODE_LABELS[m];
 
 function AdminAppointments() {
@@ -34,7 +33,7 @@ function AdminAppointments() {
   const rows = items.slice().sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt));
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Rendez-vous" description="Prises de rendez-vous depuis le site public." />
       <DataTable<APIAdminAppointment>
         data={rows}
@@ -98,6 +97,6 @@ function AdminAppointments() {
           },
         ]}
       />
-    </AdminShell>
+    </>
   );
 }

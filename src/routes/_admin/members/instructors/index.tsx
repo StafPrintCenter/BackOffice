@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -79,7 +79,7 @@ function AdminInstructors() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Instructeurs" description="Formateurs invités ou auto-inscrits sur la plateforme." />
       <DataTable<APIAdminInstructor>
         data={items}
@@ -154,6 +154,6 @@ function AdminInstructors() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </AdminShell>
+    </>
   );
 }

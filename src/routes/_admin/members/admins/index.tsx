@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,7 +53,7 @@ function AdminAdmins() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Administrateurs" description="Gérez les comptes administrateurs et invitez de nouveaux membres." />
 
       <DataTable<APIAdminAdminListItem>
@@ -156,6 +156,6 @@ function AdminAdmins() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </AdminShell>
+    </>
   );
 }

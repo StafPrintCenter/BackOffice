@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, Mail, Calendar, Folder, FileText, User, ShieldCheck, ShieldAlert, AlertTriangle, MessageSquare, ExternalLink, Star, } from "lucide-react";
-import { AdminShell } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
@@ -61,17 +60,17 @@ function ResponseDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!response) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button
             variant="outline"
@@ -82,7 +81,7 @@ function ResponseDetail() {
           </Button>
         </div>
         <p className="text-muted-foreground">Réponse introuvable.</p>
-      </AdminShell>
+      </>
     );
   }
 
@@ -148,7 +147,7 @@ function ResponseDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       <div className="mb-6 flex items-center justify-between">
         <Button
           variant="outline"
@@ -325,6 +324,6 @@ function ResponseDetail() {
           </div>
         </div>
       </div>
-    </AdminShell>
+    </>
   );
 }

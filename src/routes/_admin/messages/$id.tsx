@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { ArrowLeft, Loader2, Mail, Tag, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
-import { AdminShell } from "@/components/site/AdminShell";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -68,7 +67,7 @@ function MessageDetail() {
   };
 
   return (
-    <AdminShell>
+    <>
       <div className="mb-6 flex items-center justify-between">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/messages" })}>
           <ArrowLeft className="mr-1 h-4 w-4" /> Retour
@@ -211,6 +210,6 @@ function MessageDetail() {
           </div>
         </div>
       )}
-    </AdminShell>
+    </>
   );
 }

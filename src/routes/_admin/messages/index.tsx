@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { useAdminContactsList } from "@/stores/useContactsStore";
 import { type APIAdminContactListItem, CONTACT_STATUS_BADGES, CONTACT_STATUS_LABELS, } from "@/data/contact";
 import { SITE } from "@/data/site";
@@ -19,7 +19,7 @@ function AdminMessages() {
   const { items, isLoading } = useAdminContactsList({ perPage: 100 });
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Messages" description="Messages reçus depuis le formulaire de contact." />
       <DataTable<APIAdminContactListItem>
         data={items}
@@ -69,6 +69,6 @@ function AdminMessages() {
           },
         ]}
       />
-    </AdminShell>
+    </>
   );
 }

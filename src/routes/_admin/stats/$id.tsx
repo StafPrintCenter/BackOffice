@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, TrendingUp, Key, Calendar, Layers, Hash } from "lucide-react";
-import { AdminShell, ConfirmDelete } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -45,17 +45,17 @@ function StatDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!stat || !form) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/stats" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -64,7 +64,7 @@ function StatDetail() {
         <div className="rounded-xl border p-8 text-center text-muted-foreground">
           Statistique introuvable.
         </div>
-      </AdminShell>
+      </>
     );
   }
 
@@ -88,7 +88,7 @@ function StatDetail() {
   const currentKeyLabel = STAT_KEYS.find((k) => k.value === (isEditing ? form.key : stat.key))?.label || (isEditing ? form.key : stat.key);
 
   return (
-    <AdminShell>
+    <>
       {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/stats" })}>
@@ -259,6 +259,6 @@ function StatDetail() {
         }}
         title={`Supprimer "${stat.label}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

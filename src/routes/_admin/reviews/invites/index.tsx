@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Copy, Check, Send, FileText } from "lucide-react";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -110,7 +110,7 @@ function AdminReviewInvites() {
   };
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Invitations" description="Invitez des clients à répondre à vos formulaires d'avis." />
 
       {/* Raccourci */}
@@ -284,6 +284,6 @@ function AdminReviewInvites() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </AdminShell>
+    </>
   );
 }

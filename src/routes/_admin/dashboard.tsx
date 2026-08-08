@@ -155,7 +155,7 @@ function DashboardPage() {
   const membersLoading = usersLoading || studentsLoading || instructorsLoading || adminsLoading;
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Tableau de bord" description="Vue d'ensemble de votre activité." />
       <div className="space-y-4">
         {/* KPIs Emplois, Candidatures, Stages */}

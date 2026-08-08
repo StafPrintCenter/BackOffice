@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { Briefcase } from "lucide-react";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { useAdminJobApplicationsList } from "@/stores/useJobApplicationsStore";
 import type { APIAdminJobApplication } from "@/data/jobApplications";
 import { JOB_APPLICATION_STATUS_LABELS, getJobApplicationStatusBadge } from "@/data/jobApplications";
@@ -21,7 +21,7 @@ function AdminJobApplications() {
   const { items, isLoading } = useAdminJobApplicationsList({ perPage: 100 });
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Candidatures" description="Candidatures reçues pour les offres d'emploi." />
 
       <div className="mb-4">
@@ -83,6 +83,6 @@ function AdminJobApplications() {
           },
         ]}
       />
-    </AdminShell>
+    </>
   );
 }

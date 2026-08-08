@@ -3,7 +3,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, MousePointerClick, Globe, MonitorSmartphone, Copy, Check } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
-import { AdminShell } from "@/components/site/AdminShell";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,24 +55,24 @@ function ShortLinkDetail() {
 
   if (isLoading) {
     return (
-      <AdminShell>
+      <>
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
         </div>
-      </AdminShell>
+      </>
     );
   }
 
   if (!link) {
     return (
-      <AdminShell>
+      <>
         <div className="mb-6">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/shortlinks" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
         <p className="text-muted-foreground">Lien introuvable.</p>
-      </AdminShell>
+      </>
     );
   }
 
@@ -108,7 +107,7 @@ function ShortLinkDetail() {
   const categoryLabel = matchedCategory?.name || categoryFallback;
 
   return (
-    <AdminShell>
+    <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/shortlinks" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -375,6 +374,6 @@ function ShortLinkDetail() {
         }}
         title={`Supprimer "${link.alias}" ?`}
       />
-    </AdminShell>
+    </>
   );
 }

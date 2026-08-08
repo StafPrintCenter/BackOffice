@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { Send, FileText } from "lucide-react";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { useAdminReviewResponsesList } from "@/stores/useReviewResponsesStore";
 import { type APIAdminReviewResponseListItem, REVIEW_PUBLICATION_STATUS_BADGES, REVIEW_PUBLICATION_STATUS_LABELS, } from "@/data/reviewResponses";
 import { SITE } from "@/data/site";
@@ -20,7 +20,7 @@ function AdminReviewResponses() {
   const { items, isLoading } = useAdminReviewResponsesList({ perPage: 100 });
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Réponses" description="Consultez les réponses reçues et gérez leur publication." />
 
       {/* Raccourci */}
@@ -86,6 +86,6 @@ function AdminReviewResponses() {
           },
         ]}
       />
-    </AdminShell>
+    </>
   );
 }

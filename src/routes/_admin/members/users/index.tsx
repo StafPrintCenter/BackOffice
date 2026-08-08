@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { useAdminUsersList } from "@/stores/useUsersStore";
 import type { APIAdminUserListItem } from "@/data/users";
 import { SITE } from "@/data/site";
@@ -16,7 +16,7 @@ function AdminUsers() {
   const { items, isLoading } = useAdminUsersList({ perPage: 100 });
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Utilisateurs" description="Consultez et modérez les comptes utilisateurs." />
 
       <DataTable<APIAdminUserListItem>
@@ -67,6 +67,6 @@ function AdminUsers() {
           },
         ]}
       />
-    </AdminShell>
+    </>
   );
 }

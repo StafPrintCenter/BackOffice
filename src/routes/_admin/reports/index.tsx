@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { useAdminReportsList } from "@/stores/useReportsStore";
 import { REPORT_STATUS_BADGES, REPORT_STATUS_LABELS, getReportReasonLabel, getReportableTypeLabel, type APIAdminReport, } from "@/data/reports";
 import { SITE } from "@/data/site";
@@ -18,7 +18,7 @@ function AdminReports() {
   const { items, isLoading } = useAdminReportsList({ perPage: 100 });
 
   return (
-    <AdminShell>
+    <>
       <PageHeader title="Signalements" description="Contenus signalés par les visiteurs." />
       <DataTable<APIAdminReport>
         data={items}
@@ -78,6 +78,6 @@ function AdminReports() {
           },
         ]}
       />
-    </AdminShell>
+    </>
   );
 }

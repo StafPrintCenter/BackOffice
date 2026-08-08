@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { GraduationCap } from "lucide-react";
-import { AdminShell, PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable } from "@/components/site";
 import { useAdminTrainingRegistrationsList } from "@/stores/useTrainingRegistrationsStore";
 import { type APIAdminTrainingRegistration, getStatusBadge, getStatusLabel, } from "@/data/trainingRegistrations";
 import { SITE } from "@/data/site";
@@ -20,7 +20,7 @@ function AdminTrainingRegistrations() {
   const { items, isLoading } = useAdminTrainingRegistrationsList({ perPage: 100 });
 
   return (
-    <AdminShell>
+    <>
       <PageHeader
         title="Inscriptions aux formations"
         description="Demandes d'inscription reçues depuis le site public."
@@ -86,6 +86,6 @@ function AdminTrainingRegistrations() {
           },
         ]}
       />
-    </AdminShell>
+    </>
   );
 }

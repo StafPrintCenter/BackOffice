@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Plus, Trash2, UserRoundPlus } from "lucide-react";
+import { Plus, Trash2, UserRoundPlus, Palette } from "lucide-react";
 import { PageHeader, ConfirmDelete } from "@/components/site";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { DataTable } from "@/components/site/DataTable";
@@ -158,6 +158,23 @@ function AdminTrainings() {
             },
           },
           {
+            key: "coverColor",
+            label: "Couleur",
+            render: (r) => (
+              r.coverColor ? (
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className="h-3.5 w-3.5 rounded-full border shadow-sm shrink-0"
+                    style={{ backgroundColor: r.coverColor }}
+                  />
+                  <span className="font-mono text-xs uppercase text-muted-foreground">{r.coverColor}</span>
+                </div>
+              ) : (
+                <span className="text-xs text-muted-foreground">-</span>
+              )
+            ),
+          },
+          {
             key: "level",
             label: "Niveau",
             render: (r) => (
@@ -287,7 +304,7 @@ function AdminTrainings() {
                 <div className="flex items-center gap-2">
                   <Input value={form.cover_color ?? ""} onChange={(e) => setForm({ ...form, cover_color: e.target.value })} placeholder="#8B5CF6" />
                   <span
-                    className="h-9 w-9 shrink-0 rounded-md border"
+                    className="h-9 w-9 shrink-0 rounded-md border shadow-sm"
                     style={{ backgroundColor: form.cover_color || "transparent" }}
                   />
                 </div>

@@ -278,10 +278,6 @@ function AdminTrainings() {
                 <Input type="number" min={0} value={form.max_seats ?? 0} onChange={(e) => setForm({ ...form, max_seats: Number(e.target.value) })} placeholder="0 pour illimité" />
               </div>
               <div>
-                <Label>Frais d'inscription (FCFA)</Label>
-                <Input type="number" min={0} value={form.registration_fee ?? 0} onChange={(e) => setForm({ ...form, registration_fee: Number(e.target.value) })} />
-              </div>
-              <div>
                 <Label>Ratio d'accès min. (0 à 1)</Label>
                 <Input type="number" min={0} max={1} step={0.05} value={form.access_min_ratio ?? 0} onChange={(e) => setForm({ ...form, access_min_ratio: Number(e.target.value) })} />
                 {errors.access_min_ratio && <p className="text-xs text-destructive mt-1">{errors.access_min_ratio}</p>}

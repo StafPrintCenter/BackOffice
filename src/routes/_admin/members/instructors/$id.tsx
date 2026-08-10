@@ -46,6 +46,9 @@ function InstructorDetail() {
   const reactivateMutation = useReactivateAdminInstructor();
   const removeAssignmentMutation = useRemoveAdminTrainingInstructorAssignment();
 
+  const { items: allTrainings } = useAdminTrainingsList({ perPage: 100 });
+  const assignMutation = useAssignAdminTrainingInstructor();
+
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertForm, setAlertForm] = useState({ subject: "", message: "" });
   const [alertErrors, setAlertErrors] = useState<Record<string, string>>({});

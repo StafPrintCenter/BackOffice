@@ -51,10 +51,10 @@ export interface AdminTrainingPayload {
   short: string;
   audience?: string | null;
   objectives: string[];
-  prerequisites?: string[];
-  program?: TrainingProgramModule[];
-  certification?: string | null;
-  schedule?: string | null;
+  prerequisites: string[];
+  program: TrainingProgramModule[];
+  certification: string;
+  schedule: string;
   max_seats?: number | null;
   registration_fee?: number | null;
   access_min_ratio?: number | null;

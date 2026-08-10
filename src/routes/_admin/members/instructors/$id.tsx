@@ -165,6 +165,21 @@ function InstructorDetail() {
     });
   };
 
+  const submitAssign = () => {
+    if (!assignForm.trainingId) return;
+    assignMutation.mutate(
+      { trainingId: assignForm.trainingId, payload: { instructor_id: instructor.id, role: assignForm.role } },
+      {
+        onSuccess: () => {
+          toast.success("Formation assignée");
+          setAssignOpen(false);
+          setAssignForm({ trainingId: "", role: "lead" });
+        },
+        onError: (error) => toast.error(error instanceof Error ? error.message : "Erreur lors de l'assignation"),
+      }
+    );
+  };
+
   return (
     <>
       {/* Top Bar */}

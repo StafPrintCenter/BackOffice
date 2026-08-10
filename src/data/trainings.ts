@@ -26,7 +26,6 @@ export type APIAdminTrainingListItem = {
   registrationDeadline?: string | null;
   startDate?: string | null;
   endDate?: string | null;
-  registrationDeadline?: string | null;
   location?: string | null;
   waitingListEnabled?: boolean;
   coverColor?: string | null;

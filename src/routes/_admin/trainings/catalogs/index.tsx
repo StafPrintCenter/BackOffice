@@ -261,6 +261,10 @@ function AdminTrainings() {
                 <Label>Durée (heures)</Label>
                 <Input type="number" value={form.duration_hours} onChange={(e) => setForm({ ...form, duration_hours: Number(e.target.value) })} />
               </div>
+              <div className="sm:col-span-2">
+                <Label>Horaires</Label>
+                <Input value={form.schedule} onChange={(e) => setForm({ ...form, schedule: e.target.value })} placeholder="ex: 2 séances de 3h30 par semaine" />
+              </div>
               <div>
                 <Label>Prix (FCFA)</Label>
                 <Input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} />

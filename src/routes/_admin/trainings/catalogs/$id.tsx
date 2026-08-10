@@ -406,7 +406,7 @@ function TrainingDetail() {
                           )}
                         </div>
                         <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <MailIcon className="h-3 w-3" /> {a.instructorEmail}
+                          <Mail className="h-3 w-3" /> {a.instructorEmail}
                         </div>
                         <div className="mt-0.5 text-[11px] text-muted-foreground/70">
                           Assigné le {formatAssignedAt(a.assignedAt)} par {a.assignedBy}

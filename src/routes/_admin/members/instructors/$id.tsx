@@ -397,8 +397,20 @@ function InstructorDetail() {
 
         {/* Formations assignées */}
         <div className="rounded-2xl border bg-card p-6">
-          <div className="mb-4 flex items-center gap-2 font-semibold">
-            <GraduationCap className="h-4 w-4 text-primary" /> Formations assignées
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-2 font-semibold">
+              <GraduationCap className="h-4 w-4 text-primary" /> Formations assignées
+            </div>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={() => setAssignOpen(true)}
+              disabled={!isEligibleForAssignment}
+              title={!isEligibleForAssignment ? "Ce formateur n'est pas éligible à une assignation pour le moment" : undefined}
+            >
+              <Plus className="h-3.5 w-3.5 mr-1" /> Assigner
+            </Button>
           </div>
 
           {!isEligibleForAssignment && (

@@ -270,6 +270,10 @@ function AdminTrainings() {
                 <Input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} />
               </div>
               <div>
+                <Label>Frais d'inscription (FCFA)</Label>
+                <Input type="number" min={0} value={form.registration_fee ?? 0} onChange={(e) => setForm({ ...form, registration_fee: Number(e.target.value) })} />
+              </div>
+              <div>
                 <Label>Nombre de places max (0 = Illimité)</Label>
                 <Input type="number" min={0} value={form.max_seats ?? 0} onChange={(e) => setForm({ ...form, max_seats: Number(e.target.value) })} placeholder="0 pour illimité" />
               </div>

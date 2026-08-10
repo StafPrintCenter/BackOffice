@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus, Target, BookOpen, Clock, Signal, Users, Award, CalendarClock, ListChecks, UserCheck, UserPlus, Mail, MapPin, Wallet, PercentCircle } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus, Target, BookOpen, Clock, Signal, Users, Award, CalendarClock, ListChecks, UserCheck, UserPlus, Mail, MapPin, Wallet, PercentCircle, Palette } from "lucide-react";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -379,6 +379,16 @@ function TrainingDetail() {
                 <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${getTrainingStatusBadgeClass(training.status)}`}>
                   {getTrainingStatusLabel(training.status)}
                 </span>
+
+                {training.coverColor && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-xs font-medium shadow-sm">
+                    <span
+                      className="h-2.5 w-2.5 rounded-full border shrink-0"
+                      style={{ backgroundColor: training.coverColor }}
+                    />
+                    <span className="font-mono uppercase text-[11px] text-muted-foreground">{training.coverColor}</span>
+                  </span>
+                )}
 
                 <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
                   <Clock className="h-3 w-3" /> {training.duration}

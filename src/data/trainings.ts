@@ -34,15 +34,11 @@ export type APIAdminTrainingListItem = {
 };
 
 export type APIAdminTrainingDetail = APIAdminTrainingListItem & {
-  audience?: string | null;
-  prerequisites?: string[];
-  program?: TrainingProgramModule[];
-  certification?: string | null;
-  schedule?: string | null;
-  registrationFee?: number | null;
-  accessMinRatio?: number | null;
-  waitingListEnabled?: boolean;
-  coverColor?: string | null;
+  audience: string;
+  prerequisites: string[];
+  program: TrainingProgramModule[];
+  certification: string;
+  schedule: string;
 };
 
 export interface AdminTrainingPayload {

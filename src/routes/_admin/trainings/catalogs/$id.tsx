@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus, Target, BookOpen, Clock, Signal, Users, Award, CalendarClock, ListChecks, UserCheck, UserPlus, Mail } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus, Target, BookOpen, Clock, Signal, Users, Award, CalendarClock, ListChecks, UserCheck, UserPlus, Mail, MapPin, Wallet, PercentCircle } from "lucide-react";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +14,8 @@ import { useTrainingInstructorsList, useAssignAdminTrainingInstructor, useRemove
 import { useAdminInstructorsList } from "@/stores/useInstructorsStore";
 import { TRAINING_INSTRUCTOR_ROLE_LABELS } from "@/data/trainingInstructors";
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";
-import { getTrainingLevelBadgeClass } from "@/data/trainings";
-import type { AdminTrainingPayload, TrainingLevel, TrainingProgramModule } from "@/data/trainings";
+import { getTrainingLevelBadgeClass, getTrainingStatusBadgeClass, getTrainingStatusLabel, sanitizeTrainingPayload } from "@/data/trainings";
+import type { AdminTrainingPayload, TrainingLevel, TrainingProgramModule, TrainingStatus } from "@/data/trainings";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/trainings/catalogs/$id")({
@@ -26,6 +26,12 @@ export const Route = createFileRoute("/_admin/trainings/catalogs/$id")({
   }),
   component: TrainingDetail,
 });
+
+const STATUS_OPTIONS: { value: TrainingStatus; label: string }[] = [
+  { value: "draft", label: "Brouillon" },
+  { value: "published", label: "Publiée" },
+  { value: "archived", label: "Archivée" },
+];
 
 function toPayload(t: NonNullable<ReturnType<typeof useAdminTrainingDetail>["item"]>): AdminTrainingPayload {
   return {
@@ -43,11 +49,24 @@ function toPayload(t: NonNullable<ReturnType<typeof useAdminTrainingDetail>["ite
     program: t.program.map((m) => ({ title: m.title, items: [...m.items] })),
     certification: t.certification,
     schedule: t.schedule,
+    registration_fee: t.registrationFee ?? 0,
+    access_min_ratio: t.accessMinRatio ?? 0,
+    registration_deadline: t.registrationDeadline ?? "",
+    start_date: t.startDate ?? "",
+    end_date: t.endDate ?? "",
+    location: t.location ?? "",
+    waiting_list_enabled: t.waitingListEnabled ?? false,
+    cover_color: t.coverColor ?? "",
+    status: t.status ?? "draft",
   };
 }
 
 function formatAssignedAt(dateStr: string): string {
   return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
+}
+
+function formatDate(dateStr?: string | null): string {
+  return dateStr ? new Date(dateStr).toLocaleDateString("fr-FR") : "-";
 }
 
 function TrainingDetail() {
@@ -112,7 +131,7 @@ function TrainingDetail() {
   );
 
   const handleSave = () => {
-    updateMutation.mutate({ id: training.id, payload: form }, {
+    updateMutation.mutate({ id: training.id, payload: sanitizeTrainingPayload(form) }, {
       onSuccess: () => { toast.success("Formation modifiée"); setIsEditing(false); },
       onError: () => toast.error("Erreur lors de la modification"),
     });
@@ -203,6 +222,56 @@ function TrainingDetail() {
             <div>
               <Label>Places Max (0 = illimité)</Label>
               <Input type="number" value={form.max_seats ?? 0} onChange={(e) => setForm({ ...form, max_seats: Number(e.target.value) })} />
+            </div>
+            <div>
+              <Label>Frais d'inscription (FCFA)</Label>
+              <Input type="number" min={0} value={form.registration_fee ?? 0} onChange={(e) => setForm({ ...form, registration_fee: Number(e.target.value) })} />
+            </div>
+            <div>
+              <Label>Ratio d'accès min. (0 à 1)</Label>
+              <Input type="number" min={0} max={1} step={0.05} value={form.access_min_ratio ?? 0} onChange={(e) => setForm({ ...form, access_min_ratio: Number(e.target.value) })} />
+            </div>
+            <div>
+              <Label>Statut</Label>
+              <Select value={form.status ?? "draft"} onValueChange={(v) => setForm({ ...form, status: v as TrainingStatus })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {STATUS_OPTIONS.map((s) => (<SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Date limite d'inscription</Label>
+              <Input type="date" value={form.registration_deadline ?? ""} onChange={(e) => setForm({ ...form, registration_deadline: e.target.value })} />
+            </div>
+            <div>
+              <Label>Date de début</Label>
+              <Input type="date" value={form.start_date ?? ""} onChange={(e) => setForm({ ...form, start_date: e.target.value })} />
+            </div>
+            <div>
+              <Label>Date de fin</Label>
+              <Input type="date" value={form.end_date ?? ""} onChange={(e) => setForm({ ...form, end_date: e.target.value })} />
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Lieu</Label>
+              <Input value={form.location ?? ""} onChange={(e) => setForm({ ...form, location: e.target.value })} />
+            </div>
+            <div>
+              <Label>Couleur de couverture</Label>
+              <div className="flex items-center gap-2">
+                <Input value={form.cover_color ?? ""} onChange={(e) => setForm({ ...form, cover_color: e.target.value })} placeholder="#8B5CF6" />
+                <span className="h-9 w-9 shrink-0 rounded-md border" style={{ backgroundColor: form.cover_color || "transparent" }} />
+              </div>
+            </div>
+            <div className="flex items-center gap-2 pt-6">
+              <input
+                id="waiting_list_enabled_edit"
+                type="checkbox"
+                className="h-4 w-4 rounded border-input"
+                checked={form.waiting_list_enabled ?? false}
+                onChange={(e) => setForm({ ...form, waiting_list_enabled: e.target.checked })}
+              />
+              <Label htmlFor="waiting_list_enabled_edit">Liste d'attente activée</Label>
             </div>
             <div className="sm:col-span-2">
               <Label>Public visé</Label>
@@ -307,9 +376,19 @@ function TrainingDetail() {
                   <Signal className="h-3 w-3" /> {training.level}
                 </span>
 
+                <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${getTrainingStatusBadgeClass(training.status)}`}>
+                  {getTrainingStatusLabel(training.status)}
+                </span>
+
                 <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
                   <Clock className="h-3 w-3" /> {training.duration}
                 </span>
+
+                {training.location && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
+                    <MapPin className="h-3 w-3" /> {training.location}
+                  </span>
+                )}
 
                 {training.maxSeats !== undefined && (
                   <div className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
@@ -450,6 +529,25 @@ function TrainingDetail() {
                   <CalendarClock className="h-4 w-4 shrink-0 mt-0.5" />
                   <span>{training.schedule || "-"}</span>
                 </div>
+                {training.registrationFee !== undefined && training.registrationFee !== null && training.registrationFee > 0 && (
+                  <div className="flex items-start gap-2 text-muted-foreground">
+                    <Wallet className="h-4 w-4 shrink-0 mt-0.5" />
+                    <span>Frais d'inscription : {training.registrationFee.toLocaleString()} FCFA</span>
+                  </div>
+                )}
+                {training.accessMinRatio !== undefined && training.accessMinRatio !== null && (
+                  <div className="flex items-start gap-2 text-muted-foreground">
+                    <PercentCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                    <span>Ratio d'accès min. : {Math.round(training.accessMinRatio * 100)}%</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-4 border-t pt-4 space-y-1.5 text-xs text-muted-foreground">
+                <div>Inscriptions jusqu'au : {formatDate(training.registrationDeadline)}</div>
+                <div>Début : {formatDate(training.startDate)}</div>
+                <div>Fin : {formatDate(training.endDate)}</div>
+                <div>Liste d'attente : {training.waitingListEnabled ? "Activée" : "Désactivée"}</div>
               </div>
 
               {training.prerequisites.length > 0 && (
@@ -471,6 +569,7 @@ function TrainingDetail() {
             <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground">
               <div>Créée le {new Date(training.createdAt).toLocaleDateString("fr-FR")}</div>
               <div>Modifiée le {new Date(training.updatedAt).toLocaleDateString("fr-FR")}</div>
+              {training.publishedAt && <div>Publiée le {new Date(training.publishedAt).toLocaleDateString("fr-FR")}</div>}
             </div>
           </div>
         </div>

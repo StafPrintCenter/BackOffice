@@ -227,6 +227,11 @@ function AdminTrainings() {
                 <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
                 {errors.title && <p className="text-xs text-destructive mt-1">{errors.title}</p>}
               </div>
+              <div className="sm:col-span-2">
+                <Label>Résumé court</Label>
+                <Input value={form.short} onChange={(e) => setForm({ ...form, short: e.target.value })} />
+                {errors.short && <p className="text-xs text-destructive mt-1">{errors.short}</p>}
+              </div>
               <div>
                 <Label>Thème</Label>
                 <Select value={form.theme_id} onValueChange={(v) => setForm({ ...form, theme_id: v })}>

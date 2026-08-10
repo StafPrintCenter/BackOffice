@@ -336,10 +336,6 @@ function AdminTrainings() {
                 <Label>Certification</Label>
                 <Input value={form.certification} onChange={(e) => setForm({ ...form, certification: e.target.value })} />
               </div>
-              <div className="sm:col-span-2">
-                <Label>Horaires</Label>
-                <Input value={form.schedule} onChange={(e) => setForm({ ...form, schedule: e.target.value })} placeholder="ex: 2 séances de 3h30 par semaine" />
-              </div>
             </div>
 
             <div>

@@ -19,7 +19,11 @@ export type APIAdminTrainingListItem = {
   seatsRemaining?: number;
   short: string;
   objectives: string[];
-  status?: TrainingStatus;
+  status: TrainingStatus;
+  publishedAt?: string | null;
+  registrationFee?: number | null;
+  accessMinRatio?: number | null;
+  registrationDeadline?: string | null;
   startDate?: string | null;
   endDate?: string | null;
   registrationDeadline?: string | null;

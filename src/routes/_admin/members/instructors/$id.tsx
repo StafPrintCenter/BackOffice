@@ -13,6 +13,7 @@ import { useAdminInstructorDetail, useApproveAdminInstructor, useResendAdminInst
 import { useAssignAdminTrainingInstructor, useRemoveAdminTrainingInstructorAssignment, } from "@/stores/useTrainingInstructorsStore";
 import { useAdminTrainingsList } from "@/stores/useTrainingsStore";
 import { TRAINING_INSTRUCTOR_ROLE_LABELS } from "@/data/trainingInstructors";
+import type { TrainingInstructorRole } from "@/data/trainingInstructors";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/members/instructors/$id")({

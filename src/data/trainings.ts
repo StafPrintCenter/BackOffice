@@ -110,10 +110,7 @@ export function getTrainingStatusLabel(status: TrainingStatus): string {
 }
 
 /**
- * Nettoie un AdminTrainingPayload avant envoi : convertit les chaînes vides
- * (dates, location, cover_color) et les 0 "non renseignés" (registration_fee,
- * access_min_ratio) en `undefined` pour que buildFormData les omette, plutôt
- * que d'envoyer une valeur vide sur un champ `nullable|date` côté Laravel.
+ * Nettoie un AdminTrainingPayload avant envoi : convertit les chaînes vides (dates, location, cover_color) et les 0 "non renseignés" (registration_fee, access_min_ratio) en `undefined` pour que buildFormData les omette, plutôt que d'envoyer une valeur vide sur un champ `nullable|date` côté Laravel.
  */
 export function sanitizeTrainingPayload(payload: AdminTrainingPayload): AdminTrainingPayload {
   return {

@@ -57,6 +57,11 @@ function InstructorDetail() {
   const [blockReason, setBlockReason] = useState("");
   const [blockError, setBlockError] = useState("");
 
+  const [assignOpen, setAssignOpen] = useState(false);
+  const [assignForm, setAssignForm] = useState<{ trainingId: string; role: TrainingInstructorRole }>({
+    trainingId: "",
+    role: "lead",
+  });
   const [assignmentToRemove, setAssignmentToRemove] = useState<{ trainingId: string; assignmentId: string } | null>(null);
 
   if (isLoading) {

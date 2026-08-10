@@ -400,6 +400,13 @@ function InstructorDetail() {
           <div className="mb-4 flex items-center gap-2 font-semibold">
             <GraduationCap className="h-4 w-4 text-primary" /> Formations assignées
           </div>
+
+          {!isEligibleForAssignment && (
+            <p className="mb-3 text-xs text-muted-foreground">
+              Ce formateur doit être actif, non bloqué, et avoir accepté son invitation / vu son inscription approuvée avant de pouvoir être assigné à une formation.
+            </p>
+          )}
+
           {instructor.trainings.length === 0 ? (
             <p className="text-sm text-muted-foreground">Aucune formation assignée pour le moment.</p>
           ) : (

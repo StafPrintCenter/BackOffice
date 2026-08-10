@@ -63,7 +63,7 @@ export interface AdminTrainingPayload {
   end_date?: string;
   location?: string;
   waiting_list_enabled?: boolean;
-  cover_color?: string | null;
+  cover_color?: string;
   status?: TrainingStatus;
 }
 

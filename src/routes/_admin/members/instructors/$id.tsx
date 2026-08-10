@@ -91,8 +91,6 @@ function InstructorDetail() {
 
   const isInvited = instructor.registrationSource === "invited";
 
-  // Même règle d'éligibilité que côté backend (AssignController) : un formateur en attente
-  // d'invitation/approbation, inactif ou bloqué ne peut être assigné à aucune formation.
   const isEligibleForAssignment = instructor.isActive && !instructor.isBlocked && !instructor.isPending && !instructor.needsApproval;
 
   const assignedTrainingIds = new Set(instructor.trainings.map((t) => t.trainingId));

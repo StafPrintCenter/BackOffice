@@ -49,7 +49,7 @@ export interface AdminTrainingPayload {
   level: TrainingLevel;
   price: number;
   short: string;
-  audience?: string | null;
+  audience: string;
   objectives: string[];
   prerequisites: string[];
   program: TrainingProgramModule[];
@@ -58,10 +58,10 @@ export interface AdminTrainingPayload {
   max_seats?: number | null;
   registration_fee?: number | null;
   access_min_ratio?: number | null;
-  registration_deadline?: string | null;
-  start_date?: string | null;
-  end_date?: string | null;
-  location?: string | null;
+  registration_deadline?: string;
+  start_date?: string;
+  end_date?: string;
+  location?: string;
   waiting_list_enabled?: boolean;
   cover_color?: string | null;
   status?: TrainingStatus;

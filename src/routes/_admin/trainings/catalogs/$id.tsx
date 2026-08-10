@@ -260,7 +260,7 @@ function TrainingDetail() {
               <Label>Couleur de couverture</Label>
               <div className="flex items-center gap-2">
                 <Input value={form.cover_color ?? ""} onChange={(e) => setForm({ ...form, cover_color: e.target.value })} placeholder="#8B5CF6" />
-                <span className="h-9 w-9 shrink-0 rounded-md border" style={{ backgroundColor: form.cover_color || "transparent" }} />
+                <span className="h-9 w-9 shrink-0 rounded-md border shadow-sm" style={{ backgroundColor: form.cover_color || "transparent" }} />
               </div>
             </div>
             <div className="flex items-center gap-2 pt-6">
@@ -529,6 +529,19 @@ function TrainingDetail() {
                   <CalendarClock className="h-4 w-4 shrink-0 mt-0.5" />
                   <span>{training.schedule || "-"}</span>
                 </div>
+                {training.coverColor && (
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Palette className="h-4 w-4 shrink-0" />
+                    <span className="flex items-center gap-2">
+                      Couleur :
+                      <span className="font-mono text-xs uppercase">{training.coverColor}</span>
+                      <span
+                        className="h-4 w-4 rounded-md border shadow-sm shrink-0"
+                        style={{ backgroundColor: training.coverColor }}
+                      />
+                    </span>
+                  </div>
+                )}
                 {training.registrationFee !== undefined && training.registrationFee !== null && training.registrationFee > 0 && (
                   <div className="flex items-start gap-2 text-muted-foreground">
                     <Wallet className="h-4 w-4 shrink-0 mt-0.5" />

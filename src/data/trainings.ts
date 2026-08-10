@@ -1,4 +1,5 @@
 export type TrainingLevel = "Débutant" | "Intermédiaire" | "Avancé";
+export type TrainingStatus = "draft" | "published" | "archived";
 
 export type TrainingProgramModule = {
   title: string;
@@ -18,16 +19,25 @@ export type APIAdminTrainingListItem = {
   seatsRemaining?: number;
   short: string;
   objectives: string[];
+  status?: TrainingStatus;
+  startDate?: string | null;
+  endDate?: string | null;
+  registrationDeadline?: string | null;
+  location?: string | null;
   createdAt: string;
   updatedAt: string;
 };
 
 export type APIAdminTrainingDetail = APIAdminTrainingListItem & {
-  audience: string;
-  prerequisites: string[];
-  program: TrainingProgramModule[];
-  certification: string;
-  schedule: string;
+  audience?: string | null;
+  prerequisites?: string[];
+  program?: TrainingProgramModule[];
+  certification?: string | null;
+  schedule?: string | null;
+  registrationFee?: number | null;
+  accessMinRatio?: number | null;
+  waitingListEnabled?: boolean;
+  coverColor?: string | null;
 };
 
 export interface AdminTrainingPayload {
@@ -38,14 +48,22 @@ export interface AdminTrainingPayload {
   level: TrainingLevel;
   price: number;
   short: string;
-  audience: string;
+  audience?: string | null;
   objectives: string[];
-  prerequisites: string[];
-  program: TrainingProgramModule[];
-  certification: string;
-  schedule: string;
+  prerequisites?: string[];
+  program?: TrainingProgramModule[];
+  certification?: string | null;
+  schedule?: string | null;
   max_seats?: number | null;
-  seats_remaining?: number;
+  registration_fee?: number | null;
+  access_min_ratio?: number | null;
+  registration_deadline?: string | null;
+  start_date?: string | null;
+  end_date?: string | null;
+  location?: string | null;
+  waiting_list_enabled?: boolean;
+  cover_color?: string | null;
+  status?: TrainingStatus;
 }
 
 export const TRAINING_LEVEL_BADGES: Record<TrainingLevel, { label: string; className: string }> = {

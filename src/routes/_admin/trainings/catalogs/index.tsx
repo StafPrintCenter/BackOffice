@@ -338,11 +338,7 @@ function AdminTrainings() {
               </div>
             </div>
 
-            <div>
-              <Label>Résumé (short)</Label>
-              <Input value={form.short} onChange={(e) => setForm({ ...form, short: e.target.value })} />
-              {errors.short && <p className="text-xs text-destructive mt-1">{errors.short}</p>}
-            </div>
+
 
             {/* Objectifs */}
             <div>

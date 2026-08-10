@@ -441,6 +441,42 @@ function InstructorDetail() {
         </div>
       </div>
 
+      {/* Dialog Assigner une formation */}
+      <Dialog open={assignOpen} onOpenChange={setAssignOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>Assigner une formation</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Formation</Label>
+              <Select value={assignForm.trainingId} onValueChange={(v) => setAssignForm({ ...assignForm, trainingId: v })}>
+                <SelectTrigger><SelectValue placeholder="Choisir une formation" /></SelectTrigger>
+                <SelectContent>
+                  {availableTrainings.map((t) => (
+                    <SelectItem key={t.id} value={t.id}>{t.title}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Rôle</Label>
+              <Select value={assignForm.role} onValueChange={(v) => setAssignForm({ ...assignForm, role: v as TrainingInstructorRole })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="lead">Formateur principal</SelectItem>
+                  <SelectItem value="assistant">Assistant</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAssignOpen(false)}>Annuler</Button>
+            <Button onClick={submitAssign} disabled={!assignForm.trainingId || assignMutation.isPending}>
+              Assigner
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Dialog Alerte */}
       <Dialog open={alertOpen} onOpenChange={setAlertOpen}>
         <DialogContent className="max-w-md">

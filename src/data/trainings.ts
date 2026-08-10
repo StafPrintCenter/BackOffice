@@ -28,6 +28,8 @@ export type APIAdminTrainingListItem = {
   endDate?: string | null;
   registrationDeadline?: string | null;
   location?: string | null;
+  waitingListEnabled?: boolean;
+  coverColor?: string | null;
   createdAt: string;
   updatedAt: string;
 };

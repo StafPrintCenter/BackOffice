@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, AlertTriangle, Ban, ShieldCheck, Mail, Calendar, Info, MailCheck, MailX, CheckCircle2, UserCheck, GraduationCap, X as XIcon, Plus, } from "lucide-react";
+import { ArrowLeft, Loader2, AlertTriangle, Ban, ShieldCheck, Mail, Calendar, Info, MailCheck, MailX, CheckCircle2, UserCheck, GraduationCap, Trash2, Plus, } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -451,7 +451,7 @@ function InstructorDetail() {
                       setAssignmentToRemove({ trainingId: t.trainingId, assignmentId: t.assignmentId });
                     }}
                   >
-                    <XIcon className="h-3.5 w-3.5" />
+                    <Trash2 className="h-3.5 w-3.5" />
                   </Button>
                 </div>
               ))}

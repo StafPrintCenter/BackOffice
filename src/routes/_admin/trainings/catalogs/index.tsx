@@ -12,8 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAdminTrainingsList, useCreateAdminTraining, useUpdateAdminTraining, useDeleteAdminTraining } from "@/stores/useTrainingsStore";
-import { getTrainingLevelBadgeClass } from "@/data/trainings";
-import type { APIAdminTrainingListItem, AdminTrainingPayload, TrainingLevel } from "@/data/trainings";
+import { getTrainingLevelBadgeClass, getTrainingStatusBadgeClass, getTrainingStatusLabel, sanitizeTrainingPayload } from "@/data/trainings";
+import type { APIAdminTrainingListItem, AdminTrainingPayload, TrainingLevel, TrainingStatus } from "@/data/trainings";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/trainings/catalogs/")({
@@ -40,14 +40,34 @@ const schema = z.object({
   certification: z.string().trim().min(1),
   schedule: z.string().trim().min(1),
   max_seats: z.number().min(0).nullable().optional(),
-});
+  registration_fee: z.number().min(0).nullable().optional(),
+  access_min_ratio: z.number().min(0).max(1).nullable().optional(),
+  registration_deadline: z.string().trim().optional(),
+  start_date: z.string().trim().optional(),
+  end_date: z.string().trim().optional(),
+  location: z.string().trim().optional(),
+  waiting_list_enabled: z.boolean().optional(),
+  cover_color: z.string().trim().optional(),
+  status: z.enum(["draft", "published", "archived"]).optional(),
+}).refine(
+  (data) => !data.start_date || !data.end_date || data.end_date >= data.start_date,
+  { message: "La date de fin doit être après la date de début", path: ["end_date"] }
+);
 type FormValues = z.infer<typeof schema>;
 
 const empty: FormValues = {
   title: "", theme_id: "", duration: "", duration_hours: 0, level: "Débutant", price: 0, short: "",
   audience: "", objectives: [""], prerequisites: [""], program: [{ title: "", items: [""] }],
   certification: "", schedule: "", max_seats: 0,
+  registration_fee: 0, access_min_ratio: 0, registration_deadline: "", start_date: "", end_date: "",
+  location: "", waiting_list_enabled: false, cover_color: "", status: "draft",
 };
+
+const STATUS_OPTIONS: { value: TrainingStatus; label: string }[] = [
+  { value: "draft", label: "Brouillon" },
+  { value: "published", label: "Publiée" },
+  { value: "archived", label: "Archivée" },
+];
 
 function AdminTrainings() {
   const navigate = useNavigate();
@@ -82,7 +102,7 @@ function AdminTrainings() {
       return;
     }
 
-    const payload = parsed.data as AdminTrainingPayload;
+    const payload = sanitizeTrainingPayload(parsed.data as AdminTrainingPayload);
 
     if (dialog.row) {
       updateMutation.mutate({ id: dialog.row.id, payload }, {
@@ -146,6 +166,15 @@ function AdminTrainings() {
               </span>
             ),
           },
+          {
+            key: "status",
+            label: "Statut",
+            render: (r) => (
+              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${getTrainingStatusBadgeClass(r.status)}`}>
+                {getTrainingStatusLabel(r.status)}
+              </span>
+            ),
+          },
           { key: "duration", label: "Durée" },
           { key: "price", label: "Prix", render: (r) => <span className="font-semibold">{r.price.toLocaleString()} FCFA</span> },
           {
@@ -154,6 +183,17 @@ function AdminTrainings() {
             render: (r) => (
               <span className="text-sm">
                 {r.maxSeats && r.maxSeats > 0 ? `${r.maxSeats} places` : "Illimité"}
+              </span>
+            ),
+          },
+          {
+            key: "period",
+            label: "Période",
+            render: (r) => (
+              <span className="text-xs text-muted-foreground">
+                {r.startDate ? new Date(r.startDate).toLocaleDateString("fr-FR") : "-"}
+                {" → "}
+                {r.endDate ? new Date(r.endDate).toLocaleDateString("fr-FR") : "-"}
               </span>
             ),
           },
@@ -206,6 +246,61 @@ function AdminTrainings() {
               <div>
                 <Label>Nombre de places max (0 = Illimité)</Label>
                 <Input type="number" min={0} value={form.max_seats ?? 0} onChange={(e) => setForm({ ...form, max_seats: Number(e.target.value) })} placeholder="0 pour illimité" />
+              </div>
+              <div>
+                <Label>Frais d'inscription (FCFA)</Label>
+                <Input type="number" min={0} value={form.registration_fee ?? 0} onChange={(e) => setForm({ ...form, registration_fee: Number(e.target.value) })} />
+              </div>
+              <div>
+                <Label>Ratio d'accès min. (0 à 1)</Label>
+                <Input type="number" min={0} max={1} step={0.05} value={form.access_min_ratio ?? 0} onChange={(e) => setForm({ ...form, access_min_ratio: Number(e.target.value) })} />
+                {errors.access_min_ratio && <p className="text-xs text-destructive mt-1">{errors.access_min_ratio}</p>}
+              </div>
+              <div>
+                <Label>Statut</Label>
+                <Select value={form.status ?? "draft"} onValueChange={(v) => setForm({ ...form, status: v as TrainingStatus })}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {STATUS_OPTIONS.map((s) => (<SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Date limite d'inscription</Label>
+                <Input type="date" value={form.registration_deadline ?? ""} onChange={(e) => setForm({ ...form, registration_deadline: e.target.value })} />
+              </div>
+              <div>
+                <Label>Date de début</Label>
+                <Input type="date" value={form.start_date ?? ""} onChange={(e) => setForm({ ...form, start_date: e.target.value })} />
+              </div>
+              <div>
+                <Label>Date de fin</Label>
+                <Input type="date" value={form.end_date ?? ""} onChange={(e) => setForm({ ...form, end_date: e.target.value })} />
+                {errors.end_date && <p className="text-xs text-destructive mt-1">{errors.end_date}</p>}
+              </div>
+              <div className="sm:col-span-2">
+                <Label>Lieu</Label>
+                <Input value={form.location ?? ""} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="ex: Porto-Novo, Bénin" />
+              </div>
+              <div>
+                <Label>Couleur de couverture</Label>
+                <div className="flex items-center gap-2">
+                  <Input value={form.cover_color ?? ""} onChange={(e) => setForm({ ...form, cover_color: e.target.value })} placeholder="#8B5CF6" />
+                  <span
+                    className="h-9 w-9 shrink-0 rounded-md border"
+                    style={{ backgroundColor: form.cover_color || "transparent" }}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center gap-2 pt-6">
+                <input
+                  id="waiting_list_enabled"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-input"
+                  checked={form.waiting_list_enabled ?? false}
+                  onChange={(e) => setForm({ ...form, waiting_list_enabled: e.target.checked })}
+                />
+                <Label htmlFor="waiting_list_enabled">Liste d'attente activée</Label>
               </div>
               <div className="sm:col-span-2">
                 <Label>Public visé</Label>

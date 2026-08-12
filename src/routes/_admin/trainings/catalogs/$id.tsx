@@ -418,18 +418,21 @@ function TrainingDetail() {
             </div>
           </div>
 
-            <div className="rounded-2xl border bg-card p-6">
-              <div className="mb-3 flex items-center gap-2 font-semibold">
-                <Target className="h-4 w-4 text-primary" /> Objectifs
+          <div className="grid gap-6 lg:grid-cols-3">
+            {/* Colonne principale */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="rounded-2xl border bg-card p-6">
+                <div className="mb-3 flex items-center gap-2 font-semibold">
+                  <Target className="h-4 w-4" style={{ color: mainColor }} /> Objectifs
+                </div>
+                <ul className="space-y-1.5 text-sm">
+                  {training.objectives.map((o: string, i: number) => (
+                    <li key={i} className="flex gap-2">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: mainColor }} /> {o}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="space-y-1.5 text-sm">
-                {training.objectives.map((o: string, i: number) => (
-                  <li key={i} className="flex gap-2">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" /> {o}
-                  </li>
-                ))}
-              </ul>
-            </div>
 
               <div className="rounded-2xl border bg-card p-6">
                 <div className="mb-4 flex items-center gap-2 font-semibold">

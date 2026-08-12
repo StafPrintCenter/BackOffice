@@ -1,7 +1,10 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Plus, Target, BookOpen, Clock, Signal, Users, Award, CalendarClock, ListChecks, UserCheck, UserPlus, Mail, MapPin, Wallet, PercentCircle, Palette } from "lucide-react";
+import {
+  ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, ChevronUp,
+  BookOpen, Clock, Video, FileText, ListChecks,
+} from "lucide-react";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

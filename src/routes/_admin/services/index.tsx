@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { useAdminServicesList, useCreateAdminService, useUpdateAdminService, useDeleteAdminService } from "@/stores/useServicesStore";
-import { SERVICE_CATEGORIES, type APIAdminServiceListItem, type AdminServicePayload, type ServiceCategoryEnum } from "@/data/services";
+import { SERVICE_CATEGORIES, type APIAdminServiceListItem, type AdminServicePayload, type ServiceCategoryEnum, getServiceCategoryConfig } from "@/data/services";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/services/")({

@@ -133,7 +133,7 @@ function AdminTrainingsManage() {
           },
           {
             key: "status",
-            label: "Statut",
+            label: "Statut de la formation",
             render: (r) => (
               <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${getTrainingStatusBadgeClass(r.status)}`}>
                 {getTrainingStatusLabel(r.status)}

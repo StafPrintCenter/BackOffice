@@ -389,7 +389,7 @@ function TrainingDetail() {
                 </span>
 
                 {training.coverColor && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-xs font-medium shadow-sm">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border bg-background/80 backdrop-blur px-2.5 py-0.5 text-xs font-medium shadow-sm">
                     <span
                       className="h-2.5 w-2.5 rounded-full border shrink-0"
                       style={{ backgroundColor: training.coverColor }}

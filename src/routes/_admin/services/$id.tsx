@@ -215,7 +215,6 @@ function ServiceDetail() {
                 )}
               </div>
 
-              {/* Champ Category (ENUM Strict) */}
               <div>
                 <Label htmlFor="category" className="text-xs text-muted-foreground">Catégorie de Service (Obligatoire)</Label>
                 {isEditing ? (

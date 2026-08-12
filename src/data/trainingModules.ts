@@ -18,7 +18,7 @@ export type APIAdminTrainingModule = {
   description: string | null;
   sortOrder: number;
   isEnabled: boolean;
-  status: ModuleStatus;
+  status: ContentStatus;
   createdByAdmin?: string | null;
   createdByInstructor?: string | null;
   lessonsCount: number;

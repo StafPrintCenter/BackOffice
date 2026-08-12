@@ -232,10 +232,17 @@ function ServiceDetail() {
                   </select>
                 ) : (
                   <div className="mt-1">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-primary/10 text-primary capitalize">
-                      <Tag className="h-3 w-3" />
-                      {service.category}
-                    </span>
+                    {(() => {
+                      const catConfig = getServiceCategoryConfig(service.category);
+                      return (
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-semibold capitalize ${catConfig.badgeClass}`}
+                        >
+                          <Tag className="h-3 w-3" />
+                          {catConfig.label}
+                        </span>
+                      );
+                    })()}
                   </div>
                 )}
               </div>

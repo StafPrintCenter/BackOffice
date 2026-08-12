@@ -1,0 +1,95 @@
+export type ModuleStatus = "draft" | "published";
+export type LessonStatus = "draft" | "pending_review" | "published";
+
+// ⚠️ Pas d'enum PHP fourni pour "kind" — seules ces deux valeurs sont observées.
+// Étends cette liste si le backend en expose d'autres.
+export type LessonKind = "video" | "assignment" | string;
+
+export const LESSON_KIND_LABELS: Record<string, string> = {
+  video: "Vidéo",
+  assignment: "Devoir à rendre",
+  text: "Texte",
+  quiz: "Quiz",
+  file: "Fichier",
+};
+
+export type APIAdminTrainingModule = {
+  id: string;
+  trainingId: string;
+  title: string;
+  description: string | null;
+  sortOrder: number;
+  isEnabled: boolean;
+  status: ModuleStatus;
+  createdByAdmin?: string | null;
+  createdByInstructor?: string | null;
+  lessonsCount: number;
+  createdAt: string;
+};
+
+export interface AdminTrainingModulePayload {
+  title: string;
+  description?: string;
+  sort_order?: number;
+  is_enabled?: boolean;
+}
+
+export type APIAdminLesson = {
+  id: string;
+  moduleId: string;
+  title: string;
+  sortOrder: number;
+  durationMinutes: number | null;
+  kind: LessonKind;
+  content: string | null;
+  videoUrl: string | null;
+  chapters: string | null;
+  brief: string | null;
+  isMandatory: boolean;
+  status: LessonStatus;
+  createdByAdmin?: string | null;
+  createdByInstructor?: string | null;
+  createdAt: string;
+};
+
+export interface AdminLessonPayload {
+  title: string;
+  kind: LessonKind;
+  sort_order?: number;
+  duration_minutes?: number;
+  content?: string;
+  video_url?: string;
+  chapters?: string;
+  brief?: string;
+  is_mandatory?: boolean;
+}
+
+export const MODULE_STATUS_LABELS: Record<ModuleStatus, string> = {
+  draft: "Brouillon",
+  published: "Publié",
+};
+
+export const MODULE_STATUS_BADGES: Record<ModuleStatus, string> = {
+  draft: "bg-muted text-muted-foreground border-transparent",
+  published: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+};
+
+export const LESSON_STATUS_LABELS: Record<LessonStatus, string> = {
+  draft: "Brouillon",
+  pending_review: "En attente de validation",
+  published: "Publiée",
+};
+
+export const LESSON_STATUS_BADGES: Record<LessonStatus, string> = {
+  draft: "bg-muted text-muted-foreground border-transparent",
+  pending_review: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+  published: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+};
+
+export function getModuleStatusBadge(status: ModuleStatus): string {
+  return MODULE_STATUS_BADGES[status] ?? "bg-muted text-muted-foreground border-transparent";
+}
+
+export function getLessonStatusBadge(status: LessonStatus): string {
+  return LESSON_STATUS_BADGES[status] ?? "bg-muted text-muted-foreground border-transparent";
+}

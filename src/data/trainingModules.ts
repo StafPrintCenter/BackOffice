@@ -4,6 +4,9 @@ export type LessonKind = "video" | "reading" | "quiz" | "exercise" | "assignment
 
 export const LESSON_KIND_LABELS: Record<string, string> = {
   video: "Vidéo",
+  reading: "Lecture",
+  quiz: "Quiz",
+  exercise: "Exercice",
   assignment: "Devoir à rendre",
   text: "Texte",
   quiz: "Quiz",

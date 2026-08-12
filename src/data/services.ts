@@ -12,8 +12,6 @@ export type APIAdminServiceListItem = {
   title: string;
   icon: string;
   category: ServiceCategoryEnum;
-  categoryId?: string | null;
-  projectCategoryId?: string | null;
   featured: boolean;
   short: string;
   long: string;

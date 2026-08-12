@@ -407,24 +407,11 @@ function TrainingDetail() {
                     <MapPin className="h-3 w-3" /> {training.location}
                   </span>
                 )}
+              </div>
 
-                {training.maxSeats !== undefined && (
-                  <div className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
-                    <UserCheck className="h-3 w-3" />
-                    <span>
-                      {!training.maxSeats || training.maxSeats === 0 ? (
-                        <span className="text-foreground">Places illimitées</span>
-                      ) : (
-                        <>
-                          <strong className="text-foreground">
-                            {training.seatsRemaining ?? training.maxSeats}
-                          </strong>
-                          / {training.maxSeats} places disponibles
-                        </>
-                      )}
-                    </span>
-                  </div>
-                )}
+              <div className="flex items-stretch gap-3.5">
+                <div className="w-1.5 rounded-full shrink-0 my-1" style={{ backgroundColor: mainColor }} />
+                <h1 className="font-display text-3xl sm:text-4xl font-bold leading-tight">{training.title}</h1>
               </div>
 
               <p className="max-w-3xl text-muted-foreground">{training.short}</p>

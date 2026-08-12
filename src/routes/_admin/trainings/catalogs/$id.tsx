@@ -586,21 +586,21 @@ function TrainingDetail() {
                   <div>Liste d'attente : {training.waitingListEnabled ? "Activée" : "Désactivée"}</div>
                 </div>
 
-              {training.prerequisites.length > 0 && (
-                <div className="mt-4 border-t pt-4">
-                  <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    <ListChecks className="h-3.5 w-3.5" /> Prérequis
+                {training.prerequisites.length > 0 && (
+                  <div className="mt-4 border-t pt-4">
+                    <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      <ListChecks className="h-3.5 w-3.5" /> Prérequis
+                    </div>
+                    <ul className="space-y-1 text-sm">
+                      {training.prerequisites.map((p: string, i: number) => (
+                        <li key={i} className="flex gap-2">
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: mainColor }} /> {p}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="space-y-1 text-sm">
-                    {training.prerequisites.map((p: string, i: number) => (
-                      <li key={i} className="flex gap-2">
-                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/50" /> {p}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
             <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground">
               <div>Créée le {new Date(training.createdAt).toLocaleDateString("fr-FR")}</div>

@@ -216,7 +216,9 @@ function ServiceDetail() {
               </div>
 
               <div>
-                <Label htmlFor="category" className="text-xs text-muted-foreground">Catégorie de Service</Label>
+                <Label htmlFor="category" className="text-xs text-muted-foreground">
+                  Catégorie de Service
+                </Label>
                 {isEditing ? (
                   <select
                     id="category"

@@ -1,4 +1,3 @@
-// Statut générique de contenu (modules ET leçons partagent le même enum PHP ContentStatus).
 export type ContentStatus = "draft" | "pending_review" | "published" | "rejected";
 
 // ⚠️ Pas d'enum PHP fourni pour "kind" — seules ces deux valeurs sont observées.

@@ -22,85 +22,29 @@ function AdminTrainingsManage() {
   const { items, isLoading } = useAdminTrainingsList({ perPage: 100 });
   const { items: themes } = useAdminCategoriesList({ perPage: 100, context: "formation" });
 
-  const createMutation = useCreateAdminTraining();
-  const updateMutation = useUpdateAdminTraining();
-  const removeMutation = useDeleteAdminTraining();
-
-  const [dialog, setDialog] = useState<{ open: boolean; row?: APIAdminTrainingListItem }>({ open: false });
-  const [form, setForm] = useState<FormValues>(empty);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [toDelete, setToDelete] = useState<APIAdminTrainingListItem | null>(null);
-
-  const openCreate = () => { setForm(empty); setErrors({}); setDialog({ open: true }); };
-
-  const submit = () => {
-    const cleaned: FormValues = {
-      ...form,
-      objectives: form.objectives.filter((o) => o.trim()),
-      prerequisites: form.prerequisites.filter((p) => p.trim()),
-      program: form.program
-        .filter((m) => m.title.trim())
-        .map((m) => ({ ...m, items: m.items.filter((i) => i.trim()) })),
-    };
-    const parsed = schema.safeParse(cleaned);
-    if (!parsed.success) {
-      const errs: Record<string, string> = {};
-      parsed.error.issues.forEach((i) => { errs[i.path[0] as string] = i.message; });
-      setErrors(errs);
-      return;
-    }
-
-    const payload = sanitizeTrainingPayload(parsed.data as AdminTrainingPayload);
-
-    if (dialog.row) {
-      updateMutation.mutate({ id: dialog.row.id, payload }, {
-        onSuccess: () => { toast.success("Formation modifiée"); setDialog({ open: false }); },
-        onError: () => toast.error("Erreur lors de la modification"),
-      });
-    } else {
-      createMutation.mutate(payload, {
-        onSuccess: () => { toast.success("Formation créée"); setDialog({ open: false }); },
-        onError: () => toast.error("Erreur lors de la création"),
-      });
-    }
-  };
-
   return (
     <>
-      <PageHeader title="Formations" description="Programmes proposés au public." />
-
-      {/* Raccourci */}
-      <div className="mb-4">
-        <Link to="/trainings/registrations"
-          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <UserRoundPlus className="h-4 w-4" />
-          Voir les inscriptions
-        </Link>
-      </div>
+      <PageHeader
+        title="Contenu des formations"
+        description="Gérez les modules et leçons de chaque formation."
+      />
 
       <DataTable<APIAdminTrainingListItem>
         data={items}
         isLoading={isLoading}
         searchKeys={["title", "theme"]}
-        onCreate={openCreate}
-        onView={(r) => navigate({ to: "/trainings/catalogs/$id", params: { id: r.id } })}
-        onDelete={(r) => setToDelete(r)}
+        onView={(r) => navigate({ to: "/trainings/manage/$id", params: { id: r.id } })}
         columns={[
-          { key: "title", label: "Titre", render: (r) => <div className="font-medium">{r.title}</div> },
+          { key: "title", label: "Formation", render: (r) => <div className="font-medium">{r.title}</div> },
           {
             key: "theme",
             label: "Thème",
             render: (r) => {
-              const match = themes.find(
-                (t) => t.id === r.themeId || t.name.toLowerCase() === (typeof r.theme === "string" ? r.theme.toLowerCase() : "")
-              );
-
+              const match = themes.find((t) => t.id === r.themeId);
               const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";
-              const themeName = typeof r.theme === "string" ? r.theme : match?.name || "Sans thème";
-
               return (
                 <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${colorClass}`}>
-                  {themeName}
+                  {r.theme}
                 </span>
               );
             },

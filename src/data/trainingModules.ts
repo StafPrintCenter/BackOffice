@@ -1,8 +1,9 @@
 export type ContentStatus = "draft" | "pending_review" | "published" | "rejected";
 
-// ⚠️ Pas d'enum PHP fourni pour "kind" — seules ces deux valeurs sont observées.
-// Étends cette liste si le backend en expose d'autres.
-export type LessonKind = "video" | "assignment" | string;
+// Décision de revue admin sur un contenu en attente.
+export type ContentReviewDecision = "approved" | "rejected";
+
+export type LessonKind = "video" | "reading" | "quiz" | "exercise" | "assignment" | "project";
 
 export const LESSON_KIND_LABELS: Record<string, string> = {
   video: "Vidéo",

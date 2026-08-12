@@ -62,30 +62,27 @@ export interface AdminLessonPayload {
   is_mandatory?: boolean;
 }
 
-export const MODULE_STATUS_LABELS: Record<ModuleStatus, string> = {
-  draft: "Brouillon",
-  published: "Publié",
+export const CONTENT_STATUS_BADGES: Record<ContentStatus, { label: string; className: string }> = {
+  draft: {
+    label: "Brouillon",
+    className: "bg-slate-500/10 text-slate-700 dark:text-slate-400 border-slate-500/20",
+  },
+  pending_review: {
+    label: "En attente de validation",
+    className: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20",
+  },
+  published: {
+    label: "Publié",
+    className: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
+  },
+  rejected: {
+    label: "Rejeté",
+    className: "bg-destructive/10 text-destructive border-destructive/20",
+  },
 };
 
-export const MODULE_STATUS_BADGES: Record<ModuleStatus, string> = {
-  draft: "bg-muted text-muted-foreground border-transparent",
-  published: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
-};
-
-export const LESSON_STATUS_LABELS: Record<LessonStatus, string> = {
-  draft: "Brouillon",
-  pending_review: "En attente de validation",
-  published: "Publiée",
-};
-
-export const LESSON_STATUS_BADGES: Record<LessonStatus, string> = {
-  draft: "bg-muted text-muted-foreground border-transparent",
-  pending_review: "bg-amber-500/10 text-amber-600 border-amber-500/20",
-  published: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
-};
-
-export function getModuleStatusBadge(status: ModuleStatus): string {
-  return MODULE_STATUS_BADGES[status] ?? "bg-muted text-muted-foreground border-transparent";
+export function getContentStatusBadgeClass(status: ContentStatus): string {
+  return CONTENT_STATUS_BADGES[status]?.className ?? "bg-muted text-muted-foreground border-border";
 }
 
 export function getLessonStatusBadge(status: LessonStatus): string {

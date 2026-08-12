@@ -444,26 +444,29 @@ function TrainingDetail() {
               </ul>
             </div>
 
-            <div className="rounded-2xl border bg-card p-6">
-              <div className="mb-4 flex items-center gap-2 font-semibold">
-                <BookOpen className="h-4 w-4 text-primary" /> Programme
-              </div>
-              <div className="space-y-5">
-                {training.program.map((m: TrainingProgramModule, i: number) => (
-                  <div key={i} className="flex gap-3">
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                      {i + 1}
+              <div className="rounded-2xl border bg-card p-6">
+                <div className="mb-4 flex items-center gap-2 font-semibold">
+                  <BookOpen className="h-4 w-4" style={{ color: mainColor }} /> Programme
+                </div>
+                <div className="space-y-5">
+                  {training.program.map((m: TrainingProgramModule, i: number) => (
+                    <div key={i} className="flex gap-3">
+                      <div
+                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold"
+                        style={{ backgroundColor: `${mainColor}20`, color: mainColor }}
+                      >
+                        {i + 1}
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">{m.title}</div>
+                        <ul className="mt-1 space-y-0.5 text-xs text-muted-foreground">
+                          {m.items.map((it: string, j: number) => <li key={j}>{it}</li>)}
+                        </ul>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <div className="text-sm font-medium">{m.title}</div>
-                      <ul className="mt-1 space-y-0.5 text-xs text-muted-foreground">
-                        {m.items.map((it: string, j: number) => <li key={j}>{it}</li>)}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
 
             {/* Formateurs assignés */}
             <div className="rounded-2xl border bg-card p-6">

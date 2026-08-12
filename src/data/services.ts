@@ -35,7 +35,6 @@ export interface AdminServicePayload {
   title: string;
   icon: string;
   category: ServiceCategoryEnum;
-  project_category_id?: string | null;
   featured: boolean;
   short: string;
   long: string;

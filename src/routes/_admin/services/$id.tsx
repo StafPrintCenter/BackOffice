@@ -74,8 +74,6 @@ function ServiceDetail() {
     );
   }
 
-  const matchedProjectCategory = categories.find((c) => c.id === (isEditing ? form.project_category_id : service.projectCategoryId ?? service.categoryId));
-
   const handleSave = () => {
     updateMutation.mutate(
       { id: service.id, payload: form },

@@ -9,9 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { useAdminServicesList, useCreateAdminService, useUpdateAdminService, useDeleteAdminService, } from "@/stores/useServicesStore";
+import { useAdminServicesList, useCreateAdminService, useUpdateAdminService, useDeleteAdminService } from "@/stores/useServicesStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import type { APIAdminServiceListItem, AdminServicePayload } from "@/data/services";
+import { SERVICE_CATEGORIES, type APIAdminServiceListItem, type AdminServicePayload, type ServiceCategoryEnum } from "@/data/services";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/services/")({
@@ -27,7 +27,10 @@ export const Route = createFileRoute("/_admin/services/")({
 const schema = z.object({
   title: z.string().trim().min(2, "Le titre doit faire au moins 2 caractères").max(100),
   slug: z.string().trim().max(100).optional(),
-  project_category_id: z.string().trim().min(1, "Choisissez une catégorie"),
+  category: z.enum(["digital", "impression", "formation"], {
+    required_error: "Veuillez choisir un type de prestation",
+  }),
+  project_category_id: z.string().trim().optional().nullable(),
   icon: z.string().trim().min(1, "L'icône est requise").max(50),
   color: z.string().trim().min(1, "La couleur est requise").max(20),
   featured: z.boolean(),
@@ -40,6 +43,7 @@ type FormValues = z.infer<typeof schema>;
 const empty: FormValues = {
   title: "",
   slug: "",
+  category: "digital",
   project_category_id: "",
   icon: "Sparkles",
   color: "#E07856",
@@ -72,7 +76,8 @@ function AdminServices() {
     setForm({
       title: row.title,
       slug: row.slug ?? "",
-      project_category_id: row.categoryId ?? "",
+      category: row.category,
+      project_category_id: row.projectCategoryId ?? row.categoryId ?? "",
       icon: row.icon ?? "Sparkles",
       color: row.color ?? "#E07856",
       featured: !!row.featured,
@@ -97,7 +102,8 @@ function AdminServices() {
     const payload: AdminServicePayload = {
       title: parsed.data.title,
       slug: parsed.data.slug || undefined,
-      project_category_id: parsed.data.project_category_id,
+      category: parsed.data.category as ServiceCategoryEnum,
+      project_category_id: parsed.data.project_category_id || null,
       icon: parsed.data.icon,
       color: parsed.data.color,
       featured: parsed.data.featured,
@@ -161,26 +167,18 @@ function AdminServices() {
           {
             key: "category",
             label: "Catégorie",
-            render: (r) => {
-              const match = categories.find(
-                (c) => c.id === r.categoryId || c.name.toLowerCase() === (typeof r.category === "string" ? r.category.toLowerCase() : "")
-              );
-              const colorClass = match?.colorClass || "bg-slate-100 text-slate-700";
-              const categoryName = typeof r.category === "string" ? r.category : match?.name || "Sans catégorie";
-
-              return (
-                <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${colorClass}`}>
-                  {categoryName}
-                </span>
-              );
-            },
+            render: (r) => (
+              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-primary/10 text-primary capitalize">
+                {r.category}
+              </span>
+            ),
           },
           {
             key: "featured",
             label: "En vedette",
             render: (r) =>
               r.featured ? (
-                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">Oui</span>
+                <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-600">Oui</span>
               ) : (
                 <span className="text-xs text-muted-foreground">-</span>
               ),
@@ -211,13 +209,28 @@ function AdminServices() {
                 {errors.slug && <p className="text-xs text-destructive mt-1">{errors.slug}</p>}
               </div>
               <div>
-                <Label>Catégorie</Label>
+                <Label>Catégorie (Strict ENUM)</Label>
                 <select
-                  value={form.project_category_id}
-                  onChange={(e) => setForm({ ...form, project_category_id: e.target.value })}
+                  value={form.category}
+                  onChange={(e) => setForm({ ...form, category: e.target.value as ServiceCategoryEnum })}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-medium"
+                >
+                  {SERVICE_CATEGORIES.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </select>
+                {errors.category && <p className="text-xs text-destructive mt-1">{errors.category}</p>}
+              </div>
+              <div>
+                <Label>Catégorie Projet associée (Optionnel)</Label>
+                <select
+                  value={form.project_category_id ?? ""}
+                  onChange={(e) => setForm({ ...form, project_category_id: e.target.value || null })}
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="">- Choisir -</option>
+                  <option value="">-- Aucune association --</option>
                   {categories.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.name}
@@ -236,10 +249,10 @@ function AdminServices() {
                 <Input value={form.color} onChange={(e) => setForm({ ...form, color: e.target.value })} />
                 {errors.color && <p className="text-xs text-destructive mt-1">{errors.color}</p>}
               </div>
-              <div className="flex items-center justify-between rounded-lg border p-3">
-                <Label className="cursor-pointer">En vedette</Label>
-                <Switch checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
-              </div>
+            </div>
+            <div className="flex items-center justify-between rounded-lg border p-3">
+              <Label className="cursor-pointer">En vedette</Label>
+              <Switch checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
             </div>
             <div>
               <Label>Description courte</Label>

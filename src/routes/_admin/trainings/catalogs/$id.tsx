@@ -366,10 +366,17 @@ function TrainingDetail() {
           </div>
         </div>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Colonne principale */}
-          <div className="lg:col-span-2 space-y-6">
-            <div>
+        <div className="space-y-6">
+          {/* Header Immersif coloré */}
+          <div
+            className="relative overflow-hidden rounded-2xl border p-6 lg:p-8"
+            style={{ background: `linear-gradient(135deg, ${mainColor}15 0%, ${mainColor}03 100%)` }}
+          >
+            <div
+              className="pointer-events-none absolute -top-16 -right-16 h-64 w-64 rounded-full blur-3xl opacity-20"
+              style={{ backgroundColor: mainColor }}
+            />
+            <div className="relative space-y-4">
               <div className="flex flex-wrap items-center gap-2 text-xs">
                 <span className={`inline-flex px-2 py-1 rounded-full font-medium ${themeColorClass}`}>{training.theme}</span>
 

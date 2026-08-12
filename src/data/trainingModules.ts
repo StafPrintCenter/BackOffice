@@ -44,7 +44,7 @@ export type APIAdminLesson = {
   chapters: string | null;
   brief: string | null;
   isMandatory: boolean;
-  status: LessonStatus;
+  status: ContentStatus;
   createdByAdmin?: string | null;
   createdByInstructor?: string | null;
   createdAt: string;

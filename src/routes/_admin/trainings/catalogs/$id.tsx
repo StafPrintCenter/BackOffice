@@ -579,12 +579,12 @@ function TrainingDetail() {
                 )}
               </div>
 
-              <div className="mt-4 border-t pt-4 space-y-1.5 text-xs text-muted-foreground">
-                <div>Inscriptions jusqu'au : {formatDate(training.registrationDeadline)}</div>
-                <div>Début : {formatDate(training.startDate)}</div>
-                <div>Fin : {formatDate(training.endDate)}</div>
-                <div>Liste d'attente : {training.waitingListEnabled ? "Activée" : "Désactivée"}</div>
-              </div>
+                <div className="mt-4 border-t pt-4 space-y-1.5 text-xs text-muted-foreground">
+                  <div>Inscriptions jusqu'au : {formatDate(training.registrationDeadline)}</div>
+                  <div>Début : {formatDate(training.startDate)}</div>
+                  <div>Fin : {formatDate(training.endDate)}</div>
+                  <div>Liste d'attente : {training.waitingListEnabled ? "Activée" : "Désactivée"}</div>
+                </div>
 
               {training.prerequisites.length > 0 && (
                 <div className="mt-4 border-t pt-4">

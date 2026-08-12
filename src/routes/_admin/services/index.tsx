@@ -223,22 +223,6 @@ function AdminServices() {
                 {errors.category && <p className="text-xs text-destructive mt-1">{errors.category}</p>}
               </div>
               <div>
-                <Label>Catégorie Projet associée (Optionnel)</Label>
-                <select
-                  value={form.project_category_id ?? ""}
-                  onChange={(e) => setForm({ ...form, project_category_id: e.target.value || null })}
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                >
-                  <option value="">-- Aucune association --</option>
-                  {categories.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.project_category_id && <p className="text-xs text-destructive mt-1">{errors.project_category_id}</p>}
-              </div>
-              <div>
                 <Label>Icône (Lucide)</Label>
                 <Input value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} placeholder="Printer" />
                 {errors.icon && <p className="text-xs text-destructive mt-1">{errors.icon}</p>}

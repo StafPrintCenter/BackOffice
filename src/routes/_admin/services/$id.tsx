@@ -224,7 +224,7 @@ function ServiceDetail() {
                     id="category"
                     value={form.category}
                     onChange={(e) => setForm({ ...form, category: e.target.value as ServiceCategoryEnum })}
-                    className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-medium"
+                    className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     {SERVICE_CATEGORIES.map((cat) => (
                       <option key={cat.value} value={cat.value}>

@@ -1,9 +1,7 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { toast } from "sonner";
-import { z } from "zod";
-import { Plus, Trash2, UserRoundPlus, Palette } from "lucide-react";
-import { PageHeader, ConfirmDelete } from "@/components/site";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { PageHeader } from "@/components/site";
+import { DataTable } from "@/components/site/DataTable";
+import { useAdminTrainingsList } from "@/stores/useTrainingsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { DataTable } from "@/components/site/DataTable";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";

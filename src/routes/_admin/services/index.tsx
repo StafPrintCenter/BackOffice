@@ -203,7 +203,7 @@ function AdminServices() {
                 {errors.slug && <p className="text-xs text-destructive mt-1">{errors.slug}</p>}
               </div>
               <div>
-                <Label>Catégorie (Strict ENUM)</Label>
+                <Label>Catégorie</Label>
                 <select
                   value={form.category}
                   onChange={(e) => setForm({ ...form, category: e.target.value as ServiceCategoryEnum })}

@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/site";
 import { DataTable } from "@/components/site/DataTable";
 import { useAdminTrainingsList } from "@/stores/useTrainingsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import { getTrainingLevelBadgeClass, getTrainingStatusBadgeClass, TRAINING_STATUS_LABELS } from "@/data/trainings";
+import { getTrainingLevelBadgeClass, getTrainingStatusBadgeClass, getTrainingStatusLabel } from "@/data/trainings";
 import type { APIAdminTrainingListItem } from "@/data/trainings";
 import { SITE } from "@/data/site";
 

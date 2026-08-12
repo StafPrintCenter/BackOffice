@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useAdminServiceDetail, useUpdateAdminService, useDeleteAdminService } from "@/stores/useServicesStore";
-import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { SERVICE_CATEGORIES, type AdminServicePayload, type ServiceCategoryEnum } from "@/data/services";
 import { SITE } from "@/data/site";
 

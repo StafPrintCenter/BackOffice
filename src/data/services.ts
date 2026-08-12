@@ -6,6 +6,19 @@ export const SERVICE_CATEGORIES = [
 
 export type ServiceCategoryEnum = typeof SERVICE_CATEGORIES[number]["value"];
 
+/**
+ * Récupère les métadonnées d'une catégorie (label, badgeClass) à partir de sa clé.
+ */
+export const getServiceCategoryConfig = (category: string) => {
+  return (
+    SERVICE_CATEGORIES.find((cat) => cat.value === category) ?? {
+      value: category,
+      label: category,
+      badgeClass: "bg-primary/10 text-primary border-primary/20",
+    }
+  );
+};
+
 export type APIAdminServiceListItem = {
   id: string;
   slug: string;

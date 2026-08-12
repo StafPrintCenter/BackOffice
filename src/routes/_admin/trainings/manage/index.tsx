@@ -136,7 +136,7 @@ function AdminTrainingsManage() {
             label: "Statut de la formation",
             render: (r) => (
               <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${getTrainingStatusBadgeClass(r.status)}`}>
-                {TRAINING_STATUS_LABELS[r.status]}
+                {getTrainingStatusLabel(r.status)}
               </span>
             ),
           },

@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useAdminServiceDetail, useUpdateAdminService, useDeleteAdminService } from "@/stores/useServicesStore";
-import { SERVICE_CATEGORIES, type AdminServicePayload, type ServiceCategoryEnum } from "@/data/services";
+import { SERVICE_CATEGORIES, type AdminServicePayload, type ServiceCategoryEnum, getServiceCategoryConfig } from "@/data/services";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/services/$id")({

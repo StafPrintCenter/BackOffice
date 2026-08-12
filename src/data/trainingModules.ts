@@ -85,6 +85,6 @@ export function getContentStatusBadgeClass(status: ContentStatus): string {
   return CONTENT_STATUS_BADGES[status]?.className ?? "bg-muted text-muted-foreground border-border";
 }
 
-export function getLessonStatusBadge(status: LessonStatus): string {
-  return LESSON_STATUS_BADGES[status] ?? "bg-muted text-muted-foreground border-transparent";
+export function getContentStatusLabel(status: ContentStatus): string {
+  return CONTENT_STATUS_BADGES[status]?.label ?? status;
 }

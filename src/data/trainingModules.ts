@@ -1,6 +1,4 @@
 export type ContentStatus = "draft" | "pending_review" | "published" | "rejected";
-
-// Décision de revue admin sur un contenu en attente.
 export type ContentReviewDecision = "approved" | "rejected";
 
 export type LessonKind = "video" | "reading" | "quiz" | "exercise" | "assignment" | "project";

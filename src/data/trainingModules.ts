@@ -1,5 +1,5 @@
-export type ModuleStatus = "draft" | "published";
-export type LessonStatus = "draft" | "pending_review" | "published";
+// Statut générique de contenu (modules ET leçons partagent le même enum PHP ContentStatus).
+export type ContentStatus = "draft" | "pending_review" | "published" | "rejected";
 
 // ⚠️ Pas d'enum PHP fourni pour "kind" — seules ces deux valeurs sont observées.
 // Étends cette liste si le backend en expose d'autres.

@@ -42,7 +42,6 @@ const empty: FormValues = {
   title: "",
   slug: "",
   category: "digital",
-  project_category_id: "",
   icon: "Sparkles",
   color: "#E07856",
   featured: false,

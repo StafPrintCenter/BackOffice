@@ -161,11 +161,16 @@ function AdminServices() {
           {
             key: "category",
             label: "Catégorie",
-            render: (r) => (
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-primary/10 text-primary capitalize">
-                {r.category}
-              </span>
-            ),
+            render: (r) => {
+              const categoryConfig = getServiceCategoryConfig(r.category);
+              return (
+                <span
+                  className={`inline-flex items-center px-2 py-0.5 rounded border text-xs font-semibold capitalize ${categoryConfig.badgeClass}`}
+                >
+                  {categoryConfig.label}
+                </span>
+              );
+            },
           },
           {
             key: "featured",

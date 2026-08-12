@@ -27,7 +27,6 @@ function ServiceDetail() {
   const navigate = useNavigate();
 
   const { item: service, isLoading } = useAdminServiceDetail(id);
-  const { items: categories } = useAdminCategoriesList({ perPage: 100, context: "project" });
   const updateMutation = useUpdateAdminService();
   const removeMutation = useDeleteAdminService();
 

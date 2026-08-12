@@ -29,7 +29,6 @@ const schema = z.object({
   category: z.enum(["digital", "impression", "formation"], {
     required_error: "Veuillez choisir un type de prestation",
   }),
-  project_category_id: z.string().trim().optional().nullable(),
   icon: z.string().trim().min(1, "L'icône est requise").max(50),
   color: z.string().trim().min(1, "La couleur est requise").max(20),
   featured: z.boolean(),

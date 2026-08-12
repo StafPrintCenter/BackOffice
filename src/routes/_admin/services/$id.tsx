@@ -240,30 +240,6 @@ function ServiceDetail() {
                 )}
               </div>
 
-              {/* Champ Project Category (Optionnel) */}
-              <div>
-                <Label htmlFor="project_category" className="text-xs text-muted-foreground">Catégorie de Projet (Optionnelle)</Label>
-                {isEditing ? (
-                  <select
-                    id="project_category"
-                    value={form.project_category_id ?? ""}
-                    onChange={(e) => setForm({ ...form, project_category_id: e.target.value || null })}
-                    className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  >
-                    <option value="">-- Aucune association --</option>
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <div className="mt-1 text-sm text-foreground font-medium">
-                    {matchedProjectCategory ? matchedProjectCategory.name : <span className="text-muted-foreground text-xs italic">Aucune</span>}
-                  </div>
-                )}
-              </div>
-
               <div>
                 <Label htmlFor="slug" className="text-xs text-muted-foreground">Slug URL</Label>
                 {isEditing ? (

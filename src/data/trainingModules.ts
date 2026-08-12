@@ -2,7 +2,7 @@ export type ContentStatus = "draft" | "pending_review" | "published" | "rejected
 export type ContentReviewDecision = "approved" | "rejected";
 export type LessonKind = "video" | "reading" | "quiz" | "exercise" | "assignment" | "project";
 
-export const LESSON_KIND_LABELS: Record<string, string> = {
+export const LESSON_KIND_LABELS: Record<LessonKind, string> = {
   video: "Vidéo",
   reading: "Lecture",
   quiz: "Quiz",

@@ -243,10 +243,10 @@ function AdminServices() {
                 <Input value={form.color} onChange={(e) => setForm({ ...form, color: e.target.value })} />
                 {errors.color && <p className="text-xs text-destructive mt-1">{errors.color}</p>}
               </div>
-            </div>
-            <div className="flex items-center justify-between rounded-lg border p-3">
-              <Label className="cursor-pointer">En vedette</Label>
-              <Switch checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
+              <div className="flex items-center justify-between rounded-lg border p-3">
+                <Label className="cursor-pointer">En vedette</Label>
+                <Switch checked={form.featured} onCheckedChange={(v) => setForm({ ...form, featured: v })} />
+              </div>
             </div>
             <div>
               <Label>Description courte</Label>

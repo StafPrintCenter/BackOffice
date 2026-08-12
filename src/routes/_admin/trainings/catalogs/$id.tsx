@@ -403,7 +403,7 @@ function TrainingDetail() {
                 </span>
 
                 {training.location && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-background/80 backdrop-blur px-2 py-1 text-muted-foreground">
                     <MapPin className="h-3 w-3" /> {training.location}
                   </span>
                 )}

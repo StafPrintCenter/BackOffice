@@ -93,7 +93,6 @@ function ServiceDetail() {
       title: service.title,
       icon: service.icon ?? "Sparkles",
       category: service.category,
-      project_category_id: service.projectCategoryId ?? service.categoryId ?? null,
       featured: !!service.featured,
       short: service.short ?? "",
       long: service.long ?? "",

@@ -123,6 +123,7 @@ function TrainingDetail() {
 
   const themeMeta = themes.find((t) => t.id === training.themeId);
   const themeColorClass = themeMeta?.colorClass ?? "bg-slate-100 text-slate-700";
+  const mainColor = training.coverColor || "var(--primary)";
 
   const assignedInstructorIds = new Set(assignments.map((a) => a.instructorId));
 

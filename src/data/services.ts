@@ -1,10 +1,19 @@
+export const SERVICE_CATEGORIES = [
+  { value: "digital", label: "Digital" },
+  { value: "impression", label: "Impression" },
+  { value: "formation", label: "Formation" },
+] as const;
+
+export type ServiceCategoryEnum = typeof SERVICE_CATEGORIES[number]["value"];
+
 export type APIAdminServiceListItem = {
   id: string;
   slug: string;
   title: string;
   icon: string;
-  categoryId: string;
-  category: string;
+  category: ServiceCategoryEnum;
+  categoryId?: string | null;
+  projectCategoryId?: string | null;
   featured: boolean;
   short: string;
   long: string;
@@ -27,7 +36,8 @@ export interface AdminServicePayload {
   slug?: string;
   title: string;
   icon: string;
-  project_category_id: string;
+  category: ServiceCategoryEnum;
+  project_category_id?: string | null;
   featured: boolean;
   short: string;
   long: string;

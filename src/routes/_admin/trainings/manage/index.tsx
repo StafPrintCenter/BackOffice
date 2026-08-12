@@ -106,23 +106,6 @@ function AdminTrainingsManage() {
             },
           },
           {
-            key: "coverColor",
-            label: "Couleur",
-            render: (r) => (
-              r.coverColor ? (
-                <div className="flex items-center gap-1.5">
-                  <span
-                    className="h-3.5 w-3.5 rounded-full border shadow-sm shrink-0"
-                    style={{ backgroundColor: r.coverColor }}
-                  />
-                  <span className="font-mono text-xs uppercase text-muted-foreground">{r.coverColor}</span>
-                </div>
-              ) : (
-                <span className="text-xs text-muted-foreground">-</span>
-              )
-            ),
-          },
-          {
             key: "level",
             label: "Niveau",
             render: (r) => (

@@ -135,30 +135,8 @@ function AdminTrainingsManage() {
             key: "status",
             label: "Statut de la formation",
             render: (r) => (
-              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${getTrainingStatusBadgeClass(r.status)}`}>
-                {getTrainingStatusLabel(r.status)}
-              </span>
-            ),
-          },
-          { key: "duration", label: "Durée" },
-          { key: "price", label: "Prix", render: (r) => <span className="font-semibold">{r.price.toLocaleString()} FCFA</span> },
-          {
-            key: "max_seats",
-            label: "Places max",
-            render: (r) => (
-              <span className="text-sm">
-                {r.maxSeats && r.maxSeats > 0 ? `${r.maxSeats} places` : "Illimité"}
-              </span>
-            ),
-          },
-          {
-            key: "period",
-            label: "Période",
-            render: (r) => (
-              <span className="text-xs text-muted-foreground">
-                {r.startDate ? new Date(r.startDate).toLocaleDateString("fr-FR") : "-"}
-                {" → "}
-                {r.endDate ? new Date(r.endDate).toLocaleDateString("fr-FR") : "-"}
+              <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${getTrainingStatusBadgeClass(r.status)}`}>
+                {TRAINING_STATUS_LABELS[r.status]}
               </span>
             ),
           },

@@ -398,7 +398,7 @@ function TrainingDetail() {
                   </span>
                 )}
 
-                <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1 text-muted-foreground">
+                <span className="inline-flex items-center gap-1 rounded-full bg-background/80 backdrop-blur px-2 py-1 text-muted-foreground">
                   <Clock className="h-3 w-3" /> {training.duration}
                 </span>
 
@@ -458,16 +458,16 @@ function TrainingDetail() {
                 </div>
               </div>
 
-            {/* Formateurs assignés */}
-            <div className="rounded-2xl border bg-card p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="flex items-center gap-2 font-semibold">
-                  <UserCheck className="h-4 w-4 text-primary" /> Formateurs assignés
+              {/* Formateurs assignés */}
+              <div className="rounded-2xl border bg-card p-6">
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2 font-semibold">
+                    <UserCheck className="h-4 w-4" style={{ color: mainColor }} /> Formateurs assignés
+                  </div>
+                  <Button type="button" size="sm" variant="outline" onClick={() => setAssignOpen(true)}>
+                    <UserPlus className="h-3.5 w-3.5 mr-1" /> Assigner
+                  </Button>
                 </div>
-                <Button type="button" size="sm" variant="outline" onClick={() => setAssignOpen(true)}>
-                  <UserPlus className="h-3.5 w-3.5 mr-1" /> Assigner
-                </Button>
-              </div>
 
                 {assignmentsLoading ? (
                   <div className="text-sm text-muted-foreground">Chargement...</div>
@@ -592,10 +592,11 @@ function TrainingDetail() {
                 )}
               </div>
 
-            <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground">
-              <div>Créée le {new Date(training.createdAt).toLocaleDateString("fr-FR")}</div>
-              <div>Modifiée le {new Date(training.updatedAt).toLocaleDateString("fr-FR")}</div>
-              {training.publishedAt && <div>Publiée le {new Date(training.publishedAt).toLocaleDateString("fr-FR")}</div>}
+              <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground">
+                <div>Créée le {new Date(training.createdAt).toLocaleDateString("fr-FR")}</div>
+                <div>Modifiée le {new Date(training.updatedAt).toLocaleDateString("fr-FR")}</div>
+                {training.publishedAt && <div>Publiée le {new Date(training.publishedAt).toLocaleDateString("fr-FR")}</div>}
+              </div>
             </div>
           </div>
         </div>

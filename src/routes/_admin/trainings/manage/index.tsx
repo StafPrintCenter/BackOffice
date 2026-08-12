@@ -126,7 +126,7 @@ function AdminTrainingsManage() {
             key: "level",
             label: "Niveau",
             render: (r) => (
-              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors ${getTrainingLevelBadgeClass(r.level)}`}>
+              <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${getTrainingLevelBadgeClass(r.level)}`}>
                 {r.level}
               </span>
             ),

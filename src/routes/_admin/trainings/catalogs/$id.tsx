@@ -427,9 +427,9 @@ function TrainingDetail() {
                 )}
               </div>
 
-              <h1 className="mt-3 font-display text-4xl font-bold leading-tight">{training.title}</h1>
-              <p className="mt-2 text-muted-foreground">{training.short}</p>
+              <p className="max-w-3xl text-muted-foreground">{training.short}</p>
             </div>
+          </div>
 
             <div className="rounded-2xl border bg-card p-6">
               <div className="mb-3 flex items-center gap-2 font-semibold">

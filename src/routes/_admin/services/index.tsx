@@ -73,7 +73,6 @@ function AdminServices() {
       title: row.title,
       slug: row.slug ?? "",
       category: row.category,
-      project_category_id: row.projectCategoryId ?? row.categoryId ?? "",
       icon: row.icon ?? "Sparkles",
       color: row.color ?? "#E07856",
       featured: !!row.featured,

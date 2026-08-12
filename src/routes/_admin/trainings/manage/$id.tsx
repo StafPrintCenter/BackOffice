@@ -1,10 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, ChevronUp,
-  BookOpen, Clock, Video, FileText, ListChecks,
-} from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, ChevronUp, BookOpen, Clock, Video, FileText, ListChecks } from "lucide-react";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,13 +11,8 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
-import {
-  useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule,
-  useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useAdminModuleDetail,
-} from "@/stores/useTrainingModulesStore";
-import {
-  useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson,
-} from "@/stores/useLessonsStore";
+import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
+import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson } from "@/stores/useLessonsStore";
 import {
   getModuleStatusBadge, MODULE_STATUS_LABELS, getLessonStatusBadge, LESSON_STATUS_LABELS,
   LESSON_KIND_LABELS,

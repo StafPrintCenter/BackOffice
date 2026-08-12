@@ -3,15 +3,8 @@ import { PageHeader } from "@/components/site";
 import { DataTable } from "@/components/site/DataTable";
 import { useAdminTrainingsList } from "@/stores/useTrainingsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import { DataTable } from "@/components/site/DataTable";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAdminTrainingsList, useCreateAdminTraining, useUpdateAdminTraining, useDeleteAdminTraining } from "@/stores/useTrainingsStore";
-import { getTrainingLevelBadgeClass, getTrainingStatusBadgeClass, getTrainingStatusLabel, sanitizeTrainingPayload } from "@/data/trainings";
-import type { APIAdminTrainingListItem, AdminTrainingPayload, TrainingLevel, TrainingStatus } from "@/data/trainings";
+import { getTrainingLevelBadgeClass, getTrainingStatusBadgeClass, TRAINING_STATUS_LABELS } from "@/data/trainings";
+import type { APIAdminTrainingListItem } from "@/data/trainings";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/trainings/manage/")({

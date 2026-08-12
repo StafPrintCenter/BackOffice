@@ -479,58 +479,58 @@ function TrainingDetail() {
                 </Button>
               </div>
 
-              {assignmentsLoading ? (
-                <div className="text-sm text-muted-foreground">Chargement...</div>
-              ) : assignments.length === 0 ? (
-                <p className="text-sm text-muted-foreground">Aucun formateur assigné pour le moment.</p>
-              ) : (
-                <div className="space-y-2">
-                  {assignments.map((a) => (
-                    <div key={a.assignmentId} className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm">
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <Link
-                            to="/members/instructors/$id"
-                            params={{ id: a.instructorId }}
-                            className="font-medium text-primary hover:underline truncate"
-                          >
-                            {a.instructorName}
-                          </Link>
-                          <span className="inline-flex shrink-0 items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium">
-                            {TRAINING_INSTRUCTOR_ROLE_LABELS[a.role]}
-                          </span>
-                          {a.instructorIsBlocked && (
-                            <span className="inline-flex shrink-0 items-center rounded-full bg-destructive/10 text-destructive px-2 py-0.5 text-[10px] font-medium">
-                              Bloqué
+                {assignmentsLoading ? (
+                  <div className="text-sm text-muted-foreground">Chargement...</div>
+                ) : assignments.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Aucun formateur assigné pour le moment.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {assignments.map((a) => (
+                      <div key={a.assignmentId} className="flex items-center justify-between gap-3 rounded-lg border p-3 text-sm">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <Link
+                              to="/members/instructors/$id"
+                              params={{ id: a.instructorId }}
+                              className="font-medium text-primary hover:underline truncate"
+                            >
+                              {a.instructorName}
+                            </Link>
+                            <span className="inline-flex shrink-0 items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium">
+                              {TRAINING_INSTRUCTOR_ROLE_LABELS[a.role]}
                             </span>
-                          )}
+                            {a.instructorIsBlocked && (
+                              <span className="inline-flex shrink-0 items-center rounded-full bg-destructive/10 text-destructive px-2 py-0.5 text-[10px] font-medium">
+                                Bloqué
+                              </span>
+                            )}
+                          </div>
+                          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Mail className="h-3 w-3" /> {a.instructorEmail}
+                          </div>
+                          <div className="mt-0.5 text-[11px] text-muted-foreground/70">
+                            Assigné le {formatAssignedAt(a.assignedAt)} par {a.assignedBy}
+                          </div>
                         </div>
-                        <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <Mail className="h-3 w-3" /> {a.instructorEmail}
-                        </div>
-                        <div className="mt-0.5 text-[11px] text-muted-foreground/70">
-                          Assigné le {formatAssignedAt(a.assignedAt)} par {a.assignedBy}
-                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="shrink-0 text-destructive hover:bg-destructive/10"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setAssignmentToRemove(a.assignmentId);
+                          }}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
                       </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="shrink-0 text-destructive hover:bg-destructive/10"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setAssignmentToRemove(a.assignmentId);
-                        }}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
 
             {/* Sidebar sticky - fiche pratique */}
             <div className="lg:sticky lg:top-6 h-fit space-y-4">

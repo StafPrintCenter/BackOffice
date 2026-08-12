@@ -98,7 +98,6 @@ function AdminServices() {
       title: parsed.data.title,
       slug: parsed.data.slug || undefined,
       category: parsed.data.category as ServiceCategoryEnum,
-      project_category_id: parsed.data.project_category_id || null,
       icon: parsed.data.icon,
       color: parsed.data.color,
       featured: parsed.data.featured,

@@ -532,10 +532,12 @@ function TrainingDetail() {
             </div>
           </div>
 
-          {/* Sidebar sticky - fiche pratique */}
-          <div className="lg:sticky lg:top-6 h-fit space-y-4">
-            <div className="rounded-2xl border bg-card p-6">
-              <div className="font-display text-3xl font-bold text-primary">{training.price.toLocaleString()} FCFA</div>
+            {/* Sidebar sticky - fiche pratique */}
+            <div className="lg:sticky lg:top-6 h-fit space-y-4">
+              <div className="rounded-2xl border bg-card p-6">
+                <div className="font-display text-3xl font-bold" style={{ color: mainColor }}>
+                  {training.price.toLocaleString()} FCFA
+                </div>
 
               <div className="mt-4 space-y-3 text-sm">
                 <div className="flex items-start gap-2 text-muted-foreground">

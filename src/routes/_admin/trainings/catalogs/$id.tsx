@@ -539,45 +539,45 @@ function TrainingDetail() {
                   {training.price.toLocaleString()} FCFA
                 </div>
 
-              <div className="mt-4 space-y-3 text-sm">
-                <div className="flex items-start gap-2 text-muted-foreground">
-                  <Users className="h-4 w-4 shrink-0 mt-0.5" />
-                  <span>{training.audience || "-"}</span>
-                </div>
-                <div className="flex items-start gap-2 text-muted-foreground">
-                  <Award className="h-4 w-4 shrink-0 mt-0.5" />
-                  <span>{training.certification || "-"}</span>
-                </div>
-                <div className="flex items-start gap-2 text-muted-foreground">
-                  <CalendarClock className="h-4 w-4 shrink-0 mt-0.5" />
-                  <span>{training.schedule || "-"}</span>
-                </div>
-                {training.coverColor && (
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Palette className="h-4 w-4 shrink-0" />
-                    <span className="flex items-center gap-2">
-                      Couleur :
-                      <span className="font-mono text-xs uppercase">{training.coverColor}</span>
-                      <span
-                        className="h-4 w-4 rounded-md border shadow-sm shrink-0"
-                        style={{ backgroundColor: training.coverColor }}
-                      />
-                    </span>
-                  </div>
-                )}
-                {training.registrationFee !== undefined && training.registrationFee !== null && training.registrationFee > 0 && (
+                <div className="mt-4 space-y-3 text-sm">
                   <div className="flex items-start gap-2 text-muted-foreground">
-                    <Wallet className="h-4 w-4 shrink-0 mt-0.5" />
-                    <span>Frais d'inscription : {training.registrationFee.toLocaleString()} FCFA</span>
+                    <Users className="h-4 w-4 shrink-0 mt-0.5" />
+                    <span>{training.audience || "-"}</span>
                   </div>
-                )}
-                {training.accessMinRatio !== undefined && training.accessMinRatio !== null && (
                   <div className="flex items-start gap-2 text-muted-foreground">
-                    <PercentCircle className="h-4 w-4 shrink-0 mt-0.5" />
-                    <span>Ratio d'accès min. : {Math.round(training.accessMinRatio * 100)}%</span>
+                    <Award className="h-4 w-4 shrink-0 mt-0.5" />
+                    <span>{training.certification || "-"}</span>
                   </div>
-                )}
-              </div>
+                  <div className="flex items-start gap-2 text-muted-foreground">
+                    <CalendarClock className="h-4 w-4 shrink-0 mt-0.5" />
+                    <span>{training.schedule || "-"}</span>
+                  </div>
+                  {training.coverColor && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Palette className="h-4 w-4 shrink-0" />
+                      <span className="flex items-center gap-2">
+                        Couleur :
+                        <span className="font-mono text-xs uppercase">{training.coverColor}</span>
+                        <span
+                          className="h-4 w-4 rounded-md border shadow-sm shrink-0"
+                          style={{ backgroundColor: training.coverColor }}
+                        />
+                      </span>
+                    </div>
+                  )}
+                  {training.registrationFee !== undefined && training.registrationFee !== null && training.registrationFee > 0 && (
+                    <div className="flex items-start gap-2 text-muted-foreground">
+                      <Wallet className="h-4 w-4 shrink-0 mt-0.5" />
+                      <span>Frais d'inscription : {training.registrationFee.toLocaleString()} FCFA</span>
+                    </div>
+                  )}
+                  {training.accessMinRatio !== undefined && training.accessMinRatio !== null && (
+                    <div className="flex items-start gap-2 text-muted-foreground">
+                      <PercentCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                      <span>Ratio d'accès min. : {Math.round(training.accessMinRatio * 100)}%</span>
+                    </div>
+                  )}
+                </div>
 
                 <div className="mt-4 border-t pt-4 space-y-1.5 text-xs text-muted-foreground">
                   <div>Inscriptions jusqu'au : {formatDate(training.registrationDeadline)}</div>

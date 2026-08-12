@@ -10,57 +10,14 @@ import { SITE } from "@/data/site";
 export const Route = createFileRoute("/_admin/trainings/manage/")({
   head: () => ({
     meta: [
-      { title: `Formations | ${SITE.name}` },
-      { name: "robots", content: "noindex" }]
+      { title: `Contenu des formations | ${SITE.name}` },
+      { name: "robots", content: "noindex" },
+    ],
   }),
-  component: AdminTrainings,
+  component: AdminTrainingsManage,
 });
 
-const schema = z.object({
-  title: z.string().trim().min(2).max(120),
-  theme_id: z.string().trim().min(1, "Le thème est requis"),
-  duration: z.string().trim().min(1).max(50),
-  duration_hours: z.number().min(0),
-  level: z.enum(["Débutant", "Intermédiaire", "Avancé"]),
-  price: z.number().min(0),
-  short: z.string().trim().min(2).max(300),
-  audience: z.string().trim().min(1),
-  objectives: z.array(z.string().trim().min(1)).min(1),
-  prerequisites: z.array(z.string().trim().min(1)),
-  program: z.array(z.object({ title: z.string().min(1), items: z.array(z.string().min(1)) })).min(1),
-  certification: z.string().trim().min(1),
-  schedule: z.string().trim().min(1),
-  max_seats: z.number().min(0).nullable().optional(),
-  registration_fee: z.number().min(0).nullable().optional(),
-  access_min_ratio: z.number().min(0).max(1).nullable().optional(),
-  registration_deadline: z.string().trim().optional(),
-  start_date: z.string().trim().optional(),
-  end_date: z.string().trim().optional(),
-  location: z.string().trim().optional(),
-  waiting_list_enabled: z.boolean().optional(),
-  cover_color: z.string().trim().optional(),
-  status: z.enum(["draft", "published", "archived"]).optional(),
-}).refine(
-  (data) => !data.start_date || !data.end_date || data.end_date >= data.start_date,
-  { message: "La date de fin doit être après la date de début", path: ["end_date"] }
-);
-type FormValues = z.infer<typeof schema>;
-
-const empty: FormValues = {
-  title: "", theme_id: "", duration: "", duration_hours: 0, level: "Débutant", price: 0, short: "",
-  audience: "", objectives: [""], prerequisites: [""], program: [{ title: "", items: [""] }],
-  certification: "", schedule: "", max_seats: 0,
-  registration_fee: 0, access_min_ratio: 0, registration_deadline: "", start_date: "", end_date: "",
-  location: "", waiting_list_enabled: false, cover_color: "", status: "draft",
-};
-
-const STATUS_OPTIONS: { value: TrainingStatus; label: string }[] = [
-  { value: "draft", label: "Brouillon" },
-  { value: "published", label: "Publiée" },
-  { value: "archived", label: "Archivée" },
-];
-
-function AdminTrainings() {
+function AdminTrainingsManage() {
   const navigate = useNavigate();
   const { items, isLoading } = useAdminTrainingsList({ perPage: 100 });
   const { items: themes } = useAdminCategoriesList({ perPage: 100, context: "formation" });

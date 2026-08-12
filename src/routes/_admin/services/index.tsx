@@ -52,7 +52,6 @@ const empty: FormValues = {
 function AdminServices() {
   const navigate = useNavigate();
   const { items, isLoading } = useAdminServicesList({ perPage: 100 });
-  const { items: categories } = useAdminCategoriesList({ perPage: 100, context: "project" });
 
   const createMutation = useCreateAdminService();
   const updateMutation = useUpdateAdminService();

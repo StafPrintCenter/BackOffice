@@ -8,9 +8,7 @@ export const LESSON_KIND_LABELS: Record<LessonKind, string> = {
   quiz: "Quiz",
   exercise: "Exercice",
   assignment: "Devoir à rendre",
-  text: "Texte",
-  quiz: "Quiz",
-  file: "Fichier",
+  project: "Projet",
 };
 
 export type APIAdminTrainingModule = {

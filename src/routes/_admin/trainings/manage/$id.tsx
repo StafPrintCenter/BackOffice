@@ -13,10 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
 import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
 import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson } from "@/stores/useLessonsStore";
-import {
-  getModuleStatusBadge, MODULE_STATUS_LABELS, getLessonStatusBadge, LESSON_STATUS_LABELS,
-  LESSON_KIND_LABELS,
-} from "@/data/trainingModules";
+import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS } from "@/data/trainingModules";
 import type {
   APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload, LessonKind,
 } from "@/data/trainingModules";

@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useAdminServiceDetail, useUpdateAdminService, useDeleteAdminService } from "@/stores/useServicesStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
-import type { AdminServicePayload } from "@/data/services";
+import { SERVICE_CATEGORIES, type AdminServicePayload, type ServiceCategoryEnum } from "@/data/services";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/services/$id")({
@@ -42,7 +42,8 @@ function ServiceDetail() {
         slug: service.slug ?? "",
         title: service.title,
         icon: service.icon ?? "Sparkles",
-        project_category_id: service.categoryId ?? "",
+        category: service.category,
+        project_category_id: service.projectCategoryId ?? service.categoryId ?? null,
         featured: !!service.featured,
         short: service.short ?? "",
         long: service.long ?? "",
@@ -55,11 +56,9 @@ function ServiceDetail() {
 
   if (isLoading) {
     return (
-      <>
-        <div className="flex items-center justify-center py-24 text-muted-foreground">
-          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
-        </div>
-      </>
+      <div className="flex items-center justify-center py-24 text-muted-foreground">
+        <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
+      </div>
     );
   }
 
@@ -78,12 +77,7 @@ function ServiceDetail() {
     );
   }
 
-  const matchedCategory = categories.find(
-    (c) => c.id === (isEditing ? form.project_category_id : service.categoryId) ||
-      c.name.toLowerCase() === (typeof service.category === "string" ? service.category.toLowerCase() : "")
-  );
-  const categoryColorClass = matchedCategory?.colorClass || "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300";
-  const categoryName = matchedCategory?.name || (typeof service.category === "string" ? service.category : "Sans catégorie");
+  const matchedProjectCategory = categories.find((c) => c.id === (isEditing ? form.project_category_id : service.projectCategoryId ?? service.categoryId));
 
   const handleSave = () => {
     updateMutation.mutate(
@@ -103,7 +97,8 @@ function ServiceDetail() {
       slug: service.slug ?? "",
       title: service.title,
       icon: service.icon ?? "Sparkles",
-      project_category_id: service.categoryId ?? "",
+      category: service.category,
+      project_category_id: service.projectCategoryId ?? service.categoryId ?? null,
       featured: !!service.featured,
       short: service.short ?? "",
       long: service.long ?? "",
@@ -116,7 +111,6 @@ function ServiceDetail() {
 
   return (
     <>
-      {/* Barre d'action supérieure */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Button variant="outline" size="sm" onClick={() => navigate({ to: "/services" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
@@ -144,11 +138,8 @@ function ServiceDetail() {
         </div>
       </div>
 
-      {/* Disposition à 2 colonnes */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Colonne Principale (2/3) */}
         <div className="space-y-6 lg:col-span-2">
-          {/* Contenu principal du service */}
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
             <div className="flex items-center gap-2 border-b pb-4">
               <Wrench className="h-5 w-5 text-primary" />
@@ -204,9 +195,7 @@ function ServiceDetail() {
           </div>
         </div>
 
-        {/* Barre Latérale (1/3) */}
         <div className="space-y-6 lg:col-span-1">
-          {/* Configuration & Métadonnées du service */}
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
             <div className="flex items-center gap-2 border-b pb-4 mb-4">
               <Layers className="h-5 w-5 text-primary" />
@@ -214,7 +203,6 @@ function ServiceDetail() {
             </div>
 
             <div className="space-y-4">
-              {/* Statut En Vedette */}
               <div className="flex items-center justify-between rounded-xl border p-3">
                 <Label htmlFor="featured" className="flex items-center gap-2 cursor-pointer font-medium text-sm">
                   <StarIcon className="h-4 w-4 text-amber-500" />
@@ -233,17 +221,43 @@ function ServiceDetail() {
                 )}
               </div>
 
-              {/* Catégorie */}
+              {/* Champ Category (ENUM Strict) */}
               <div>
-                <Label htmlFor="category" className="text-xs text-muted-foreground">Catégorie</Label>
+                <Label htmlFor="category" className="text-xs text-muted-foreground">Catégorie de Service (Obligatoire)</Label>
                 {isEditing ? (
                   <select
                     id="category"
-                    value={form.project_category_id}
-                    onChange={(e) => setForm({ ...form, project_category_id: e.target.value })}
+                    value={form.category}
+                    onChange={(e) => setForm({ ...form, category: e.target.value as ServiceCategoryEnum })}
+                    className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-medium"
+                  >
+                    {SERVICE_CATEGORIES.map((cat) => (
+                      <option key={cat.value} value={cat.value}>
+                        {cat.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <div className="mt-1">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-primary/10 text-primary capitalize">
+                      <Tag className="h-3 w-3" />
+                      {service.category}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Champ Project Category (Optionnel) */}
+              <div>
+                <Label htmlFor="project_category" className="text-xs text-muted-foreground">Catégorie de Projet (Optionnelle)</Label>
+                {isEditing ? (
+                  <select
+                    id="project_category"
+                    value={form.project_category_id ?? ""}
+                    onChange={(e) => setForm({ ...form, project_category_id: e.target.value || null })}
                     className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   >
-                    <option value="">- Choisir une catégorie -</option>
+                    <option value="">-- Aucune association --</option>
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>
                         {c.name}
@@ -251,16 +265,12 @@ function ServiceDetail() {
                     ))}
                   </select>
                 ) : (
-                  <div className="mt-1">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium ${categoryColorClass}`}>
-                      <Tag className="h-3 w-3" />
-                      {categoryName}
-                    </span>
+                  <div className="mt-1 text-sm text-foreground font-medium">
+                    {matchedProjectCategory ? matchedProjectCategory.name : <span className="text-muted-foreground text-xs italic">Aucune</span>}
                   </div>
                 )}
               </div>
 
-              {/* Slug */}
               <div>
                 <Label htmlFor="slug" className="text-xs text-muted-foreground">Slug URL</Label>
                 {isEditing ? (
@@ -277,7 +287,6 @@ function ServiceDetail() {
                 )}
               </div>
 
-              {/* Icône */}
               <div>
                 <Label htmlFor="icon" className="text-xs text-muted-foreground">Icône (Lucide)</Label>
                 {isEditing ? (
@@ -295,7 +304,6 @@ function ServiceDetail() {
                 )}
               </div>
 
-              {/* Couleur Accent */}
               <div>
                 <Label htmlFor="color" className="text-xs text-muted-foreground">Couleur (HEX)</Label>
                 {isEditing ? (

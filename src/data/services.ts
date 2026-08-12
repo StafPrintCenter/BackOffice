@@ -1,7 +1,19 @@
 export const SERVICE_CATEGORIES = [
-  { value: "digital", label: "Digital" },
-  { value: "impression", label: "Impression" },
-  { value: "formation", label: "Formation" },
+  {
+    value: "digital",
+    label: "Digital",
+    badgeClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200/20",
+  },
+  {
+    value: "impression",
+    label: "Impression",
+    badgeClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200/20",
+  },
+  {
+    value: "formation",
+    label: "Formation",
+    badgeClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200/20",
+  },
 ] as const;
 
 export type ServiceCategoryEnum = typeof SERVICE_CATEGORIES[number]["value"];

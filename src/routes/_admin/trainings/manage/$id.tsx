@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, ChevronUp, BookOpen, Clock, Video, FileText, ListChecks } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, CircleChevronUp, BookOpen, Clock, Video, FileText, ListChecks, User, Calendar, ShieldCheck, ShieldOff } from "lucide-react";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,11 +12,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
 import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
-import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson } from "@/stores/useLessonsStore";
-import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS } from "@/data/trainingModules";
-import type {
-  APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload, LessonKind,
-} from "@/data/trainingModules";
+import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson, useAdminLessonDetail } from "@/stores/useLessonsStore";
+import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS, toYoutubeEmbedUrl } from "@/data/trainingModules";
+import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload, LessonKind } from "@/data/trainingModules";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/trainings/manage/$id")({
@@ -38,20 +36,25 @@ interface LessonFormValues {
   duration_minutes: string;
   content: string;
   video_url: string;
-  chapters: string;
+  chapters: string[];
   brief: string;
   is_mandatory: boolean;
 }
 
 const emptyLessonForm: LessonFormValues = {
   title: "", kind: "video", sort_order: "0", duration_minutes: "", content: "",
-  video_url: "", chapters: "", brief: "", is_mandatory: false,
+  video_url: "", chapters: [""], brief: "", is_mandatory: false,
 };
 
 function lessonKindIcon(kind: LessonKind) {
   if (kind === "video") return Video;
-  if (kind === "assignment") return FileText;
+  if (kind === "assignment" || kind === "project" || kind === "exercise") return FileText;
   return BookOpen;
+}
+
+function formatDate(dateStr?: string | null): string {
+  if (!dateStr) return "—";
+  return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
 }
 
 function TrainingManageDetail() {
@@ -74,6 +77,9 @@ function TrainingManageDetail() {
   const [expandedModuleId, setExpandedModuleId] = useState<string | null>(null);
   const { module: expandedModule, lessons, isLoading: lessonsLoading } = useAdminModuleDetail(expandedModuleId ?? undefined);
 
+  const [expandedLessonId, setExpandedLessonId] = useState<string | null>(null);
+  const { lesson: expandedLessonDetail, isLoading: lessonDetailLoading } = useAdminLessonDetail(expandedLessonId ?? undefined);
+
   const [moduleDialog, setModuleDialog] = useState<{ open: boolean; row?: APIAdminTrainingModule }>({ open: false });
   const [moduleForm, setModuleForm] = useState<AdminTrainingModulePayload>(emptyModuleForm);
   const [moduleErrors, setModuleErrors] = useState<Record<string, string>>({});
@@ -89,6 +95,11 @@ function TrainingManageDetail() {
 
   const toggleModule = (moduleId: string) => {
     setExpandedModuleId((current) => (current === moduleId ? null : moduleId));
+    setExpandedLessonId(null);
+  };
+
+  const toggleLesson = (lessonId: string) => {
+    setExpandedLessonId((current) => (current === lessonId ? null : lessonId));
   };
 
   const openCreateModule = () => {
@@ -150,7 +161,7 @@ function TrainingManageDetail() {
       duration_minutes: l.durationMinutes != null ? String(l.durationMinutes) : "",
       content: l.content ?? "",
       video_url: l.videoUrl ?? "",
-      chapters: l.chapters ?? "",
+      chapters: l.chapters && l.chapters.length > 0 ? l.chapters : [""],
       brief: l.brief ?? "",
       is_mandatory: l.isMandatory,
     });
@@ -165,6 +176,8 @@ function TrainingManageDetail() {
     }
     setLessonErrors({});
 
+    const cleanChapters = lessonForm.chapters.map((c) => c.trim()).filter(Boolean);
+
     const payload: AdminLessonPayload = {
       title: lessonForm.title.trim(),
       kind: lessonForm.kind,
@@ -172,7 +185,7 @@ function TrainingManageDetail() {
       duration_minutes: lessonForm.duration_minutes === "" ? undefined : Number(lessonForm.duration_minutes),
       content: lessonForm.content.trim() || undefined,
       video_url: lessonForm.video_url.trim() || undefined,
-      chapters: lessonForm.chapters.trim() || undefined,
+      chapters: cleanChapters.length > 0 ? cleanChapters : undefined,
       brief: lessonForm.brief.trim() || undefined,
       is_mandatory: lessonForm.is_mandatory,
     };
@@ -215,7 +228,7 @@ function TrainingManageDetail() {
     return (
       <>
         <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/manage" })}>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/catalogs" })}>
             <ArrowLeft className="h-4 w-4 mr-1" /> Retour
           </Button>
         </div>
@@ -227,9 +240,15 @@ function TrainingManageDetail() {
   return (
     <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/manage" })}>
-          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          <Button variant="ghost" size="sm" onClick={() => navigate({ to: "/trainings/catalogs/$id", params: { id: training.id } })}>
+            <ArrowLeft className="h-4 w-4 mr-1" /> Voir le contenu
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/catalogs" })}>
+            <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+          </Button>
+        </div>
+
         <Button size="sm" onClick={openCreateModule}>
           <Plus className="h-4 w-4 mr-1" /> Nouveau module
         </Button>
@@ -257,33 +276,40 @@ function TrainingManageDetail() {
                 <button
                   type="button"
                   onClick={() => toggleModule(m.id)}
-                  className="flex w-full items-center justify-between gap-3 p-4 text-left hover:bg-muted/30"
+                  className="flex w-full items-center justify-between gap-3 p-4 text-left hover:bg-muted/30 cursor-pointer"
                 >
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="font-medium truncate">{m.title}</span>
-                      <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getModuleStatusBadge(m.status)}`}>
-                        {MODULE_STATUS_LABELS[m.status]}
+                      <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getContentStatusBadgeClass(m.status)}`}>
+                        {getContentStatusLabel(m.status)}
                       </span>
-                      {!m.isEnabled && (
-                        <span className="inline-flex shrink-0 items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                          Désactivé
-                        </span>
-                      )}
+                      <span className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${m.isEnabled ? "bg-emerald-500/10 text-emerald-600" : "bg-muted text-muted-foreground"}`}>
+                        {m.isEnabled ? <ShieldCheck className="h-2.5 w-2.5" /> : <ShieldOff className="h-2.5 w-2.5" />}
+                        {m.isEnabled ? "Activé" : "Désactivé"}
+                      </span>
                     </div>
                     {m.description && <div className="mt-0.5 text-xs text-muted-foreground truncate">{m.description}</div>}
-                    <div className="mt-0.5 text-[11px] text-muted-foreground/70">
-                      {m.lessonsCount} leçon{m.lessonsCount !== 1 ? "s" : ""} · Ordre {m.sortOrder}
+                    <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground/70">
+                      <span>{m.lessonsCount} leçon{m.lessonsCount !== 1 ? "s" : ""} · Ordre {m.sortOrder}</span>
+                      {(m.createdByAdmin || m.createdByInstructor) && (
+                        <span className="inline-flex items-center gap-1">
+                          <User className="h-3 w-3" /> {m.createdByAdmin ?? m.createdByInstructor}
+                        </span>
+                      )}
+                      <span className="inline-flex items-center gap-1">
+                        <Calendar className="h-3 w-3" /> {formatDate(m.createdAt)}
+                      </span>
                     </div>
                   </div>
-                  {isExpanded ? <ChevronUp className="h-4 w-4 shrink-0 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />}
+                  {isExpanded ? <CircleChevronUp className="h-4 w-4 shrink-0 text-primary" /> : <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />}
                 </button>
 
                 <div className="flex flex-wrap items-center gap-2 border-t px-4 py-2">
                   <Button type="button" variant="ghost" size="sm" onClick={() => openEditModule(m)}>
                     <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier
                   </Button>
-                  {m.status === "draft" && (
+                  {m.status !== "published" && (
                     <Button type="button" variant="ghost" size="sm" onClick={() => handlePublishModule(m)} disabled={publishModuleMutation.isPending}>
                       <Rocket className="h-3.5 w-3.5 mr-1" /> Publier
                     </Button>
@@ -318,29 +344,42 @@ function TrainingManageDetail() {
                       <div className="space-y-2">
                         {[...lessons].sort((a, b) => a.sortOrder - b.sortOrder).map((l) => {
                           const Icon = lessonKindIcon(l.kind);
+                          const isLessonExpanded = expandedLessonId === l.id;
+                          const detail = isLessonExpanded ? expandedLessonDetail : null;
+                          const embedUrl = l.videoUrl ? toYoutubeEmbedUrl(l.videoUrl) : null;
+
                           return (
-                            <div key={l.id} className="flex items-center justify-between gap-3 rounded-lg border bg-card p-3 text-sm">
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-2">
-                                  <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />
-                                  <span className="font-medium truncate">{l.title}</span>
-                                  {l.isMandatory && <span className="text-destructive text-xs">*</span>}
-                                  <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getLessonStatusBadge(l.status)}`}>
-                                    {LESSON_STATUS_LABELS[l.status]}
-                                  </span>
-                                </div>
-                                <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
-                                  <span>{LESSON_KIND_LABELS[l.kind] ?? l.kind}</span>
-                                  {l.durationMinutes != null && (
-                                    <span className="inline-flex items-center gap-1">
-                                      <Clock className="h-3 w-3" /> {l.durationMinutes} min
+                            <div key={l.id} className="rounded-lg border bg-card overflow-hidden">
+                              <button
+                                type="button"
+                                onClick={() => toggleLesson(l.id)}
+                                className="flex w-full items-center justify-between gap-3 p-3 text-left text-sm hover:bg-muted/30 cursor-pointer"
+                              >
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center gap-2">
+                                    <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />
+                                    <span className="font-medium truncate">{l.title}</span>
+                                    {l.isMandatory && <span className="text-destructive text-xs">*</span>}
+                                    <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getContentStatusBadgeClass(l.status)}`}>
+                                      {getContentStatusLabel(l.status)}
                                     </span>
-                                  )}
+                                  </div>
+                                  <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
+                                    <span>{LESSON_KIND_LABELS[l.kind] ?? l.kind}</span>
+                                    <span>· Ordre {l.sortOrder}</span>
+                                    {l.durationMinutes != null && (
+                                      <span className="inline-flex items-center gap-1">
+                                        <Clock className="h-3 w-3" /> {l.durationMinutes} min
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="flex shrink-0 items-center gap-1">
+                                {isLessonExpanded ? <CircleChevronUp className="h-4 w-4 shrink-0 text-primary" /> : <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />}
+                              </button>
+
+                              <div className="flex flex-wrap items-center gap-2 border-t px-3 py-1.5">
                                 <Button type="button" variant="ghost" size="sm" onClick={() => openEditLesson(m.id, l)}>
-                                  <Pencil className="h-3.5 w-3.5" />
+                                  <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier
                                 </Button>
                                 {l.status !== "published" && (
                                   <Button
@@ -350,7 +389,7 @@ function TrainingManageDetail() {
                                     onClick={() => handlePublishLesson(l)}
                                     disabled={publishLessonMutation.isPending}
                                   >
-                                    <Rocket className="h-3.5 w-3.5" />
+                                    <Rocket className="h-3.5 w-3.5 mr-1" /> Publier
                                   </Button>
                                 )}
                                 <Button
@@ -360,9 +399,70 @@ function TrainingManageDetail() {
                                   className="text-destructive hover:bg-destructive/10"
                                   onClick={() => setLessonToDelete({ moduleId: m.id, lesson: l })}
                                 >
-                                  <Trash2 className="h-3.5 w-3.5" />
+                                  <Trash2 className="h-3.5 w-3.5 mr-1" /> Supprimer
                                 </Button>
                               </div>
+
+                              {isLessonExpanded && (
+                                <div className="border-t bg-muted/10 p-4 space-y-4 text-sm">
+                                  {lessonDetailLoading ? (
+                                    <div className="text-muted-foreground">Chargement du détail...</div>
+                                  ) : (
+                                    <>
+                                      {embedUrl && (
+                                        <div className="aspect-video w-full overflow-hidden rounded-lg border">
+                                          <iframe
+                                            src={embedUrl}
+                                            title={l.title}
+                                            className="h-full w-full"
+                                            allowFullScreen
+                                          />
+                                        </div>
+                                      )}
+                                      {l.videoUrl && !embedUrl && (
+                                        <a href={l.videoUrl} target="_blank" rel="noreferrer" className="text-primary hover:underline text-xs">
+                                          Voir la vidéo ({l.videoUrl})
+                                        </a>
+                                      )}
+
+                                      {l.brief && (
+                                        <div>
+                                          <Label className="text-xs text-muted-foreground">Résumé / consigne</Label>
+                                          <p className="mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap">{l.brief}</p>
+                                        </div>
+                                      )}
+
+                                      {l.content && (
+                                        <div>
+                                          <Label className="text-xs text-muted-foreground">Contenu</Label>
+                                          <p className="mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap">{l.content}</p>
+                                        </div>
+                                      )}
+
+                                      {l.chapters && l.chapters.length > 0 && (
+                                        <div>
+                                          <Label className="text-xs text-muted-foreground">Chapitres</Label>
+                                          <ul className="mt-1 list-inside list-disc text-xs space-y-0.5">
+                                            {l.chapters.map((c, i) => (<li key={i}>{c}</li>))}
+                                          </ul>
+                                        </div>
+                                      )}
+
+                                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t pt-3 text-[11px] text-muted-foreground">
+                                        {detail && (detail.createdByAdmin || detail.createdByInstructor) && (
+                                          <span className="inline-flex items-center gap-1">
+                                            <User className="h-3 w-3" /> {detail.createdByAdmin ?? detail.createdByInstructor}
+                                          </span>
+                                        )}
+                                        <span className="inline-flex items-center gap-1">
+                                          <Calendar className="h-3 w-3" /> Créée le {formatDate(l.createdAt)}
+                                        </span>
+                                        <span>Obligatoire : {l.isMandatory ? "Oui" : "Non"}</span>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
@@ -434,7 +534,7 @@ function TrainingManageDetail() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <Label>Type</Label>
-                <Select value={lessonForm.kind} onValueChange={(v) => setLessonForm({ ...lessonForm, kind: v })}>
+                <Select value={lessonForm.kind} onValueChange={(v) => setLessonForm({ ...lessonForm, kind: v as LessonKind })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     {Object.entries(LESSON_KIND_LABELS).map(([k, l]) => (<SelectItem key={k} value={k}>{l}</SelectItem>))}
@@ -485,9 +585,42 @@ function TrainingManageDetail() {
               <Textarea rows={4} value={lessonForm.content} onChange={(e) => setLessonForm({ ...lessonForm, content: e.target.value })} />
             </div>
 
+            {/* Chapitres — tableau, comme objectives/prerequisites sur les formations */}
             <div>
-              <Label>Chapitres (optionnel)</Label>
-              <Textarea rows={2} value={lessonForm.chapters} onChange={(e) => setLessonForm({ ...lessonForm, chapters: e.target.value })} />
+              <div className="flex items-center justify-between">
+                <Label>Chapitres (optionnel)</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setLessonForm({ ...lessonForm, chapters: [...lessonForm.chapters, ""] })}
+                >
+                  <Plus className="h-3 w-3 mr-1" /> Ajouter
+                </Button>
+              </div>
+              <div className="mt-2 space-y-2">
+                {lessonForm.chapters.map((c, i) => (
+                  <div key={i} className="flex gap-2">
+                    <Input
+                      placeholder={`Chapitre ${i + 1}`}
+                      value={c}
+                      onChange={(e) => {
+                        const arr = [...lessonForm.chapters];
+                        arr[i] = e.target.value;
+                        setLessonForm({ ...lessonForm, chapters: arr });
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() => setLessonForm({ ...lessonForm, chapters: lessonForm.chapters.filter((_, idx) => idx !== i) })}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           <DialogFooter>
@@ -527,7 +660,11 @@ function TrainingManageDetail() {
           deleteLessonMutation.mutate(
             { moduleId: lessonToDelete.moduleId, lessonId: lessonToDelete.lesson.id },
             {
-              onSuccess: () => { toast.success("Leçon supprimée"); setLessonToDelete(null); },
+              onSuccess: () => {
+                toast.success("Leçon supprimée");
+                if (expandedLessonId === lessonToDelete.lesson.id) setExpandedLessonId(null);
+                setLessonToDelete(null);
+              },
               onError: () => toast.error("Erreur lors de la suppression de la leçon"),
             }
           );

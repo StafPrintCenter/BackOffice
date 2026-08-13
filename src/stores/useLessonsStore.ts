@@ -12,6 +12,8 @@ function buildFormData(payload: Record<string, unknown>): FormData {
     if (value === undefined) continue;
     if (typeof value === "boolean") {
       fd.append(key, value ? "1" : "0");
+    } else if (Array.isArray(value)) {
+      fd.append(key, JSON.stringify(value));
     } else {
       fd.append(key, value === null ? "" : String(value));
     }

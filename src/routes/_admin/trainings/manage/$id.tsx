@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, CircleChevronUp, Clock, ListChecks, User, Calendar, ShieldCheck, ShieldOff, Crown, GraduationCap } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, CircleChevronUp, Clock, ListChecks, Calendar, ShieldCheck, ShieldOff, Crown, GraduationCap } from "lucide-react";
 import { ConfirmDelete } from "@/components/site/AdminBits";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -439,10 +439,8 @@ function TrainingManageDetail() {
                                       )}
 
                                       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t pt-3 text-[11px] text-muted-foreground">
-                                        {detail && (detail.createdByAdmin || detail.createdByInstructor) && (
-                                          <span className="inline-flex items-center gap-1">
-                                            <User className="h-3 w-3" /> {detail.createdByAdmin ?? detail.createdByInstructor}
-                                          </span>
+                                        {detail && (
+                                          <CreatorBadge createdByAdmin={detail.createdByAdmin} createdByInstructor={detail.createdByInstructor} />
                                         )}
                                         <span className="inline-flex items-center gap-1">
                                           <Calendar className="h-3 w-3" /> Créée le {formatDate(l.createdAt)}

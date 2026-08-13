@@ -1,10 +1,11 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/site";
 import { DataTable } from "@/components/site/DataTable";
 import { useAdminTrainingsList } from "@/stores/useTrainingsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { getTrainingLevelBadgeClass, getTrainingStatusBadgeClass, getTrainingStatusLabel } from "@/data/trainings";
 import type { APIAdminTrainingListItem } from "@/data/trainings";
+import { GraduationCap, UserRoundPlus } from "lucide-react";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/trainings/manage/")({
@@ -24,10 +25,26 @@ function AdminTrainingsManage() {
 
   return (
     <>
-      <PageHeader
-        title="Contenu des formations"
-        description="Gérez les modules et leçons de chaque formation."
-      />
+      <PageHeader title="Contenu des formations" description="Gérez les modules et leçons de chaque formation." />
+
+      {/* Raccourci */}
+      <div className="flex items-center gap-6 mb-4">
+        <div>
+          <Link to="/trainings/catalogs"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <GraduationCap className="h-4 w-4"
+            />
+            Voir le catalogue des formations
+          </Link>
+        </div>
+        <div>
+          <Link to="/trainings/registrations"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <UserRoundPlus className="h-4 w-4" />
+            Voir les inscriptions
+          </Link>
+        </div>
+      </div>
 
       <DataTable<APIAdminTrainingListItem>
         data={items}

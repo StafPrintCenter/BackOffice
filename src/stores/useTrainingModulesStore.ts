@@ -72,7 +72,7 @@ export interface ModuleDetailWithLessons {
 }
 
 async function fetchModuleDetail(moduleId: string): Promise<ModuleDetailWithLessons> {
-  const response = await adminFetch(`/api/admin/modules/${moduleId}`);
+  const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}`);
   if (!response.ok) throw new Error("Erreur lors de la récupération du module");
   const json: { data: APIAdminTrainingModule; lessons: APIAdminLesson[] } = await response.json();
   return { module: json.data, lessons: json.lessons ?? [] };
@@ -96,7 +96,7 @@ export function useAdminModuleDetail(moduleId: string | undefined) {
 /* ---- Update / delete / publish d'un module ---- */
 
 async function updateModule(moduleId: string, payload: AdminTrainingModulePayload): Promise<APIAdminTrainingModule> {
-  const response = await adminFetch(`/api/admin/modules/${moduleId}`, {
+  const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}`, {
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
@@ -120,7 +120,7 @@ export function useUpdateAdminTrainingModule() {
 }
 
 async function deleteModule(moduleId: string): Promise<void> {
-  const response = await adminFetch(`/api/admin/modules/${moduleId}`, { method: "DELETE" });
+  const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}`, { method: "DELETE" });
   if (!response.ok && response.status !== 204) throw new Error("Erreur lors de la suppression du module");
 }
 
@@ -138,7 +138,7 @@ export function useDeleteAdminTrainingModule() {
 }
 
 async function publishModule(moduleId: string): Promise<APIAdminTrainingModule> {
-  const response = await adminFetch(`/api/admin/modules/${moduleId}/publish`, { method: "PUT" });
+  const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}/publish`, { method: "PUT" });
   if (!response.ok) throw new Error("Erreur lors de la publication du module");
   const json: { data: APIAdminTrainingModule } = await response.json();
   return json.data;

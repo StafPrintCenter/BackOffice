@@ -1,12 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
-import type {
-  APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson,
-} from "@/data/trainingModules";
-
-// Modules : liste/création imbriquées sous /trainings/{trainingId}/modules,
-// mais detail/update/delete/publish sur routes PLATES /admin/modules/{id}.
-// Aucun des deux schémas ne correspond au basePath fixe de createResourceStore → store manuel.
+import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson } from "@/data/trainingModules";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();

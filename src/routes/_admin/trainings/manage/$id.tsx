@@ -58,8 +58,7 @@ function CreatorBadge({ createdByAdmin, createdByInstructor }: { createdByAdmin?
   const Icon = creator.role === "admin" ? Crown : GraduationCap;
   const className =
     creator.role === "admin"
-      ? "bg-violet-500/10 text-violet-600"
-      : "bg-sky-500/10 text-sky-600";
+      ? "bg-violet-500/10 text-violet-600" : "bg-sky-500/10 text-sky-600";
 
   return (
     <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 ${className}`}>

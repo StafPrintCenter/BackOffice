@@ -45,7 +45,7 @@ export function useCreateAdminLesson() {
 /* ---- Détail (route plate) ---- */
 
 async function fetchLessonDetail(lessonId: string): Promise<APIAdminLesson> {
-  const response = await adminFetch(`/api/admin/lessons/${lessonId}`);
+  const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}`);
   if (!response.ok) throw new Error("Erreur lors de la récupération de la leçon");
   const json: { data: APIAdminLesson } = await response.json();
   return json.data;
@@ -63,7 +63,7 @@ export function useAdminLessonDetail(lessonId: string | undefined) {
 /* ---- Update / delete / publish (routes plates) ---- */
 
 async function updateLesson(lessonId: string, payload: AdminLessonPayload): Promise<APIAdminLesson> {
-  const response = await adminFetch(`/api/admin/lessons/${lessonId}`, {
+  const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}`, {
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
@@ -87,7 +87,7 @@ export function useUpdateAdminLesson() {
 }
 
 async function deleteLesson(lessonId: string): Promise<void> {
-  const response = await adminFetch(`/api/admin/lessons/${lessonId}`, { method: "DELETE" });
+  const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}`, { method: "DELETE" });
   if (!response.ok && response.status !== 204) throw new Error("Erreur lors de la suppression de la leçon");
 }
 
@@ -104,7 +104,7 @@ export function useDeleteAdminLesson() {
 }
 
 async function publishLesson(lessonId: string): Promise<APIAdminLesson> {
-  const response = await adminFetch(`/api/admin/lessons/${lessonId}/publish`, { method: "PUT" });
+  const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}/publish`, { method: "PUT" });
   if (!response.ok) throw new Error("Erreur lors de la publication de la leçon");
   const json: { data: APIAdminLesson } = await response.json();
   return json.data;

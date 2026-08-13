@@ -88,3 +88,22 @@ export function getContentStatusBadgeClass(status: ContentStatus): string {
 export function getContentStatusLabel(status: ContentStatus): string {
   return CONTENT_STATUS_BADGES[status]?.label ?? status;
 }
+
+// Convertit une URL YouTube "watch" en URL "embed" pour affichage en iframe.
+export function toYoutubeEmbedUrl(url: string): string | null {
+  try {
+    const u = new URL(url);
+    let videoId: string | null = null;
+
+    if (u.hostname.includes("youtu.be")) {
+      videoId = u.pathname.slice(1);
+    } else if (u.hostname.includes("youtube.com")) {
+      if (u.pathname === "/watch") videoId = u.searchParams.get("v");
+      else if (u.pathname.startsWith("/embed/")) return url; // déjà au bon format
+    }
+
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+  } catch {
+    return null;
+  }
+}

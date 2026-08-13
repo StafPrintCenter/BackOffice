@@ -176,6 +176,9 @@ function TrainingDetail() {
               <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => setToDelete(true)}>
                 <Trash2 className="h-4 w-4 mr-1" /> Supprimer
               </Button>
+              <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/manage/$id", params: { id: training.id } })}>
+                <BookOpen className="h-4 w-4 mr-1" /> Gérer le contenu
+              </Button>
             </>
           )}
         </div>

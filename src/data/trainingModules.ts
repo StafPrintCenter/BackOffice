@@ -1,3 +1,4 @@
+import { Video, BookOpen, HelpCircle, Dumbbell, FileCheck, FolderGit2, type LucideIcon } from "lucide-react";
 export type ContentStatus = "draft" | "pending_review" | "published" | "rejected";
 export type ContentReviewDecision = "approved" | "rejected";
 export type LessonKind = "video" | "reading" | "quiz" | "exercise" | "assignment" | "project";
@@ -10,6 +11,22 @@ export const LESSON_KIND_LABELS: Record<LessonKind, string> = {
   assignment: "Devoir à rendre",
   project: "Projet",
 };
+
+/**
+ * Mappage strict associant chaque type de leçon à une icône dédiée.
+ */
+export const LESSON_KIND_ICONS: Record<LessonKind, LucideIcon> = {
+  video: Video,
+  reading: BookOpen,
+  quiz: HelpCircle,
+  exercise: Dumbbell,
+  assignment: FileCheck,
+  project: FolderGit2,
+};
+
+export function getLessonKindIcon(kind: LessonKind): LucideIcon {
+  return LESSON_KIND_ICONS[kind] ?? BookOpen;
+}
 
 export type APIAdminTrainingModule = {
   id: string;

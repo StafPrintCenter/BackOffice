@@ -41,7 +41,7 @@ export type APIAdminLesson = {
   kind: LessonKind;
   content: string | null;
   videoUrl: string | null;
-  chapters: string | null;
+  chapters: string[] | null;
   brief: string | null;
   isMandatory: boolean;
   status: ContentStatus;

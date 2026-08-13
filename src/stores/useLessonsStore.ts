@@ -22,7 +22,7 @@ function buildFormData(payload: Record<string, unknown>): FormData {
 /* ---- Création ---- */
 
 async function createLesson(moduleId: string, payload: AdminLessonPayload): Promise<APIAdminLesson> {
-  const response = await adminFetch(`/api/admin/modules/${moduleId}/lessons/create`, {
+  const response = await adminFetch(`/api/admin/trainings/${moduleId}/lessons/create`, {
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });

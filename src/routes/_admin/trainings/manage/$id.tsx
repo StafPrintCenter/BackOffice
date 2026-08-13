@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
 import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
 import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson, useAdminLessonDetail } from "@/stores/useLessonsStore";
-import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS, toYoutubeEmbedUrl } from "@/data/trainingModules";
+import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS, getLessonKindIcon, toYoutubeEmbedUrl } from "@/data/trainingModules";
 import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload, LessonKind } from "@/data/trainingModules";
 import { SITE } from "@/data/site";
 
@@ -45,12 +45,6 @@ const emptyLessonForm: LessonFormValues = {
   title: "", kind: "video", sort_order: "0", duration_minutes: "", content: "",
   video_url: "", chapters: [""], brief: "", is_mandatory: false,
 };
-
-function lessonKindIcon(kind: LessonKind) {
-  if (kind === "video") return Video;
-  if (kind === "assignment" || kind === "project" || kind === "exercise") return FileText;
-  return BookOpen;
-}
 
 function formatDate(dateStr?: string | null): string {
   if (!dateStr) return "—";
@@ -343,7 +337,7 @@ function TrainingManageDetail() {
                     ) : (
                       <div className="space-y-2">
                         {[...lessons].sort((a, b) => a.sortOrder - b.sortOrder).map((l) => {
-                          const Icon = lessonKindIcon(l.kind);
+                          const Icon = getLessonKindIcon(l.kind);
                           const isLessonExpanded = expandedLessonId === l.id;
                           const detail = isLessonExpanded ? expandedLessonDetail : null;
                           const embedUrl = l.videoUrl ? toYoutubeEmbedUrl(l.videoUrl) : null;

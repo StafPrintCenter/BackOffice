@@ -2,9 +2,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import type { APIAdminLesson, AdminLessonPayload } from "@/data/trainingModules";
 
-// ⚠️ Aucun endpoint ne liste les leçons indépendamment d'un module — elles n'apparaissent
-// que via GET /admin/modules/{id} (clé "lessons"). Chaque mutation ici invalide donc le
-// cache du DÉTAIL DU MODULE PARENT, pas une liste de leçons dédiée.
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();

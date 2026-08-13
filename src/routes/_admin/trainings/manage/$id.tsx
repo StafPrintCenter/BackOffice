@@ -286,11 +286,7 @@ function TrainingManageDetail() {
                     {m.description && <div className="mt-0.5 text-xs text-muted-foreground truncate">{m.description}</div>}
                     <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground/70">
                       <span>{m.lessonsCount} leçon{m.lessonsCount !== 1 ? "s" : ""} · Ordre {m.sortOrder}</span>
-                      {(m.createdByAdmin || m.createdByInstructor) && (
-                        <span className="inline-flex items-center gap-1">
-                          <User className="h-3 w-3" /> {m.createdByAdmin ?? m.createdByInstructor}
-                        </span>
-                      )}
+                      <CreatorBadge createdByAdmin={m.createdByAdmin} createdByInstructor={m.createdByInstructor} />
                       <span className="inline-flex items-center gap-1">
                         <Calendar className="h-3 w-3" /> {formatDate(m.createdAt)}
                       </span>

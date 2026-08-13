@@ -106,6 +106,22 @@ export function getContentStatusLabel(status: ContentStatus): string {
   return CONTENT_STATUS_BADGES[status]?.label ?? status;
 }
 
+export interface ContentCreator {
+  label: string;
+  role: "admin" | "instructor";
+}
+
+// Détermine qui a créé le contenu (module ou leçon) et sous quel rôle,
+// pour afficher un badge distinct Admin / Instructeur plutôt qu'un simple nom.
+export function getContentCreator(
+  createdByAdmin?: string | null,
+  createdByInstructor?: string | null
+): ContentCreator | null {
+  if (createdByAdmin) return { label: createdByAdmin, role: "admin" };
+  if (createdByInstructor) return { label: createdByInstructor, role: "instructor" };
+  return null;
+}
+
 // Convertit une URL YouTube "watch" en URL "embed" pour affichage en iframe.
 export function toYoutubeEmbedUrl(url: string): string | null {
   try {

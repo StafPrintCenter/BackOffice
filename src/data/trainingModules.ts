@@ -57,7 +57,7 @@ export interface AdminLessonPayload {
   duration_minutes?: number;
   content?: string;
   video_url?: string;
-  chapters?: string;
+  chapters?: string[];
   brief?: string;
   is_mandatory?: boolean;
 }

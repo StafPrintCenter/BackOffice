@@ -45,7 +45,7 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    label: "Communauté",
+    label: "Interactions",
     items: [
       { to: "/appointments", label: "Rendez-vous", icon: CalendarClock },
       { to: "/reports", label: "Signalements", icon: ShieldAlert },

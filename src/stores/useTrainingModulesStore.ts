@@ -58,9 +58,7 @@ export function useCreateAdminTrainingModule() {
   });
 }
 
-/* ---- Détail d'un module (+ ses leçons) ----
-   ⚠️ URL confirmée : /admin/trainings/modules/{id} (déplacée depuis /admin/modules/{id}).
-   Réponse : { data: { training, data: module }, lessons: [{ training, module, data: lesson }] } */
+/* ---- Détail d'un module (+ ses leçons) ----*/
 
 export interface ModuleDetailWithLessons {
   module: APIAdminTrainingModule;
@@ -72,14 +70,14 @@ async function fetchModuleDetail(moduleId: string): Promise<ModuleDetailWithLess
   const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}`);
   if (!response.ok) throw new Error("Erreur lors de la récupération du module");
   const json: {
-    data: { training: ModuleTrainingSummary; data: APIAdminTrainingModule };
-    lessons: Array<{ training: ModuleTrainingSummary; module: unknown; data: APIAdminLesson }>;
+    data: { training: ModuleTrainingSummary; module: APIAdminTrainingModule };
+    lessons: Array<{ training: ModuleTrainingSummary; module: unknown; lesson: APIAdminLesson }>;
   } = await response.json();
 
   return {
-    module: json.data.data,
+    module: json.data.module,
     training: json.data.training ?? null,
-    lessons: (json.lessons ?? []).map((item) => item.data),
+    lessons: (json.lessons ?? []).map((item) => item.lesson),
   };
 }
 
@@ -99,9 +97,7 @@ export function useAdminModuleDetail(moduleId: string | undefined) {
   };
 }
 
-/* ---- Update / delete / publish ----
-   ⚠️ URL supposée déplacée vers /admin/trainings/modules/{id} par cohérence avec le
-   détail — non confirmée par un curl explicite pour ces 3 actions. À valider. */
+/* ---- Update / delete / publish ---- */
 
 async function updateModule(moduleId: string, payload: AdminTrainingModulePayload): Promise<APIAdminTrainingModule> {
   const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}`, {

@@ -122,6 +122,15 @@ export function getContentCreator(
   return null;
 }
 
+// Résumé de la formation renvoyé en accompagnement de chaque module/leçon dans les nouvelles réponses imbriquées (list/detail).
+export interface ModuleTrainingSummary {
+  id: string;
+  title: string;
+  level: string;
+  status: string;
+  coverColor: string | null;
+}
+
 // Convertit une URL YouTube "watch" en URL "embed" pour affichage en iframe.
 export function toYoutubeEmbedUrl(url: string): string | null {
   try {

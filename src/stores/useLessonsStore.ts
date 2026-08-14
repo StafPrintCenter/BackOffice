@@ -51,16 +51,25 @@ export function useCreateAdminLesson() {
    { training, module, data: lesson } */
 
 interface LessonDetailResponse {
-  training: ModuleTrainingSummary;
-  module: { id: string; trainingId: string; title: string; sortOrder: number; isEnabled: boolean; status: string };
-  data: APIAdminLesson;
+  data: {
+    training: ModuleTrainingSummary;
+    module: {
+      id: string;
+      trainingId: string;
+      title: string;
+      sortOrder: number;
+      isEnabled: boolean;
+      status: string
+    };
+    lesson: APIAdminLesson;
+  };
 }
 
 async function fetchLessonDetail(lessonId: string): Promise<APIAdminLesson> {
   const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}`);
   if (!response.ok) throw new Error("Erreur lors de la récupération de la leçon");
   const json: LessonDetailResponse = await response.json();
-  return json.data;
+  return json.data.lesson;
 }
 
 export function useAdminLessonDetail(lessonId: string | undefined) {

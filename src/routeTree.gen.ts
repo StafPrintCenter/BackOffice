@@ -69,6 +69,7 @@ import { Route as AdminTrainingsCatalogsIdRouteImport } from './routes/_admin/tr
 import { Route as AdminTrainingsManageIdRouteImport } from './routes/_admin/trainings/manage/$id'
 import { Route as AdminTrainingsRegistrationsIndexRouteImport } from './routes/_admin/trainings/registrations/index'
 import { Route as AdminTrainingsRegistrationsIdRouteImport } from './routes/_admin/trainings/registrations/$id'
+import { Route as AdminTrainingsReviewsIndexRouteImport } from './routes/_admin/trainings/reviews/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -382,6 +383,12 @@ const AdminTrainingsRegistrationsIdRoute =
     path: '/trainings/registrations/$id',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminTrainingsReviewsIndexRoute =
+  AdminTrainingsReviewsIndexRouteImport.update({
+    id: '/trainings/reviews/',
+    path: '/trainings/reviews/',
+    getParentRoute: () => AdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -442,6 +449,7 @@ export interface FileRoutesByFullPath {
   '/reviews/responses/': typeof AdminReviewsResponsesIndexRoute
   '/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
   '/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
+  '/trainings/reviews/': typeof AdminTrainingsReviewsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -502,6 +510,7 @@ export interface FileRoutesByTo {
   '/reviews/responses': typeof AdminReviewsResponsesIndexRoute
   '/trainings/catalogs': typeof AdminTrainingsCatalogsIndexRoute
   '/trainings/registrations': typeof AdminTrainingsRegistrationsIndexRoute
+  '/trainings/reviews': typeof AdminTrainingsReviewsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -565,6 +574,7 @@ export interface FileRoutesById {
   '/_admin/reviews/responses/': typeof AdminReviewsResponsesIndexRoute
   '/_admin/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
   '/_admin/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
+  '/_admin/trainings/reviews/': typeof AdminTrainingsReviewsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -627,6 +637,7 @@ export interface FileRouteTypes {
     | '/reviews/responses/'
     | '/trainings/catalogs/'
     | '/trainings/registrations/'
+    | '/trainings/reviews/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -687,6 +698,7 @@ export interface FileRouteTypes {
     | '/reviews/responses'
     | '/trainings/catalogs'
     | '/trainings/registrations'
+    | '/trainings/reviews'
   id:
     | '__root__'
     | '/'
@@ -749,6 +761,7 @@ export interface FileRouteTypes {
     | '/_admin/reviews/responses/'
     | '/_admin/trainings/catalogs/'
     | '/_admin/trainings/registrations/'
+    | '/_admin/trainings/reviews/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1179,6 +1192,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTrainingsRegistrationsIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/trainings/reviews/': {
+      id: '/_admin/trainings/reviews/'
+      path: '/trainings/reviews'
+      fullPath: '/trainings/reviews/'
+      preLoaderRoute: typeof AdminTrainingsReviewsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -1238,6 +1258,7 @@ interface AdminRouteChildren {
   AdminReviewsResponsesIndexRoute: typeof AdminReviewsResponsesIndexRoute
   AdminTrainingsCatalogsIndexRoute: typeof AdminTrainingsCatalogsIndexRoute
   AdminTrainingsRegistrationsIndexRoute: typeof AdminTrainingsRegistrationsIndexRoute
+  AdminTrainingsReviewsIndexRoute: typeof AdminTrainingsReviewsIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -1296,6 +1317,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminReviewsResponsesIndexRoute: AdminReviewsResponsesIndexRoute,
   AdminTrainingsCatalogsIndexRoute: AdminTrainingsCatalogsIndexRoute,
   AdminTrainingsRegistrationsIndexRoute: AdminTrainingsRegistrationsIndexRoute,
+  AdminTrainingsReviewsIndexRoute: AdminTrainingsReviewsIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

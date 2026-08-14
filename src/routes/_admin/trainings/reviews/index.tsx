@@ -73,6 +73,26 @@ function AdminContentReviews() {
         description="Modules et leçons créés par les instructeurs, en attente de validation."
       />
 
+      {/* Raccourci */}
+      <div className="flex items-center gap-6 mb-4">
+        <div>
+          <Link to="/trainings/catalogs"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <GraduationCap className="h-4 w-4"
+            />
+            Voir le catalogue des formations
+          </Link>
+        </div>
+        <div>
+          <Link to="/trainings/registrations"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <UserRoundPlus className="h-4 w-4"
+            />
+            Voir les inscriptions
+          </Link>
+        </div>
+      </div>
+
       {isLoading ? (
         <div className="flex items-center justify-center py-24 text-muted-foreground">
           <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...

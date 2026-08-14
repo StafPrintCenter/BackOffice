@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
-import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson } from "@/data/trainingModules";
+import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, ModuleTrainingSummary } from "@/data/trainingModules";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();
@@ -15,13 +15,14 @@ function buildFormData(payload: Record<string, unknown>): FormData {
   return fd;
 }
 
-/* ---- Liste des modules d'une formation ---- */
+/* ---- Liste des modules d'une formation ----
+   ⚠️ Réponse désormais imbriquée : { data: [{ training, data: module }] } */
 
 async function fetchTrainingModules(trainingId: string): Promise<APIAdminTrainingModule[]> {
   const response = await adminFetch(`/api/admin/trainings/${trainingId}/modules/list`);
   if (!response.ok) throw new Error("Erreur lors de la récupération des modules");
-  const json: { data: APIAdminTrainingModule[] } = await response.json();
-  return json.data;
+  const json: { data: Array<{ training: ModuleTrainingSummary; data: APIAdminTrainingModule }> } = await response.json();
+  return json.data.map((item) => item.data);
 }
 
 export function useTrainingModulesList(trainingId: string | undefined) {
@@ -33,7 +34,7 @@ export function useTrainingModulesList(trainingId: string | undefined) {
   return { modules: query.data ?? [], isLoading: query.isLoading, isError: query.isError, refetch: query.refetch };
 }
 
-/* ---- Création d'un module ---- */
+/* ---- Création d'un module (endpoint inchangé, pas mentionné comme modifié) ---- */
 
 async function createModule(trainingId: string, payload: AdminTrainingModulePayload): Promise<APIAdminTrainingModule> {
   const response = await adminFetch(`/api/admin/trainings/${trainingId}/modules/create`, {
@@ -58,18 +59,29 @@ export function useCreateAdminTrainingModule() {
   });
 }
 
-/* ---- Détail d'un module (+ ses leçons, clé sœur de "data") ---- */
+/* ---- Détail d'un module (+ ses leçons) ----
+   ⚠️ URL confirmée : /admin/trainings/modules/{id} (déplacée depuis /admin/modules/{id}).
+   Réponse : { data: { training, data: module }, lessons: [{ training, module, data: lesson }] } */
 
 export interface ModuleDetailWithLessons {
   module: APIAdminTrainingModule;
+  training: ModuleTrainingSummary | null;
   lessons: APIAdminLesson[];
 }
 
 async function fetchModuleDetail(moduleId: string): Promise<ModuleDetailWithLessons> {
   const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}`);
   if (!response.ok) throw new Error("Erreur lors de la récupération du module");
-  const json: { data: APIAdminTrainingModule; lessons: APIAdminLesson[] } = await response.json();
-  return { module: json.data, lessons: json.lessons ?? [] };
+  const json: {
+    data: { training: ModuleTrainingSummary; data: APIAdminTrainingModule };
+    lessons: Array<{ training: ModuleTrainingSummary; module: unknown; data: APIAdminLesson }>;
+  } = await response.json();
+
+  return {
+    module: json.data.data,
+    training: json.data.training ?? null,
+    lessons: (json.lessons ?? []).map((item) => item.data),
+  };
 }
 
 export function useAdminModuleDetail(moduleId: string | undefined) {
@@ -80,6 +92,7 @@ export function useAdminModuleDetail(moduleId: string | undefined) {
   });
   return {
     module: query.data?.module ?? null,
+    trainingSummary: query.data?.training ?? null,
     lessons: query.data?.lessons ?? [],
     isLoading: query.isLoading,
     isError: query.isError,
@@ -87,7 +100,9 @@ export function useAdminModuleDetail(moduleId: string | undefined) {
   };
 }
 
-/* ---- Update / delete / publish d'un module ---- */
+/* ---- Update / delete / publish ----
+   ⚠️ URL supposée déplacée vers /admin/trainings/modules/{id} par cohérence avec le
+   détail — non confirmée par un curl explicite pour ces 3 actions. À valider. */
 
 async function updateModule(moduleId: string, payload: AdminTrainingModulePayload): Promise<APIAdminTrainingModule> {
   const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}`, {
@@ -120,7 +135,6 @@ async function deleteModule(moduleId: string): Promise<void> {
 
 export const deleteAdminTrainingModule = deleteModule;
 
-// On passe trainingId en entrée pour invalider le bon cache de liste (non extrait de la réponse DELETE).
 export function useDeleteAdminTrainingModule() {
   const qc = useQueryClient();
   return useMutation({

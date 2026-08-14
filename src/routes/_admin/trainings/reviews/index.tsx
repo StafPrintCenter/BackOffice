@@ -158,21 +158,26 @@ function AdminContentReviews() {
             >
               {/* En-tête formation */}
               <div className="flex flex-wrap items-center justify-between gap-3 border-b bg-muted/20 p-4">
-                <div>
-                  <Link
-                    to="/trainings/catalogs/$id/manage"
-                    params={{ id: group.training.id }}
-                    className="font-medium text-primary hover:underline"
-                  >
-                    {group.training.title}
-                  </Link>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[11px]">
-                    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 font-medium ${getTrainingLevelBadgeClass(group.training.level)}`}>
-                      {group.training.level}
-                    </span>
-                    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 font-medium ${getTrainingStatusBadgeClass(group.training.status)}`}>
-                      {getTrainingStatusLabel(group.training.status)}
-                    </span>
+                <div className="flex items-start gap-2.5">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0 mt-0.5">
+                    <GraduationCap className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <Link
+                      to="/trainings/catalogs/$id/manage"
+                      params={{ id: group.training.id }}
+                      className="font-medium text-primary hover:underline"
+                    >
+                      {group.training.title}
+                    </Link>
+                    <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px]">
+                      <span className={`inline-flex items-center rounded-full border px-2 py-0.5 font-medium ${getTrainingLevelBadgeClass(group.training.level)}`}>
+                        {group.training.level}
+                      </span>
+                      <span className={`inline-flex items-center rounded-full border px-2 py-0.5 font-medium ${getTrainingStatusBadgeClass(group.training.status)}`}>
+                        {getTrainingStatusLabel(group.training.status)}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <span className="text-xs text-muted-foreground">

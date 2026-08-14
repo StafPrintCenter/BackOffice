@@ -4,8 +4,8 @@ import type { APIAdminUser, AdminInviteVerifyResponse } from "@/data/auth";
 
 export interface AuthUser {
   id: string;
-  first_name: string;
-  last_name: string;
+  // first_name: string;
+  // last_name: string;
   firstName: string;
   lastName: string;
   name: string;
@@ -25,25 +25,33 @@ export interface AuthUser {
   updated_at: string;
 }
 
-function toAuthUser(admin: APIAdminUser): AuthUser {
+function toAdminAuthUser(rawAdmin: any): AuthUser {
+  const admin = rawAdmin?.data ?? rawAdmin?.admin ?? rawAdmin ?? {};
+  const firstName = admin.firstName ?? admin.first_name ?? "";
+  const lastName = admin.lastName ?? admin.last_name ?? "";
+  const fullName = (admin.fullname ?? admin.name ?? `${firstName} ${lastName}`.trim()) || "Administrateur";
+
   return {
-    id: admin.id,
-    first_name: admin.first_name,
-    last_name: admin.last_name,
-    name: `${admin.first_name} ${admin.last_name}`.trim(),
-    email: admin.email,
-    photo: admin.photo,
-    bio: admin.bio,
-    email_verified_at: admin.email_verified_at,
-    level: admin.level,
-    invited_by: admin.invited_by,
-    invited_at: admin.invited_at,
-    accepted_at: admin.accepted_at,
-    is_active: admin.is_active,
-    blocked_at: admin.blocked_at,
-    blocked_reason: admin.blocked_reason,
-    created_at: admin.created_at,
-    updated_at: admin.updated_at,
+    id: admin.id ?? "",
+    // first_name: firstName,
+    // last_name: lastName,
+    firstName: firstName,
+    lastName: lastName,
+    name: fullName,
+    fullname: fullName,
+    email: admin.email ?? "",
+    photo: admin.photo ?? null,
+    bio: admin.bio ?? null,
+    email_verified_at: admin.email_verified_at ?? null,
+    level: admin.level ?? "admin",
+    invited_by: admin.invitedBy ?? admin.invited_by ?? null,
+    invited_at: admin.invitedAt ?? admin.invited_at ?? null,
+    accepted_at: admin.acceptedAt ?? admin.accepted_at ?? null,
+    is_active: admin.isActive ?? admin.is_active ?? true,
+    blocked_at: admin.blockedAt ?? admin.blocked_at ?? null,
+    blocked_reason: admin.blockedReason ?? admin.blocked_reason ?? null,
+    created_at: admin.createdAt ?? admin.created_at ?? "",
+    updated_at: admin.updatedAt ?? admin.updated_at ?? "",
   };
 }
 
@@ -58,7 +66,7 @@ function notify() {
 async function bootstrap() {
   try {
     const admin = await fetchAdminMe();
-    sharedUser = admin ? toAuthUser(admin) : null;
+    sharedUser = admin ? toAdminAuthUser(admin) : null;
   } catch {
     sharedUser = null;
   } finally {
@@ -94,7 +102,7 @@ export function useAdminAuth() {
         "La session n'a pas pu être établie."
       );
     }
-    sharedUser = toAuthUser(admin);
+    sharedUser = toAdminAuthUser(admin);
     sharedReady = true;
     notify();
   }, []);

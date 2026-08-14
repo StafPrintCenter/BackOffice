@@ -166,7 +166,7 @@ function AdminContentReviews() {
                     <Link
                       to="/trainings/catalogs/$id/manage"
                       params={{ id: group.training.id }}
-                      className="font-medium text-primary hover:underline"
+                      className="inline-flex items-center gap-1.5 font-medium text-primary hover:underline group"
                     >
                       <span>{group.training.title}</span>
                       <ExternalLink className="h-3.5 w-3.5 opacity-70 transition-opacity group-hover:opacity-100 shrink-0" />
@@ -193,8 +193,9 @@ function AdminContentReviews() {
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <BookOpen className="h-3.5 w-3.5 shrink-0 text-primary" />
-                          <span className="font-medium">{m.title}</span>
+                          {/* Icone Module */}
+                          <FolderKanban className="h-4 w-4 shrink-0 text-primary" />
+                          <span className="font-semibold">{m.title}</span>
                           <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getContentStatusBadgeClass(m.status)}`}>
                             {getContentStatusLabel(m.status)}
                           </span>

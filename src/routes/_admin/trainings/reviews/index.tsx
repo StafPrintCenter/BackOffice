@@ -204,8 +204,8 @@ function AdminContentReviews() {
                             {m.isEnabled ? "Activé" : "Désactivé"}
                           </span>
                         </div>
-                        {m.description && <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">{m.description}</p>}
-                        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+                        {m.description && <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2 pl-6">{m.description}</p>}
+                        <div className="mt-1.5 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground pl-6">
                           <span>{m.lessons.length} leçon{m.lessons.length !== 1 ? "s" : ""} en attente · Ordre {m.sortOrder}</span>
                           {(() => {
                             const creator = getContentCreator(m.createdByAdmin, m.createdByInstructor);
@@ -233,24 +233,28 @@ function AdminContentReviews() {
 
                     {/* Leçons en attente de ce module */}
                     {m.lessons.length > 0 && (
-                      <div className="mt-3 space-y-2 border-l-2 pl-4">
+                      <div className="mt-3 space-y-2 border-l-2 border-primary/20 pl-4 ml-2">
                         {m.lessons.map((l: PendingReviewLesson) => {
-                          const Icon = getLessonKindIcon(l.kind);
+                          // Icone dynamique de la leçon selon son kind
+                          const LessonIcon = getLessonKindIcon(l.kind);
                           const creator = getContentCreator(l.createdByAdmin, l.createdByInstructor);
                           return (
                             <div key={l.id} className="flex flex-wrap items-start justify-between gap-3 rounded-lg border bg-muted/10 p-3">
                               <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-1.5">
-                                  <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />
+                                <div className="flex items-center gap-2">
+                                  <div className="p-1 rounded bg-background border text-primary shrink-0">
+                                    <LessonIcon className="h-3.5 w-3.5" />
+                                  </div>
                                   <span className="text-sm font-medium">{l.title}</span>
-                                  {l.isMandatory && <span className="text-destructive text-xs">*</span>}
+                                  {l.isMandatory && <span className="text-destructive text-xs font-bold" title="Obligatoire">*</span>}
                                   <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getContentStatusBadgeClass(l.status)}`}>
                                     {getContentStatusLabel(l.status)}
                                   </span>
                                 </div>
-                                {l.brief && <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">{l.brief}</p>}
-                                <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
-                                  <span>{LESSON_KIND_LABELS[l.kind] ?? l.kind} · Ordre {l.sortOrder}</span>
+                                {l.brief && <p className="mt-1 text-xs text-muted-foreground line-clamp-2 pl-7">{l.brief}</p>}
+                                <div className="mt-1.5 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground pl-7">
+                                  <span className="font-medium text-foreground/80">{LESSON_KIND_LABELS[l.kind] ?? l.kind}</span>
+                                  <span>· Ordre {l.sortOrder}</span>
                                   {l.durationMinutes != null && (
                                     <span className="inline-flex items-center gap-1">
                                       <Clock className="h-3 w-3" /> {l.durationMinutes} min
@@ -315,6 +319,7 @@ function AdminContentReviews() {
         </div>
       )}
 
+      {/* Dialogue de validation/rejet */}
       <Dialog open={dialog.open} onOpenChange={(v) => setDialog({ open: v })}>
         <DialogContent className="max-w-md">
           <DialogHeader>

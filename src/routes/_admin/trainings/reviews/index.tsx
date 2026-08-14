@@ -160,7 +160,7 @@ function AdminContentReviews() {
               <div className="flex flex-wrap items-center justify-between gap-3 border-b bg-muted/20 p-4">
                 <div>
                   <Link
-                    to="/trainings/manage/$id"
+                    to="/trainings/catalogs/$id/manage"
                     params={{ id: group.training.id }}
                     className="font-medium text-primary hover:underline"
                   >

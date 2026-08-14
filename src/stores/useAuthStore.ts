@@ -27,7 +27,8 @@ export async function fetchAdminMe(): Promise<APIAdminUser | null> {
   if (!response.ok) {
     throw new AdminAuthApiError("Erreur lors de la vérification de la session.");
   }
-  return response.json();
+  const body = await response.json();
+  return body?.data ?? body?.admin ?? body;
 }
 
 export async function logoutAdmin(): Promise<void> {

@@ -12,7 +12,7 @@ function buildFormData(payload: Record<string, unknown>): FormData {
 }
 
 async function fetchPendingReviews(): Promise<APIPendingContentReviews> {
-  const response = await adminFetch(`/api/admin/content-reviews/pending`);
+  const response = await adminFetch(`/api/admin/trainings/content-reviews/pending`);
   if (!response.ok) throw new Error("Erreur lors de la récupération des soumissions en attente");
   return response.json();
 }

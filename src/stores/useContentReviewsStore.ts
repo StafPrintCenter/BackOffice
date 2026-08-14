@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
-import type { APIPaginatedPendingContentReviews, PendingContentReviewsParams, AdminContentReviewPayload, APIAdminContentReview } from "@/data/contentReviews";
+import type { PendingReviewsResponse, PendingReviewsParams, AdminContentReviewPayload, APIAdminContentReview } from "@/data/contentReviews";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();
@@ -11,22 +11,20 @@ function buildFormData(payload: Record<string, unknown>): FormData {
   return fd;
 }
 
-async function fetchPendingReviews(params?: PendingContentReviewsParams): Promise<APIPaginatedPendingContentReviews> {
-  const queryParams = new URLSearchParams();
-  if (params?.query) queryParams.set("query", params.query);
-  if (params?.sort_by) queryParams.set("sort_by", params.sort_by);
-  if (params?.sort_order) queryParams.set("sort_order", params.sort_order);
-  if (params?.per_page) queryParams.set("per_page", String(params.per_page));
-  if (params?.page) queryParams.set("page", String(params.page));
+async function fetchPendingReviews(params: PendingReviewsParams = {}): Promise<PendingReviewsResponse> {
+  const qp = new URLSearchParams();
+  if (params.query) qp.append("query", params.query);
+  if (params.sort_by) qp.append("sort_by", params.sort_by);
+  if (params.sort_order) qp.append("sort_order", params.sort_order);
+  if (params.per_page) qp.append("per_page", String(params.per_page));
+  if (params.page) qp.append("page", String(params.page));
 
-  const url = `/api/admin/trainings/content-reviews/pending${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
-  const response = await adminFetch(url);
-
+  const response = await adminFetch(`/api/admin/trainings/content-reviews/pending?${qp.toString()}`);
   if (!response.ok) throw new Error("Erreur lors de la récupération des soumissions en attente");
   return response.json();
 }
 
-export function usePendingContentReviews(params?: PendingContentReviewsParams) {
+export function usePendingContentReviews(params: PendingReviewsParams = {}) {
   const query = useQuery({
     queryKey: ["content-reviews", "pending", params],
     queryFn: () => fetchPendingReviews(params),
@@ -34,8 +32,17 @@ export function usePendingContentReviews(params?: PendingContentReviewsParams) {
   });
 
   return {
-    paginatedData: query.data,
-    groups: query.data?.data ?? [],
+    trainingGroups: query.data?.data ?? [],
+    meta: query.data
+      ? {
+        currentPage: query.data.current_page,
+        lastPage: query.data.last_page,
+        total: query.data.total,
+        perPage: query.data.per_page,
+        from: query.data.from,
+        to: query.data.to,
+      }
+      : null,
     isLoading: query.isLoading,
     isError: query.isError,
     refetch: query.refetch,

@@ -15,14 +15,13 @@ function buildFormData(payload: Record<string, unknown>): FormData {
   return fd;
 }
 
-/* ---- Liste des modules d'une formation ----
-   ⚠️ Réponse désormais imbriquée : { data: [{ training, data: module }] } */
 
 async function fetchTrainingModules(trainingId: string): Promise<APIAdminTrainingModule[]> {
   const response = await adminFetch(`/api/admin/trainings/${trainingId}/modules/list`);
   if (!response.ok) throw new Error("Erreur lors de la récupération des modules");
-  const json: { data: Array<{ training: ModuleTrainingSummary; data: APIAdminTrainingModule }> } = await response.json();
-  return json.data.map((item) => item.data);
+
+  const json: { data: Array<{ training: ModuleTrainingSummary; module: APIAdminTrainingModule }> } = await response.json();
+  return json.data.map((item) => item.module);
 }
 
 export function useTrainingModulesList(trainingId: string | undefined) {

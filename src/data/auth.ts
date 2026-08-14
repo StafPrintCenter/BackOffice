@@ -8,8 +8,8 @@ export type APIAdminUser = {
   id: string;
   firstName?: string;
   lastName?: string;
-  first_name?: string;
-  last_name?: string;
+  // first_name?: string;
+  // last_name?: string;
   fullname?: string;
   name?: string;
   email: string;

@@ -1,3 +1,6 @@
+import type { LessonKind, ContentStatus } from "@/data/trainingModules";
+import type { TrainingLevel, TrainingStatus } from "@/data/trainings";
+
 export type ContentReviewableType = "module" | "lesson";
 export type ContentReviewDecision = "approved" | "rejected";
 

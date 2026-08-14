@@ -65,11 +65,13 @@ import { Route as AdminReviewsInvitesIdRouteImport } from './routes/_admin/revie
 import { Route as AdminReviewsResponsesIndexRouteImport } from './routes/_admin/reviews/responses/index'
 import { Route as AdminReviewsResponsesIdRouteImport } from './routes/_admin/reviews/responses/$id'
 import { Route as AdminTrainingsCatalogsIndexRouteImport } from './routes/_admin/trainings/catalogs/index'
-import { Route as AdminTrainingsCatalogsIdRouteImport } from './routes/_admin/trainings/catalogs/$id'
+import { Route as AdminTrainingsCatalogsReviRouteImport } from './routes/_admin/trainings/catalogs/revi'
 import { Route as AdminTrainingsManageIdRouteImport } from './routes/_admin/trainings/manage/$id'
 import { Route as AdminTrainingsRegistrationsIndexRouteImport } from './routes/_admin/trainings/registrations/index'
 import { Route as AdminTrainingsRegistrationsIdRouteImport } from './routes/_admin/trainings/registrations/$id'
 import { Route as AdminTrainingsReviewsIndexRouteImport } from './routes/_admin/trainings/reviews/index'
+import { Route as AdminTrainingsCatalogsIdIndexRouteImport } from './routes/_admin/trainings/catalogs/$id/index'
+import { Route as AdminTrainingsCatalogsIdManageRouteImport } from './routes/_admin/trainings/catalogs/$id/manage'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -360,10 +362,10 @@ const AdminTrainingsCatalogsIndexRoute =
     path: '/trainings/catalogs/',
     getParentRoute: () => AdminRoute,
   } as any)
-const AdminTrainingsCatalogsIdRoute =
-  AdminTrainingsCatalogsIdRouteImport.update({
-    id: '/trainings/catalogs/$id',
-    path: '/trainings/catalogs/$id',
+const AdminTrainingsCatalogsReviRoute =
+  AdminTrainingsCatalogsReviRouteImport.update({
+    id: '/trainings/catalogs/revi',
+    path: '/trainings/catalogs/revi',
     getParentRoute: () => AdminRoute,
   } as any)
 const AdminTrainingsManageIdRoute = AdminTrainingsManageIdRouteImport.update({
@@ -387,6 +389,18 @@ const AdminTrainingsReviewsIndexRoute =
   AdminTrainingsReviewsIndexRouteImport.update({
     id: '/trainings/reviews/',
     path: '/trainings/reviews/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminTrainingsCatalogsIdIndexRoute =
+  AdminTrainingsCatalogsIdIndexRouteImport.update({
+    id: '/trainings/catalogs/$id/',
+    path: '/trainings/catalogs/$id/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminTrainingsCatalogsIdManageRoute =
+  AdminTrainingsCatalogsIdManageRouteImport.update({
+    id: '/trainings/catalogs/$id/manage',
+    path: '/trainings/catalogs/$id/manage',
     getParentRoute: () => AdminRoute,
   } as any)
 
@@ -433,7 +447,7 @@ export interface FileRoutesByFullPath {
   '/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
-  '/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
+  '/trainings/catalogs/revi': typeof AdminTrainingsCatalogsReviRoute
   '/trainings/manage/$id': typeof AdminTrainingsManageIdRoute
   '/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
   '/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
@@ -450,6 +464,8 @@ export interface FileRoutesByFullPath {
   '/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
   '/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
   '/trainings/reviews/': typeof AdminTrainingsReviewsIndexRoute
+  '/trainings/catalogs/$id/manage': typeof AdminTrainingsCatalogsIdManageRoute
+  '/trainings/catalogs/$id/': typeof AdminTrainingsCatalogsIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -494,7 +510,7 @@ export interface FileRoutesByTo {
   '/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
-  '/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
+  '/trainings/catalogs/revi': typeof AdminTrainingsCatalogsReviRoute
   '/trainings/manage/$id': typeof AdminTrainingsManageIdRoute
   '/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
   '/jobs/applications': typeof AdminJobsApplicationsIndexRoute
@@ -511,6 +527,8 @@ export interface FileRoutesByTo {
   '/trainings/catalogs': typeof AdminTrainingsCatalogsIndexRoute
   '/trainings/registrations': typeof AdminTrainingsRegistrationsIndexRoute
   '/trainings/reviews': typeof AdminTrainingsReviewsIndexRoute
+  '/trainings/catalogs/$id/manage': typeof AdminTrainingsCatalogsIdManageRoute
+  '/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -558,7 +576,7 @@ export interface FileRoutesById {
   '/_admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/_admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/_admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
-  '/_admin/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdRoute
+  '/_admin/trainings/catalogs/revi': typeof AdminTrainingsCatalogsReviRoute
   '/_admin/trainings/manage/$id': typeof AdminTrainingsManageIdRoute
   '/_admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
   '/_admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
@@ -575,6 +593,8 @@ export interface FileRoutesById {
   '/_admin/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
   '/_admin/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
   '/_admin/trainings/reviews/': typeof AdminTrainingsReviewsIndexRoute
+  '/_admin/trainings/catalogs/$id/manage': typeof AdminTrainingsCatalogsIdManageRoute
+  '/_admin/trainings/catalogs/$id/': typeof AdminTrainingsCatalogsIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -621,7 +641,7 @@ export interface FileRouteTypes {
     | '/reviews/forms/$id'
     | '/reviews/invites/$id'
     | '/reviews/responses/$id'
-    | '/trainings/catalogs/$id'
+    | '/trainings/catalogs/revi'
     | '/trainings/manage/$id'
     | '/trainings/registrations/$id'
     | '/jobs/applications/'
@@ -638,6 +658,8 @@ export interface FileRouteTypes {
     | '/trainings/catalogs/'
     | '/trainings/registrations/'
     | '/trainings/reviews/'
+    | '/trainings/catalogs/$id/manage'
+    | '/trainings/catalogs/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -682,7 +704,7 @@ export interface FileRouteTypes {
     | '/reviews/forms/$id'
     | '/reviews/invites/$id'
     | '/reviews/responses/$id'
-    | '/trainings/catalogs/$id'
+    | '/trainings/catalogs/revi'
     | '/trainings/manage/$id'
     | '/trainings/registrations/$id'
     | '/jobs/applications'
@@ -699,6 +721,8 @@ export interface FileRouteTypes {
     | '/trainings/catalogs'
     | '/trainings/registrations'
     | '/trainings/reviews'
+    | '/trainings/catalogs/$id/manage'
+    | '/trainings/catalogs/$id'
   id:
     | '__root__'
     | '/'
@@ -745,7 +769,7 @@ export interface FileRouteTypes {
     | '/_admin/reviews/forms/$id'
     | '/_admin/reviews/invites/$id'
     | '/_admin/reviews/responses/$id'
-    | '/_admin/trainings/catalogs/$id'
+    | '/_admin/trainings/catalogs/revi'
     | '/_admin/trainings/manage/$id'
     | '/_admin/trainings/registrations/$id'
     | '/_admin/jobs/applications/'
@@ -762,6 +786,8 @@ export interface FileRouteTypes {
     | '/_admin/trainings/catalogs/'
     | '/_admin/trainings/registrations/'
     | '/_admin/trainings/reviews/'
+    | '/_admin/trainings/catalogs/$id/manage'
+    | '/_admin/trainings/catalogs/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1164,11 +1190,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTrainingsCatalogsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_admin/trainings/catalogs/$id': {
-      id: '/_admin/trainings/catalogs/$id'
-      path: '/trainings/catalogs/$id'
-      fullPath: '/trainings/catalogs/$id'
-      preLoaderRoute: typeof AdminTrainingsCatalogsIdRouteImport
+    '/_admin/trainings/catalogs/revi': {
+      id: '/_admin/trainings/catalogs/revi'
+      path: '/trainings/catalogs/revi'
+      fullPath: '/trainings/catalogs/revi'
+      preLoaderRoute: typeof AdminTrainingsCatalogsReviRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/trainings/manage/$id': {
@@ -1197,6 +1223,20 @@ declare module '@tanstack/react-router' {
       path: '/trainings/reviews'
       fullPath: '/trainings/reviews/'
       preLoaderRoute: typeof AdminTrainingsReviewsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/trainings/catalogs/$id/': {
+      id: '/_admin/trainings/catalogs/$id/'
+      path: '/trainings/catalogs/$id'
+      fullPath: '/trainings/catalogs/$id/'
+      preLoaderRoute: typeof AdminTrainingsCatalogsIdIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/trainings/catalogs/$id/manage': {
+      id: '/_admin/trainings/catalogs/$id/manage'
+      path: '/trainings/catalogs/$id/manage'
+      fullPath: '/trainings/catalogs/$id/manage'
+      preLoaderRoute: typeof AdminTrainingsCatalogsIdManageRouteImport
       parentRoute: typeof AdminRoute
     }
   }
@@ -1242,7 +1282,7 @@ interface AdminRouteChildren {
   AdminReviewsFormsIdRoute: typeof AdminReviewsFormsIdRoute
   AdminReviewsInvitesIdRoute: typeof AdminReviewsInvitesIdRoute
   AdminReviewsResponsesIdRoute: typeof AdminReviewsResponsesIdRoute
-  AdminTrainingsCatalogsIdRoute: typeof AdminTrainingsCatalogsIdRoute
+  AdminTrainingsCatalogsReviRoute: typeof AdminTrainingsCatalogsReviRoute
   AdminTrainingsManageIdRoute: typeof AdminTrainingsManageIdRoute
   AdminTrainingsRegistrationsIdRoute: typeof AdminTrainingsRegistrationsIdRoute
   AdminJobsApplicationsIndexRoute: typeof AdminJobsApplicationsIndexRoute
@@ -1259,6 +1299,8 @@ interface AdminRouteChildren {
   AdminTrainingsCatalogsIndexRoute: typeof AdminTrainingsCatalogsIndexRoute
   AdminTrainingsRegistrationsIndexRoute: typeof AdminTrainingsRegistrationsIndexRoute
   AdminTrainingsReviewsIndexRoute: typeof AdminTrainingsReviewsIndexRoute
+  AdminTrainingsCatalogsIdManageRoute: typeof AdminTrainingsCatalogsIdManageRoute
+  AdminTrainingsCatalogsIdIndexRoute: typeof AdminTrainingsCatalogsIdIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -1301,7 +1343,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminReviewsFormsIdRoute: AdminReviewsFormsIdRoute,
   AdminReviewsInvitesIdRoute: AdminReviewsInvitesIdRoute,
   AdminReviewsResponsesIdRoute: AdminReviewsResponsesIdRoute,
-  AdminTrainingsCatalogsIdRoute: AdminTrainingsCatalogsIdRoute,
+  AdminTrainingsCatalogsReviRoute: AdminTrainingsCatalogsReviRoute,
   AdminTrainingsManageIdRoute: AdminTrainingsManageIdRoute,
   AdminTrainingsRegistrationsIdRoute: AdminTrainingsRegistrationsIdRoute,
   AdminJobsApplicationsIndexRoute: AdminJobsApplicationsIndexRoute,
@@ -1318,6 +1360,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminTrainingsCatalogsIndexRoute: AdminTrainingsCatalogsIndexRoute,
   AdminTrainingsRegistrationsIndexRoute: AdminTrainingsRegistrationsIndexRoute,
   AdminTrainingsReviewsIndexRoute: AdminTrainingsReviewsIndexRoute,
+  AdminTrainingsCatalogsIdManageRoute: AdminTrainingsCatalogsIdManageRoute,
+  AdminTrainingsCatalogsIdIndexRoute: AdminTrainingsCatalogsIdIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

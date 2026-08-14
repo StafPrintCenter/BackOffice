@@ -26,15 +26,16 @@ async function fetchPendingReviews(params?: PendingContentReviewsParams): Promis
   return response.json();
 }
 
-export function usePendingContentReviews() {
+export function usePendingContentReviews(params?: PendingContentReviewsParams) {
   const query = useQuery({
-    queryKey: ["content-reviews", "pending"],
-    queryFn: fetchPendingReviews,
+    queryKey: ["content-reviews", "pending", params],
+    queryFn: () => fetchPendingReviews(params),
     staleTime: 1000 * 15,
   });
+
   return {
-    modules: query.data?.modules ?? [],
-    lessons: query.data?.lessons ?? [],
+    paginatedData: query.data,
+    groups: query.data?.data ?? [],
     isLoading: query.isLoading,
     isError: query.isError,
     refetch: query.refetch,

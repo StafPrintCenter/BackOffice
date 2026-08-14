@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
-import type { APIPendingContentReviews, AdminContentReviewPayload, APIAdminContentReview } from "@/data/contentReviews";
+import type {
+  APIPaginatedPendingContentReviews,
+  PendingContentReviewsParams,
+  AdminContentReviewPayload,
+  APIAdminContentReview,
+} from "@/data/contentReviews";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();

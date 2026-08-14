@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, ClipboardClock } from "lucide-react";
 import { PageHeader, DataTable } from "@/components/site";
 import { useAdminTrainingRegistrationsList } from "@/stores/useTrainingRegistrationsStore";
 import { type APIAdminTrainingRegistration, getStatusBadge, getStatusLabel, } from "@/data/trainingRegistrations";
@@ -27,14 +27,23 @@ function AdminTrainingRegistrations() {
       />
 
       {/* Raccourci */}
-      <div className="mb-4">
-        <Link
-          to="/trainings/catalogs"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-        >
-          <GraduationCap className="h-4 w-4" />
-          Voir le catalogue des formations
-        </Link>
+      <div className="flex items-center gap-6 mb-4">
+        <div>
+          <Link to="/trainings/catalogs"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <GraduationCap className="h-4 w-4"
+            />
+            Voir le catalogue des formations
+          </Link>
+        </div>
+        <div>
+          <Link to="/trainings/reviews"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <ClipboardClock className="h-4 w-4"
+            />
+            Voir les soummissions en attentes
+          </Link>
+        </div>
       </div>
 
       <DataTable<APIAdminTrainingRegistration>

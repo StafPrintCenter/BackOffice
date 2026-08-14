@@ -6,21 +6,33 @@ export type AdminLevel = "super_admin" | "admin" | string;
  */
 export type APIAdminUser = {
   id: string;
-  first_name: string;
-  last_name: string;
+  firstName?: string;
+  lastName?: string;
+  first_name?: string;
+  last_name?: string;
+  fullname?: string;
+  name?: string;
   email: string;
-  photo: string | null;
-  bio: string | null;
-  email_verified_at: string | null;
+  photo?: string | null;
+  bio?: string | null;
+  email_verified_at?: string | null;
   level: AdminLevel;
-  invited_by: string | null;
-  invited_at: string | null;
-  accepted_at: string | null;
-  is_active: boolean;
-  blocked_at: string | null;
-  blocked_reason: string | null;
-  created_at: string;
-  updated_at: string;
+  invitedBy?: string | null;
+  invited_by?: string | null;
+  invitedAt?: string | null;
+  invited_at?: string | null;
+  acceptedAt?: string | null;
+  accepted_at?: string | null;
+  isActive?: boolean;
+  is_active?: boolean;
+  blockedAt?: string | null;
+  blocked_at?: string | null;
+  blockedReason?: string | null;
+  blocked_reason?: string | null;
+  createdAt?: string;
+  created_at?: string;
+  updatedAt?: string;
+  updated_at?: string;
 };
 
 export type APILoginResponse = {

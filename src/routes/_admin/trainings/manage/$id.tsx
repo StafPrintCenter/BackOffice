@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
 import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
 import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson, useAdminLessonDetail } from "@/stores/useLessonsStore";
+import { useCreateAdminContentReview } from "@/stores/useContentReviewsStore";
 import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS, getLessonKindIcon, toYoutubeEmbedUrl, getContentCreator } from "@/data/trainingModules";
 import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload, LessonKind } from "@/data/trainingModules";
 import { SITE } from "@/data/site";
@@ -45,6 +46,12 @@ const emptyLessonForm: LessonFormValues = {
   title: "", kind: "video", sort_order: "0", duration_minutes: "", content: "",
   video_url: "", chapters: [""], brief: "", is_mandatory: false,
 };
+
+// Groupes de kinds partageant les mêmes champs conditionnels.
+const KINDS_WITH_CHAPTERS: LessonKind[] = ["video", "reading"];
+const KINDS_WITH_VIDEO_URL: LessonKind[] = ["video"];
+const KINDS_WITH_CONTENT: LessonKind[] = ["reading"];
+const KINDS_WITH_BRIEF: LessonKind[] = ["quiz", "exercise", "assignment", "project"];
 
 function formatDate(dateStr?: string | null): string {
   if (!dateStr) return "—";
@@ -85,6 +92,7 @@ function TrainingManageDetail() {
   const updateLessonMutation = useUpdateAdminLesson();
   const deleteLessonMutation = useDeleteAdminLesson();
   const publishLessonMutation = usePublishAdminLesson();
+  const reviewMutation = useCreateAdminContentReview();
 
   const [expandedModuleId, setExpandedModuleId] = useState<string | null>(null);
   const { module: expandedModule, lessons, isLoading: lessonsLoading } = useAdminModuleDetail(expandedModuleId ?? undefined);
@@ -104,6 +112,15 @@ function TrainingManageDetail() {
   const [lessonForm, setLessonForm] = useState<LessonFormValues>(emptyLessonForm);
   const [lessonErrors, setLessonErrors] = useState<Record<string, string>>({});
   const [lessonToDelete, setLessonToDelete] = useState<{ moduleId: string; lesson: APIAdminLesson } | null>(null);
+
+  const [reviewDialog, setReviewDialog] = useState<{
+    open: boolean;
+    type: "module" | "lesson";
+    id: string;
+    title: string;
+    decision: "approved" | "rejected";
+  } | null>(null);
+  const [reviewComment, setReviewComment] = useState("");
 
   const toggleModule = (moduleId: string) => {
     setExpandedModuleId((current) => (current === moduleId ? null : moduleId));
@@ -188,17 +205,23 @@ function TrainingManageDetail() {
     }
     setLessonErrors({});
 
-    const cleanChapters = lessonForm.chapters.map((c) => c.trim()).filter(Boolean);
+    const showChapters = KINDS_WITH_CHAPTERS.includes(lessonForm.kind);
+    const showVideoUrl = KINDS_WITH_VIDEO_URL.includes(lessonForm.kind);
+    const showContent = KINDS_WITH_CONTENT.includes(lessonForm.kind);
+    const showBrief = KINDS_WITH_BRIEF.includes(lessonForm.kind);
+
+    const cleanChapters = showChapters ? lessonForm.chapters.map((c) => c.trim()).filter(Boolean) : [];
 
     const payload: AdminLessonPayload = {
       title: lessonForm.title.trim(),
       kind: lessonForm.kind,
       sort_order: lessonForm.sort_order === "" ? undefined : Number(lessonForm.sort_order),
       duration_minutes: lessonForm.duration_minutes === "" ? undefined : Number(lessonForm.duration_minutes),
-      content: lessonForm.content.trim() || undefined,
-      video_url: lessonForm.video_url.trim() || undefined,
-      chapters: cleanChapters.length > 0 ? cleanChapters : undefined,
-      brief: lessonForm.brief.trim() || undefined,
+      // On n'envoie que les champs pertinents pour le kind sélectionné,
+      content: showContent ? (lessonForm.content.trim() || undefined) : undefined,
+      video_url: showVideoUrl ? (lessonForm.video_url.trim() || undefined) : undefined,
+      chapters: showChapters && cleanChapters.length > 0 ? cleanChapters : undefined,
+      brief: showBrief ? (lessonForm.brief.trim() || undefined) : undefined,
       is_mandatory: lessonForm.is_mandatory,
     };
 
@@ -228,6 +251,30 @@ function TrainingManageDetail() {
     });
   };
 
+  const openReview = (type: "module" | "lesson", reviewId: string, title: string, decision: "approved" | "rejected") => {
+    setReviewComment("");
+    setReviewDialog({ open: true, type, id: reviewId, title, decision });
+  };
+
+  const submitReview = () => {
+    if (!reviewDialog) return;
+    reviewMutation.mutate(
+      {
+        reviewable_type: reviewDialog.type,
+        reviewable_id: reviewDialog.id,
+        decision: reviewDialog.decision,
+        comment: reviewComment.trim() || undefined,
+      },
+      {
+        onSuccess: () => {
+          toast.success(reviewDialog.decision === "approved" ? "Contenu approuvé" : "Contenu rejeté");
+          setReviewDialog(null);
+        },
+        onError: () => toast.error("Erreur lors de l'enregistrement de la décision"),
+      }
+    );
+  };
+
   if (trainingLoading) {
     return (
       <div className="flex items-center justify-center py-24 text-muted-foreground">
@@ -248,6 +295,12 @@ function TrainingManageDetail() {
       </>
     );
   }
+
+  // Détermine quels champs afficher dans le dialog de leçon, selon le type sélectionné.
+  const showChapters = KINDS_WITH_CHAPTERS.includes(lessonForm.kind);
+  const showVideoUrl = KINDS_WITH_VIDEO_URL.includes(lessonForm.kind);
+  const showContent = KINDS_WITH_CONTENT.includes(lessonForm.kind);
+  const showBrief = KINDS_WITH_BRIEF.includes(lessonForm.kind);
 
   return (
     <>
@@ -317,7 +370,29 @@ function TrainingManageDetail() {
                   <Button type="button" variant="ghost" size="sm" onClick={() => openEditModule(m)}>
                     <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier
                   </Button>
-                  {m.status !== "published" && (
+                  {m.status === "pending_review" && (
+                    <>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="text-emerald-600 hover:bg-emerald-500/10"
+                        onClick={() => openReview("module", m.id, m.title, "approved")}
+                      >
+                        <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Approuver
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive hover:bg-destructive/10"
+                        onClick={() => openReview("module", m.id, m.title, "rejected")}
+                      >
+                        <XCircle className="h-3.5 w-3.5 mr-1" /> Rejeter
+                      </Button>
+                    </>
+                  )}
+                  {m.status !== "published" && m.status !== "pending_review" && (
                     <Button type="button" variant="ghost" size="sm" onClick={() => handlePublishModule(m)} disabled={publishModuleMutation.isPending}>
                       <Rocket className="h-3.5 w-3.5 mr-1" /> Publier
                     </Button>
@@ -389,7 +464,29 @@ function TrainingManageDetail() {
                                 <Button type="button" variant="ghost" size="sm" onClick={() => openEditLesson(m.id, l)}>
                                   <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier
                                 </Button>
-                                {l.status !== "published" && (
+                                {l.status === "pending_review" && (
+                                  <>
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      className="text-emerald-600 hover:bg-emerald-500/10"
+                                      onClick={() => openReview("lesson", l.id, l.title, "approved")}
+                                    >
+                                      <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Approuver
+                                    </Button>
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      className="text-destructive hover:bg-destructive/10"
+                                      onClick={() => openReview("lesson", l.id, l.title, "rejected")}
+                                    >
+                                      <XCircle className="h-3.5 w-3.5 mr-1" /> Rejeter
+                                    </Button>
+                                  </>
+                                )}
+                                {l.status !== "published" && l.status !== "pending_review" && (
                                   <Button
                                     type="button"
                                     variant="ghost"
@@ -526,11 +623,12 @@ function TrainingManageDetail() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog leçon */}
+      {/* Dialog leçon — champs conditionnels selon le type (kind) */}
       <Dialog open={lessonDialog.open} onOpenChange={(v) => setLessonDialog({ ...lessonDialog, open: v })}>
         <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{lessonDialog.row ? "Modifier la leçon" : "Nouvelle leçon"}</DialogTitle></DialogHeader>
           <div className="space-y-4">
+            {/* Toujours affichés : titre, type, durée, ordre, obligatoire */}
             <div>
               <Label>Titre</Label>
               <Input value={lessonForm.title} onChange={(e) => setLessonForm({ ...lessonForm, title: e.target.value })} />
@@ -574,65 +672,107 @@ function TrainingManageDetail() {
               </div>
             </div>
 
-            {lessonForm.kind === "video" && (
+            {/* URL vidéo — uniquement pour kind = video */}
+            {showVideoUrl && (
               <div>
                 <Label>URL de la vidéo</Label>
                 <Input value={lessonForm.video_url} onChange={(e) => setLessonForm({ ...lessonForm, video_url: e.target.value })} placeholder="https://..." />
               </div>
             )}
 
-            <div>
-              <Label>Résumé / consigne courte</Label>
-              <Textarea rows={2} value={lessonForm.brief} onChange={(e) => setLessonForm({ ...lessonForm, brief: e.target.value })} />
-            </div>
-
-            <div>
-              <Label>Contenu détaillé (optionnel)</Label>
-              <Textarea rows={4} value={lessonForm.content} onChange={(e) => setLessonForm({ ...lessonForm, content: e.target.value })} />
-            </div>
-
-            {/* Chapitres — tableau, comme objectives/prerequisites sur les formations */}
-            <div>
-              <div className="flex items-center justify-between">
-                <Label>Chapitres (optionnel)</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setLessonForm({ ...lessonForm, chapters: [...lessonForm.chapters, ""] })}
-                >
-                  <Plus className="h-3 w-3 mr-1" /> Ajouter
-                </Button>
+            {/* Contenu — uniquement pour kind = reading */}
+            {showContent && (
+              <div>
+                <Label>Contenu</Label>
+                <Textarea rows={5} value={lessonForm.content} onChange={(e) => setLessonForm({ ...lessonForm, content: e.target.value })} />
               </div>
-              <div className="mt-2 space-y-2">
-                {lessonForm.chapters.map((c, i) => (
-                  <div key={i} className="flex gap-2">
-                    <Input
-                      placeholder={`Chapitre ${i + 1}`}
-                      value={c}
-                      onChange={(e) => {
-                        const arr = [...lessonForm.chapters];
-                        arr[i] = e.target.value;
-                        setLessonForm({ ...lessonForm, chapters: arr });
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => setLessonForm({ ...lessonForm, chapters: lessonForm.chapters.filter((_, idx) => idx !== i) })}
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
-                  </div>
-                ))}
+            )}
+
+            {/* Résumé / consigne — uniquement pour quiz, exercise, assignment, project */}
+            {showBrief && (
+              <div>
+                <Label>Résumé / consigne</Label>
+                <Textarea rows={3} value={lessonForm.brief} onChange={(e) => setLessonForm({ ...lessonForm, brief: e.target.value })} />
               </div>
-            </div>
+            )}
+
+            {/* Chapitres — uniquement pour video et reading */}
+            {showChapters && (
+              <div>
+                <div className="flex items-center justify-between">
+                  <Label>Chapitres (optionnel)</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setLessonForm({ ...lessonForm, chapters: [...lessonForm.chapters, ""] })}
+                  >
+                    <Plus className="h-3 w-3 mr-1" /> Ajouter
+                  </Button>
+                </div>
+                <div className="mt-2 space-y-2">
+                  {lessonForm.chapters.map((c, i) => (
+                    <div key={i} className="flex gap-2">
+                      <Input
+                        placeholder={`Chapitre ${i + 1}`}
+                        value={c}
+                        onChange={(e) => {
+                          const arr = [...lessonForm.chapters];
+                          arr[i] = e.target.value;
+                          setLessonForm({ ...lessonForm, chapters: arr });
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setLessonForm({ ...lessonForm, chapters: lessonForm.chapters.filter((_, idx) => idx !== i) })}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setLessonDialog({ open: false, moduleId: "" })}>Annuler</Button>
             <Button onClick={submitLesson} disabled={createLessonMutation.isPending || updateLessonMutation.isPending}>
               {lessonDialog.row ? "Enregistrer" : "Ajouter"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog revue (approbation / rejet) */}
+      <Dialog open={!!reviewDialog} onOpenChange={(v) => !v && setReviewDialog(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              {reviewDialog?.decision === "approved" ? "Approuver" : "Rejeter"} "{reviewDialog?.title}"
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div>
+              <Label>Commentaire (optionnel)</Label>
+              <Textarea
+                rows={3}
+                value={reviewComment}
+                onChange={(e) => setReviewComment(e.target.value)}
+                placeholder="Précisez votre décision..."
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setReviewDialog(null)}>Annuler</Button>
+            <Button
+              variant={reviewDialog?.decision === "rejected" ? "destructive" : "default"}
+              onClick={submitReview}
+              disabled={reviewMutation.isPending}
+            >
+              {reviewMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Confirmer
             </Button>
           </DialogFooter>
         </DialogContent>

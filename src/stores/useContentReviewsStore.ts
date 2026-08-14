@@ -11,8 +11,17 @@ function buildFormData(payload: Record<string, unknown>): FormData {
   return fd;
 }
 
-async function fetchPendingReviews(): Promise<APIPendingContentReviews> {
-  const response = await adminFetch(`/api/admin/trainings/content-reviews/pending`);
+async function fetchPendingReviews(params?: PendingContentReviewsParams): Promise<APIPaginatedPendingContentReviews> {
+  const queryParams = new URLSearchParams();
+  if (params?.query) queryParams.set("query", params.query);
+  if (params?.sort_by) queryParams.set("sort_by", params.sort_by);
+  if (params?.sort_order) queryParams.set("sort_order", params.sort_order);
+  if (params?.per_page) queryParams.set("per_page", String(params.per_page));
+  if (params?.page) queryParams.set("page", String(params.page));
+
+  const url = `/api/admin/trainings/content-reviews/pending${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+  const response = await adminFetch(url);
+
   if (!response.ok) throw new Error("Erreur lors de la récupération des soumissions en attente");
   return response.json();
 }

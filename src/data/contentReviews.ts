@@ -1,5 +1,3 @@
-import type { APIAdminTrainingModule, APIAdminLesson } from "@/data/trainingModules";
-
 export type ContentReviewableType = "module" | "lesson";
 export type ContentReviewDecision = "approved" | "rejected";
 

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
-import type { APIAdminLesson, AdminLessonPayload } from "@/data/trainingModules";
+import type { APIAdminLesson, AdminLessonPayload, ModuleTrainingSummary } from "@/data/trainingModules";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();
@@ -17,10 +17,12 @@ function buildFormData(payload: Record<string, unknown>): FormData {
   return fd;
 }
 
-/* ---- Création ---- */
+/* ---- Création ----
+   ⚠️ URL supposée déplacée vers /admin/trainings/modules/{moduleId}/lessons/create
+   par cohérence avec le nouveau préfixe des modules — non confirmée. */
 
 async function createLesson(moduleId: string, payload: AdminLessonPayload): Promise<APIAdminLesson> {
-  const response = await adminFetch(`/api/admin/trainings/${moduleId}/lessons/create`, {
+  const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}/lessons/create`, {
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
@@ -42,12 +44,22 @@ export function useCreateAdminLesson() {
   });
 }
 
-/* ---- Détail (route plate) ---- */
+/* ---- Détail ----
+   ⚠️ URL non confirmée par curl (seul le JSON de réponse a été fourni) — supposée
+   /admin/trainings/lessons/{id} par cohérence avec le déplacement des modules.
+   Réponse plate (pas de double "data" imbriqué comme pour les modules) :
+   { training, module, data: lesson } */
+
+interface LessonDetailResponse {
+  training: ModuleTrainingSummary;
+  module: { id: string; trainingId: string; title: string; sortOrder: number; isEnabled: boolean; status: string };
+  data: APIAdminLesson;
+}
 
 async function fetchLessonDetail(lessonId: string): Promise<APIAdminLesson> {
   const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}`);
   if (!response.ok) throw new Error("Erreur lors de la récupération de la leçon");
-  const json: { data: APIAdminLesson } = await response.json();
+  const json: LessonDetailResponse = await response.json();
   return json.data;
 }
 
@@ -60,7 +72,8 @@ export function useAdminLessonDetail(lessonId: string | undefined) {
   return { lesson: query.data ?? null, isLoading: query.isLoading, isError: query.isError, refetch: query.refetch };
 }
 
-/* ---- Update / delete / publish (routes plates) ---- */
+/* ---- Update / delete / publish ----
+   ⚠️ URL supposée déplacée vers /admin/trainings/lessons/{id} — non confirmée. */
 
 async function updateLesson(lessonId: string, payload: AdminLessonPayload): Promise<APIAdminLesson> {
   const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}`, {

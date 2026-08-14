@@ -76,6 +76,225 @@ function CreatorBadge({ createdByAdmin, createdByInstructor }: { createdByAdmin?
   );
 }
 
+// Composant pour afficher les leçons d'un module ouvert
+function ModuleLessonsList({
+  moduleId,
+  expandedLessonIds,
+  toggleLesson,
+  openCreateLesson,
+  openEditLesson,
+  handlePublishLesson,
+  setLessonToDelete,
+  openReview,
+  publishLessonPending,
+}: {
+  moduleId: string;
+  expandedLessonIds: string[];
+  toggleLesson: (id: string) => void;
+  openCreateLesson: (moduleId: string) => void;
+  openEditLesson: (moduleId: string, l: APIAdminLesson) => void;
+  handlePublishLesson: (l: APIAdminLesson) => void;
+  setLessonToDelete: (data: { moduleId: string; lesson: APIAdminLesson }) => void;
+  openReview: (type: "module" | "lesson", id: string, title: string, decision: "approved" | "rejected") => void;
+  publishLessonPending: boolean;
+}) {
+  const { lessons, isLoading } = useAdminModuleDetail(moduleId);
+
+  if (isLoading) {
+    return <div className="text-sm text-muted-foreground">Chargement des leçons...</div>;
+  }
+
+  if (lessons.length === 0) {
+    return <p className="text-sm text-muted-foreground">Aucune leçon pour ce module.</p>;
+  }
+
+  return (
+    <div className="space-y-2">
+      {[...lessons]
+        .sort((a, b) => a.sortOrder - b.sortOrder)
+        .map((l) => (
+          <LessonItem
+            key={l.id}
+            moduleId={moduleId}
+            lesson={l}
+            isExpanded={expandedLessonIds.includes(l.id)}
+            toggleLesson={toggleLesson}
+            openEditLesson={openEditLesson}
+            handlePublishLesson={handlePublishLesson}
+            setLessonToDelete={setLessonToDelete}
+            openReview={openReview}
+            publishLessonPending={publishLessonPending}
+          />
+        ))}
+    </div>
+  );
+}
+
+// Composant pour le détail d'une leçon dépliée
+function LessonItem({
+  moduleId,
+  lesson: l,
+  isExpanded,
+  toggleLesson,
+  openEditLesson,
+  handlePublishLesson,
+  setLessonToDelete,
+  openReview,
+  publishLessonPending,
+}: {
+  moduleId: string;
+  lesson: APIAdminLesson;
+  isExpanded: boolean;
+  toggleLesson: (id: string) => void;
+  openEditLesson: (moduleId: string, l: APIAdminLesson) => void;
+  handlePublishLesson: (l: APIAdminLesson) => void;
+  setLessonToDelete: (data: { moduleId: string; lesson: APIAdminLesson }) => void;
+  openReview: (type: "module" | "lesson", id: string, title: string, decision: "approved" | "rejected") => void;
+  publishLessonPending: boolean;
+}) {
+  const Icon = getLessonKindIcon(l.kind);
+  const { lesson: detail, isLoading: detailLoading } = useAdminLessonDetail(isExpanded ? l.id : undefined);
+  const embedUrl = l.videoUrl ? toYoutubeEmbedUrl(l.videoUrl) : null;
+
+  return (
+    <div className="rounded-lg border bg-card overflow-hidden">
+      <button
+        type="button"
+        onClick={() => toggleLesson(l.id)}
+        className="flex w-full items-center justify-between gap-3 p-3 text-left text-sm hover:bg-muted/30 cursor-pointer"
+      >
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />
+            <span className="font-medium truncate">{l.title}</span>
+            {l.isMandatory && <span className="text-destructive text-xs">*</span>}
+            <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getContentStatusBadgeClass(l.status)}`}>
+              {getContentStatusLabel(l.status)}
+            </span>
+          </div>
+          <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
+            <span>{LESSON_KIND_LABELS[l.kind] ?? l.kind}</span>
+            <span>· Ordre {l.sortOrder}</span>
+            {l.durationMinutes != null && (
+              <span className="inline-flex items-center gap-1">
+                <Clock className="h-3 w-3" /> {l.durationMinutes} min
+              </span>
+            )}
+          </div>
+        </div>
+        {isExpanded ? <CircleChevronUp className="h-4 w-4 shrink-0 text-primary" /> : <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />}
+      </button>
+
+      <div className="flex flex-wrap items-center gap-2 border-t px-3 py-1.5">
+        <Button type="button" variant="ghost" size="sm" onClick={() => openEditLesson(moduleId, l)}>
+          <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier
+        </Button>
+        {l.status === "pending_review" && (
+          <>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="text-emerald-600 hover:bg-emerald-500/10"
+              onClick={() => openReview("lesson", l.id, l.title, "approved")}
+            >
+              <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Approuver
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="text-destructive hover:bg-destructive/10"
+              onClick={() => openReview("lesson", l.id, l.title, "rejected")}
+            >
+              <XCircle className="h-3.5 w-3.5 mr-1" /> Rejeter
+            </Button>
+          </>
+        )}
+        {l.status !== "published" && l.status !== "pending_review" && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => handlePublishLesson(l)}
+            disabled={publishLessonPending}
+          >
+            <Rocket className="h-3.5 w-3.5 mr-1" /> Publier
+          </Button>
+        )}
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="text-destructive hover:bg-destructive/10"
+          onClick={() => setLessonToDelete({ moduleId, lesson: l })}
+        >
+          <Trash2 className="h-3.5 w-3.5 mr-1" /> Supprimer
+        </Button>
+      </div>
+
+      {isExpanded && (
+        <div className="border-t bg-muted/10 p-4 space-y-4 text-sm">
+          {detailLoading ? (
+            <div className="text-muted-foreground">Chargement du détail...</div>
+          ) : (
+            <>
+              {embedUrl && (
+                <div className="aspect-video w-full overflow-hidden rounded-lg border">
+                  <iframe
+                    src={embedUrl}
+                    title={l.title}
+                    className="h-full w-full"
+                    allowFullScreen
+                  />
+                </div>
+              )}
+              {l.videoUrl && !embedUrl && (
+                <a href={l.videoUrl} target="_blank" rel="noreferrer" className="text-primary hover:underline text-xs">
+                  Voir la vidéo ({l.videoUrl})
+                </a>
+              )}
+
+              {l.brief && (
+                <div>
+                  <Label className="text-xs text-muted-foreground">Résumé / consigne</Label>
+                  <p className="mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap">{l.brief}</p>
+                </div>
+              )}
+
+              {l.content && (
+                <div>
+                  <Label className="text-xs text-muted-foreground">Contenu</Label>
+                  <p className="mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap">{l.content}</p>
+                </div>
+              )}
+
+              {l.chapters && l.chapters.length > 0 && (
+                <div>
+                  <Label className="text-xs text-muted-foreground">Chapitres</Label>
+                  <ul className="mt-1 list-inside list-disc text-xs space-y-0.5">
+                    {l.chapters.map((c, i) => (<li key={i}>{c}</li>))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t pt-3 text-[11px] text-muted-foreground">
+                {detail && (
+                  <CreatorBadge createdByAdmin={detail.createdByAdmin} createdByInstructor={detail.createdByInstructor} />
+                )}
+                <span className="inline-flex items-center gap-1">
+                  <Calendar className="h-3 w-3" /> Créée le {formatDate(l.createdAt)}
+                </span>
+                <span>Obligatoire : {l.isMandatory ? "Oui" : "Non"}</span>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function TrainingManageDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
@@ -93,12 +312,8 @@ function TrainingManageDetail() {
   const deleteLessonMutation = useDeleteAdminLesson();
   const publishLessonMutation = usePublishAdminLesson();
   const reviewMutation = useCreateAdminContentReview();
-
-  const [expandedModuleId, setExpandedModuleId] = useState<string | null>(null);
-  const { module: expandedModule, lessons, isLoading: lessonsLoading } = useAdminModuleDetail(expandedModuleId ?? undefined);
-
-  const [expandedLessonId, setExpandedLessonId] = useState<string | null>(null);
-  const { lesson: expandedLessonDetail, isLoading: lessonDetailLoading } = useAdminLessonDetail(expandedLessonId ?? undefined);
+  const [expandedModuleIds, setExpandedModuleIds] = useState<string[]>([]);
+  const [expandedLessonIds, setExpandedLessonIds] = useState<string[]>([]);
 
   const [moduleDialog, setModuleDialog] = useState<{ open: boolean; row?: APIAdminTrainingModule }>({ open: false });
   const [moduleForm, setModuleForm] = useState<AdminTrainingModulePayload>(emptyModuleForm);
@@ -123,12 +338,15 @@ function TrainingManageDetail() {
   const [reviewComment, setReviewComment] = useState("");
 
   const toggleModule = (moduleId: string) => {
-    setExpandedModuleId((current) => (current === moduleId ? null : moduleId));
-    setExpandedLessonId(null);
+    setExpandedModuleIds((prev) =>
+      prev.includes(moduleId) ? prev.filter((id) => id !== moduleId) : [...prev, moduleId]
+    );
   };
 
   const toggleLesson = (lessonId: string) => {
-    setExpandedLessonId((current) => (current === lessonId ? null : lessonId));
+    setExpandedLessonIds((prev) =>
+      prev.includes(lessonId) ? prev.filter((id) => id !== lessonId) : [...prev, lessonId]
+    );
   };
 
   const openCreateModule = () => {
@@ -177,7 +395,7 @@ function TrainingManageDetail() {
   };
 
   const openCreateLesson = (moduleId: string) => {
-    setLessonForm({ ...emptyLessonForm, sort_order: String(lessons.length) });
+    setLessonForm({ ...emptyLessonForm, sort_order: "0" });
     setLessonErrors({});
     setLessonDialog({ open: true, moduleId });
   };
@@ -217,7 +435,6 @@ function TrainingManageDetail() {
       kind: lessonForm.kind,
       sort_order: lessonForm.sort_order === "" ? undefined : Number(lessonForm.sort_order),
       duration_minutes: lessonForm.duration_minutes === "" ? undefined : Number(lessonForm.duration_minutes),
-      // On n'envoie que les champs pertinents pour le kind sélectionné,
       content: showContent ? (lessonForm.content.trim() || undefined) : undefined,
       video_url: showVideoUrl ? (lessonForm.video_url.trim() || undefined) : undefined,
       chapters: showChapters && cleanChapters.length > 0 ? cleanChapters : undefined,
@@ -296,7 +513,6 @@ function TrainingManageDetail() {
     );
   }
 
-  // Détermine quels champs afficher dans le dialog de leçon, selon le type sélectionné.
   const showChapters = KINDS_WITH_CHAPTERS.includes(lessonForm.kind);
   const showVideoUrl = KINDS_WITH_VIDEO_URL.includes(lessonForm.kind);
   const showContent = KINDS_WITH_CONTENT.includes(lessonForm.kind);
@@ -335,7 +551,7 @@ function TrainingManageDetail() {
       ) : (
         <div className="space-y-3">
           {[...modules].sort((a, b) => a.sortOrder - b.sortOrder).map((m) => {
-            const isExpanded = expandedModuleId === m.id;
+            const isExpanded = expandedModuleIds.includes(m.id);
             return (
               <div key={m.id} className="rounded-2xl border bg-card overflow-hidden">
                 <button
@@ -419,158 +635,17 @@ function TrainingManageDetail() {
                       </Button>
                     </div>
 
-                    {lessonsLoading ? (
-                      <div className="text-sm text-muted-foreground">Chargement...</div>
-                    ) : lessons.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">Aucune leçon pour ce module.</p>
-                    ) : (
-                      <div className="space-y-2">
-                        {[...lessons].sort((a, b) => a.sortOrder - b.sortOrder).map((l) => {
-                          const Icon = getLessonKindIcon(l.kind);
-                          const isLessonExpanded = expandedLessonId === l.id;
-                          const detail = isLessonExpanded ? expandedLessonDetail : null;
-                          const embedUrl = l.videoUrl ? toYoutubeEmbedUrl(l.videoUrl) : null;
-
-                          return (
-                            <div key={l.id} className="rounded-lg border bg-card overflow-hidden">
-                              <button
-                                type="button"
-                                onClick={() => toggleLesson(l.id)}
-                                className="flex w-full items-center justify-between gap-3 p-3 text-left text-sm hover:bg-muted/30 cursor-pointer"
-                              >
-                                <div className="min-w-0 flex-1">
-                                  <div className="flex items-center gap-2">
-                                    <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />
-                                    <span className="font-medium truncate">{l.title}</span>
-                                    {l.isMandatory && <span className="text-destructive text-xs">*</span>}
-                                    <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getContentStatusBadgeClass(l.status)}`}>
-                                      {getContentStatusLabel(l.status)}
-                                    </span>
-                                  </div>
-                                  <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
-                                    <span>{LESSON_KIND_LABELS[l.kind] ?? l.kind}</span>
-                                    <span>· Ordre {l.sortOrder}</span>
-                                    {l.durationMinutes != null && (
-                                      <span className="inline-flex items-center gap-1">
-                                        <Clock className="h-3 w-3" /> {l.durationMinutes} min
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                                {isLessonExpanded ? <CircleChevronUp className="h-4 w-4 shrink-0 text-primary" /> : <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />}
-                              </button>
-
-                              <div className="flex flex-wrap items-center gap-2 border-t px-3 py-1.5">
-                                <Button type="button" variant="ghost" size="sm" onClick={() => openEditLesson(m.id, l)}>
-                                  <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier
-                                </Button>
-                                {l.status === "pending_review" && (
-                                  <>
-                                    <Button
-                                      type="button"
-                                      variant="ghost"
-                                      size="sm"
-                                      className="text-emerald-600 hover:bg-emerald-500/10"
-                                      onClick={() => openReview("lesson", l.id, l.title, "approved")}
-                                    >
-                                      <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Approuver
-                                    </Button>
-                                    <Button
-                                      type="button"
-                                      variant="ghost"
-                                      size="sm"
-                                      className="text-destructive hover:bg-destructive/10"
-                                      onClick={() => openReview("lesson", l.id, l.title, "rejected")}
-                                    >
-                                      <XCircle className="h-3.5 w-3.5 mr-1" /> Rejeter
-                                    </Button>
-                                  </>
-                                )}
-                                {l.status !== "published" && l.status !== "pending_review" && (
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => handlePublishLesson(l)}
-                                    disabled={publishLessonMutation.isPending}
-                                  >
-                                    <Rocket className="h-3.5 w-3.5 mr-1" /> Publier
-                                  </Button>
-                                )}
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  className="text-destructive hover:bg-destructive/10"
-                                  onClick={() => setLessonToDelete({ moduleId: m.id, lesson: l })}
-                                >
-                                  <Trash2 className="h-3.5 w-3.5 mr-1" /> Supprimer
-                                </Button>
-                              </div>
-
-                              {isLessonExpanded && (
-                                <div className="border-t bg-muted/10 p-4 space-y-4 text-sm">
-                                  {lessonDetailLoading ? (
-                                    <div className="text-muted-foreground">Chargement du détail...</div>
-                                  ) : (
-                                    <>
-                                      {embedUrl && (
-                                        <div className="aspect-video w-full overflow-hidden rounded-lg border">
-                                          <iframe
-                                            src={embedUrl}
-                                            title={l.title}
-                                            className="h-full w-full"
-                                            allowFullScreen
-                                          />
-                                        </div>
-                                      )}
-                                      {l.videoUrl && !embedUrl && (
-                                        <a href={l.videoUrl} target="_blank" rel="noreferrer" className="text-primary hover:underline text-xs">
-                                          Voir la vidéo ({l.videoUrl})
-                                        </a>
-                                      )}
-
-                                      {l.brief && (
-                                        <div>
-                                          <Label className="text-xs text-muted-foreground">Résumé / consigne</Label>
-                                          <p className="mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap">{l.brief}</p>
-                                        </div>
-                                      )}
-
-                                      {l.content && (
-                                        <div>
-                                          <Label className="text-xs text-muted-foreground">Contenu</Label>
-                                          <p className="mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap">{l.content}</p>
-                                        </div>
-                                      )}
-
-                                      {l.chapters && l.chapters.length > 0 && (
-                                        <div>
-                                          <Label className="text-xs text-muted-foreground">Chapitres</Label>
-                                          <ul className="mt-1 list-inside list-disc text-xs space-y-0.5">
-                                            {l.chapters.map((c, i) => (<li key={i}>{c}</li>))}
-                                          </ul>
-                                        </div>
-                                      )}
-
-                                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t pt-3 text-[11px] text-muted-foreground">
-                                        {detail && (
-                                          <CreatorBadge createdByAdmin={detail.createdByAdmin} createdByInstructor={detail.createdByInstructor} />
-                                        )}
-                                        <span className="inline-flex items-center gap-1">
-                                          <Calendar className="h-3 w-3" /> Créée le {formatDate(l.createdAt)}
-                                        </span>
-                                        <span>Obligatoire : {l.isMandatory ? "Oui" : "Non"}</span>
-                                      </div>
-                                    </>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
+                    <ModuleLessonsList
+                      moduleId={m.id}
+                      expandedLessonIds={expandedLessonIds}
+                      toggleLesson={toggleLesson}
+                      openCreateLesson={openCreateLesson}
+                      openEditLesson={openEditLesson}
+                      handlePublishLesson={handlePublishLesson}
+                      setLessonToDelete={setLessonToDelete}
+                      openReview={openReview}
+                      publishLessonPending={publishLessonMutation.isPending}
+                    />
                   </div>
                 )}
               </div>
@@ -623,12 +698,11 @@ function TrainingManageDetail() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog leçon — champs conditionnels selon le type (kind) */}
+      {/* Dialog leçon */}
       <Dialog open={lessonDialog.open} onOpenChange={(v) => setLessonDialog({ ...lessonDialog, open: v })}>
         <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{lessonDialog.row ? "Modifier la leçon" : "Nouvelle leçon"}</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            {/* Toujours affichés : titre, type, durée, ordre, obligatoire */}
             <div>
               <Label>Titre</Label>
               <Input value={lessonForm.title} onChange={(e) => setLessonForm({ ...lessonForm, title: e.target.value })} />
@@ -672,7 +746,6 @@ function TrainingManageDetail() {
               </div>
             </div>
 
-            {/* URL vidéo — uniquement pour kind = video */}
             {showVideoUrl && (
               <div>
                 <Label>URL de la vidéo</Label>
@@ -680,7 +753,6 @@ function TrainingManageDetail() {
               </div>
             )}
 
-            {/* Contenu — uniquement pour kind = reading */}
             {showContent && (
               <div>
                 <Label>Contenu</Label>
@@ -688,7 +760,6 @@ function TrainingManageDetail() {
               </div>
             )}
 
-            {/* Résumé / consigne — uniquement pour quiz, exercise, assignment, project */}
             {showBrief && (
               <div>
                 <Label>Résumé / consigne</Label>
@@ -696,7 +767,6 @@ function TrainingManageDetail() {
               </div>
             )}
 
-            {/* Chapitres — uniquement pour video et reading */}
             {showChapters && (
               <div>
                 <div className="flex items-center justify-between">
@@ -745,7 +815,7 @@ function TrainingManageDetail() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog revue (approbation / rejet) */}
+      {/* Dialog revue */}
       <Dialog open={!!reviewDialog} onOpenChange={(v) => !v && setReviewDialog(null)}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -788,7 +858,7 @@ function TrainingManageDetail() {
             {
               onSuccess: () => {
                 toast.success("Module supprimé");
-                if (expandedModuleId === moduleToDelete.id) setExpandedModuleId(null);
+                setExpandedModuleIds((prev) => prev.filter((id) => id !== moduleToDelete.id));
                 setModuleToDelete(null);
               },
               onError: () => toast.error("Erreur lors de la suppression du module"),
@@ -808,7 +878,7 @@ function TrainingManageDetail() {
             {
               onSuccess: () => {
                 toast.success("Leçon supprimée");
-                if (expandedLessonId === lessonToDelete.lesson.id) setExpandedLessonId(null);
+                setExpandedLessonIds((prev) => prev.filter((id) => id !== lessonToDelete.lesson.id));
                 setLessonToDelete(null);
               },
               onError: () => toast.error("Erreur lors de la suppression de la leçon"),

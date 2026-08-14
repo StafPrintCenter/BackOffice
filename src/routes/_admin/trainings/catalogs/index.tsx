@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Plus, Trash2, UserRoundPlus, Palette } from "lucide-react";
+import { Plus, Trash2, UserRoundPlus, ClipboardClock } from "lucide-react";
 import { PageHeader, ConfirmDelete } from "@/components/site";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { DataTable } from "@/components/site/DataTable";
@@ -122,12 +122,23 @@ function AdminTrainings() {
       <PageHeader title="Formations" description="Programmes proposés au public." />
 
       {/* Raccourci */}
-      <div className="mb-4">
-        <Link to="/trainings/registrations"
-          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <UserRoundPlus className="h-4 w-4" />
-          Voir les inscriptions
-        </Link>
+      <div className="flex items-center gap-6 mb-4">
+        <div>
+          <Link to="/trainings/reviews"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <ClipboardClock className="h-4 w-4"
+            />
+            Voir les soummissions en attentes
+          </Link>
+        </div>
+        <div>
+          <Link to="/trainings/registrations"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <UserRoundPlus className="h-4 w-4"
+            />
+            Voir les inscriptions
+          </Link>
+        </div>
       </div>
 
       <DataTable<APIAdminTrainingListItem>

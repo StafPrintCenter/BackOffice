@@ -168,7 +168,8 @@ function AdminContentReviews() {
                       params={{ id: group.training.id }}
                       className="font-medium text-primary hover:underline"
                     >
-                      {group.training.title}
+                      <span>{group.training.title}</span>
+                      <ExternalLink className="h-3.5 w-3.5 opacity-70 transition-opacity group-hover:opacity-100 shrink-0" />
                     </Link>
                     <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px]">
                       <span className={`inline-flex items-center rounded-full border px-2 py-0.5 font-medium ${getTrainingLevelBadgeClass(group.training.level)}`}>

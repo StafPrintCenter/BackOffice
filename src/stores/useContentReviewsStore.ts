@@ -33,7 +33,7 @@ export function usePendingContentReviews() {
 }
 
 async function createReview(payload: AdminContentReviewPayload): Promise<APIAdminContentReview> {
-  const response = await adminFetch(`/api/admin/content-reviews/create`, {
+  const response = await adminFetch(`/api/admin/trainings/content-reviews/create`, {
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });

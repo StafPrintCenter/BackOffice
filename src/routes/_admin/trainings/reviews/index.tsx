@@ -181,7 +181,7 @@ function AdminContentReviews() {
                   </div>
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  {group.modules.length} module{group.modules.length !== 1 ? "s" : ""}
+                  {group.modules.length} module{group.modules.length !== 1 ? "s" : ""} en attente
                 </span>
               </div>
 

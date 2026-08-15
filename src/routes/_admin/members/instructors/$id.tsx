@@ -383,8 +383,8 @@ function InstructorDetail() {
             </div>
 
             {instructor.bio && (
-              <div className="space-y-2 pt-2">
-                <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+              <div className="space-y-2 pt-2 border-t">
+                <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider pt-2">
                   <Info className="h-3.5 w-3.5" /> Biographie
                 </div>
                 <p className="rounded-xl border bg-background p-4 text-sm leading-relaxed text-foreground/90">

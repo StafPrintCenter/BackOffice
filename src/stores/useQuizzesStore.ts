@@ -4,10 +4,6 @@ import type {
   APIAdminQuiz, APIAdminQuizDetail, AdminQuizPayload, AdminQuizQuestionPayload, QuizQuestion,
 } from "@/data/quizzes";
 
-// Ressource entièrement manuelle : create est imbriqué sous /lessons/{lessonId}/quiz/create,
-// mais update/detail/delete/publish sont sur des routes plates /admin/quizzes/{id}.
-// Les questions sont elles-mêmes sur des routes plates /admin/questions/{id}.
-
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();
   for (const [key, value] of Object.entries(payload)) {

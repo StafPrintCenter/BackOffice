@@ -382,6 +382,27 @@ function InstructorDetail() {
               )}
             </div>
 
+            {/* Catégories / Spécialités d'enseignement */}
+            <div className="space-y-2 pt-2 border-t">
+              <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider pt-2">
+                <FolderGit2 className="h-3.5 w-3.5" /> Spécialités / Catégories
+              </div>
+              {instructor.categories && instructor.categories.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {instructor.categories.map((cat) => (
+                    <span
+                      key={cat.id}
+                      className="inline-flex items-center rounded-lg border bg-secondary/50 px-3 py-1 text-xs font-medium text-secondary-foreground"
+                    >
+                      {cat.name}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground italic">Aucune catégorie sélectionnée.</p>
+              )}
+            </div>
+
             {instructor.bio && (
               <div className="space-y-2 pt-2 border-t">
                 <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider pt-2">

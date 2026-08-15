@@ -26,6 +26,7 @@ export type APIAdminInstructor = {
   registrationSource: InstructorRegistrationSource | null;
   photo: string | null;
   bio: string | null;
+  categories?: APIInstructorCategory[];
   isActive: boolean;
   isBlocked: boolean;
   isPending: boolean;

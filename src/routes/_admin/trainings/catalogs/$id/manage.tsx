@@ -530,9 +530,14 @@ function TrainingManageDetail() {
           </Button>
         </div>
 
-        <Button size="sm" onClick={openCreateModule}>
-          <Plus className="h-4 w-4 mr-1" /> Nouveau module
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/catalogs/$id", params: { id: training.id } })}>
+            <BookOpen className="h-4 w-4 mr-1" />  Voir le contenu
+          </Button>
+          <Button size="sm" onClick={openCreateModule}>
+            <Plus className="h-4 w-4 mr-1" /> Nouveau module
+          </Button>
+        </div>
       </div>
 
       <div className="mb-6">

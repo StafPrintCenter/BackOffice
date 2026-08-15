@@ -521,14 +521,9 @@ function TrainingManageDetail() {
   return (
     <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap gap-3">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/catalogs" })}>
-            <ArrowLeft className="h-4 w-4 mr-1" /> Retour
-          </Button>
-          <Button variant="link" size="sm" onClick={() => navigate({ to: "/trainings/catalogs/$id", params: { id: training.id } })}>
-            Voir le contenu
-          </Button>
-        </div>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/catalogs" })}>
+          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
+        </Button>
 
         <div className="flex flex-wrap gap-3">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/trainings/catalogs/$id", params: { id: training.id } })}>

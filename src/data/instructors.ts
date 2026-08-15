@@ -11,6 +11,12 @@ export interface APIAdminInstructorTrainingAssignment {
   assignedAt: string;
 }
 
+export type APIInstructorCategory = {
+  id: string;
+  name: string;
+  slug?: string;
+};
+
 export type APIAdminInstructor = {
   id: string;
   firstName: string;

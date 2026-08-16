@@ -124,7 +124,7 @@ export function usePublishAdminQuiz() {
 /* ---- Questions (routes plates, imbriquées seulement pour la création) ---- */
 
 async function createQuestion(quizId: string, payload: AdminQuizQuestionPayload): Promise<QuizQuestion> {
-  const response = await adminFetch(`/api/admin/quizzes/${quizId}/questions/create`, {
+  const response = await adminFetch(`/api/admin/trainings/questions/${quizId}/create`, {
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
@@ -146,7 +146,7 @@ export function useCreateAdminQuizQuestion() {
 }
 
 async function updateQuestion(questionId: string, payload: AdminQuizQuestionPayload): Promise<QuizQuestion> {
-  const response = await adminFetch(`/api/admin/questions/${questionId}`, {
+  const response = await adminFetch(`/api/admin/trainings/questions/${questionId}`, {
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
@@ -169,7 +169,7 @@ export function useUpdateAdminQuizQuestion() {
 }
 
 async function deleteQuestion(questionId: string): Promise<void> {
-  const response = await adminFetch(`/api/admin/questions/${questionId}`, { method: "DELETE" });
+  const response = await adminFetch(`/api/admin/trainings/questions/${questionId}`, { method: "DELETE" });
   if (!response.ok && response.status !== 204) throw new Error("Erreur lors de la suppression de la question");
 }
 

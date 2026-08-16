@@ -106,19 +106,18 @@ function AdminSidebarContent({
   const profileActive = pathname.startsWith("/profile");
 
   return (
-    <SidebarProvider>
-      <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
-        <SidebarHeader className="px-3.5 py-4">
-          <Link to="/dashboard" className="flex items-center gap-3">
-            <span className="flex size-7 shrink-0 items-center justify-center overflow-hidden">
-              <img src={logo.mw} alt="Logo SPC" className="h-7 w-auto object-contain" />
-            </span>
-            <span className="flex flex-col group-data-[collapsible=icon]:hidden min-w-0">
-              <span className="font-display font-bold text-sm tracking-tight truncate">{SITE.name}</span>
-              <span className="text-[10px] opacity-60 truncate">{user?.level}</span>
-            </span>
-          </Link>
-        </SidebarHeader>
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
+      <SidebarHeader className="px-3.5 py-4">
+        <Link to="/dashboard" onClick={handleNavClick} className="flex items-center gap-3">
+          <span className="flex size-7 shrink-0 items-center justify-center overflow-hidden">
+            <img src={logo.mw} alt="Logo SPC" className="h-7 w-auto object-contain" />
+          </span>
+          <span className="flex flex-col group-data-[collapsible=icon]:hidden min-w-0">
+            <span className="font-display font-bold text-sm tracking-tight truncate">{SITE.name}</span>
+            <span className="text-[10px] opacity-60 truncate">{user?.level}</span>
+          </span>
+        </Link>
+      </SidebarHeader>
 
         <SidebarContent className="px-1">
           {NAV_GROUPS.map((g) => (

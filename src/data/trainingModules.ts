@@ -62,6 +62,7 @@ export type APIAdminLesson = {
   brief: string | null;
   isMandatory: boolean;
   status: ContentStatus;
+  quizId?: string | null;
   createdByAdmin?: string | null;
   createdByInstructor?: string | null;
   createdAt: string;

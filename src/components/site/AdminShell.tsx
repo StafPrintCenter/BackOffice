@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 import { ConfirmDisconnect } from "@/components/site/AdminBits";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, SidebarInset, } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, SidebarInset, useSidebar, } from "@/components/ui/sidebar";
 
 type NavItem = {
   to: string;

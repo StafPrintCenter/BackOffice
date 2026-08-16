@@ -20,7 +20,7 @@ function buildFormData(payload: Record<string, unknown>): FormData {
 /* ---- Création du quiz sur une leçon ---- */
 
 async function createQuiz(lessonId: string, payload: AdminQuizPayload): Promise<APIAdminQuiz> {
-  const response = await adminFetch(`/api/admin/lessons/${lessonId}/quiz/create`, {
+  const response = await adminFetch(`/api/admin/trainings/quizzes/${lessonId}/create`, {
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
@@ -44,7 +44,7 @@ export function useCreateAdminQuiz() {
 /* ---- Détail (route plate) ---- */
 
 async function fetchQuizDetail(quizId: string): Promise<APIAdminQuizDetail> {
-  const response = await adminFetch(`/api/admin/quizzes/${quizId}`);
+  const response = await adminFetch(`/api/admin/trainings/quizzes/${quizId}`);
   if (!response.ok) throw new Error("Erreur lors de la récupération du quiz");
   const json: { data: APIAdminQuizDetail } = await response.json();
   return json.data;
@@ -62,7 +62,7 @@ export function useAdminQuizDetail(quizId: string | undefined) {
 /* ---- Update / delete / publish ---- */
 
 async function updateQuiz(quizId: string, payload: AdminQuizPayload): Promise<APIAdminQuiz> {
-  const response = await adminFetch(`/api/admin/quizzes/${quizId}`, {
+  const response = await adminFetch(`/api/admin/trainings/quizzes/${quizId}`, {
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
@@ -85,7 +85,7 @@ export function useUpdateAdminQuiz() {
 }
 
 async function deleteQuiz(quizId: string): Promise<void> {
-  const response = await adminFetch(`/api/admin/quizzes/${quizId}`, { method: "DELETE" });
+  const response = await adminFetch(`/api/admin/trainings/quizzes/${quizId}`, { method: "DELETE" });
   if (!response.ok && response.status !== 204) throw new Error("Erreur lors de la suppression du quiz");
 }
 
@@ -102,7 +102,7 @@ export function useDeleteAdminQuiz() {
 }
 
 async function publishQuiz(quizId: string): Promise<APIAdminQuiz> {
-  const response = await adminFetch(`/api/admin/quizzes/${quizId}/publish`, { method: "PUT" });
+  const response = await adminFetch(`/api/admin/trainings/quizzes/${quizId}/publish`, { method: "PUT" });
   if (!response.ok) throw new Error("Erreur lors de la publication du quiz — le quiz doit avoir au moins une question");
   const json: { data: APIAdminQuiz } = await response.json();
   return json.data;

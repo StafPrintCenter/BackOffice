@@ -151,39 +151,74 @@ function AdminSidebarContent({
         ))}
       </SidebarContent>
 
-        <SidebarFooter className="border-t border-sidebar-border p-2 space-y-1">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                asChild
-                isActive={profileActive}
-                tooltip="Profil"
-                className={navItemClass}
-              >
-                <Link to="/profile">
-                  <UserCircle className="size-4 shrink-0" />
-                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
-                      <p className="text-xs font-medium truncate">{user?.name && user.name !== "undefined undefined" ? user.name : "Profil"}</p>
-                      <p className="text-[10px] opacity-60 truncate">{user?.email}</p>
-                    </div>
+      <SidebarFooter className="border-t border-sidebar-border p-2 space-y-1">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={profileActive}
+              tooltip="Profil"
+              className={navItemClass}
+            >
+              <Link to="/profile" onClick={handleNavClick}>
+                <UserCircle className="size-4 shrink-0" />
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
+                    <p className="text-xs font-medium truncate">
+                      {user?.name && user.name !== "undefined undefined" ? user.name : "Profil"}
+                    </p>
+                    <p className="text-[10px] opacity-60 truncate">{user?.email}</p>
                   </div>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={() => setConfirmDisconnectOpen(true)}
-                tooltip="Déconnexion"
-                className="text-sidebar-foreground/80 hover:bg-destructive hover:text-white"
-              >
-                <LogOut className="size-4 shrink-0" />
-                <span className="group-data-[collapsible=icon]:hidden">Déconnexion</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => {
+                handleNavClick();
+                onDisconnectClick();
+              }}
+              tooltip="Déconnexion"
+              className="text-sidebar-foreground/80 hover:bg-destructive hover:text-white"
+            >
+              <LogOut className="size-4 shrink-0" />
+              <span className="group-data-[collapsible=icon]:hidden">Déconnexion</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
+
+export function AdminShell({ children }: { children?: React.ReactNode }) {
+  const { user, ready, isAuthenticated, logout } = useAdminAuth();
+  const navigate = useNavigate();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [confirmDisconnectOpen, setConfirmDisconnectOpen] = useState(false);
+
+  useEffect(() => {
+    if (ready && !isAuthenticated) navigate({ to: "/login" });
+  }, [ready, isAuthenticated, navigate]);
+
+  if (!ready || !isAuthenticated) {
+    return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Chargement...</div>;
+  }
+
+  const handleLogout = async () => {
+    await logout();
+    toast.success("Déconnecté");
+    navigate({ to: "/login" });
+  };
+
+  return (
+    <SidebarProvider>
+      <AdminSidebarContent
+        user={user}
+        pathname={pathname}
+        onDisconnectClick={() => setConfirmDisconnectOpen(true)}
+      />
 
       <SidebarInset className="flex flex-col min-w-0 h-screen overflow-hidden">
         <header className="flex items-center gap-3 bg-card/80 backdrop-blur border-b px-5 h-14 shrink-0">

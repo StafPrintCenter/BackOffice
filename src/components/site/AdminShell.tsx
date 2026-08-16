@@ -81,24 +81,19 @@ const navItemClass =
   "data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground " +
   "data-[active=true]:hover:bg-sidebar-primary data-[active=true]:hover:text-sidebar-primary-foreground";
 
-export function AdminShell({ children }: { children?: React.ReactNode }) {
-  const { user, ready, isAuthenticated, logout } = useAdminAuth();
-  const navigate = useNavigate();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [confirmDisconnectOpen, setConfirmDisconnectOpen] = useState(false);
+function AdminSidebarContent({
+  user,
+  pathname,
+  onDisconnectClick,
+}: {
+  user: ReturnType<typeof useAdminAuth>["user"];
+  pathname: string;
+  onDisconnectClick: () => void;
+}) {
+  const { setOpenMobile } = useSidebar();
 
-  useEffect(() => {
-    if (ready && !isAuthenticated) navigate({ to: "/login" });
-  }, [ready, isAuthenticated, navigate]);
-
-  if (!ready || !isAuthenticated) {
-    return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Chargement...</div>;
-  }
-
-  const handleLogout = async () => {
-    await logout();
-    toast.success("Déconnecté");
-    navigate({ to: "/login" });
+  const handleNavClick = () => {
+    setOpenMobile(false);
   };
 
   const isLinkActive = (n: NavItem) =>

@@ -14,6 +14,7 @@ import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
 import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
 import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson, useAdminLessonDetail } from "@/stores/useLessonsStore";
 import { useCreateAdminContentReview } from "@/stores/useContentReviewsStore";
+import { QuizManager } from "@/components/site/QuizManager";
 import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS, getLessonKindIcon, toYoutubeEmbedUrl, getContentCreator } from "@/data/trainingModules";
 import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload, LessonKind } from "@/data/trainingModules";
 import { SITE } from "@/data/site";
@@ -155,6 +156,7 @@ function LessonItem({
   const Icon = getLessonKindIcon(l.kind);
   const { lesson: detail, isLoading: detailLoading } = useAdminLessonDetail(isExpanded ? l.id : undefined);
   const embedUrl = l.videoUrl ? toYoutubeEmbedUrl(l.videoUrl) : null;
+  const [sessionQuizId, setSessionQuizId] = useState<string | null>(l.quizId ?? null);
 
   return (
     <div className="rounded-lg border bg-card overflow-hidden">
@@ -276,6 +278,15 @@ function LessonItem({
                     {l.chapters.map((c, i) => (<li key={i}>{c}</li>))}
                   </ul>
                 </div>
+              )}
+
+              {/* INTÉGRATION DU QUIZ MANAGER ICI */}
+              {(l.kind === "quiz" || l.kind === "exercise") && (
+                <QuizManager
+                  lessonId={l.id}
+                  quizId={sessionQuizId}
+                  onQuizCreated={(newId) => setSessionQuizId(newId)}
+                />
               )}
 
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t pt-3 text-[11px] text-muted-foreground">

@@ -29,8 +29,7 @@ export interface QuizQuestion {
   choices: QuizChoice[];
 }
 
-// Réponse de création (POST /lessons/{id}/quiz/create) et de mise à jour (PUT /quizzes/{id}) —
-// pas de "questions" ici, juste le compteur.
+// Réponse de création et de mise à jour
 export type APIAdminQuiz = {
   id: string;
   lessonId: string;

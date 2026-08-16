@@ -119,37 +119,37 @@ function AdminSidebarContent({
         </Link>
       </SidebarHeader>
 
-        <SidebarContent className="px-1">
-          {NAV_GROUPS.map((g) => (
-            <SidebarGroup key={g.label}>
-              <SidebarGroupLabel className="text-sidebar-foreground/50 uppercase tracking-wider text-[10px] px-2">
-                {g.label}
-              </SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {g.items.map((item) => {
-                    const active = isLinkActive(item);
-                    return (
-                      <SidebarMenuItem key={item.to}>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={active}
-                          tooltip={item.label}
-                          className={navItemClass}
-                        >
-                          <Link to={item.to as "/dashboard"}>
-                            <item.icon className="size-4 shrink-0" />
-                            <span>{item.label}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    );
-                  })}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          ))}
-        </SidebarContent>
+      <SidebarContent className="px-1">
+        {NAV_GROUPS.map((g) => (
+          <SidebarGroup key={g.label}>
+            <SidebarGroupLabel className="text-sidebar-foreground/50 uppercase tracking-wider text-[10px] px-2">
+              {g.label}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {g.items.map((item) => {
+                  const active = isLinkActive(item);
+                  return (
+                    <SidebarMenuItem key={item.to}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={active}
+                        tooltip={item.label}
+                        className={navItemClass}
+                      >
+                        <Link to={item.to as "/dashboard"} onClick={handleNavClick}>
+                          <item.icon className="size-4 shrink-0" />
+                          <span>{item.label}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
+      </SidebarContent>
 
         <SidebarFooter className="border-t border-sidebar-border p-2 space-y-1">
           <SidebarMenu>

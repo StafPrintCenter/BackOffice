@@ -21,21 +21,26 @@ import {
 } from "@/stores";
 import { SITE } from "@/data/site";
 import { ANNOUNCEMENT_TYPE_LABELS } from "@/data/announcements";
-import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge } from "@/data/jobOffers";
+import { JOB_OFFER_CONTRACT_LABELS } from "@/data/jobOffers";
 import { JOB_APPLICATION_STATUS_LABELS } from "@/data/jobApplications";
 import { INTERNSHIP_REQUEST_STATUS_LABELS } from "@/data/internshipRequests";
+import {
+  DashboardKpiGrid,
+  DashboardChartsGrid,
+  DashboardRecentLists,
+  DashboardRecentActivity,
+  type RecentItem,
+} from "@/components/pages/admin/dashboard";
 
 export const Route = createFileRoute("/_admin/dashboard")({
   head: () => ({
     meta: [
       { title: `Tableau de bord | ${SITE.name}` },
-      { name: "robots", content: "noindex" }
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: DashboardPage,
 });
-
-const pieColors = ["#E07856", "#3C82AB", "#5A9B6E", "#C89A3E", "#8B5CF6", "#EC4899", "#10B981"];
 
 function DashboardPage() {
   const { items: contacts, isLoading: contactsLoading } = useAdminContactsList({ perPage: 100 });
@@ -55,32 +60,50 @@ function DashboardPage() {
   const { items: jobApplications, isLoading: jobApplicationsLoading } = useAdminJobApplicationsList({ perPage: 100 });
   const { items: internshipRequests, isLoading: internshipRequestsLoading } = useAdminInternshipRequestsList({ perPage: 100 });
 
-  // --- KPIs ---
-  const newMessages = contacts.filter((c) => c.status === "new").length;
-  const openReports = reports.filter((r) => r.status === "pending" || r.status === "in_review").length;
-
+  // --- Calculs KPIs ---
   const activeUsers = users.filter((u) => u.isActive && !u.isBlocked).length;
   const activeStudents = students.filter((s) => s.isActive && !s.isBlocked).length;
   const activeInstructors = instructors.filter((i) => i.isActive && !i.isBlocked && !i.isPending).length;
   const activeAdmins = admins.filter((a) => a.isActive && !a.isBlocked && !a.isPending).length;
 
-  const activeMembers = activeUsers + activeStudents + activeInstructors + activeAdmins;
-  const totalMembers = users.length + students.length + instructors.length + admins.length;
+  const stats = {
+    publishedJobOffers: jobOffers.filter((j) => j.status === "published").length,
+    jobOffersTotal: jobOffers.length,
+    jobApplicationsTotal: jobApplications.length,
+    pendingJobApplications: jobApplications.filter((a) => a.status === "pending" || a.status === "reviewing").length,
+    internshipRequestsTotal: internshipRequests.length,
+    pendingInternshipRequests: internshipRequests.filter((i) => i.status === "pending" || i.status === "under_review").length,
+    servicesTotal: services.length,
+    featuredServices: services.filter((s) => s.featured).length,
+    trainingsTotal: trainings.length,
+    projectsTotal: projects.length,
+    publicProjects: projects.filter((p) => p.isPublic).length,
+    articlesTotal: articles.length,
+    newMessages: contacts.filter((c) => c.status === "new").length,
+    contactsTotal: contacts.length,
+    openReports: reports.filter((r) => r.status === "pending" || r.status === "in_review").length,
+    reportsTotal: reports.length,
+    activeAnnouncements: announcements.filter((a) => a.isEnabled && a.isActive).length,
+    announcementsTotal: announcements.length,
+    totalClicks: shortLinks.reduce((s, l) => s + l.clicksCount, 0),
+    activeShortLinks: shortLinks.filter((l) => l.isActive).length,
+    activeMembers: activeUsers + activeStudents + activeInstructors + activeAdmins,
+    totalMembers: users.length + students.length + instructors.length + admins.length,
+    activeUsers,
+    usersTotal: users.length,
+    activeStudents,
+    studentsTotal: students.length,
+    activeInstructors,
+    instructorsTotal: instructors.length,
+    activeAdmins,
+    adminsTotal: admins.length,
+  };
 
-  const totalClicks = shortLinks.reduce((s, l) => s + l.clicksCount, 0);
-  const activeShortLinks = shortLinks.filter((l) => l.isActive).length;
+  const avgRating = testimonials.length
+    ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1)
+    : "…";
 
-  const activeAnnouncements = announcements.filter((a) => a.isEnabled && a.isActive).length;
-  const publishedJobOffers = jobOffers.filter((j) => j.status === "published").length;
-
-  const pendingJobApplications = jobApplications.filter((a) => a.status === "pending" || a.status === "reviewing").length;
-  const pendingInternshipRequests = internshipRequests.filter((i) => i.status === "pending" || i.status === "under_review").length;
-
-  const avgRating = testimonials.length ? (testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length).toFixed(1) : "…";
-  const featuredServices = services.filter((s) => s.featured).length;
-  const publicProjects = projects.filter((p) => p.isPublic).length;
-
-  // --- Mappings des graphiques ---
+  // --- Mappings des données de graphiques ---
   const topLinks = [...shortLinks]
     .sort((a, b) => b.clicksCount - a.clicksCount)
     .slice(0, 5)
@@ -134,7 +157,10 @@ function DashboardPage() {
   ).map(([name, value]) => ({ name, value }));
 
   const msgByStatus = Object.entries(
-    contacts.reduce<Record<string, number>>((a, c) => { a[c.status] = (a[c.status] ?? 0) + 1; return a; }, {})
+    contacts.reduce<Record<string, number>>((a, c) => {
+      a[c.status] = (a[c.status] ?? 0) + 1;
+      return a;
+    }, {})
   ).map(([name, value]) => ({ name, value }));
 
   const membersByType = [
@@ -145,394 +171,123 @@ function DashboardPage() {
   ];
 
   const projectsByCategory = Object.entries(
-    projects.reduce<Record<string, number>>((acc, p) => { const key = p.category || "Sans catégorie"; acc[key] = (acc[key] ?? 0) + 1; return acc; }, {})
+    projects.reduce<Record<string, number>>((acc, p) => {
+      const key = p.category || "Sans catégorie";
+      acc[key] = (acc[key] ?? 0) + 1;
+      return acc;
+    }, {})
   ).map(([name, value]) => ({ name, value }));
 
   const linksByCategory = Object.entries(
-    shortLinks.reduce<Record<string, number>>((acc, l) => { acc[l.category] = (acc[l.category] ?? 0) + 1; return acc; }, {})
+    shortLinks.reduce<Record<string, number>>((acc, l) => {
+      acc[l.category] = (acc[l.category] ?? 0) + 1;
+      return acc;
+    }, {})
   ).map(([name, value]) => ({ name, value }));
 
   const trainingsByLevel = Object.entries(
-    trainings.reduce<Record<string, number>>((acc, t) => { acc[t.level] = (acc[t.level] ?? 0) + 1; return acc; }, {})
+    trainings.reduce<Record<string, number>>((acc, t) => {
+      acc[t.level] = (acc[t.level] ?? 0) + 1;
+      return acc;
+    }, {})
   ).map(([name, value]) => ({ name, value }));
 
   const servicesByCategory = Object.entries(
-    services.reduce<Record<string, number>>((acc, s) => { const key = s.category || "Sans catégorie"; acc[key] = (acc[key] ?? 0) + 1; return acc; }, {})
+    services.reduce<Record<string, number>>((acc, s) => {
+      const key = s.category || "Sans catégorie";
+      acc[key] = (acc[key] ?? 0) + 1;
+      return acc;
+    }, {})
   ).map(([name, value]) => ({ name, value }));
 
-  const recent = [
-    ...jobOffers.slice(0, 2).map((j) => ({ type: "Emploi", title: j.title, meta: JOB_OFFER_CONTRACT_LABELS[j.contractType], icon: Briefcase })),
-    ...internshipRequests.slice(0, 2).map((i) => ({ type: "Stage", title: `${i.firstName} ${i.lastName}`, meta: i.institution || "Demande de stage", icon: UserPlus })),
-    ...projects.slice(0, 1).map((p) => ({ type: "Projet", title: p.title, meta: p.client, icon: FolderKanban })),
-    ...announcements.slice(0, 1).map((a) => ({ type: "Annonce", title: a.title, meta: ANNOUNCEMENT_TYPE_LABELS[a.type], icon: Megaphone })),
-    ...articles.slice(0, 1).map((a) => ({ type: "Article", title: a.title, meta: a.author, icon: FileText })),
+  const recent: RecentItem[] = [
+    ...jobOffers.slice(0, 2).map((j) => ({
+      type: "Emploi",
+      title: j.title,
+      meta: JOB_OFFER_CONTRACT_LABELS[j.contractType],
+      icon: Briefcase,
+    })),
+    ...internshipRequests.slice(0, 2).map((i) => ({
+      type: "Stage",
+      title: `${i.firstName} ${i.lastName}`,
+      meta: i.institution || "Demande de stage",
+      icon: UserPlus,
+    })),
+    ...projects.slice(0, 1).map((p) => ({
+      type: "Projet",
+      title: p.title,
+      meta: p.client,
+      icon: FolderKanban,
+    })),
+    ...announcements.slice(0, 1).map((a) => ({
+      type: "Annonce",
+      title: a.title,
+      meta: ANNOUNCEMENT_TYPE_LABELS[a.type],
+      icon: Megaphone,
+    })),
+    ...articles.slice(0, 1).map((a) => ({
+      type: "Article",
+      title: a.title,
+      meta: a.author,
+      icon: FileText,
+    })),
   ].slice(0, 6);
 
-  const membersLoading = usersLoading || studentsLoading || instructorsLoading || adminsLoading;
+  const loaders = {
+    jobOffersLoading,
+    jobApplicationsLoading,
+    internshipRequestsLoading,
+    servicesLoading,
+    trainingsLoading,
+    projectsLoading,
+    articlesLoading,
+    contactsLoading,
+    reportsLoading,
+    announcementsLoading,
+    shortLinksLoading,
+    membersLoading: usersLoading || studentsLoading || instructorsLoading || adminsLoading,
+    usersLoading,
+    studentsLoading,
+    instructorsLoading,
+    adminsLoading,
+  };
 
   return (
     <>
       <PageHeader title="Tableau de bord" description="Vue d'ensemble de votre activité." />
-      <div className="space-y-4">
-        {/* KPIs Emplois, Candidatures, Stages */}
-        <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-3">
-          <StatCard label="Offres d'emploi" value={jobOffersLoading ? "…" : publishedJobOffers} icon={<Briefcase className="h-5 w-5" />} hint={`${jobOffers.length} au total`} />
-          <StatCard label="Candidatures" value={jobApplicationsLoading ? "…" : jobApplications.length} icon={<FileCheck2 className="h-5 w-5" />} hint={`${pendingJobApplications} à traiter`} />
-          <StatCard label="Demandes de stage" value={internshipRequestsLoading ? "…" : internshipRequests.length} icon={<UserPlus className="h-5 w-5" />} hint={`${pendingInternshipRequests} en attente`} />
-        </div>
 
-        {/* KPIs Services, Formations, Projets, Messages, articles */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="Services" value={servicesLoading ? "…" : services.length} icon={<Wrench className="h-5 w-5" />} hint={`${featuredServices} en vedette`} />
-          <StatCard label="Formations" value={trainingsLoading ? "…" : trainings.length} icon={<GraduationCap className="h-5 w-5" />} hint="Programmes actifs" />
-          <StatCard label="Projets" value={projectsLoading ? "…" : projects.length} icon={<FolderKanban className="h-5 w-5" />} hint={`${publicProjects} publics`} />
-          <StatCard label="Articles" value={articlesLoading ? "…" : articles.length} icon={<FileText className="h-5 w-5" />} hint="Publiés" />
-        </div>
+      <DashboardKpiGrid stats={stats} loaders={loaders} />
 
-        {/* KPIs Annonces, Stages */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="Messages nouveaux" value={contactsLoading ? "…" : newMessages} icon={<Inbox className="h-5 w-5" />} hint={`${contacts.length} au total`} />
-          <StatCard label="Signalements ouverts" value={reportsLoading ? "…" : openReports} icon={<ShieldAlert className="h-5 w-5" />} hint={`${reports.length} au total`} />
-          <StatCard label="Annonces actives" value={announcementsLoading ? "…" : activeAnnouncements} icon={<Megaphone className="h-5 w-5" />} hint={`${announcements.length} au total`} />
-          <StatCard label="Clics liens courts" value={shortLinksLoading ? "…" : totalClicks} icon={<MousePointerClick className="h-5 w-5" />} hint={`${activeShortLinks} liens actifs`} />
-        </div>
+      <DashboardChartsGrid
+        jobOffersByContract={jobOffersByContract}
+        announcementsByType={announcementsByType}
+        articlesByAuthor={articlesByAuthor}
+        applicationsByStatus={applicationsByStatus}
+        internshipByStatus={internshipByStatus}
+        topLinks={topLinks}
+        reportsByStatus={reportsByStatus}
+        linksByCategory={linksByCategory}
+        msgByStatus={msgByStatus}
+        membersByType={membersByType}
+        servicesByCategory={servicesByCategory}
+        trainingsByLevel={trainingsByLevel}
+        projectsByCategory={projectsByCategory}
+        activeShortLinks={stats.activeShortLinks}
+      />
 
-        {/* KPIs Membres */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          <StatCard className="sm:col-span-2 lg:col-span-1"
-            label="Membres actifs" value={membersLoading ? "…" : activeMembers} icon={<Users className="h-5 w-5" />} hint={`${totalMembers} au total`} />
-          <StatCard label="Utilisateurs actifs" value={usersLoading ? "…" : activeUsers} icon={<SquareUser className="h-5 w-5" />} hint={`${users.length} au total`} />
-          <StatCard label="Apprenants actifs" value={studentsLoading ? "…" : activeStudents} icon={<CircleUser className="h-5 w-5" />} hint={`${students.length} au total`} />
-          <StatCard label="Formateurs actifs" value={instructorsLoading ? "…" : activeInstructors} icon={<UserCheck className="h-5 w-5" />} hint={`${instructors.length} au total`} />
-          <StatCard label="Administrateurs actifs" value={adminsLoading ? "…" : activeAdmins} icon={<ShieldUser className="h-5 w-5" />} hint={`${admins.length} au total`} />
-        </div>
-      </div>
+      <DashboardRecentLists
+        jobOffers={jobOffers}
+        jobOffersLoading={jobOffersLoading}
+        jobApplications={jobApplications}
+        jobApplicationsLoading={jobApplicationsLoading}
+      />
 
-      {/* Graphiques Emplois, Annonces & Articles */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Offres d'emploi par type de contrat</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={jobOffersByContract}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="#3C82AB" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Annonces par type</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie data={announcementsByType} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
-                  {announcementsByType.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
-                </Pie>
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Articles par auteur</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={articlesByAuthor}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="#EC4899" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Graphiques Candidatures & Demandes de Stage */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Candidatures par statut</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={applicationsByStatus}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="var(--primary)" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Demandes de stage par statut</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={internshipByStatus}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="#8B5CF6" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Bloc Récapitulatif : Emplois & Recrutement */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="flex items-center gap-2">
-            <Briefcase className="h-5 w-5 text-primary" />
-            <div className="font-display text-lg font-semibold">Dernières offres d'emploi</div>
-          </div>
-          <ul className="mt-4 divide-y">
-            {jobOffersLoading && <li className="py-4 text-center text-sm text-muted-foreground">Chargement...</li>}
-            {jobOffers.slice(0, 4).map((offer) => {
-              return (
-                <li key={offer.id} className="flex items-center justify-between py-3">
-                  <div className="min-w-0 flex-1 pr-4">
-                    <div className="text-sm font-medium truncate">{offer.title}</div>
-                    <div className="text-xs text-muted-foreground">{JOB_OFFER_CONTRACT_LABELS[offer.contractType] || offer.contractType} • {offer.location}</div>
-                  </div>
-                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getJobOfferStatusBadge(offer.status)}`}>
-                    {JOB_OFFER_STATUS_LABELS[offer.status] || offer.status}
-                  </span>
-                </li>
-              );
-            })}
-            {!jobOffersLoading && jobOffers.length === 0 && (
-              <li className="py-6 text-center text-sm text-muted-foreground">Aucune offre créée</li>
-            )}
-          </ul>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="flex items-center gap-2">
-            <FileCheck2 className="h-5 w-5 text-primary" />
-            <div className="font-display text-lg font-semibold">Dernières candidatures</div>
-          </div>
-          <ul className="mt-4 divide-y">
-            {jobApplicationsLoading && <li className="py-4 text-center text-sm text-muted-foreground">Chargement...</li>}
-            {jobApplications.slice(0, 4).map((app) => (
-              <li key={app.id} className="flex items-center justify-between py-3">
-                <div className="min-w-0 flex-1 pr-4">
-                  <div className="text-sm font-medium truncate">{app.firstName} {app.lastName}</div>
-                  <div className="text-xs text-muted-foreground">{app.email}</div>
-                </div>
-                <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-                  {JOB_APPLICATION_STATUS_LABELS[app.status] || app.status}
-                </span>
-              </li>
-            ))}
-            {!jobApplicationsLoading && jobApplications.length === 0 && (
-              <li className="py-6 text-center text-sm text-muted-foreground">Aucune candidature reçue</li>
-            )}
-          </ul>
-        </div>
-      </div>
-
-      {/* Top 5 Liens Courts & Signalements par Statut */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Link2 className="h-5 w-5 text-primary" />
-              <div className="font-display text-lg font-semibold">Top 5 liens courts</div>
-            </div>
-            <span className="text-xs text-muted-foreground">{activeShortLinks} liens actifs</span>
-          </div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={topLinks} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis type="number" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis type="category" dataKey="name" stroke="var(--muted-foreground)" fontSize={11} width={100} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="var(--primary)" radius={[0, 6, 6, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Signalements par statut</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie data={reportsByStatus} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
-                  {reportsByStatus.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
-                </Pie>
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Liens par Catégorie & Messages */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
-          <div className="font-display text-lg font-semibold">Liens courts par catégorie</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={linksByCategory}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="#3C82AB" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Messages par statut</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie data={msgByStatus} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
-                  {msgByStatus.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
-                </Pie>
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Membres & Services */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Répartition des membres</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={membersByType}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="type" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="#5A9B6E" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Services par catégorie</div>
-          <div className="mt-4 h-56">
-            <ResponsiveContainer>
-              <BarChart data={servicesByCategory}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={11} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="#C89A3E" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Formations & Projets */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Formations par niveau</div>
-          <div className="mt-4 h-64">
-            <ResponsiveContainer>
-              <BarChart data={trainingsByLevel}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} />
-                <YAxis stroke="var(--muted-foreground)" fontSize={12} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="var(--primary)" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="font-display text-lg font-semibold">Projets par catégorie</div>
-          <div className="mt-4 h-64">
-            <ResponsiveContainer>
-              <BarChart data={projectsByCategory} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis type="number" stroke="var(--muted-foreground)" fontSize={12} />
-                <YAxis type="category" dataKey="name" stroke="var(--muted-foreground)" fontSize={12} width={90} />
-                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8 }} />
-                <Bar dataKey="value" fill="#5A9B6E" radius={[0, 6, 6, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Activité récente & Témoignages */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant lg:col-span-2">
-          <div className="flex items-center gap-2">
-            <Activity className="h-4 w-4 text-primary" />
-            <div className="font-display text-lg font-semibold">Activité récente</div>
-          </div>
-          <ul className="mt-4 divide-y">
-            {recent.map((r, i) => {
-              const Icon = r.icon;
-              return (
-                <li key={i} className="flex items-center gap-3 py-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-medium truncate">{r.title}</div>
-                    <div className="text-xs text-muted-foreground truncate">{r.meta}</div>
-                  </div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{r.type}</span>
-                </li>
-              );
-            })}
-            {recent.length === 0 && <li className="py-6 text-center text-sm text-muted-foreground">Aucune activité</li>}
-          </ul>
-        </div>
-
-        <div className="rounded-2xl border bg-card p-6 shadow-elegant">
-          <div className="flex items-center gap-2">
-            <MessagesSquare className="h-4 w-4 text-primary" />
-            <div className="font-display text-lg font-semibold">Derniers témoignages</div>
-          </div>
-          <div className="text-xs text-muted-foreground">{avgRating} / 5 de moyenne</div>
-          <ul className="mt-4 space-y-4">
-            {testimonialsLoading && <li className="text-center text-sm text-muted-foreground">Chargement...</li>}
-            {[...testimonials]
-              .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-              .slice(0, 3)
-              .map((t) => (
-                <li key={t.id} className="rounded-xl border p-3">
-                  <div className="flex gap-0.5">
-                    {Array.from({ length: t.rating }).map((_, i) => (
-                      <Star key={i} className="h-3 w-3 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <p className="mt-2 text-xs italic line-clamp-3">"{t.quote}"</p>
-                  <div className="mt-2 text-xs font-medium">{t.name}</div>
-                  <div className="text-[10px] text-muted-foreground">{t.role}</div>
-                </li>
-              ))}
-            {!testimonialsLoading && testimonials.length === 0 && (
-              <li className="text-center text-sm text-muted-foreground">Aucun témoignage</li>
-            )}
-          </ul>
-        </div>
-      </div>
+      <DashboardRecentActivity
+        recent={recent}
+        testimonials={testimonials}
+        testimonialsLoading={testimonialsLoading}
+        avgRating={avgRating}
+      />
     </>
   );
 }

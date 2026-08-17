@@ -1,4 +1,4 @@
-export * from "./AnnouncementCreateModal";
+export * from "./CreateModal";
 export * from "./TargetPagesInput";
 export * from "./ActionForm";
-export * from "./announcementTableColumns";
+export * from "./TableColumns";

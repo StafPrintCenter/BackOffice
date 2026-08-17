@@ -1,4 +1,4 @@
-import type { LessonKind, ContentStatus } from "@/data/trainingModules";
+import type { LessonKind, ContentStatus, QuizMode } from "@/data/trainingModules";
 import type { TrainingLevel, TrainingStatus } from "@/data/trainings";
 
 export type ContentReviewableType = "module" | "lesson" | "quiz";
@@ -35,7 +35,21 @@ export interface PendingReviewTraining {
   coverColor: string | null;
 }
 
-// Sous-ensemble de APIAdminLesson : pas de content/chapters/moduleId dans cette réponse.
+// Structure simplifiée du Quiz rattaché à une leçon
+export interface PendingReviewQuiz {
+  id: string;
+  lessonId: string;
+  mode: QuizMode;
+  passScore: number | null;
+  maxAttempts: number | null;
+  timeLimitSec: number | null;
+  status: ContentStatus;
+  createdByAdmin: string | null;
+  createdByInstructor: string | null;
+  createdAt: string;
+}
+
+// Sous-ensemble de APIAdminLesson : inclut le quiz optionnel
 export interface PendingReviewLesson {
   id: string;
   title: string;
@@ -49,6 +63,7 @@ export interface PendingReviewLesson {
   createdByAdmin: string | null;
   createdByInstructor: string | null;
   createdAt: string;
+  quiz?: PendingReviewQuiz | null;
 }
 
 export interface PendingReviewModule {

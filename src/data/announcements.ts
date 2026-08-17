@@ -48,6 +48,25 @@ export interface AdminAnnouncementPayload {
   target_pages?: string[]; // buildFormData de la factory le JSON.stringify automatiquement
 }
 
+export interface EditForm {
+  type: AnnouncementType;
+  position: AnnouncementPosition;
+  style?: AnnouncementStyle;
+  title: string;
+  message: string;
+  icon: string;
+  isClosable: boolean;
+  priority: string;
+  isEnabled: boolean;
+  publishedAt: string;
+  expiresAt: string;
+  targetPages: string[];
+  actionLabel: string;
+  actionType: AnnouncementActionType;
+  actionUrl: string;
+  actionTarget: "_self" | "_blank";
+}
+
 export const ANNOUNCEMENT_TYPE_LABELS: Record<AnnouncementType, string> = {
   banner: "Bannière",
   popup: "Pop-up",

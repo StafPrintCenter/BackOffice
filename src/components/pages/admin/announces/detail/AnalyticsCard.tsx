@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { Loader2, BarChart3, Eye, MousePointerClick, XCircle } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Loader2, BarChart3, Eye, MousePointerClick, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
 import { ANNOUNCEMENT_EVENT_LABELS, ANNOUNCEMENT_EVENT_BADGES } from "@/data/announcements";
 
@@ -15,7 +15,11 @@ function formatDay(day: string) {
   return new Date(day).toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short" });
 }
 
+const ITEMS_PER_PAGE = 9;
+
 export function AnnouncementAnalyticsCard({ analytics }: { analytics?: AnalyticsData }) {
+  const [currentPage, setCurrentPage] = useState(1);
+
   const chartData = useMemo(() => {
     if (!analytics?.byDay) return [];
 
@@ -36,6 +40,17 @@ export function AnnouncementAnalyticsCard({ analytics }: { analytics?: Analytics
       .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
       .map(([, data]) => data);
   }, [analytics]);
+
+  const totalPages = useMemo(() => {
+    if (!analytics?.byDay) return 0;
+    return Math.ceil(analytics.byDay.length / ITEMS_PER_PAGE);
+  }, [analytics]);
+
+  const paginatedByDay = useMemo(() => {
+    if (!analytics?.byDay) return [];
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return analytics.byDay.slice(start, start + ITEMS_PER_PAGE);
+  }, [analytics, currentPage]);
 
   return (
     <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-6">
@@ -107,18 +122,50 @@ export function AnnouncementAnalyticsCard({ analytics }: { analytics?: Analytics
           )}
 
           {analytics.byDay.length > 0 && (
-            <div className="divide-y rounded-xl border">
-              {analytics.byDay.map((row, i) => (
-                <div key={`${row.day}-${row.event_type}-${i}`} className="flex items-center justify-between p-3 text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">{formatDay(row.day)}</span>
-                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${ANNOUNCEMENT_EVENT_BADGES[row.event_type]}`}>
-                      {ANNOUNCEMENT_EVENT_LABELS[row.event_type]}
-                    </span>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="text-xs font-medium text-muted-foreground">Détails quotidiens des événements</div>
+                {totalPages > 1 && (
+                  <span className="text-xs text-muted-foreground">
+                    Page {currentPage} sur {totalPages}
+                  </span>
+                )}
+              </div>
+
+              <div className="divide-y rounded-xl border">
+                {paginatedByDay.map((row, i) => (
+                  <div key={`${row.day}-${row.event_type}-${i}`} className="flex items-center justify-between p-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted-foreground">{formatDay(row.day)}</span>
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${ANNOUNCEMENT_EVENT_BADGES[row.event_type]}`}>
+                        {ANNOUNCEMENT_EVENT_LABELS[row.event_type]}
+                      </span>
+                    </div>
+                    <span className="text-sm font-semibold text-primary">{row.total}</span>
                   </div>
-                  <span className="text-sm font-semibold text-primary">{row.total}</span>
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="flex items-center justify-end gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="inline-flex items-center gap-1 rounded-lg border bg-background px-2.5 py-1 text-xs font-medium shadow-sm transition-colors hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <ChevronLeft className="h-3.5 w-3.5" /> Précédent
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="inline-flex items-center gap-1 rounded-lg border bg-background px-2.5 py-1 text-xs font-medium shadow-sm transition-colors hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Suivant <ChevronRight className="h-3.5 w-3.5" />
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>

@@ -1,8 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Wrench, GraduationCap, FolderKanban, FileText, MessagesSquare, Users, Activity, Star, Inbox, ShieldAlert, Link2, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck, Megaphone, Briefcase, FileCheck2, UserPlus } from "lucide-react";
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { PageHeader, StatCard } from "@/components/site";
-import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminInstructorsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList, useAdminArticlesList, useAdminAnnouncementsList, useAdminJobOffersList, useAdminJobApplicationsList, useAdminInternshipRequestsList } from "@/stores";
+import { Briefcase, UserPlus, FolderKanban, Megaphone, FileText } from "lucide-react";
+import { PageHeader } from "@/components/site";
+import {
+  useAdminContactsList,
+  useAdminUsersList,
+  useAdminStudentsList,
+  useAdminAdminsList,
+  useAdminInstructorsList,
+  useAdminProjectsList,
+  useAdminTestimonialsList,
+  useAdminShortLinksList,
+  useAdminServicesList,
+  useAdminTrainingsList,
+  useAdminReportsList,
+  useAdminArticlesList,
+  useAdminAnnouncementsList,
+  useAdminJobOffersList,
+  useAdminJobApplicationsList,
+  useAdminInternshipRequestsList,
+} from "@/stores";
 import { SITE } from "@/data/site";
 import { ANNOUNCEMENT_TYPE_LABELS } from "@/data/announcements";
 import { JOB_OFFER_CONTRACT_LABELS, JOB_OFFER_STATUS_LABELS, getJobOfferStatusBadge } from "@/data/jobOffers";

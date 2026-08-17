@@ -150,7 +150,7 @@ function LessonItem({
   openEditLesson: (moduleId: string, l: APIAdminLesson) => void;
   handlePublishLesson: (l: APIAdminLesson) => void;
   setLessonToDelete: (data: { moduleId: string; lesson: APIAdminLesson }) => void;
-  openReview: (type: "module" | "lesson", id: string, title: string, decision: "approved" | "rejected") => void;
+  openReview: (type: "module" | "lesson" | "quiz", id: string, title: string, decision: "approved" | "rejected") => void;
   publishLessonPending: boolean;
 }) {
   const Icon = getLessonKindIcon(l.kind);

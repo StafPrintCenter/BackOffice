@@ -96,7 +96,7 @@ function ModuleLessonsList({
   openEditLesson: (moduleId: string, l: APIAdminLesson) => void;
   handlePublishLesson: (l: APIAdminLesson) => void;
   setLessonToDelete: (data: { moduleId: string; lesson: APIAdminLesson }) => void;
-  openReview: (type: "module" | "lesson", id: string, title: string, decision: "approved" | "rejected") => void;
+  openReview: (type: "module" | "lesson" | "quiz", id: string, title: string, decision: "approved" | "rejected") => void;
   publishLessonPending: boolean;
 }) {
   const { lessons, isLoading } = useAdminModuleDetail(moduleId);
@@ -286,6 +286,7 @@ function LessonItem({
                   lessonId={l.id}
                   quizId={sessionQuizId}
                   onQuizCreated={(newId) => setSessionQuizId(newId)}
+                  openReview={openReview}
                 />
               )}
 
@@ -341,7 +342,7 @@ function TrainingManageDetail() {
 
   const [reviewDialog, setReviewDialog] = useState<{
     open: boolean;
-    type: "module" | "lesson";
+    type: "module" | "lesson" | "quiz";
     id: string;
     title: string;
     decision: "approved" | "rejected";
@@ -479,7 +480,7 @@ function TrainingManageDetail() {
     });
   };
 
-  const openReview = (type: "module" | "lesson", reviewId: string, title: string, decision: "approved" | "rejected") => {
+  const openReview = (type: "module" | "lesson" | "quiz", reviewId: string, title: string, decision: "approved" | "rejected") => {
     setReviewComment("");
     setReviewDialog({ open: true, type, id: reviewId, title, decision });
   };

@@ -31,19 +31,31 @@ export function DashboardRecentLists({
           {jobOffersLoading && (
             <li className="py-4 text-center text-sm text-muted-foreground">Chargement...</li>
           )}
-          {jobOffers.slice(0, 4).map((offer) => (
-            <li key={offer.id} className="flex items-center justify-between py-3">
-              <div className="min-w-0 flex-1 pr-4">
-                <div className="text-sm font-medium truncate">{offer.title}</div>
-                <div className="text-xs text-muted-foreground">
-                  {JOB_OFFER_CONTRACT_LABELS[offer.contractType] || offer.contractType} • {offer.location}
+          {jobOffers.slice(0, 4).map((offer) => {
+            const contractLabel =
+              (JOB_OFFER_CONTRACT_LABELS as Record<string, string>)[offer.contractType] ||
+              offer.contractType;
+            const statusLabel =
+              (JOB_OFFER_STATUS_LABELS as Record<string, string>)[offer.status] ||
+              offer.status;
+            const statusBadgeClass = (
+              getJobOfferStatusBadge as unknown as (status: string) => string
+            )(offer.status);
+
+            return (
+              <li key={offer.id} className="flex items-center justify-between py-3">
+                <div className="min-w-0 flex-1 pr-4">
+                  <div className="text-sm font-medium truncate">{offer.title}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {contractLabel} • {offer.location}
+                  </div>
                 </div>
-              </div>
-              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getJobOfferStatusBadge(offer.status)}`}>
-                {JOB_OFFER_STATUS_LABELS[offer.status] || offer.status}
-              </span>
-            </li>
-          ))}
+                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass}`}>
+                  {statusLabel}
+                </span>
+              </li>
+            );
+          })}
           {!jobOffersLoading && jobOffers.length === 0 && (
             <li className="py-6 text-center text-sm text-muted-foreground">Aucune offre créée</li>
           )}
@@ -69,12 +81,14 @@ export function DashboardRecentLists({
                 <div className="text-xs text-muted-foreground">{app.email}</div>
               </div>
               <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-                {JOB_APPLICATION_STATUS_LABELS[app.status] || app.status}
+                {(JOB_APPLICATION_STATUS_LABELS as Record<string, string>)[app.status] || app.status}
               </span>
             </li>
           ))}
           {!jobApplicationsLoading && jobApplications.length === 0 && (
-            <li className="py-6 text-center text-sm text-muted-foreground">Aucune candidature reçue</li>
+            <li className="py-6 text-center text-sm text-muted-foreground">
+              Aucune candidature reçue
+            </li>
           )}
         </ul>
       </div>

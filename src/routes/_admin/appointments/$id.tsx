@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { useAdminAppointmentDetail, useUpdateAdminAppointmentStatus } from "@/stores/useAppointmentsStore";
+import { useAdminAppointmentDetail, useUpdateAdminAppointmentStatus, fetchAdminAppointmentById } from "@/stores/useAppointmentsStore";
 import { type AppointmentStatus } from "@/data/appointments";
 import { SITE } from "@/data/site";
 import {
@@ -14,9 +14,17 @@ import {
 } from "@/components/pages/admin/appointments/detail";
 
 export const Route = createFileRoute("/_admin/appointments/$id")({
-  head: () => ({
+  loader: async ({ params }) => {
+    const item = await fetchAdminAppointmentById(params.id);
+    return { item };
+  },
+  head: ({ loaderData }) => ({
     meta: [
-      { title: `Rendez-vous | ${SITE.name}` },
+      {
+        title: loaderData?.item?.subject
+          ? `Rendez-vous : ${loaderData.item.subject} | ${SITE.name}`
+          : `Rendez-vous | ${SITE.name}`,
+      },
       { name: "robots", content: "noindex" },
     ],
   }),

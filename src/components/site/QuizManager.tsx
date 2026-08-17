@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Rocket, Loader2, HelpCircle, CheckCircle2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Rocket, Loader2, HelpCircle, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,9 +9,13 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { ConfirmDelete } from "@/components/site/AdminBits";
-import { useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz, useCreateAdminQuizQuestion, useUpdateAdminQuizQuestion, useDeleteAdminQuizQuestion } from "@/stores/useQuizzesStore";
-import { QUIZ_MODE_LABELS, QUESTION_TYPE_LABELS, getQuizStatusBadgeClass, getQuizStatusLabel } from "@/data/quizzes";
+import {
+  useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz,
+  useCreateAdminQuizQuestion, useUpdateAdminQuizQuestion, useDeleteAdminQuizQuestion,
+} from "@/stores/useQuizzesStore";
+import { QUIZ_MODE_LABELS, QUESTION_TYPE_LABELS } from "@/data/quizzes";
 import type { QuizMode, QuizQuestionType, QuizQuestion, AdminQuizPayload, AdminQuizQuestionPayload } from "@/data/quizzes";
+import { getContentStatusBadgeClass, getContentStatusLabel } from "@/data/trainingModules";
 
 interface QuizFormValues {
   mode: QuizMode;
@@ -39,7 +43,17 @@ const emptyQuestionForm: QuestionFormValues = {
   choices: [{ label: "", is_correct: false }, { label: "", is_correct: false }],
 };
 
-export function QuizManager({ lessonId, quizId, onQuizCreated }: { lessonId: string; quizId: string | null; onQuizCreated: (id: string) => void }) {
+export function QuizManager({
+  lessonId,
+  quizId,
+  onQuizCreated,
+  openReview,
+}: {
+  lessonId: string;
+  quizId: string | null;
+  onQuizCreated: (id: string) => void;
+  openReview: (type: "module" | "lesson" | "quiz", id: string, title: string, decision: "approved" | "rejected") => void;
+}) {
   const { quiz, isLoading } = useAdminQuizDetail(quizId ?? undefined);
   const createQuizMutation = useCreateAdminQuiz();
   const updateQuizMutation = useUpdateAdminQuiz();
@@ -211,8 +225,8 @@ export function QuizManager({ lessonId, quizId, onQuizCreated }: { lessonId: str
       ) : (
         <div className="space-y-3">
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className={`inline-flex items-center rounded-full border px-2 py-0.5 font-medium ${getQuizStatusBadgeClass(quiz.status)}`}>
-              {getQuizStatusLabel(quiz.status)}
+            <span className={`inline-flex items-center rounded-full border px-2 py-0.5 font-medium ${getContentStatusBadgeClass(quiz.status)}`}>
+              {getContentStatusLabel(quiz.status)}
             </span>
             <span className="rounded-full bg-muted px-2 py-0.5">{QUIZ_MODE_LABELS[quiz.mode]}</span>
             {quiz.timeLimitSec != null && <span className="rounded-full bg-muted px-2 py-0.5">{quiz.timeLimitSec}s</span>}
@@ -225,11 +239,36 @@ export function QuizManager({ lessonId, quizId, onQuizCreated }: { lessonId: str
             <Button type="button" size="sm" variant="ghost" onClick={openEditQuiz}>
               <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier les réglages
             </Button>
-            {quiz.status !== "published" && (
+
+            {quiz.status === "pending_review" && (
+              <>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  className="text-emerald-600 hover:bg-emerald-500/10"
+                  onClick={() => openReview("quiz", quiz.id, `Quiz de la leçon`, "approved")}
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Approuver
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  className="text-destructive hover:bg-destructive/10"
+                  onClick={() => openReview("quiz", quiz.id, `Quiz de la leçon`, "rejected")}
+                >
+                  <XCircle className="h-3.5 w-3.5 mr-1" /> Rejeter
+                </Button>
+              </>
+            )}
+
+            {quiz.status !== "published" && quiz.status !== "pending_review" && (
               <Button type="button" size="sm" variant="ghost" onClick={handlePublishQuiz} disabled={publishQuizMutation.isPending || quiz.questionsCount === 0}>
                 <Rocket className="h-3.5 w-3.5 mr-1" /> Publier
               </Button>
             )}
+
             <Button type="button" size="sm" variant="ghost" className="text-destructive hover:bg-destructive/10" onClick={() => setQuizToDelete(true)}>
               <Trash2 className="h-3.5 w-3.5 mr-1" /> Supprimer le quiz
             </Button>

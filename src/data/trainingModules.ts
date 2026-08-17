@@ -2,6 +2,7 @@ import { Video, BookOpen, HelpCircle, Dumbbell, FileCheck, FolderGit2, type Luci
 export type ContentStatus = "draft" | "pending_review" | "published" | "rejected";
 export type ContentReviewDecision = "approved" | "rejected";
 export type LessonKind = "video" | "reading" | "quiz" | "exercise" | "assignment" | "project";
+export type QuizMode = "quiz" | "exercise";
 
 export const LESSON_KIND_LABELS: Record<LessonKind, string> = {
   video: "Vidéo",
@@ -49,6 +50,26 @@ export interface AdminTrainingModulePayload {
   is_enabled?: boolean;
 }
 
+export type APIAdminQuiz = {
+  id: string;
+  lessonId: string;
+  mode: QuizMode;
+  passScore: number | null;
+  maxAttempts: number | null;
+  timeLimitSec: number | null;
+  status: ContentStatus;
+  createdByAdmin?: string | null;
+  createdByInstructor?: string | null;
+  createdAt: string;
+};
+
+export interface AdminQuizPayload {
+  mode?: QuizMode;
+  pass_score?: number;
+  max_attempts?: number;
+  time_limit_sec?: number;
+}
+
 export type APIAdminLesson = {
   id: string;
   moduleId: string;
@@ -63,6 +84,7 @@ export type APIAdminLesson = {
   isMandatory: boolean;
   status: ContentStatus;
   quizId?: string | null;
+  quiz?: APIAdminQuiz | null;
   createdByAdmin?: string | null;
   createdByInstructor?: string | null;
   createdAt: string;

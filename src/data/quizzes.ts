@@ -1,6 +1,7 @@
+import type { ContentStatus } from "@/data/trainingModules";
+
 export type QuizMode = "quiz" | "exercise";
 export type QuizQuestionType = "single" | "multiple";
-export type QuizStatus = "draft" | "published";
 
 export const QUIZ_MODE_LABELS: Record<QuizMode, string> = {
   quiz: "Quiz (chronométré)",
@@ -29,7 +30,8 @@ export interface QuizQuestion {
   choices: QuizChoice[];
 }
 
-// Réponse de création et de mise à jour
+// ⚠️ Le quiz partage le même enum de statut que module/leçon (ContentStatus), pas un
+// enum séparé — confirmé par ContentReviewableType::MAP qui inclut désormais Quiz.
 export type APIAdminQuiz = {
   id: string;
   lessonId: string;
@@ -39,14 +41,13 @@ export type APIAdminQuiz = {
   maxAttempts: number;
   totalPoints: number;
   autoSubmitOnTimeout: boolean;
-  status: QuizStatus;
+  status: ContentStatus;
   questionsCount: number;
   createdByAdmin?: string | null;
   createdByInstructor?: string | null;
   createdAt: string;
 };
 
-// Réponse du détail (GET /quizzes/{id}) — inclut les questions complètes.
 export type APIAdminQuizDetail = APIAdminQuiz & {
   questions: QuizQuestion[];
 };
@@ -71,17 +72,4 @@ export interface AdminQuizQuestionPayload {
   sort_order?: number;
   explanation?: string;
   choices: AdminQuizChoiceInput[];
-}
-
-export const QUIZ_STATUS_BADGES: Record<QuizStatus, { label: string; className: string }> = {
-  draft: { label: "Brouillon", className: "bg-slate-500/10 text-slate-700 dark:text-slate-400 border-slate-500/20" },
-  published: { label: "Publié", className: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20" },
-};
-
-export function getQuizStatusBadgeClass(status: QuizStatus): string {
-  return QUIZ_STATUS_BADGES[status]?.className ?? "bg-muted text-muted-foreground border-border";
-}
-
-export function getQuizStatusLabel(status: QuizStatus): string {
-  return QUIZ_STATUS_BADGES[status]?.label ?? status;
 }

@@ -1,24 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Briefcase, UserPlus, FolderKanban, Megaphone, FileText } from "lucide-react";
 import { PageHeader } from "@/components/site";
-import {
-  useAdminContactsList,
-  useAdminUsersList,
-  useAdminStudentsList,
-  useAdminAdminsList,
-  useAdminInstructorsList,
-  useAdminProjectsList,
-  useAdminTestimonialsList,
-  useAdminShortLinksList,
-  useAdminServicesList,
-  useAdminTrainingsList,
-  useAdminReportsList,
-  useAdminArticlesList,
-  useAdminAnnouncementsList,
-  useAdminJobOffersList,
-  useAdminJobApplicationsList,
-  useAdminInternshipRequestsList,
-} from "@/stores";
+import { useAdminContactsList, useAdminUsersList, useAdminStudentsList, useAdminAdminsList, useAdminInstructorsList, useAdminProjectsList, useAdminTestimonialsList, useAdminShortLinksList, useAdminServicesList, useAdminTrainingsList, useAdminReportsList, useAdminArticlesList, useAdminAnnouncementsList, useAdminJobOffersList, useAdminJobApplicationsList, useAdminInternshipRequestsList } from "@/stores";
 import { SITE } from "@/data/site";
 import { ANNOUNCEMENT_TYPE_LABELS } from "@/data/announcements";
 import { JOB_OFFER_CONTRACT_LABELS } from "@/data/jobOffers";

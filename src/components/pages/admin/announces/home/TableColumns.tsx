@@ -1,7 +1,7 @@
 import type { Column } from "@/components/site/DataTable";
 import type { APIAdminAnnouncement } from "@/data/announcements";
 import { ANNOUNCEMENT_TYPE_LABELS, ANNOUNCEMENT_POSITION_LABELS, ANNOUNCEMENT_STYLE_LABELS, getAnnouncementStyleBadge } from "@/data/announcements";
-import { AnnouncementStatusBadge } from "../shared/AnnouncementStatusBadge";
+import { AnnouncementStatusBadge } from "../shared/StatusBadge";
 
 export const announcementTableColumns: Column<APIAdminAnnouncement>[] = [
   {

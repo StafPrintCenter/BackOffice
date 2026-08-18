@@ -32,7 +32,7 @@ export const Route = createFileRoute("/_admin/announces/$id")({
       {
         title: loaderData?.item?.title
           ? `${loaderData.item.title} | ${SITE.name}`
-          : `Annonce | ${SITE.name}`,
+          : `Détail annonce | ${SITE.name}`,
       },
       { name: "robots", content: "noindex" },
     ],

@@ -31,7 +31,7 @@ export const Route = createFileRoute("/_admin/announces/$id")({
     meta: [
       {
         title: loaderData?.item?.title
-          ? `${loaderData.item.title} | ${SITE.name}`
+          ? `Annonce : ${loaderData.item.title} | ${SITE.name}`
           : `Détail annonce | ${SITE.name}`,
       },
       { name: "robots", content: "noindex" },

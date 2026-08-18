@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_admin/appointments/$id")({
       {
         title: loaderData?.item?.subject
           ? `Rendez-vous : ${loaderData.item.subject} | ${SITE.name}`
-          : `Rendez-vous | ${SITE.name}`,
+          : `Détail rendez-vous | ${SITE.name}`,
       },
       { name: "robots", content: "noindex" },
     ],

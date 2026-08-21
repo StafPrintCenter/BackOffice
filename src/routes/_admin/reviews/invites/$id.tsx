@@ -75,7 +75,6 @@ function InvitationDetail() {
           <Button variant="outline" size="sm" onClick={copyLink}>
             <Copy className="mr-1 h-4 w-4" /> Copier le lien
           </Button>
-          {/* Renvoyer désactivé tant que l'endpoint réel n'est pas confirmé (voir note dans le store) */}
           <Button variant="outline" size="sm" onClick={handleResend} disabled={!canResend || resendMutation.isPending}>
             <Send className="mr-1 h-4 w-4" /> Renvoyer
           </Button>
@@ -105,7 +104,20 @@ function InvitationDetail() {
             <div>Expire le : <b>{invitation.expiresAt ? new Date(invitation.expiresAt).toLocaleString() : "-"}</b></div>
             <div>Créée le : <b>{new Date(invitation.createdAt).toLocaleString()}</b></div>
           </div>
-          <div className="mt-4 rounded-lg bg-muted/50 p-3 font-mono text-xs break-all">{invitation.link}</div>
+
+          {/* Zone du lien avec bouton de copie intégré */}
+          <div className="mt-4 flex items-center justify-between gap-3 rounded-lg bg-muted/50 p-3">
+            <span className="font-mono text-xs break-all text-muted-foreground">{invitation.link}</span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 shrink-0 text-muted-foreground hover:text-foreground"
+              onClick={copyLink}
+              title="Copier le lien"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </>

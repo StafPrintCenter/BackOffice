@@ -75,6 +75,7 @@ function InvitationDetail() {
           <Button variant="outline" size="sm" onClick={copyLink}>
             <Copy className="mr-1 h-4 w-4" /> Copier le lien
           </Button>
+          {/* Renvoyer désactivé tant que l'endpoint réel n'est pas confirmé (voir note dans le store) */}
           <Button variant="outline" size="sm" onClick={handleResend} disabled={!canResend || resendMutation.isPending}>
             <Send className="mr-1 h-4 w-4" /> Renvoyer
           </Button>

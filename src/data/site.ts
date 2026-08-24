@@ -7,10 +7,7 @@ export const SITE = {
   phone: "+229 01 66 52 36 39",
   whatsapp: "+229 01 60 30 06 07",
   whatsappLink: "https://wa.me/2290160300607",
-  email: "stafprintcenter@gmail.com",
-  url: import.meta.env.VITE_SITE_URL,
-  shortUrl: import.meta.env.VITE_SHORTSITE_URL,
-  frontUrl: import.meta.env.VITE_FRONTEND_URL,
+  email: "contact@stafprint.com",
   maps: "https://maps.app.goo.gl/4mbhWctm6LnTgYsAA",
   notice: "https://search.google.com/local/reviews?placeid=ChIJPb8nmaNbOxARzgX2S_y9o_M",
   socials: {
@@ -26,16 +23,12 @@ export const SITE = {
   }
 };
 
-export const NAV_LINKS = [
-  { label: "Services", to: "/services" },
-  { label: "Réalisations", to: "/projects" },
-  { label: "Formations", to: "/training" },
-  { label: "Blog", to: "/articles" },
-  { label: "FAQs", to: "/faqs" },
-] as const;
-
-export const FOOTER_LINKS = [
-  { label: "Mentions légales", to: "/legal/mentions" },
-  { label: "Conditions Générales de Vente", to: "/legal/cgv" },
-  { label: "Confidentialité", to: "/legal/privacy" },
-] as const;
+export const SITE_LINK = {
+  landingUrl: import.meta.env.VITE_LANDING_URL,
+  shortUrl: import.meta.env.VITE_SHORTSITE_URL,
+  instructorUrl: import.meta.env.VITE_INSTRUCTOR_URL,
+  studentUrl: import.meta.env.VITE_STUDENT_URL,
+  meetUrl: import.meta.env.VITE_MEET_URL,
+  arcadeUrl: import.meta.env.VITE_ARCADE_URL,
+  docsUrl: import.meta.env.VITE_DOCS_URL,
+};

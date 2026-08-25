@@ -43,6 +43,7 @@ function WaitlistEntryDetail() {
     try {
       await navigator.clipboard.writeText(entry.email);
       setCopied(true);
+      toast.success("Email copié dans le presse-papier");
       setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error("Impossible de copier l'email");

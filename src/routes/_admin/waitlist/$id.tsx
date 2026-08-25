@@ -45,7 +45,7 @@ function WaitlistEntryDetail() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      /* clipboard fallback */
+      toast.error("Impossible de copier l'email");
     }
   };
 

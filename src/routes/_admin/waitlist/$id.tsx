@@ -1,17 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import {
-  ArrowLeft,
-  Loader2,
-  Mail,
-  Calendar,
-  Layers,
-  Copy,
-  Check,
-  ExternalLink,
-  Clock,
-  ShieldAlert,
-} from "lucide-react";
+import { toast } from "sonner";
+import { ArrowLeft, Loader2, Mail, Calendar, Layers, Copy, Check, Clock, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdminWaitlistDetail } from "@/stores/useWaitlistStore";
 import { getWaitlistPlatformBadge, getWaitlistPlatformLabel } from "@/data/waitlist";

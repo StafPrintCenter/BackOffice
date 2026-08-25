@@ -42,6 +42,8 @@ import { Route as AdminStatsIndexRouteImport } from './routes/_admin/stats/index
 import { Route as AdminStatsIdRouteImport } from './routes/_admin/stats/$id'
 import { Route as AdminTestimonialsIndexRouteImport } from './routes/_admin/testimonials/index'
 import { Route as AdminTestimonialsIdRouteImport } from './routes/_admin/testimonials/$id'
+import { Route as AdminWaitlistIndexRouteImport } from './routes/_admin/waitlist/index'
+import { Route as AdminWaitlistIdRouteImport } from './routes/_admin/waitlist/$id'
 import { Route as AdminJobsApplicationsIndexRouteImport } from './routes/_admin/jobs/applications/index'
 import { Route as AdminJobsApplicationsIdRouteImport } from './routes/_admin/jobs/applications/$id'
 import { Route as AdminJobsOffersIndexRouteImport } from './routes/_admin/jobs/offers/index'
@@ -234,6 +236,16 @@ const AdminTestimonialsIdRoute = AdminTestimonialsIdRouteImport.update({
   path: '/testimonials/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminWaitlistIndexRoute = AdminWaitlistIndexRouteImport.update({
+  id: '/waitlist/',
+  path: '/waitlist/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminWaitlistIdRoute = AdminWaitlistIdRouteImport.update({
+  id: '/waitlist/$id',
+  path: '/waitlist/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminJobsApplicationsIndexRoute =
   AdminJobsApplicationsIndexRouteImport.update({
     id: '/jobs/applications/',
@@ -410,6 +422,7 @@ export interface FileRoutesByFullPath {
   '/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/stats/$id': typeof AdminStatsIdRoute
   '/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/waitlist/$id': typeof AdminWaitlistIdRoute
   '/announces/': typeof AdminAnnouncesIndexRoute
   '/appointments/': typeof AdminAppointmentsIndexRoute
   '/articles/': typeof AdminArticlesIndexRoute
@@ -423,6 +436,7 @@ export interface FileRoutesByFullPath {
   '/shortlinks/': typeof AdminShortlinksIndexRoute
   '/stats/': typeof AdminStatsIndexRoute
   '/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/waitlist/': typeof AdminWaitlistIndexRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -471,6 +485,7 @@ export interface FileRoutesByTo {
   '/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/stats/$id': typeof AdminStatsIdRoute
   '/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/waitlist/$id': typeof AdminWaitlistIdRoute
   '/announces': typeof AdminAnnouncesIndexRoute
   '/appointments': typeof AdminAppointmentsIndexRoute
   '/articles': typeof AdminArticlesIndexRoute
@@ -484,6 +499,7 @@ export interface FileRoutesByTo {
   '/shortlinks': typeof AdminShortlinksIndexRoute
   '/stats': typeof AdminStatsIndexRoute
   '/testimonials': typeof AdminTestimonialsIndexRoute
+  '/waitlist': typeof AdminWaitlistIndexRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -535,6 +551,7 @@ export interface FileRoutesById {
   '/_admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/_admin/stats/$id': typeof AdminStatsIdRoute
   '/_admin/testimonials/$id': typeof AdminTestimonialsIdRoute
+  '/_admin/waitlist/$id': typeof AdminWaitlistIdRoute
   '/_admin/announces/': typeof AdminAnnouncesIndexRoute
   '/_admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/_admin/articles/': typeof AdminArticlesIndexRoute
@@ -548,6 +565,7 @@ export interface FileRoutesById {
   '/_admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/_admin/stats/': typeof AdminStatsIndexRoute
   '/_admin/testimonials/': typeof AdminTestimonialsIndexRoute
+  '/_admin/waitlist/': typeof AdminWaitlistIndexRoute
   '/_admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/_admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/_admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -598,6 +616,7 @@ export interface FileRouteTypes {
     | '/shortlinks/$id'
     | '/stats/$id'
     | '/testimonials/$id'
+    | '/waitlist/$id'
     | '/announces/'
     | '/appointments/'
     | '/articles/'
@@ -611,6 +630,7 @@ export interface FileRouteTypes {
     | '/shortlinks/'
     | '/stats/'
     | '/testimonials/'
+    | '/waitlist/'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
     | '/members/admins/$id'
@@ -659,6 +679,7 @@ export interface FileRouteTypes {
     | '/shortlinks/$id'
     | '/stats/$id'
     | '/testimonials/$id'
+    | '/waitlist/$id'
     | '/announces'
     | '/appointments'
     | '/articles'
@@ -672,6 +693,7 @@ export interface FileRouteTypes {
     | '/shortlinks'
     | '/stats'
     | '/testimonials'
+    | '/waitlist'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
     | '/members/admins/$id'
@@ -722,6 +744,7 @@ export interface FileRouteTypes {
     | '/_admin/shortlinks/$id'
     | '/_admin/stats/$id'
     | '/_admin/testimonials/$id'
+    | '/_admin/waitlist/$id'
     | '/_admin/announces/'
     | '/_admin/appointments/'
     | '/_admin/articles/'
@@ -735,6 +758,7 @@ export interface FileRouteTypes {
     | '/_admin/shortlinks/'
     | '/_admin/stats/'
     | '/_admin/testimonials/'
+    | '/_admin/waitlist/'
     | '/_admin/jobs/applications/$id'
     | '/_admin/jobs/offers/$id'
     | '/_admin/members/admins/$id'
@@ -1004,6 +1028,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTestimonialsIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/waitlist/': {
+      id: '/_admin/waitlist/'
+      path: '/waitlist'
+      fullPath: '/waitlist/'
+      preLoaderRoute: typeof AdminWaitlistIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/waitlist/$id': {
+      id: '/_admin/waitlist/$id'
+      path: '/waitlist/$id'
+      fullPath: '/waitlist/$id'
+      preLoaderRoute: typeof AdminWaitlistIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/jobs/applications/': {
       id: '/_admin/jobs/applications/'
       path: '/jobs/applications'
@@ -1219,6 +1257,7 @@ interface AdminRouteChildren {
   AdminShortlinksIdRoute: typeof AdminShortlinksIdRoute
   AdminStatsIdRoute: typeof AdminStatsIdRoute
   AdminTestimonialsIdRoute: typeof AdminTestimonialsIdRoute
+  AdminWaitlistIdRoute: typeof AdminWaitlistIdRoute
   AdminAnnouncesIndexRoute: typeof AdminAnnouncesIndexRoute
   AdminAppointmentsIndexRoute: typeof AdminAppointmentsIndexRoute
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
@@ -1232,6 +1271,7 @@ interface AdminRouteChildren {
   AdminShortlinksIndexRoute: typeof AdminShortlinksIndexRoute
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
+  AdminWaitlistIndexRoute: typeof AdminWaitlistIndexRoute
   AdminJobsApplicationsIdRoute: typeof AdminJobsApplicationsIdRoute
   AdminJobsOffersIdRoute: typeof AdminJobsOffersIdRoute
   AdminMembersAdminsIdRoute: typeof AdminMembersAdminsIdRoute
@@ -1278,6 +1318,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminShortlinksIdRoute: AdminShortlinksIdRoute,
   AdminStatsIdRoute: AdminStatsIdRoute,
   AdminTestimonialsIdRoute: AdminTestimonialsIdRoute,
+  AdminWaitlistIdRoute: AdminWaitlistIdRoute,
   AdminAnnouncesIndexRoute: AdminAnnouncesIndexRoute,
   AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
@@ -1291,6 +1332,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminShortlinksIndexRoute: AdminShortlinksIndexRoute,
   AdminStatsIndexRoute: AdminStatsIndexRoute,
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
+  AdminWaitlistIndexRoute: AdminWaitlistIndexRoute,
   AdminJobsApplicationsIdRoute: AdminJobsApplicationsIdRoute,
   AdminJobsOffersIdRoute: AdminJobsOffersIdRoute,
   AdminMembersAdminsIdRoute: AdminMembersAdminsIdRoute,

@@ -36,7 +36,7 @@ type FormValues = z.infer<typeof schema>;
 const empty: FormValues = {
   long_url: "",
   alias: "",
-  category: "",
+  category: "other",
   is_active: true,
   activate_at: "",
   expires_at: "",

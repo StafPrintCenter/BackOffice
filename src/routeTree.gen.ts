@@ -20,8 +20,6 @@ import { Route as AdminAnnouncesIndexRouteImport } from './routes/_admin/announc
 import { Route as AdminAnnouncesIdRouteImport } from './routes/_admin/announces/$id'
 import { Route as AdminAppointmentsIndexRouteImport } from './routes/_admin/appointments/index'
 import { Route as AdminAppointmentsIdRouteImport } from './routes/_admin/appointments/$id'
-import { Route as AdminArticleFeedbackIndexRouteImport } from './routes/_admin/articleFeedback/index'
-import { Route as AdminArticleFeedbackIdRouteImport } from './routes/_admin/articleFeedback/$id'
 import { Route as AdminArticlesIndexRouteImport } from './routes/_admin/articles/index'
 import { Route as AdminArticlesIdRouteImport } from './routes/_admin/articles/$id'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/_admin/categories/index'
@@ -130,17 +128,6 @@ const AdminAppointmentsIndexRoute = AdminAppointmentsIndexRouteImport.update({
 const AdminAppointmentsIdRoute = AdminAppointmentsIdRouteImport.update({
   id: '/appointments/$id',
   path: '/appointments/$id',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminArticleFeedbackIndexRoute =
-  AdminArticleFeedbackIndexRouteImport.update({
-    id: '/articleFeedback/',
-    path: '/articleFeedback/',
-    getParentRoute: () => AdminRoute,
-  } as any)
-const AdminArticleFeedbackIdRoute = AdminArticleFeedbackIdRouteImport.update({
-  id: '/articleFeedback/$id',
-  path: '/articleFeedback/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminArticlesIndexRoute = AdminArticlesIndexRouteImport.update({
@@ -452,7 +439,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
-  '/articleFeedback/$id': typeof AdminArticleFeedbackIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
   '/faqs/$id': typeof AdminFaqsIdRoute
@@ -467,7 +453,6 @@ export interface FileRoutesByFullPath {
   '/waitlist/$id': typeof AdminWaitlistIdRoute
   '/announces/': typeof AdminAnnouncesIndexRoute
   '/appointments/': typeof AdminAppointmentsIndexRoute
-  '/articleFeedback/': typeof AdminArticleFeedbackIndexRoute
   '/articles/': typeof AdminArticlesIndexRoute
   '/categories/': typeof AdminCategoriesIndexRoute
   '/faqs/': typeof AdminFaqsIndexRoute
@@ -521,7 +506,6 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
-  '/articleFeedback/$id': typeof AdminArticleFeedbackIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
   '/faqs/$id': typeof AdminFaqsIdRoute
@@ -536,7 +520,6 @@ export interface FileRoutesByTo {
   '/waitlist/$id': typeof AdminWaitlistIdRoute
   '/announces': typeof AdminAnnouncesIndexRoute
   '/appointments': typeof AdminAppointmentsIndexRoute
-  '/articleFeedback': typeof AdminArticleFeedbackIndexRoute
   '/articles': typeof AdminArticlesIndexRoute
   '/categories': typeof AdminCategoriesIndexRoute
   '/faqs': typeof AdminFaqsIndexRoute
@@ -593,7 +576,6 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRoute
   '/_admin/announces/$id': typeof AdminAnnouncesIdRoute
   '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
-  '/_admin/articleFeedback/$id': typeof AdminArticleFeedbackIdRoute
   '/_admin/articles/$id': typeof AdminArticlesIdRoute
   '/_admin/categories/$id': typeof AdminCategoriesIdRoute
   '/_admin/faqs/$id': typeof AdminFaqsIdRoute
@@ -608,7 +590,6 @@ export interface FileRoutesById {
   '/_admin/waitlist/$id': typeof AdminWaitlistIdRoute
   '/_admin/announces/': typeof AdminAnnouncesIndexRoute
   '/_admin/appointments/': typeof AdminAppointmentsIndexRoute
-  '/_admin/articleFeedback/': typeof AdminArticleFeedbackIndexRoute
   '/_admin/articles/': typeof AdminArticlesIndexRoute
   '/_admin/categories/': typeof AdminCategoriesIndexRoute
   '/_admin/faqs/': typeof AdminFaqsIndexRoute
@@ -664,7 +645,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/announces/$id'
     | '/appointments/$id'
-    | '/articleFeedback/$id'
     | '/articles/$id'
     | '/categories/$id'
     | '/faqs/$id'
@@ -679,7 +659,6 @@ export interface FileRouteTypes {
     | '/waitlist/$id'
     | '/announces/'
     | '/appointments/'
-    | '/articleFeedback/'
     | '/articles/'
     | '/categories/'
     | '/faqs/'
@@ -733,7 +712,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/announces/$id'
     | '/appointments/$id'
-    | '/articleFeedback/$id'
     | '/articles/$id'
     | '/categories/$id'
     | '/faqs/$id'
@@ -748,7 +726,6 @@ export interface FileRouteTypes {
     | '/waitlist/$id'
     | '/announces'
     | '/appointments'
-    | '/articleFeedback'
     | '/articles'
     | '/categories'
     | '/faqs'
@@ -804,7 +781,6 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_admin/announces/$id'
     | '/_admin/appointments/$id'
-    | '/_admin/articleFeedback/$id'
     | '/_admin/articles/$id'
     | '/_admin/categories/$id'
     | '/_admin/faqs/$id'
@@ -819,7 +795,6 @@ export interface FileRouteTypes {
     | '/_admin/waitlist/$id'
     | '/_admin/announces/'
     | '/_admin/appointments/'
-    | '/_admin/articleFeedback/'
     | '/_admin/articles/'
     | '/_admin/categories/'
     | '/_admin/faqs/'
@@ -949,20 +924,6 @@ declare module '@tanstack/react-router' {
       path: '/appointments/$id'
       fullPath: '/appointments/$id'
       preLoaderRoute: typeof AdminAppointmentsIdRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/articleFeedback/': {
-      id: '/_admin/articleFeedback/'
-      path: '/articleFeedback'
-      fullPath: '/articleFeedback/'
-      preLoaderRoute: typeof AdminArticleFeedbackIndexRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/articleFeedback/$id': {
-      id: '/_admin/articleFeedback/$id'
-      path: '/articleFeedback/$id'
-      fullPath: '/articleFeedback/$id'
-      preLoaderRoute: typeof AdminArticleFeedbackIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/articles/': {
@@ -1365,7 +1326,6 @@ interface AdminRouteChildren {
   AdminProfileRoute: typeof AdminProfileRoute
   AdminAnnouncesIdRoute: typeof AdminAnnouncesIdRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
-  AdminArticleFeedbackIdRoute: typeof AdminArticleFeedbackIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
   AdminCategoriesIdRoute: typeof AdminCategoriesIdRoute
   AdminFaqsIdRoute: typeof AdminFaqsIdRoute
@@ -1380,7 +1340,6 @@ interface AdminRouteChildren {
   AdminWaitlistIdRoute: typeof AdminWaitlistIdRoute
   AdminAnnouncesIndexRoute: typeof AdminAnnouncesIndexRoute
   AdminAppointmentsIndexRoute: typeof AdminAppointmentsIndexRoute
-  AdminArticleFeedbackIndexRoute: typeof AdminArticleFeedbackIndexRoute
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
   AdminFaqsIndexRoute: typeof AdminFaqsIndexRoute
@@ -1432,7 +1391,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminProfileRoute: AdminProfileRoute,
   AdminAnnouncesIdRoute: AdminAnnouncesIdRoute,
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
-  AdminArticleFeedbackIdRoute: AdminArticleFeedbackIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,
   AdminCategoriesIdRoute: AdminCategoriesIdRoute,
   AdminFaqsIdRoute: AdminFaqsIdRoute,
@@ -1447,7 +1405,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminWaitlistIdRoute: AdminWaitlistIdRoute,
   AdminAnnouncesIndexRoute: AdminAnnouncesIndexRoute,
   AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
-  AdminArticleFeedbackIndexRoute: AdminArticleFeedbackIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
   AdminFaqsIndexRoute: AdminFaqsIndexRoute,

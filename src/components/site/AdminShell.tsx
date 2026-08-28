@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, UserCircle } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, UserCircle, SquareAsterisk } from "lucide-react";
 
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
@@ -51,7 +51,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/reports", label: "Signalements", icon: ShieldAlert },
       { to: "/reviews/forms", label: "Formulaires d'avis", icon: Form, matchPrefixes: ["/reviews"] },
       { to: "/waitlist", label: "Liste d'attente", icon: ClipboardClock },
-      { to: "/articleFeedback", label: "Feedback Article", icon: ClipboardClock },
+      { to: "/articleFeedback", label: "Feedback Article", icon: SquareAsterisk },
     ],
   },
   {

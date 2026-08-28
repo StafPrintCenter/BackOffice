@@ -1,6 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Folders } from "lucide-react";
 import { PageHeader, ConfirmDelete } from "@/components/site";
 import { DataTable } from "@/components/site/DataTable";
 import { useAdminArticleFeedbacksList, useDeleteAdminArticleFeedback } from "@/stores/useArticleFeedbackStore";
@@ -35,6 +36,16 @@ function AdminArticleFeedback() {
         title="Retours sur articles"
         description="Votes et commentaires laissés par les visiteurs sur les articles de la documentation."
       />
+
+      {/* Raccourci */}
+      <div className="mb-4">
+        <Link to="/articleFeedback/group"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Folders className="h-4 w-4"
+          />
+          Aller aux campagnes
+        </Link>
+      </div>
 
       <DataTable<APIAdminArticleFeedback>
         data={items}

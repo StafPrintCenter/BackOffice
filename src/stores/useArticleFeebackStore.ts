@@ -1,15 +1,16 @@
 import { createResourceStore } from "./createResourceStore";
-import type { APIAdminWaitlistEntry } from "@/data/waitlist";
+import type { APIAdminArticleFeedback } from "@/data/articleFeedback";
 
-const store = createResourceStore<APIAdminWaitlistEntry>({
-  resourceKey: "waitlist",
-  basePath: "waitlist",
+// Pas de create/update pour cette ressource — seuls list/detail/delete existent.
+const store = createResourceStore<APIAdminArticleFeedback>({
+  resourceKey: "article-feedback",
+  basePath: "docs/article-feedback",
 });
 
-export const fetchAdminWaitlistEntries = store.fetchList;
-export const fetchAdminWaitlistEntryById = store.fetchById;
-export const deleteAdminWaitlistEntry = store.removeItem;
+export const fetchAdminArticleFeedbacks = store.fetchList;
+export const fetchAdminArticleFeedbackById = store.fetchById;
+export const deleteAdminArticleFeedback = store.removeItem;
 
-export const useAdminWaitlistList = store.useList;
-export const useAdminWaitlistDetail = store.useDetail;
-export const useDeleteAdminWaitlist = store.useRemove;
+export const useAdminArticleFeedbacksList = store.useList;
+export const useAdminArticleFeedbackDetail = store.useDetail;
+export const useDeleteAdminArticleFeedback = store.useRemove;

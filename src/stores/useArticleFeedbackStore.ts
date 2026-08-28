@@ -2,7 +2,7 @@ import { createResourceStore } from "./createResourceStore";
 import { useQuery } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import type { AdminListParams } from "./createResourceStore";
-import type { APIAdminArticleFeedback, APIAdminArticleFeedbackGroup } from "@/data/articleFeedback";
+import type { APIAdminArticleFeedback, APIAdminArticleFeedbackGroup, APIAdminArticleFeedbackGroupDetail } from "@/data/articleFeedback";
 
 // Pas de create/update pour cette ressource — seuls list/detail/delete existent.
 const store = createResourceStore<APIAdminArticleFeedback>({
@@ -49,12 +49,12 @@ export function useAdminArticleFeedbackGroupsList(params: AdminListParams = {}) 
   };
 }
 
-async function fetchArticleFeedbackGroup(articleKey: string): Promise<APIAdminArticleFeedbackGroup | null> {
+async function fetchArticleFeedbackGroup(articleKey: string): Promise<APIAdminArticleFeedbackGroupDetail | null> {
   const qp = new URLSearchParams({ article_key: articleKey });
   const response = await adminFetch(`/api/admin/docs/article-feedback/group?${qp.toString()}`);
   if (response.status === 404) return null;
   if (!response.ok) throw new Error("Erreur lors de la récupération du groupe de retours");
-  const json: { data: APIAdminArticleFeedbackGroup } = await response.json();
+  const json: { data: APIAdminArticleFeedbackGroupDetail } = await response.json();
   return json.data;
 }
 

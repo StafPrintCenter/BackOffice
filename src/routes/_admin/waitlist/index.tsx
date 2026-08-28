@@ -1,7 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { PageHeader } from "@/components/site";
 import { DataTable } from "@/components/site/DataTable";
-import { useAdminWaitlistList } from "@/stores/useWaitlistStore";
+import { useAdminWaitlistList, useDeleteAdminWaitlist } from "@/stores/useWaitlistStore";
 import { getWaitlistPlatformBadge, getWaitlistPlatformLabel } from "@/data/waitlist";
 import type { APIAdminWaitlistEntry } from "@/data/waitlist";
 import { SITE } from "@/data/site";
@@ -23,6 +24,18 @@ function formatDate(dateStr: string): string {
 function AdminWaitlist() {
   const navigate = useNavigate();
   const { items, isLoading } = useAdminWaitlistList({ perPage: 100 });
+  const deleteMutation = useDeleteAdminWaitlist();
+
+  const handleDelete = (entry: APIAdminWaitlistEntry) => {
+    deleteMutation.mutate(entry.id, {
+      onSuccess: () => {
+        toast.success("Inscription supprimée de la liste d'attente");
+      },
+      onError: () => {
+        toast.error("Impossible de supprimer l'inscription");
+      },
+    });
+  };
 
   return (
     <>
@@ -36,6 +49,7 @@ function AdminWaitlist() {
         isLoading={isLoading}
         searchKeys={["email"]}
         onView={(r) => navigate({ to: "/waitlist/$id", params: { id: r.id } })}
+        onDelete={handleDelete}
         columns={[
           {
             key: "email",

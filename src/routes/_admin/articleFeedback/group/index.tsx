@@ -1,47 +1,47 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { toast } from "sonner";
-import { PageHeader, ConfirmDelete } from "@/components/site";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { PageHeader } from "@/components/site";
+import { Sticker } from "lucide-react";
 import { DataTable } from "@/components/site/DataTable";
-import { useAdminArticleFeedbacksList, useDeleteAdminArticleFeedback } from "@/stores/useArticleFeedbackStore";
-import { getArticleFeedbackVoteBadge, getArticleFeedbackVoteLabel } from "@/data/articleFeedback";
-import type { APIAdminArticleFeedback } from "@/data/articleFeedback";
+import { useAdminArticleFeedbackGroupsList } from "@/stores/useArticleFeedbackStore";
+import type { APIAdminArticleFeedbackGroup } from "@/data/articleFeedback";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/articleFeedback/group/")({
   head: () => ({
     meta: [
-      { title: `Retours sur articles | ${SITE.name}` },
+      { title: `Retours groupés par article | ${SITE.name}` },
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: AdminArticleFeedback,
+  component: AdminArticleFeedbackGroups,
 });
 
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
-}
-
-function AdminArticleFeedback() {
+function AdminArticleFeedbackGroups() {
   const navigate = useNavigate();
-  const { items, isLoading } = useAdminArticleFeedbacksList({ perPage: 100 });
-  const removeMutation = useDeleteAdminArticleFeedback();
-
-  const [toDelete, setToDelete] = useState<APIAdminArticleFeedback | null>(null);
+  const { items, isLoading } = useAdminArticleFeedbackGroupsList({ perPage: 100 });
 
   return (
     <>
       <PageHeader
-        title="Retours sur articles"
-        description="Votes et commentaires laissés par les visiteurs sur les articles de la documentation."
+        title="Retours groupés par article"
+        description="Score de satisfaction agrégé pour chaque article de la documentation."
       />
 
-      <DataTable<APIAdminArticleFeedback>
+      {/* Raccourci */}
+      <div className="mb-4">
+        <Link to="/articleFeedback/unique"
+          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Sticker className="h-4 w-4"
+          />
+          Aller aux Feedbacks uniques
+        </Link>
+      </div>
+
+      <DataTable<APIAdminArticleFeedbackGroup>
         data={items}
         isLoading={isLoading}
-        searchKeys={["articleKey", "comment"]}
-        onView={(r) => navigate({ to: "/articleFeedback/$id", params: { id: r.id } })}
-        onDelete={(r) => setToDelete(r)}
+        searchKeys={["articleKey"]}
+        onView={(r) => navigate({ to: "/articleFeedback/group/$articleKey", params: { articleKey: encodeURIComponent(r.articleKey) } })}
         columns={[
           {
             key: "articleKey",
@@ -49,38 +49,33 @@ function AdminArticleFeedback() {
             render: (r) => <code className="text-xs font-medium">{r.articleKey}</code>,
           },
           {
-            key: "vote",
-            label: "Vote",
-            render: (r) => (
-              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getArticleFeedbackVoteBadge(r.vote)}`}>
-                {getArticleFeedbackVoteLabel(r.vote)}
-              </span>
-            ),
+            key: "positiveVotes",
+            label: "Votes positifs",
+            render: (r) => <span className="text-emerald-600 font-medium">{r.positiveVotes}</span>,
           },
           {
-            key: "comment",
-            label: "Commentaire",
-            render: (r) => <span className="text-xs text-muted-foreground line-clamp-1 max-w-xs">{r.comment || "-"}</span>,
+            key: "negativeVotes",
+            label: "Votes négatifs",
+            render: (r) => <span className="text-destructive font-medium">{r.negativeVotes}</span>,
           },
           {
-            key: "createdAt",
-            label: "Reçu le",
-            render: (r) => <span className="text-xs text-muted-foreground">{formatDate(r.createdAt)}</span>,
+            key: "totalVotes",
+            label: "Total",
+            render: (r) => <span className="font-semibold">{r.totalVotes}</span>,
+          },
+          {
+            key: "satisfaction",
+            label: "Satisfaction",
+            render: (r) => {
+              const pct = r.totalVotes > 0 ? Math.round((r.positiveVotes / r.totalVotes) * 100) : 0;
+              return (
+                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${pct >= 50 ? "bg-emerald-500/10 text-emerald-600" : "bg-destructive/10 text-destructive"}`}>
+                  {pct}%
+                </span>
+              );
+            },
           },
         ]}
-      />
-
-      <ConfirmDelete
-        open={!!toDelete}
-        onOpenChange={(v) => !v && setToDelete(null)}
-        onConfirm={() => {
-          if (!toDelete) return;
-          removeMutation.mutate(toDelete.id, {
-            onSuccess: () => { toast.success("Retour supprimé"); setToDelete(null); },
-            onError: () => toast.error("Erreur lors de la suppression"),
-          });
-        }}
-        title={`Supprimer ce retour sur "${toDelete?.articleKey}" ?`}
       />
     </>
   );

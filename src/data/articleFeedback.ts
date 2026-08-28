@@ -33,4 +33,15 @@ export interface APIAdminArticleFeedbackGroup {
   positiveVotes: number;
   negativeVotes: number;
   totalVotes: number;
+  satisfactionRate: number;
+  positiveRate: number;
+  negativeRate: number;
+  upDownRatio: number | null;
+  commentsCount: number;
+  firstFeedbackAt: string;
+  lastFeedbackAt: string;
+}
+
+export interface APIAdminArticleFeedbackGroupDetail extends APIAdminArticleFeedbackGroup {
+  feedbacks: APIAdminArticleFeedback[];
 }

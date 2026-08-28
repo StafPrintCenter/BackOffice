@@ -50,13 +50,14 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/appointments", label: "Rendez-vous", icon: CalendarClock },
       { to: "/reports", label: "Signalements", icon: ShieldAlert },
       { to: "/reviews/forms", label: "Formulaires d'avis", icon: Form, matchPrefixes: ["/reviews"] },
+      { to: "/waitlist", label: "Liste d'attente", icon: ClipboardClock },
+      { to: "/articleFeeback", label: "Liste d'attente", icon: ClipboardClock },
     ],
   },
   {
     label: "Outils",
     items: [
       { to: "/shortlinks", label: "Liens courts", icon: Link2 },
-      { to: "/waitlist", label: "Liste d'attente", icon: ClipboardClock },
     ],
   },
   {

@@ -96,7 +96,7 @@ function ArticleFeedbackGroupDetail() {
             </div>
 
             <div className="mt-6 border-t pt-4">
-              <div className="text-xs font-medium text-muted-foreground">Satisfaction (fournie par l'API)</div>
+              <div className="text-xs font-medium text-muted-foreground">Satisfaction</div>
               <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
                 <div
                   className={`h-full ${group.satisfactionRate >= 50 ? "bg-emerald-500" : "bg-destructive"}`}

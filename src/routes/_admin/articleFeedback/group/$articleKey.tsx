@@ -1,17 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import {
-  ArrowLeft,
-  Loader2,
-  FileText,
-  ThumbsUp,
-  ThumbsDown,
-  BarChart3,
-  MessageSquare,
-  Calendar,
-  Percent,
-  Scale,
-  Sparkles,
-} from "lucide-react";
+import { ArrowLeft, Loader2, ThumbsUp, ThumbsDown, BarChart3, MessageSquare, Calendar, Percent, Scale, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdminArticleFeedbackGroupDetail } from "@/stores/useArticleFeedbackStore";
 import { getArticleFeedbackVoteBadge, getArticleFeedbackVoteLabel } from "@/data/articleFeedback";

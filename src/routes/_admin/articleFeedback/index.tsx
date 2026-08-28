@@ -1,64 +1,70 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
-import { useAdminWaitlistList, useDeleteAdminWaitlist } from "@/stores/useWaitlistStore";
-import { getWaitlistPlatformBadge, getWaitlistPlatformLabel } from "@/data/waitlist";
-import type { APIAdminWaitlistEntry } from "@/data/waitlist";
+import { PageHeader, ConfirmDelete } from "@/components/site";
+import { DataTable } from "@/components/site/DataTable";
+import { useAdminArticleFeedbacksList, useDeleteAdminArticleFeedback } from "@/stores/useArticleFeedbackStore";
+import { getArticleFeedbackVoteBadge, getArticleFeedbackVoteLabel } from "@/data/articleFeedback";
+import type { APIAdminArticleFeedback } from "@/data/articleFeedback";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/articleFeedback/")({
   head: () => ({
     meta: [
-      { title: `Liste d'attente | ${SITE.name}` },
+      { title: `Retours sur articles | ${SITE.name}` },
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: AdminWaitlist,
+  component: AdminArticleFeedback,
 });
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
 }
 
-function AdminWaitlist() {
+function AdminArticleFeedback() {
   const navigate = useNavigate();
-  const { items, isLoading } = useAdminWaitlistList({ perPage: 100 });
-  const removeMutation = useDeleteAdminWaitlist();
+  const { items, isLoading } = useAdminArticleFeedbacksList({ perPage: 100 });
+  const removeMutation = useDeleteAdminArticleFeedback();
 
-  const [toDelete, setToDelete] = useState<APIAdminWaitlistEntry | null>(null);
+  const [toDelete, setToDelete] = useState<APIAdminArticleFeedback | null>(null);
 
   return (
     <>
       <PageHeader
-        title="Liste d'attente"
-        description="Inscriptions en attente d'ouverture des différents espaces de la plateforme."
+        title="Retours sur articles"
+        description="Votes et commentaires laissés par les visiteurs sur les articles de la documentation."
       />
 
-      <DataTable<APIAdminWaitlistEntry>
+      <DataTable<APIAdminArticleFeedback>
         data={items}
         isLoading={isLoading}
-        searchKeys={["email"]}
-        onView={(r) => navigate({ to: "/waitlist/$id", params: { id: r.id } })}
+        searchKeys={["articleKey", "comment"]}
+        onView={(r) => navigate({ to: "/articleFeedback/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           {
-            key: "email",
-            label: "Email",
-            render: (r) => <span className="font-medium">{r.email}</span>,
+            key: "articleKey",
+            label: "Article",
+            render: (r) => <code className="text-xs font-medium">{r.articleKey}</code>,
           },
           {
-            key: "platformName",
-            label: "Espace demandé",
+            key: "vote",
+            label: "Vote",
             render: (r) => (
-              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getWaitlistPlatformBadge(r.platformName)}`}>
-                {getWaitlistPlatformLabel(r.platformName)}
+              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getArticleFeedbackVoteBadge(r.vote)}`}>
+                {getArticleFeedbackVoteLabel(r.vote)}
               </span>
             ),
           },
           {
+            key: "comment",
+            label: "Commentaire",
+            render: (r) => <span className="text-xs text-muted-foreground line-clamp-1 max-w-xs">{r.comment || "—"}</span>,
+          },
+          {
             key: "createdAt",
-            label: "Inscrit le",
+            label: "Reçu le",
             render: (r) => <span className="text-xs text-muted-foreground">{formatDate(r.createdAt)}</span>,
           },
         ]}
@@ -70,14 +76,11 @@ function AdminWaitlist() {
         onConfirm={() => {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
-            onSuccess: () => {
-              toast.success("Inscription supprimée de la liste d'attente");
-              setToDelete(null);
-            },
+            onSuccess: () => { toast.success("Retour supprimé"); setToDelete(null); },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}
-        title={`Supprimer "${toDelete?.email}" ?`}
+        title={`Supprimer ce retour sur "${toDelete?.articleKey}" ?`}
       />
     </>
   );

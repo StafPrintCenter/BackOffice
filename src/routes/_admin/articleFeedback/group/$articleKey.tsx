@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Loader2, ThumbsUp, ThumbsDown, BarChart3, MessageSquare, Calendar, Percent, Scale, Sparkles, ExternalLink, Copy, Check } from "lucide-react";
 import { toast } from "sonner";

@@ -3,7 +3,7 @@ import { ArrowLeft, Loader2, ThumbsUp, ThumbsDown, BarChart3, MessageSquare, Cal
 import { Button } from "@/components/ui/button";
 import { useAdminArticleFeedbackGroupDetail } from "@/stores/useArticleFeedbackStore";
 import { getArticleFeedbackVoteBadge, getArticleFeedbackVoteLabel } from "@/data/articleFeedback";
-import { SITE } from "@/data/site";
+import { SITE, SITE_LINK } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/articleFeedback/group/$articleKey")({
   head: () => ({

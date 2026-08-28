@@ -47,7 +47,7 @@ import { Route as AdminTestimonialsIdRouteImport } from './routes/_admin/testimo
 import { Route as AdminWaitlistIndexRouteImport } from './routes/_admin/waitlist/index'
 import { Route as AdminWaitlistIdRouteImport } from './routes/_admin/waitlist/$id'
 import { Route as AdminArticleFeedbackGroupIndexRouteImport } from './routes/_admin/articleFeedback/group/index'
-import { Route as AdminArticleFeedbackGroupIdRouteImport } from './routes/_admin/articleFeedback/group/$id'
+import { Route as AdminArticleFeedbackGroupArticleKeyRouteImport } from './routes/_admin/articleFeedback/group/$articleKey'
 import { Route as AdminArticleFeedbackUniqueIndexRouteImport } from './routes/_admin/articleFeedback/unique/index'
 import { Route as AdminArticleFeedbackUniqueIdRouteImport } from './routes/_admin/articleFeedback/unique/$id'
 import { Route as AdminJobsApplicationsIndexRouteImport } from './routes/_admin/jobs/applications/index'
@@ -269,10 +269,10 @@ const AdminArticleFeedbackGroupIndexRoute =
     path: '/articleFeedback/group/',
     getParentRoute: () => AdminRoute,
   } as any)
-const AdminArticleFeedbackGroupIdRoute =
-  AdminArticleFeedbackGroupIdRouteImport.update({
-    id: '/articleFeedback/group/$id',
-    path: '/articleFeedback/group/$id',
+const AdminArticleFeedbackGroupArticleKeyRoute =
+  AdminArticleFeedbackGroupArticleKeyRouteImport.update({
+    id: '/articleFeedback/group/$articleKey',
+    path: '/articleFeedback/group/$articleKey',
     getParentRoute: () => AdminRoute,
   } as any)
 const AdminArticleFeedbackUniqueIndexRoute =
@@ -480,7 +480,7 @@ export interface FileRoutesByFullPath {
   '/stats/': typeof AdminStatsIndexRoute
   '/testimonials/': typeof AdminTestimonialsIndexRoute
   '/waitlist/': typeof AdminWaitlistIndexRoute
-  '/articleFeedback/group/$id': typeof AdminArticleFeedbackGroupIdRoute
+  '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
@@ -549,7 +549,7 @@ export interface FileRoutesByTo {
   '/stats': typeof AdminStatsIndexRoute
   '/testimonials': typeof AdminTestimonialsIndexRoute
   '/waitlist': typeof AdminWaitlistIndexRoute
-  '/articleFeedback/group/$id': typeof AdminArticleFeedbackGroupIdRoute
+  '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
@@ -621,7 +621,7 @@ export interface FileRoutesById {
   '/_admin/stats/': typeof AdminStatsIndexRoute
   '/_admin/testimonials/': typeof AdminTestimonialsIndexRoute
   '/_admin/waitlist/': typeof AdminWaitlistIndexRoute
-  '/_admin/articleFeedback/group/$id': typeof AdminArticleFeedbackGroupIdRoute
+  '/_admin/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/_admin/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
   '/_admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/_admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
@@ -692,7 +692,7 @@ export interface FileRouteTypes {
     | '/stats/'
     | '/testimonials/'
     | '/waitlist/'
-    | '/articleFeedback/group/$id'
+    | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
@@ -761,7 +761,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/testimonials'
     | '/waitlist'
-    | '/articleFeedback/group/$id'
+    | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
@@ -832,7 +832,7 @@ export interface FileRouteTypes {
     | '/_admin/stats/'
     | '/_admin/testimonials/'
     | '/_admin/waitlist/'
-    | '/_admin/articleFeedback/group/$id'
+    | '/_admin/articleFeedback/group/$articleKey'
     | '/_admin/articleFeedback/unique/$id'
     | '/_admin/jobs/applications/$id'
     | '/_admin/jobs/offers/$id'
@@ -1140,11 +1140,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminArticleFeedbackGroupIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_admin/articleFeedback/group/$id': {
-      id: '/_admin/articleFeedback/group/$id'
-      path: '/articleFeedback/group/$id'
-      fullPath: '/articleFeedback/group/$id'
-      preLoaderRoute: typeof AdminArticleFeedbackGroupIdRouteImport
+    '/_admin/articleFeedback/group/$articleKey': {
+      id: '/_admin/articleFeedback/group/$articleKey'
+      path: '/articleFeedback/group/$articleKey'
+      fullPath: '/articleFeedback/group/$articleKey'
+      preLoaderRoute: typeof AdminArticleFeedbackGroupArticleKeyRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/articleFeedback/unique/': {
@@ -1393,7 +1393,7 @@ interface AdminRouteChildren {
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
   AdminWaitlistIndexRoute: typeof AdminWaitlistIndexRoute
-  AdminArticleFeedbackGroupIdRoute: typeof AdminArticleFeedbackGroupIdRoute
+  AdminArticleFeedbackGroupArticleKeyRoute: typeof AdminArticleFeedbackGroupArticleKeyRoute
   AdminArticleFeedbackUniqueIdRoute: typeof AdminArticleFeedbackUniqueIdRoute
   AdminJobsApplicationsIdRoute: typeof AdminJobsApplicationsIdRoute
   AdminJobsOffersIdRoute: typeof AdminJobsOffersIdRoute
@@ -1460,7 +1460,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminStatsIndexRoute: AdminStatsIndexRoute,
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
   AdminWaitlistIndexRoute: AdminWaitlistIndexRoute,
-  AdminArticleFeedbackGroupIdRoute: AdminArticleFeedbackGroupIdRoute,
+  AdminArticleFeedbackGroupArticleKeyRoute:
+    AdminArticleFeedbackGroupArticleKeyRoute,
   AdminArticleFeedbackUniqueIdRoute: AdminArticleFeedbackUniqueIdRoute,
   AdminJobsApplicationsIdRoute: AdminJobsApplicationsIdRoute,
   AdminJobsOffersIdRoute: AdminJobsOffersIdRoute,

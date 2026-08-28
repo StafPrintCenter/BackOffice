@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { toast } from "sonner";
-import { PageHeader } from "@/components/site";
-import { DataTable } from "@/components/site/DataTable";
+import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminWaitlistList, useDeleteAdminWaitlist } from "@/stores/useWaitlistStore";
 import { getWaitlistPlatformBadge, getWaitlistPlatformLabel } from "@/data/waitlist";
 import type { APIAdminWaitlistEntry } from "@/data/waitlist";
@@ -24,18 +24,9 @@ function formatDate(dateStr: string): string {
 function AdminWaitlist() {
   const navigate = useNavigate();
   const { items, isLoading } = useAdminWaitlistList({ perPage: 100 });
-  const deleteMutation = useDeleteAdminWaitlist();
+  const removeMutation = useDeleteAdminWaitlist();
 
-  const handleDelete = (entry: APIAdminWaitlistEntry) => {
-    deleteMutation.mutate(entry.id, {
-      onSuccess: () => {
-        toast.success("Inscription supprimée de la liste d'attente");
-      },
-      onError: () => {
-        toast.error("Impossible de supprimer l'inscription");
-      },
-    });
-  };
+  const [toDelete, setToDelete] = useState<APIAdminWaitlistEntry | null>(null);
 
   return (
     <>
@@ -49,7 +40,7 @@ function AdminWaitlist() {
         isLoading={isLoading}
         searchKeys={["email"]}
         onView={(r) => navigate({ to: "/waitlist/$id", params: { id: r.id } })}
-        onDelete={handleDelete}
+        onDelete={(r) => setToDelete(r)}
         columns={[
           {
             key: "email",
@@ -71,6 +62,22 @@ function AdminWaitlist() {
             render: (r) => <span className="text-xs text-muted-foreground">{formatDate(r.createdAt)}</span>,
           },
         ]}
+      />
+
+      <ConfirmDelete
+        open={!!toDelete}
+        onOpenChange={(v) => !v && setToDelete(null)}
+        onConfirm={() => {
+          if (!toDelete) return;
+          removeMutation.mutate(toDelete.id, {
+            onSuccess: () => {
+              toast.success("Inscription supprimée de la liste d'attente");
+              setToDelete(null);
+            },
+            onError: () => toast.error("Erreur lors de la suppression"),
+          });
+        }}
+        title={`Supprimer "${toDelete?.email}" ?`}
       />
     </>
   );

@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_admin/articleFeedback/group/$articleKey"
   head: () => ({
     meta: [
       { title: `Retours sur article | ${SITE.name}` },
-      { name: "robots", content: "noindex" },
+      { name: "robots", content: "noindex text" },
     ],
   }),
   component: ArticleFeedbackGroupDetail,
@@ -28,9 +28,23 @@ function ArticleFeedbackGroupDetail() {
   const navigate = useNavigate();
   const { item: group, isLoading } = useAdminArticleFeedbackGroupDetail(articleKey);
 
+  const [copied, setCopied] = useState(false);
+
+  // Construction de l'URL finale vers la documentation
+  const currentKey = group?.articleKey ?? articleKey;
+  const docsBaseUrl = SITE_LINK.docsUrl?.replace(/\/$/, "") ?? "";
+  const fullDocUrl = `${docsBaseUrl}/docs/${currentKey}`;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(fullDocUrl);
+    setCopied(true);
+    toast.success("Lien copié dans le presse-papier");
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="space-y-6">
-      {/* En-tête & Bouton retour */}
+      {/* En-tête & Actions (Retour, Copier & Voir l'article) */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b pb-5">
         <div className="flex items-center gap-3">
           <Button variant="outline" size="sm" onClick={() => navigate({ to: "/articleFeedback/group" })}>
@@ -39,9 +53,23 @@ function ArticleFeedbackGroupDetail() {
 
           <div>
             <h1 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              {group?.articleKey ?? articleKey}
+              {currentKey}
             </h1>
           </div>
+        </div>
+
+        {/* Boutons de redirection et copie de lien */}
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={handleCopy}>
+            {copied ? <Check className="h-4 w-4 mr-1.5 text-emerald-600" /> : <Copy className="h-4 w-4 mr-1.5" />}
+            {copied ? "Copié !" : "Copier le lien"}
+          </Button>
+
+          <Button variant="default" size="sm" asChild>
+            <a href={fullDocUrl} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="h-4 w-4 mr-1.5" /> Voir l'article
+            </a>
+          </Button>
         </div>
       </div>
 
@@ -57,22 +85,19 @@ function ArticleFeedbackGroupDetail() {
       ) : (
         /* Layout à 2 Colonnes */
         <div className="grid gap-6 lg:grid-cols-12 items-start">
-
-          {/* COLONNE GAUCHE (Contenu principal - 8 Colonnes) */}
+          {/* COLONNE GAUCHE (8 Colonnes) */}
           <div className="space-y-6 lg:col-span-8">
-            {/* Visualiseur du taux de satisfaction & barre de répartition */}
+            {/* Score de satisfaction & barre de répartition */}
             <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 font-semibold text-base">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  Score global de satisfaction
+                  <Sparkles className="h-4 w-4 text-primary" /> Score global de satisfaction
                 </div>
                 <span className="text-2xl font-black text-foreground">
                   {group.satisfactionRate}%
                 </span>
               </div>
 
-              {/* Barre de répartition issue de positiveRate et negativeRate de l'API */}
               <div className="space-y-2">
                 <div className="h-3 w-full overflow-hidden rounded-full bg-muted flex">
                   <div
@@ -99,8 +124,7 @@ function ArticleFeedbackGroupDetail() {
             <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-4">
               <div className="flex items-center justify-between border-b pb-4">
                 <div className="flex items-center gap-2 font-display text-base font-semibold">
-                  <MessageSquare className="h-4 w-4 text-primary" />
-                  Retours individuels ({group.feedbacks.length})
+                  <MessageSquare className="h-4 w-4 text-primary" /> Retours individuels ({group.feedbacks.length})
                 </div>
               </div>
 
@@ -145,9 +169,26 @@ function ArticleFeedbackGroupDetail() {
             </div>
           </div>
 
-          {/* COLONNE DROITE (Sidebar Métriques - 4 Colonnes) */}
+          {/* COLONNE DROITE (4 Colonnes) */}
           <div className="space-y-6 lg:col-span-4">
-            {/* Grille des indicateurs KPI */}
+            {/* Lien direct documentation */}
+            <div className="rounded-2xl border bg-card p-5 shadow-sm space-y-3">
+              <h2 className="font-display text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Lien Documentation
+              </h2>
+              <div className="rounded-xl border bg-background/50 p-3">
+                <a
+                  href={fullDocUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-mono text-primary hover:underline break-all block"
+                >
+                  {fullDocUrl}
+                </a>
+              </div>
+            </div>
+
+            {/* Statistiques API */}
             <div className="rounded-2xl border bg-card p-5 shadow-sm space-y-4">
               <h2 className="font-display text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Statistiques API
@@ -240,7 +281,7 @@ function ArticleFeedbackGroupDetail() {
               </div>
             </div>
 
-            {/* Méta-données d'horodatage */}
+            {/* Horodatage */}
             <div className="rounded-2xl border bg-card p-5 shadow-sm space-y-3">
               <h2 className="font-display text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Horodatage
@@ -263,7 +304,6 @@ function ArticleFeedbackGroupDetail() {
               </div>
             </div>
           </div>
-
         </div>
       )}
     </div>

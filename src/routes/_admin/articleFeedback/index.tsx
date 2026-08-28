@@ -60,7 +60,7 @@ function AdminArticleFeedback() {
           {
             key: "comment",
             label: "Commentaire",
-            render: (r) => <span className="text-xs text-muted-foreground line-clamp-1 max-w-xs">{r.comment || "—"}</span>,
+            render: (r) => <span className="text-xs text-muted-foreground line-clamp-1 max-w-xs">{r.comment || "-"}</span>,
           },
           {
             key: "createdAt",

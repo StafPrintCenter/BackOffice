@@ -27,3 +27,10 @@ export type APIAdminArticleFeedback = {
   createdAt: string;
   updatedAt: string;
 };
+
+export interface APIAdminArticleFeedbackGroup {
+  articleKey: string;
+  positiveVotes: number;
+  negativeVotes: number;
+  totalVotes: number;
+}

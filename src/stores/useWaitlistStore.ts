@@ -8,6 +8,8 @@ const store = createResourceStore<APIAdminWaitlistEntry>({
 
 export const fetchAdminWaitlistEntries = store.fetchList;
 export const fetchAdminWaitlistEntryById = store.fetchById;
+export const deleteAdminWaitlistEntry = store.removeItem;
 
 export const useAdminWaitlistList = store.useList;
 export const useAdminWaitlistDetail = store.useDetail;
+export const useDeleteAdminWaitlist = store.useRemove;

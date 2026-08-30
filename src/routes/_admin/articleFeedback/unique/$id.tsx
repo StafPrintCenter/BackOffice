@@ -36,7 +36,7 @@ function ArticleFeedbackDetail() {
       <div className="space-y-6">
         {/* En-tête de navigation & actions */}
         <div className="flex items-center justify-between">
-          <Button variant="ghost" size="sm" onClick={() => navigate({ to: "/articleFeedback" })}>
+          <Button variant="ghost" size="sm" onClick={() => navigate({ to: "/articleFeedback/unique" })}>
             <ArrowLeft className="mr-1.5 size-4" /> Retour à la liste
           </Button>
 
@@ -64,7 +64,7 @@ function ArticleFeedbackDetail() {
             <p className="mt-1 text-sm text-muted-foreground">
               Le retour d'expérience demandé n'existe pas ou a été supprimé.
             </p>
-            <Button variant="outline" size="sm" className="mt-4" onClick={() => navigate({ to: "/articleFeedback" })}>
+            <Button variant="outline" size="sm" className="mt-4" onClick={() => navigate({ to: "/articleFeedback/unique" })}>
               Retourner à la liste
             </Button>
           </div>
@@ -175,7 +175,7 @@ function ArticleFeedbackDetail() {
             removeMutation.mutate(feedback.id, {
               onSuccess: () => {
                 toast.success("Retour supprimé");
-                navigate({ to: "/articleFeedback" });
+                navigate({ to: "/articleFeedback/unique" });
               },
               onError: () => toast.error("Erreur lors de la suppression"),
             });

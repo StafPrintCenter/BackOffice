@@ -34,7 +34,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/faqs", label: "FAQ", icon: HelpCircle },
       { to: "/testimonials", label: "Témoignages", icon: MessagesSquare },
       { to: "/stats", label: "Statistiques", icon: BarChart3 },
-      { to: "/ecosystem", label: "ecosystem", icon: Group },
+      { to: "/ecosystem", label: "Écosystème", icon: Group },
     ],
   },
   {

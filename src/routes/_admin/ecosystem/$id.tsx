@@ -143,7 +143,7 @@ function EcosystemSiteDetail() {
 
       {/* Grid Layout (2 Colonnes) */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Colonne Principale (Gauche - 2/3 width) */}
+        {/* Colonne Principale (Gauche - 2/3) */}
         <div className="space-y-6 lg:col-span-2">
           {isEditing ? (
             <Card>
@@ -210,19 +210,37 @@ function EcosystemSiteDetail() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {Object.entries(site.logoVariants).map(([key, url]) => (
-                  <div key={key} className="flex flex-col items-center rounded-lg border bg-muted/10 p-4 transition-colors hover:bg-muted/30">
-                    <img src={url} alt={key} className="h-12 w-12 object-contain" />
-                    <span className="mt-2 text-[11px] font-mono font-medium text-muted-foreground uppercase">{key}</span>
-                  </div>
-                ))}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {Object.entries(site.logoVariants).map(([key, url]) => {
+                  const isDarkBg = key === "mw" || key === "dw";
+                  const isLandscape = key === "dc" || key === "dw";
+
+                  return (
+                    <div
+                      key={key}
+                      className={`flex flex-col items-center justify-between rounded-lg border p-4 transition-colors ${isDarkBg ? "bg-slate-900 border-slate-800" : "bg-muted/10 border-border"
+                        }`}
+                    >
+                      <div className="flex h-20 w-full items-center justify-center p-2">
+                        <img
+                          src={url}
+                          alt={key}
+                          className={isLandscape ? "h-16 w-full object-contain" : "h-12 w-12 object-contain"}
+                        />
+                      </div>
+                      <span className={`mt-2 text-[11px] font-mono font-medium uppercase ${isDarkBg ? "text-slate-400" : "text-muted-foreground"
+                        }`}>
+                        {key}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Colonne Secondaire (Droite - 1/3 width) */}
+        {/* Colonne Secondaire (Droite - 1/3) */}
         <div className="space-y-6">
           {isEditing ? (
             <Card>
@@ -266,17 +284,19 @@ function EcosystemSiteDetail() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
-                <div className="flex justify-between py-1 border-b text-xs">
+                <div className="flex items-center justify-between py-1 border-b text-xs">
                   <span className="text-muted-foreground">Clé Logo</span>
                   <code className="font-mono bg-muted px-1.5 py-0.5 rounded text-[11px]">{site.logoKey}</code>
                 </div>
-                <div className="flex justify-between py-1 border-b text-xs">
+                <div className="flex items-center justify-between py-1 border-b text-xs">
                   <span className="text-muted-foreground">Catégorie</span>
                   <span className="font-medium">{ECOSYSTEM_SITE_CATEGORY_LABELS[site.category]}</span>
                 </div>
-                <div className="flex justify-between py-1 text-xs">
+                <div className="flex items-center justify-between py-1 text-xs">
                   <span className="text-muted-foreground">Statut</span>
-                  <span className="font-medium">{ECOSYSTEM_SITE_STATUS_LABELS[site.status]}</span>
+                  <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold ${getEcosystemSiteStatusBadge(site.status)}`}>
+                    {ECOSYSTEM_SITE_STATUS_LABELS[site.status]}
+                  </span>
                 </div>
               </CardContent>
             </Card>

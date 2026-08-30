@@ -59,7 +59,7 @@ function EcosystemSiteDetail() {
 
   if (isLoading) {
     return (
-      <div className="flex h-[400px] flex-col items-center justify-center text-muted-foreground">
+      <div className="flex h-100 flex-col items-center justify-center text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin mb-4 text-primary" />
         <p className="text-sm font-medium">Chargement des détails du site...</p>
       </div>

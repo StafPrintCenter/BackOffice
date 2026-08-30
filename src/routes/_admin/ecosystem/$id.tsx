@@ -1,16 +1,23 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, ExternalLink } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, ExternalLink, Globe, Calendar, Layers, CheckCircle2 } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAdminEcosystemSiteDetail, useUpdateAdminEcosystemSite, useDeleteAdminEcosystemSite } from "@/stores/useEcosystemSitesStore";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
-  ECOSYSTEM_SITE_CATEGORY_LABELS, ECOSYSTEM_SITE_STATUS_LABELS, getEcosystemSiteStatusBadge,
+  useAdminEcosystemSiteDetail,
+  useUpdateAdminEcosystemSite,
+  useDeleteAdminEcosystemSite
+} from "@/stores/useEcosystemSitesStore";
+import {
+  ECOSYSTEM_SITE_CATEGORY_LABELS,
+  ECOSYSTEM_SITE_STATUS_LABELS,
+  getEcosystemSiteStatusBadge,
 } from "@/data/ecosystemSites";
 import type { AdminEcosystemSitePayload, EcosystemSiteCategory, EcosystemSiteStatus } from "@/data/ecosystemSites";
 import { SITE } from "@/data/site";
@@ -52,24 +59,22 @@ function EcosystemSiteDetail() {
 
   if (isLoading) {
     return (
-      <>
-        <div className="flex items-center justify-center py-24 text-muted-foreground">
-          <Loader2 className="h-5 w-5 animate-spin mr-2" /> Chargement...
-        </div>
-      </>
+      <div className="flex h-[400px] flex-col items-center justify-center text-muted-foreground">
+        <Loader2 className="h-8 w-8 animate-spin mb-4 text-primary" />
+        <p className="text-sm font-medium">Chargement des détails du site...</p>
+      </div>
     );
   }
 
   if (!site || !form) {
     return (
-      <>
-        <div className="mb-6">
-          <Button variant="outline" size="sm" onClick={() => navigate({ to: "/ecosystem" })}>
-            <ArrowLeft className="h-4 w-4 mr-1" /> Retour
-          </Button>
-        </div>
-        <p className="text-muted-foreground">Site introuvable.</p>
-      </>
+      <div className="mx-auto max-w-xl py-12 text-center">
+        <h2 className="text-lg font-semibold">Site introuvable</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Le site demandé n'existe pas ou a été supprimé.</p>
+        <Button variant="outline" size="sm" className="mt-4" onClick={() => navigate({ to: "/ecosystem" })}>
+          <ArrowLeft className="h-4 w-4 mr-2" /> Retour à la liste
+        </Button>
+      </div>
     );
   }
 
@@ -77,7 +82,10 @@ function EcosystemSiteDetail() {
     updateMutation.mutate(
       { id: site.id, payload: form },
       {
-        onSuccess: () => { toast.success("Site modifié"); setIsEditing(false); },
+        onSuccess: () => {
+          toast.success("Site modifié avec succès");
+          setIsEditing(false);
+        },
         onError: () => toast.error("Erreur lors de la modification"),
       }
     );
@@ -96,125 +104,220 @@ function EcosystemSiteDetail() {
   };
 
   return (
-    <>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/ecosystem" })}>
-          <ArrowLeft className="h-4 w-4 mr-1" /> Retour
-        </Button>
-        <div className="flex gap-2">
+    <div className="space-y-6">
+      {/* Action Bar */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b pb-4">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" onClick={() => navigate({ to: "/ecosystem" })}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight">{site.name}</h1>
+            <p className="text-xs text-muted-foreground">ID: {site.id}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
           {isEditing ? (
             <>
-              <Button variant="outline" size="sm" onClick={handleCancel}><X className="h-4 w-4 mr-1" /> Annuler</Button>
-              <Button size="sm" onClick={handleSave} disabled={updateMutation.isPending}><Save className="h-4 w-4 mr-1" /> Enregistrer</Button>
+              <Button variant="outline" size="sm" onClick={handleCancel}>
+                <X className="h-4 w-4 mr-1.5" /> Annuler
+              </Button>
+              <Button size="sm" onClick={handleSave} disabled={updateMutation.isPending}>
+                {updateMutation.isPending ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Save className="h-4 w-4 mr-1.5" />}
+                Enregistrer
+              </Button>
             </>
           ) : (
             <>
-              <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}><Pencil className="h-4 w-4 mr-1" /> Modifier</Button>
-              <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => setToDelete(true)}>
-                <Trash2 className="h-4 w-4 mr-1" /> Supprimer
+              <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                <Pencil className="h-4 w-4 mr-1.5" /> Modifier
+              </Button>
+              <Button variant="destructive" size="sm" onClick={() => setToDelete(true)}>
+                <Trash2 className="h-4 w-4 mr-1.5" /> Supprimer
               </Button>
             </>
           )}
         </div>
       </div>
 
-      <div className="max-w-2xl space-y-6">
-        <div className="flex items-center gap-2 text-xs">
-          <span className="rounded-full bg-muted px-2 py-0.5 font-medium">{ECOSYSTEM_SITE_CATEGORY_LABELS[site.category]}</span>
-          <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-medium ${getEcosystemSiteStatusBadge(site.status)}`}>
-            {ECOSYSTEM_SITE_STATUS_LABELS[site.status]}
-          </span>
-        </div>
+      {/* Grid Layout (2 Colonnes) */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Colonne Principale (Gauche - 2/3 width) */}
+        <div className="space-y-6 lg:col-span-2">
+          {isEditing ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Informations Générales</CardTitle>
+                <CardDescription>Modifiez les détails affichés sur l'écosystème</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Nom du site</Label>
+                  <Input id="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="url">URL cible</Label>
+                  <Input id="url" value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea id="description" rows={5} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardContent className="pt-6 space-y-6">
+                <div className="flex items-start gap-4">
+                  <img src={site.logoUrl} alt={site.name} className="h-20 w-20 rounded-xl border bg-muted/20 object-contain p-3" />
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-md bg-secondary px-2.5 py-1 text-xs font-semibold">
+                        {ECOSYSTEM_SITE_CATEGORY_LABELS[site.category]}
+                      </span>
+                      <span className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-semibold ${getEcosystemSiteStatusBadge(site.status)}`}>
+                        {ECOSYSTEM_SITE_STATUS_LABELS[site.status]}
+                      </span>
+                    </div>
+                    <a
+                      href={site.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+                    >
+                      <Globe className="h-4 w-4" />
+                      {site.url}
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </div>
+                </div>
 
-        {isEditing ? (
-          <div className="space-y-4 rounded-2xl border bg-card p-6">
-            <div>
-              <Label>Nom</Label>
-              <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-            </div>
-            <div>
-              <Label>Description</Label>
-              <Textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-            </div>
-            <div>
-              <Label>URL</Label>
-              <Input value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} />
-            </div>
-            <div>
-              <Label>Clé du logo</Label>
-              <Input value={form.logo_key} onChange={(e) => setForm({ ...form, logo_key: e.target.value })} />
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <Label>Catégorie</Label>
-                <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v as EcosystemSiteCategory })}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(ECOSYSTEM_SITE_CATEGORY_LABELS).map(([k, l]) => (<SelectItem key={k} value={k}>{l}</SelectItem>))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Statut</Label>
-                <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v as EcosystemSiteStatus })}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="available">Disponible</SelectItem>
-                    <SelectItem value="building">En construction</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="flex items-center gap-4">
-              <img src={site.logoUrl} alt={site.name} className="h-16 w-16 rounded-xl border object-contain p-2" />
-              <div>
-                <h1 className="font-display text-2xl font-bold">{site.name}</h1>
-                <a
-                  href={site.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
-                >
-                  {site.url} <ExternalLink className="h-3.5 w-3.5" />
-                </a>
-              </div>
-            </div>
-            <p className="whitespace-pre-wrap text-muted-foreground">{site.description}</p>
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">À propos</h3>
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{site.description}</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-            <div className="rounded-2xl border bg-card p-6">
-              <div className="mb-3 text-sm font-medium text-muted-foreground">Variantes du logo</div>
+          {/* Variantes du logo */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Layers className="h-4 w-4 text-muted-foreground" />
+                Variantes du Logo
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {Object.entries(site.logoVariants).map(([key, url]) => (
-                  <div key={key} className="rounded-lg border p-3 text-center">
-                    <img src={url} alt={key} className="mx-auto h-10 w-10 object-contain" />
-                    <div className="mt-1 text-[10px] uppercase text-muted-foreground">{key}</div>
+                  <div key={key} className="flex flex-col items-center rounded-lg border bg-muted/10 p-4 transition-colors hover:bg-muted/30">
+                    <img src={url} alt={key} className="h-12 w-12 object-contain" />
+                    <span className="mt-2 text-[11px] font-mono font-medium text-muted-foreground uppercase">{key}</span>
                   </div>
                 ))}
               </div>
-            </div>
-          </>
-        )}
-
-        <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground">
-          <div>Créé le {new Date(site.createdAt).toLocaleDateString("fr-FR")}</div>
-          <div>Modifié le {new Date(site.updatedAt).toLocaleDateString("fr-FR")}</div>
+            </CardContent>
+          </Card>
         </div>
-      </div >
+
+        {/* Colonne Secondaire (Droite - 1/3 width) */}
+        <div className="space-y-6">
+          {isEditing ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Configuration</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="logo_key">Clé du logo</Label>
+                  <Input id="logo_key" value={form.logo_key} onChange={(e) => setForm({ ...form, logo_key: e.target.value })} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Catégorie</Label>
+                  <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v as EcosystemSiteCategory })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(ECOSYSTEM_SITE_CATEGORY_LABELS).map(([k, l]) => (
+                        <SelectItem key={k} value={k}>{l}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Statut</Label>
+                  <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v as EcosystemSiteStatus })}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="available">Disponible</SelectItem>
+                      <SelectItem value="building">En construction</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+                  Métadonnées
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <div className="flex justify-between py-1 border-b text-xs">
+                  <span className="text-muted-foreground">Clé Logo</span>
+                  <code className="font-mono bg-muted px-1.5 py-0.5 rounded text-[11px]">{site.logoKey}</code>
+                </div>
+                <div className="flex justify-between py-1 border-b text-xs">
+                  <span className="text-muted-foreground">Catégorie</span>
+                  <span className="font-medium">{ECOSYSTEM_SITE_CATEGORY_LABELS[site.category]}</span>
+                </div>
+                <div className="flex justify-between py-1 text-xs">
+                  <span className="text-muted-foreground">Statut</span>
+                  <span className="font-medium">{ECOSYSTEM_SITE_STATUS_LABELS[site.status]}</span>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Horodatage */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+                Historique
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2 text-xs text-muted-foreground">
+              <div className="flex justify-between">
+                <span>Création :</span>
+                <span className="font-medium text-foreground">{new Date(site.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Dernière MAJ :</span>
+                <span className="font-medium text-foreground">{new Date(site.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
 
       <ConfirmDelete
         open={toDelete}
         onOpenChange={setToDelete}
         onConfirm={() => {
           removeMutation.mutate(site.id, {
-            onSuccess: () => { toast.success("Site supprimé"); navigate({ to: "/ecosystem" }); },
+            onSuccess: () => {
+              toast.success("Site supprimé");
+              navigate({ to: "/ecosystem" });
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}
         title={`Supprimer "${site.name}" ?`}
       />
-    </>
+    </div>
   );
 }

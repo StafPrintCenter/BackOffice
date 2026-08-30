@@ -10,11 +10,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAdminEcosystemSitesList, useCreateAdminEcosystemSite, useDeleteAdminEcosystemSite } from "@/stores/useEcosystemSitesStore";
 import {
-  ECOSYSTEM_SITE_CATEGORY_LABELS, ECOSYSTEM_SITE_STATUS_LABELS, getEcosystemSiteStatusBadge,
+  useAdminEcosystemSitesList,
+  useCreateAdminEcosystemSite,
+  useUpdateAdminEcosystemSite,
+  useDeleteAdminEcosystemSite
+} from "@/stores/useEcosystemSitesStore";
+import {
+  ECOSYSTEM_SITE_CATEGORY_LABELS,
+  ECOSYSTEM_SITE_STATUS_LABELS,
+  getEcosystemSiteStatusBadge,
 } from "@/data/ecosystemSites";
-import type { APIAdminEcosystemSite, AdminEcosystemSitePayload, EcosystemSiteCategory, EcosystemSiteStatus } from "@/data/ecosystemSites";
+import type {
+  APIAdminEcosystemSite,
+  AdminEcosystemSitePayload,
+  EcosystemSiteCategory,
+  EcosystemSiteStatus
+} from "@/data/ecosystemSites";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/ecosystem/")({
@@ -28,17 +40,22 @@ export const Route = createFileRoute("/_admin/ecosystem/")({
 });
 
 const schema = z.object({
-  name: z.string().trim().min(2).max(120),
-  description: z.string().trim().min(2),
-  url: z.string().trim().url(),
-  logo_key: z.string().trim().min(1),
+  name: z.string().trim().min(2, "Le nom doit faire au moins 2 caractères").max(120),
+  description: z.string().trim().min(2, "La description est requise"),
+  url: z.string().trim().url("L'URL doit être valide"),
+  logo_key: z.string().trim().min(1, "La clé du logo est requise"),
   category: z.enum(["principal", "outil", "formation", "communication", "divertissement"]),
   status: z.enum(["available", "building"]),
 });
 type FormValues = z.infer<typeof schema>;
 
 const empty: FormValues = {
-  name: "", description: "", url: "", logo_key: "", category: "outil", status: "available",
+  name: "",
+  description: "",
+  url: "",
+  logo_key: "",
+  category: "outil",
+  status: "available",
 };
 
 function AdminEcosystemSites() {
@@ -46,14 +63,32 @@ function AdminEcosystemSites() {
   const { items, isLoading } = useAdminEcosystemSitesList({ perPage: 100 });
 
   const createMutation = useCreateAdminEcosystemSite();
+  const updateMutation = useUpdateAdminEcosystemSite();
   const removeMutation = useDeleteAdminEcosystemSite();
 
-  const [open, setOpen] = useState(false);
+  const [dialog, setDialog] = useState<{ open: boolean; row?: APIAdminEcosystemSite }>({ open: false });
   const [form, setForm] = useState<FormValues>(empty);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [toDelete, setToDelete] = useState<APIAdminEcosystemSite | null>(null);
 
-  const openCreate = () => { setForm(empty); setErrors({}); setOpen(true); };
+  const openCreate = () => {
+    setForm(empty);
+    setErrors({});
+    setDialog({ open: true });
+  };
+
+  const openEdit = (row: APIAdminEcosystemSite) => {
+    setForm({
+      name: row.name,
+      description: row.description ?? "",
+      url: row.url,
+      logo_key: row.logoKey ?? "",
+      category: row.category,
+      status: row.status,
+    });
+    setErrors({});
+    setDialog({ open: true, row });
+  };
 
   const submit = () => {
     const parsed = schema.safeParse(form);
@@ -66,10 +101,26 @@ function AdminEcosystemSites() {
 
     const payload: AdminEcosystemSitePayload = parsed.data as AdminEcosystemSitePayload;
 
-    createMutation.mutate(payload, {
-      onSuccess: () => { toast.success("Site ajouté"); setOpen(false); },
-      onError: () => toast.error("Erreur lors de la création"),
-    });
+    if (dialog.row) {
+      updateMutation.mutate(
+        { id: dialog.row.id, payload },
+        {
+          onSuccess: () => {
+            toast.success("Site modifié");
+            setDialog({ open: false });
+          },
+          onError: () => toast.error("Erreur lors de la modification"),
+        }
+      );
+    } else {
+      createMutation.mutate(payload, {
+        onSuccess: () => {
+          toast.success("Site ajouté");
+          setDialog({ open: false });
+        },
+        onError: () => toast.error("Erreur lors de la création"),
+      });
+    }
   };
 
   return (
@@ -81,6 +132,7 @@ function AdminEcosystemSites() {
         isLoading={isLoading}
         searchKeys={["name", "url", "category"]}
         onCreate={openCreate}
+        onEdit={openEdit}
         onView={(r) => navigate({ to: "/ecosystem/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
@@ -118,9 +170,11 @@ function AdminEcosystemSites() {
         ]}
       />
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={dialog.open} onOpenChange={(v) => setDialog({ open: v, row: dialog.row })}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>Ajouter un site</DialogTitle></DialogHeader>
+          <DialogHeader>
+            <DialogTitle>{dialog.row ? "Modifier le site" : "Ajouter un site"}</DialogTitle>
+          </DialogHeader>
           <div className="space-y-4">
             <div>
               <Label>Nom</Label>
@@ -151,9 +205,12 @@ function AdminEcosystemSites() {
                 <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v as EcosystemSiteCategory })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {Object.entries(ECOSYSTEM_SITE_CATEGORY_LABELS).map(([k, l]) => (<SelectItem key={k} value={k}>{l}</SelectItem>))}
+                    {Object.entries(ECOSYSTEM_SITE_CATEGORY_LABELS).map(([k, l]) => (
+                      <SelectItem key={k} value={k}>{l}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
+                {errors.category && <p className="text-xs text-destructive mt-1">{errors.category}</p>}
               </div>
               <div>
                 <Label>Statut</Label>
@@ -164,12 +221,17 @@ function AdminEcosystemSites() {
                     <SelectItem value="building">En construction</SelectItem>
                   </SelectContent>
                 </Select>
+                {errors.status && <p className="text-xs text-destructive mt-1">{errors.status}</p>}
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button>
-            <Button onClick={submit} disabled={createMutation.isPending}>Créer</Button>
+            <Button variant="outline" onClick={() => setDialog({ open: false })}>
+              Annuler
+            </Button>
+            <Button onClick={submit} disabled={createMutation.isPending || updateMutation.isPending}>
+              {dialog.row ? "Enregistrer" : "Créer"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -180,7 +242,10 @@ function AdminEcosystemSites() {
         onConfirm={() => {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
-            onSuccess: () => { toast.success("Site supprimé"); setToDelete(null); },
+            onSuccess: () => {
+              toast.success("Site supprimé");
+              setToDelete(null);
+            },
             onError: () => toast.error("Erreur lors de la suppression"),
           });
         }}

@@ -51,7 +51,7 @@ function AdminArticleFeedback() {
         data={items}
         isLoading={isLoading}
         searchKeys={["articleKey", "comment"]}
-        onView={(r) => navigate({ to: "/articleFeedback/$id", params: { id: r.id } })}
+        onView={(r) => navigate({ to: "/articleFeedback/unique/$id", params: { id: r.id } })}
         onDelete={(r) => setToDelete(r)}
         columns={[
           {

@@ -8,6 +8,8 @@ export const SHORT_LINK_CATEGORIES = [
   { value: "news", label: "Actus" },
   { value: "blog", label: "Blog" },
   { value: "newsletter", label: "Newsletter" },
+  { value: "documentation", label: "Documentation" },
+  { value: "chat", label: "Discussion IA" },
   { value: "other", label: "Autre" },
 ] as const;
 

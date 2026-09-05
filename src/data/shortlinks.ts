@@ -11,6 +11,8 @@ export const SHORT_LINK_CATEGORIES = [
   { value: "other", label: "Autre" },
 ] as const;
 
+export type ShortLinkCategoryValue = (typeof SHORT_LINK_CATEGORIES)[number]["value"];
+
 export interface ShortLinkStats {
   alias: string;
   totalClicks: number;

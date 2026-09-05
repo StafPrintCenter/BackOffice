@@ -34,7 +34,7 @@ export type APIAdminShortLinkListItem = {
   alias: string;
   shortUrl: string;
   longUrl: string;
-  category: string;
+  category: ShortLinkCategoryValue | string;
   clicksCount: number;
   isActive: boolean;
   activateAt: string | null;
@@ -49,7 +49,7 @@ export type APIAdminShortLinkDetail = APIAdminShortLinkListItem;
 export interface AdminShortLinkPayload {
   long_url: string;
   alias?: string;
-  category: string;
+  category: ShortLinkCategoryValue | string;
   is_active?: boolean;
   activate_at?: string;
   expires_at?: string;

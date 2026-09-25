@@ -28,7 +28,7 @@ export function NotFoundComponent() {
         </h2>
 
         <p className="mt-3 text-muted-foreground max-w-md mx-auto text-sm sm:text-base leading-relaxed">
-          Cette section du backoffice n'existe pas, a été déplacée ou vos droits d'accès ne la couvrent pas.
+          Cette section du backoffice n'existe pas, a été déplacée du {SITE.tool} ou vos droits d'accès ne la couvrent pas.
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">

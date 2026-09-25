@@ -24,7 +24,7 @@ export function NotFoundComponent() {
         </h1>
 
         <h2 className="mt-4 text-2xl font-bold text-foreground font-display">
-          Page introuvable
+          Administration introuvable
         </h2>
 
         <p className="mt-3 text-muted-foreground max-w-md mx-auto text-sm sm:text-base leading-relaxed">

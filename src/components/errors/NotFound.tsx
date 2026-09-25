@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { LayoutDashboard, Home, ArrowLeft } from "lucide-react";
+import { SITE } from "@/data/site";
 
 export function NotFoundComponent() {
   return (

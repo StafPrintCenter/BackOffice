@@ -37,7 +37,7 @@ export function NotFoundComponent() {
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all duration-300 hover:bg-primary/95 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
           >
             <Home className="h-4 w-4" />
-            Retour au tableau de bord
+            Tableau de bord
           </Link>
           <button
             onClick={() => window.history.back()}

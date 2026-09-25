@@ -2,6 +2,7 @@ import { useRouter, Link } from "@tanstack/react-router";
 import { AlertCircle, RefreshCw, Home } from "lucide-react";
 import { useEffect } from "react";
 import { reportError } from "@/lib/error/reporting";
+import { SITE } from "@/data/site";
 
 export function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
@@ -28,7 +29,7 @@ export function ErrorComponent({ error, reset }: { error: Error; reset: () => vo
                 Une erreur est survenue
               </h1>
               <p className="text-sm text-muted-foreground mt-0.5">
-                Le rendu de cette page du backoffice a rencontré un obstacle technique.
+                {SITE.tool} {SITE.name} a rencontré un problème technique.
               </p>
             </div>
           </div>

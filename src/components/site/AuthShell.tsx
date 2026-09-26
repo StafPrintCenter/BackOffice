@@ -75,20 +75,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
           <p className="text-xs text-primary-foreground/50">
             © {new Date().getFullYear()} {SITE.name} - Tous droits réservés.
           </p>
-          <div className="flex items-center gap-2">
-            {socialLinks.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="rounded-md p-1.5 transition-colors hover:bg-primary-foreground/10 text-primary-foreground/70 hover:text-primary-foreground"
-              >
-                <Icon className="size-4" />
-              </a>
-            ))}
-          </div>
+          <SocialLinks linkClassName="hover:bg-primary-foreground/10 text-primary-foreground/70 hover:text-primary-foreground" />
         </div>
       </div>
 

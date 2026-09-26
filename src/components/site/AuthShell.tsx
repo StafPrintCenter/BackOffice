@@ -101,17 +101,18 @@ export function AuthShell({ children }: { children: ReactNode }) {
       </div>
 
       {/* Colonne droite / Formulaire */}
-      <div className="flex items-center justify-center p-8 bg-grain">
-        <div className="w-full max-w-md">
-          {/* Logo affiché en haut sur mobile & petits écrans */}
-          <div className="lg:hidden mb-8 flex justify-center">
-            <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
-          </div>
+      <div className="flex flex-col justify-between p-8 bg-grain">
+        <div className="flex-1 flex items-center justify-center">
+          <div className="w-full max-w-md">
+            {/* Logo affiché en haut sur mobile & petits écrans */}
+            <div className="lg:hidden mb-8 flex justify-center">
+              <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />
+            </div>
 
-          <div className="space-y-2 text-center lg:text-left">
-            <h2 className="font-display text-3xl font-bold">{title}</h2>
-            <p className="text-sm text-muted-foreground">{subtitle}</p>
-          </div>
+            <div className="space-y-2 text-center lg:text-left">
+              <h2 className="font-display text-3xl font-bold">{title}</h2>
+              <p className="text-sm text-muted-foreground">{subtitle}</p>
+            </div>
 
           <div className="mt-8">{children}</div>
 

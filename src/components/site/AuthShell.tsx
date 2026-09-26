@@ -63,7 +63,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="bg-grain grid min-h-screen lg:grid-cols-2">
-      {/* Colonne gabg-grain griduche (Desktop) */}
+      {/* Colonne gauche (Desktop) */}
       <div className="hidden lg:flex bg-gradient-hero p-12 text-primary-foreground flex-col justify-between">
         <div className="flex items-center">
           <img src={logo.dc} alt="Logo SPC" className="h-10 md:h-12 w-auto" />

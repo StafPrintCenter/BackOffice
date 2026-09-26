@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { SITE } from "@/data/site";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 

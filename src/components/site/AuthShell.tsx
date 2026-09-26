@@ -54,6 +54,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
   const { title, subtitle, footer } = ctx.content;
 
   const socialLinks = [
+    { label: "LinkedIn", href: "https://linkedin.com/company/stafprintcenter", Icon: LinkedinIcon },
     { label: "Facebook", href: "https://web.facebook.com/StafPrintCenter", Icon: FacebookIcon },
     { label: "Instagram", href: "https://www.instagram.com/stafprintcenter/", Icon: InstagramIcon },
     { label: "LinkedIn", href: "https://linkedin.com/company/stafprintcenter", Icon: LinkedinIcon },

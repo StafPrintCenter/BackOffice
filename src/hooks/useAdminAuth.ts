@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { loginAdmin, fetchAdminMe, logoutAdmin, verifyAdminInvite, acceptAdminInvite, AdminAuthApiError, } from "@/stores/useAuthStore";
-import type { APIAdminUser, AdminInviteVerifyResponse } from "@/data/auth";
+import type { AdminInviteVerifyResponse } from "@/data/auth";
 
 export interface AuthUser {
   id: string;

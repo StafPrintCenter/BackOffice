@@ -78,9 +78,11 @@ export function AuthShell({ children }: { children: ReactNode }) {
             Tableau de bord centralisé pour services, formations, projets, articles et témoignages.
           </p>
         </div>
-        <p className="text-xs text-primary-foreground/50">
-          © {new Date().getFullYear()} {SITE.name} - Tous droits réservés.
-        </p>
+
+        <div className="flex items-center justify-between pt-6 border-t border-primary-foreground/10">
+          <p className="text-xs text-primary-foreground/50">
+            © {new Date().getFullYear()} {SITE.name} - Tous droits réservés.
+          </p>
           <div className="flex items-center gap-2">
             {socialLinks.map(({ label, href, Icon }) => (
               <a

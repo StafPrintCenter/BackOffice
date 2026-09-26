@@ -114,7 +114,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
               <p className="text-sm text-muted-foreground">{subtitle}</p>
             </div>
 
-          <div className="mt-8">{children}</div>
+            <div className="mt-8">{children}</div>
 
             {footer ? (
               <div className="mt-6 text-center text-sm text-muted-foreground">

@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { SITE } from "@/data/site";
 import logo from "@/assets/logos.json";
-import { FacebookIcon, InstagramIcon, LinkedinIcon, WhatsAppIcon, XIcon } from "@/components/site/icons";
+import { SocialLinks } from "@/components/site/SocialLinks";
 
 interface AuthShellContent {
   title: string;

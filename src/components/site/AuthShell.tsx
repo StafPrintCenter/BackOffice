@@ -53,14 +53,6 @@ export function AuthShell({ children }: { children: ReactNode }) {
   }
   const { title, subtitle, footer } = ctx.content;
 
-  const socialLinks = [
-    { label: "LinkedIn", href: "https://linkedin.com/company/stafprintcenter", Icon: LinkedinIcon },
-    { label: "Facebook", href: "https://web.facebook.com/StafPrintCenter", Icon: FacebookIcon },
-    { label: "Instagram", href: "https://www.instagram.com/stafprintcenter/", Icon: InstagramIcon },
-    { label: "X", href: "https://x.com/stafprintcenter", Icon: XIcon },
-    { label: "WhatsApp", href: "https://wa.me/2290160300607", Icon: WhatsAppIcon },
-  ];
-
   return (
     <div className="bg-grain grid min-h-screen lg:grid-cols-2">
       {/* Colonne gauche (Desktop) */}

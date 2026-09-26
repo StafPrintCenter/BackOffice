@@ -105,20 +105,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
 
         {/* Réseaux sociaux affichés en bas sur écran mobile */}
         <div className="lg:hidden pt-8 mt-auto border-t border-border flex flex-col items-center gap-3">
-          <div className="flex items-center gap-2">
-            {socialLinks.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="rounded-md p-1.5 transition-colors hover:bg-accent text-muted-foreground hover:text-foreground"
-              >
-                <Icon className="size-4" />
-              </a>
-            ))}
-          </div>
+          <SocialLinks />
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} {SITE.name}
           </p>

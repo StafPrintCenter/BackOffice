@@ -1,4 +1,4 @@
-import { SOCIAL_LINKS } from "@/config/socials";
+import { SOCIAL_LINKS } from "@/data/socials";
 import { cn } from "@/lib/utils";
 
 interface SocialLinksProps {

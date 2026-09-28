@@ -16,6 +16,7 @@ type NavItem = {
   exact?: boolean;
   matchPrefixes?: string[];
 };
+
 type NavGroup = { label: string; items: NavItem[] };
 
 const NAV_GROUPS: NavGroup[] = [

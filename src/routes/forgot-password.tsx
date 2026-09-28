@@ -32,7 +32,6 @@ function ForgotPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await authApi.requestPasswordReset(email);
       setSent(true);
       toast.success("Lien de réinitialisation envoyé.");
     } catch (error) {

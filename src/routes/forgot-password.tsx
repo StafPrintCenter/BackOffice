@@ -46,7 +46,7 @@ function ForgotPage() {
       {sent ? (
         <div className="space-y-4 rounded-xl border border-border bg-card p-6 text-sm">
           <p className="text-muted-foreground">Un lien a été envoyé à <span className="font-medium text-foreground">{email}</span>.</p>
-          <Button asChild variant="soft" className="w-full">
+          <Button asChild variant="ghost" className="w-full">
             <Link to="/reinitialisation" search={{ token: "demo-token" }}>Ouvrir le lien de démonstration</Link>
           </Button>
         </div>

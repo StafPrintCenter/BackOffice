@@ -69,28 +69,37 @@ function LoginPage() {
         />
       </div>
 
-      <div>
-        <Label htmlFor="pw">Mot de passe</Label>
-        <div className="relative mt-1">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="pw">Mot de passe</Label>
+          <Link to="/" className="text-xs text-muted-foreground hover:text-foreground">
+            Mot de passe oublié ?
+          </Link>
+        </div>
+        <div className="relative">
           <Input
             id="pw"
             type={showPassword ? "text" : "password"}
-            required
+            className="bg-card pr-10"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
             autoComplete="current-password"
-            className="bg-card pr-10"
             disabled={loading}
+            required
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors disabled:pointer-events-none disabled:opacity-50"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50"
             aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
             disabled={loading}
           >
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {showPassword ? (
+              <EyeOff className="h-4 w-4 cursor-pointer" />
+            ) : (
+              <Eye className="h-4 w-4 cursor-pointer" />
+            )}
           </button>
         </div>
       </div>

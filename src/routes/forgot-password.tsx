@@ -42,11 +42,7 @@ function ForgotPage() {
   };
 
   return (
-    <AuthShell
-      title="Mot de passe oublié"
-      subtitle="Indiquez votre e-mail, nous vous envoyons un lien de réinitialisation."
-      footer={<Link to="/" className="font-medium text-foreground underline underline-offset-4">Retour à la connexion</Link>}
-    >
+    <AuthShell>
       {sent ? (
         <div className="space-y-4 rounded-xl border border-border bg-card p-6 text-sm">
           <p className="text-muted-foreground">Un lien a été envoyé à <span className="font-medium text-foreground">{email}</span>.</p>

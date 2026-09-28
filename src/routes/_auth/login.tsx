@@ -62,7 +62,7 @@ function LoginPage() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="vous@votreadresse.com"
+          placeholder="admin@votreadresse.com"
           autoComplete="email"
           className="mt-1 bg-card"
           disabled={loading}

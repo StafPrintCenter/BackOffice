@@ -156,6 +156,14 @@ function AdminSidebarContent({
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border p-2 space-y-1">
+        {/* Réseaux sociaux - cachés si la sidebar est repliée en mode icône */}
+        <div className="px-2 pt-1 group-data-[collapsible=icon]:hidden">
+          <SocialLinks
+            className="flex-wrap gap-1"
+            linkClassName="text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+          />
+        </div>
+
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton

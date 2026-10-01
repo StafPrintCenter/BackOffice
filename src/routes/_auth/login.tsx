@@ -37,6 +37,9 @@ function getInternalRedirect(redirectTo?: string) {
 function LoginPage() {
   const { login, isAuthenticated, ready } = useAdminAuth();
   const navigate = useNavigate();
+  const router = useRouter();
+  const { redirectTo } = Route.useSearch();
+  const destination = getInternalRedirect(redirectTo);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

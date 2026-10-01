@@ -207,7 +207,7 @@ function AdminTrainings() {
           { key: "price", label: "Prix", render: (r) => <span className="font-semibold">{r.price.toLocaleString()} FCFA</span> },
           {
             key: "max_seats",
-            label: "Places max",
+            label: "Places dispos",
             render: (r) => (
               <span className="text-sm">
                 {r.maxSeats && r.maxSeats > 0 ? `${r.maxSeats} places` : "Illimité"}

@@ -32,6 +32,8 @@ export type APIAdminTrainingListItem = {
   coverColor?: string | null;
   createdAt: string;
   updatedAt: string;
+  currentStudents: number;
+  enrollmentStatus: string;
 };
 
 export type APIAdminTrainingDetail = APIAdminTrainingListItem & {

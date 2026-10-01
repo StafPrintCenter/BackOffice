@@ -85,6 +85,36 @@ export const TRAINING_LEVEL_BADGES: Record<TrainingLevel, { label: string; class
   },
 };
 
+export const TRAINING_ENROLLMENT_STATUS_BADGES: Record<
+  TrainingEnrollmentStatus,
+  { label: string; className: string }
+> = {
+  open: {
+    label: "Inscriptions ouvertes",
+    className: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
+  },
+  closed: {
+    label: "Inscriptions fermées",
+    className: "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/20",
+  },
+  full: {
+    label: "Complet",
+    className: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20",
+  },
+  waiting_list: {
+    label: "Liste d'attente",
+    className: "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20",
+  },
+};
+
+export function getTrainingEnrollmentStatusBadge(status: string) {
+  const config = TRAINING_ENROLLMENT_STATUS_BADGES[status as TrainingEnrollmentStatus];
+  return config ?? {
+    label: status,
+    className: "bg-muted text-muted-foreground border-border",
+  };
+}
+
 export function getTrainingLevelBadgeClass(level: TrainingLevel): string {
   return TRAINING_LEVEL_BADGES[level]?.className ?? "bg-muted text-muted-foreground border-border";
 }

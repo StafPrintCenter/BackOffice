@@ -181,7 +181,7 @@ function ProfilePage() {
                   <div>
                     <Label htmlFor="last_name">Nom</Label>
                     <Input
-                      id="last_name"
+                      id="lastName"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       className="mt-1.5"

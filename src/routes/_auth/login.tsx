@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_auth/login")({
+  validateSearch: z.object({ redirectTo: z.string().optional() }),
   head: () => ({
     meta: [
       { title: `Connexion | ${SITE.name}` },

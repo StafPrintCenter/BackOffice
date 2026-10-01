@@ -19,7 +19,7 @@ function AdminLayout() {
     if (ready && !isAuthenticated) {
       navigate({ to: "/login", search: { redirectTo: currentHref } });
     }
-  }, [ready, isAuthenticated, currentHref, navigate]);
+  }, [ready, isAuthenticated, navigate]);
 
   if (!ready || !isAuthenticated) {
     return (

@@ -21,6 +21,19 @@ export const Route = createFileRoute("/_auth/login")({
   component: LoginPage,
 });
 
+
+function getInternalRedirect(redirectTo?: string) {
+  if (!redirectTo || !redirectTo.startsWith("/")) return null;
+
+  try {
+    const url = new URL(redirectTo, window.location.origin);
+    if (url.origin !== window.location.origin) return null;
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return null;
+  }
+}
+
 function LoginPage() {
   const { login, isAuthenticated, ready } = useAdminAuth();
   const navigate = useNavigate();

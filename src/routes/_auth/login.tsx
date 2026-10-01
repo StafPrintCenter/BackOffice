@@ -62,7 +62,8 @@ function LoginPage() {
     try {
       await login(email, password);
       toast.success("Connexion réussie");
-      navigate({ to: "/dashboard" });
+      if (destination) router.history.push(destination);
+      else navigate({ to: "/dashboard" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erreur de connexion");
     } finally {

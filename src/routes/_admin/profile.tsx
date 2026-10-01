@@ -217,7 +217,7 @@ function ProfilePage() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label className="text-xs text-muted-foreground">Prénom</Label>
-                    <div className="mt-1 text-sm font-medium">{user?.first_name || "Non renseigné"}</div>
+                    <div className="mt-1 text-sm font-medium">{user?.firstName || "Non renseigné"}</div>
                   </div>
                   <div>
                     <Label className="text-xs text-muted-foreground">Nom</Label>

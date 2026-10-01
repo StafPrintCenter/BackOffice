@@ -27,8 +27,8 @@ function ProfilePage() {
   const [confirmDisconnectOpen, setConfirmDisconnectOpen] = useState(false);
 
   // États éditables dérivés de APIAdminUser
-  const [firstName, setFirstName] = useState(user?.first_name ?? "");
-  const [lastName, setLastName] = useState(user?.last_name ?? "");
+  const [firstName, setFirstName] = useState(user?.firstName ?? "");
+  const [lastName, setLastName] = useState(user?.lastName ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
   const [bio, setBio] = useState(user?.bio ?? "");
 

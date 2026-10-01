@@ -15,7 +15,7 @@ function AdminLayout() {
 
   useEffect(() => {
     if (ready && !isAuthenticated) {
-      navigate({ to: "/" });
+      navigate({ to: "/login", search: { redirectTo: currentHref } });
     }
   }, [ready, isAuthenticated, navigate]);
 

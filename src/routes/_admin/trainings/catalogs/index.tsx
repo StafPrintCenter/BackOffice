@@ -210,7 +210,7 @@ function AdminTrainings() {
             label: "Places dispos",
             render: (r) => (
               <span className="text-sm">
-                {r.maxSeats && r.maxSeats > 0 ? `${r.maxSeats} places` : "Illimité"}
+                {r.maxSeats && r.maxSeats > 0 ? `${r.seatsRemaining}/${r.maxSeats} places` : "Illimité"}
               </span>
             ),
           },

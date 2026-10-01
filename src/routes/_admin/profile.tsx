@@ -170,7 +170,7 @@ function ProfilePage() {
               <form onSubmit={onSaveProfile} className="space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label htmlFor="first_name">Prénom</Label>
+                    <Label htmlFor="firstName">Prénom</Label>
                     <Input
                       id="first_name"
                       value={firstName}

@@ -595,6 +595,30 @@ function TrainingDetail() {
                 )}
               </div>
 
+              <div className="rounded-2xl border bg-card p-4 space-y-2 text-xs text-muted-foreground">
+                <div className="flex items-center justify-between">
+                  <span>Places restantes :</span>
+                  <span className="font-semibold text-foreground">
+                    {training.seatsRemaining ?? "-"} / {training.maxSeats ? training.maxSeats : "∞"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Nombre d'étudiants :</span>
+                  <span className="font-semibold text-foreground">{training.currentStudents}</span>
+                </div>
+                <div className="flex items-center justify-between pt-1">
+                  <span>Statut d'inscription :</span>
+                  {(() => {
+                    const badge = getTrainingEnrollmentStatusBadge(training.enrollmentStatus);
+                    return (
+                      <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold ${badge.className}`}>
+                        {badge.label}
+                      </span>
+                    );
+                  })()}
+                </div>
+              </div>
+
               <div className="rounded-2xl border bg-card p-4 text-xs text-muted-foreground">
                 <div>Créée le {new Date(training.createdAt).toLocaleDateString("fr-FR")}</div>
                 <div>Modifiée le {new Date(training.updatedAt).toLocaleDateString("fr-FR")}</div>

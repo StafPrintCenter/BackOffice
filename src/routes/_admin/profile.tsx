@@ -221,7 +221,7 @@ function ProfilePage() {
                   </div>
                   <div>
                     <Label className="text-xs text-muted-foreground">Nom</Label>
-                    <div className="mt-1 text-sm font-medium">{user?.last_name || "Non renseigné"}</div>
+                    <div className="mt-1 text-sm font-medium">{user?.lastName || "Non renseigné"}</div>
                   </div>
                 </div>
 

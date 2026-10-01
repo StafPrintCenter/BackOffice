@@ -179,7 +179,7 @@ function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="last_name">Nom</Label>
+                    <Label htmlFor="lastName">Nom</Label>
                     <Input
                       id="lastName"
                       value={lastName}

@@ -68,8 +68,8 @@ function ProfilePage() {
 
   const handleCancel = () => {
     if (user) {
-      setFirstName(user.first_name || "");
-      setLastName(user.last_name || "");
+      setFirstName(user.firstName || "");
+      setLastName(user.lastName || "");
       setEmail(user.email || "");
       setBio(user.bio || "");
     }

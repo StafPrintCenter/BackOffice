@@ -16,8 +16,9 @@ function AdminLayout() {
   const redirectStarted = useRef(false);
 
   useEffect(() => {
-    if (ready && !isAuthenticated) {
-      navigate({ to: "/login", search: { redirectTo: currentHref } });
+    if (ready && !isAuthenticated && !redirectStarted.current) {
+      redirectStarted.current = true;
+      navigate({ to: "/login", search: { redirectTo: requestedHref.current } });
     }
   }, [ready, isAuthenticated, navigate]);
 

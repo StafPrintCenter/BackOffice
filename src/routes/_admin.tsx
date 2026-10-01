@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { AdminShell } from "@/components/site/AdminShell";
 import { useAdminAuth } from "@/hooks/useAdminAuth";

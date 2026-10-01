@@ -1,5 +1,6 @@
 export type TrainingLevel = "Débutant" | "Intermédiaire" | "Avancé";
 export type TrainingStatus = "draft" | "published" | "archived";
+export type TrainingEnrollmentStatus = "open" | "closed" | "full" | "waiting_list";
 
 export type TrainingProgramModule = {
   title: string;

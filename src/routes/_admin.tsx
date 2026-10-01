@@ -26,7 +26,12 @@ function AdminLayout() {
 
     if (!redirectStarted.current) {
       redirectStarted.current = true;
-      navigate({ to: "/login", search: { redirectTo: requestedHref.current } });
+      navigate({
+        to: "/login",
+        search: {
+          redirectTo: wasAuthenticated.current ? undefined : requestedHref.current,
+        },
+      });
     }
   }, [ready, isAuthenticated, navigate]);
 

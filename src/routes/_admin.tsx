@@ -12,6 +12,8 @@ function AdminLayout() {
   const { ready, isAuthenticated } = useAdminAuth();
   const navigate = useNavigate();
   const currentHref = useLocation({ select: (location) => location.href });
+  const requestedHref = useRef(currentHref);
+  const redirectStarted = useRef(false);
 
   useEffect(() => {
     if (ready && !isAuthenticated) {

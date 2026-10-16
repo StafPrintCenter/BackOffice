@@ -25,7 +25,12 @@ export const CATEGORY_META: Record<NotificationCategory, { label: string; descri
     icon: UserCircle,
     className: "bg-violet-500/10 text-violet-600"
   },
-  training: { label: "Formations", description: "Inscriptions et activité des formations.", icon: GraduationCap, className: "bg-amber-500/10 text-amber-600" },
+  training: {
+    label: "Formations",
+    description: "Inscriptions et activité des formations.",
+    icon: GraduationCap,
+    className: "bg-amber-500/10 text-amber-600"
+  },
   payment: { label: "Paiements", description: "Paiements et facturation.", icon: CreditCard, className: "bg-emerald-500/10 text-emerald-600" },
   community: { label: "Communauté", description: "Interactions de la communauté.", icon: Users, className: "bg-pink-500/10 text-pink-600" },
 };

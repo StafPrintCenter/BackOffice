@@ -13,7 +13,12 @@ export const CATEGORY_META: Record<NotificationCategory, { label: string; descri
     icon: ShieldCheck,
     className: "bg-red-500/10 text-red-600"
   },
-  general: { label: "Général", description: "Messages de contact, rendez-vous, signalements et activité du site.", icon: Bell, className: "bg-blue-500/10 text-blue-600" },
+  general: {
+    label: "Général",
+    description: "Messages de contact, rendez-vous, signalements et activité du site.",
+    icon: Bell,
+    className: "bg-blue-500/10 text-blue-600"
+  },
   profile: { label: "Profil", description: "Modifications liées à votre profil.", icon: UserCircle, className: "bg-violet-500/10 text-violet-600" },
   training: { label: "Formations", description: "Inscriptions et activité des formations.", icon: GraduationCap, className: "bg-amber-500/10 text-amber-600" },
   payment: { label: "Paiements", description: "Paiements et facturation.", icon: CreditCard, className: "bg-emerald-500/10 text-emerald-600" },

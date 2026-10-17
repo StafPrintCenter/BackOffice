@@ -7,7 +7,7 @@ import { useNotificationPreferences } from "@/stores/useAdminNotificationsStore"
 export const Route = createFileRoute("/_admin/notifications/preferences")({
   head: () => ({
     meta: [
-      { title: "Préférences de notifications — Admin" },
+      { title: "Préférences de notifications - Admin" },
       { name: "robots", content: "noindex" },
     ],
   }),

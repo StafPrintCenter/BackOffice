@@ -141,12 +141,7 @@ function AdminSidebarContent({
                   const active = isLinkActive(item);
                   return (
                     <SidebarMenuItem key={item.to}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={active}
-                        tooltip={item.label}
-                        className={navItemClass}
-                      >
+                      <SidebarMenuButton asChild isActive={active} tooltip={item.label} className={navItemClass}>
                         <Link to={item.to as "/dashboard"} onClick={handleNavClick}>
                           <item.icon className="size-4 shrink-0" />
                           <span>{item.label}</span>

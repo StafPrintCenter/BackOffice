@@ -1,11 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  CATEGORY_META,
-  formatNotificationDate,
-  resolveNotificationActionUrl,
-} from "@/data/notifications";
+import { CATEGORY_META, formatNotificationDate } from "@/data/notifications";
 import { useNotificationDetail } from "@/stores/useAdminNotificationsStore";
 
 export const Route = createFileRoute("/_admin/notifications/$id")({
@@ -88,7 +84,7 @@ function NotificationDetail() {
             {n.actionUrl && (
               <Button
                 onClick={() =>
-                  navigate({ to: resolveNotificationActionUrl(n.actionUrl as string) as never })
+                  navigate({ to: n.actionUrl as never })
                 }
               >
                 <ExternalLink className="mr-1 h-4 w-4" /> Ouvrir l'élément concerné

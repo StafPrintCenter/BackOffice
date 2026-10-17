@@ -100,6 +100,7 @@ function AdminSidebarContent({
   onDisconnectClick: () => void;
 }) {
   const { setOpenMobile } = useSidebar();
+  const { count: unreadCount } = useUnreadCount();
 
   const handleNavClick = () => {
     setOpenMobile(false);

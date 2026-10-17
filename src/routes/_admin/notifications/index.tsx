@@ -13,7 +13,7 @@ import { useMarkAllAsRead, useNotificationsList } from "@/stores/useAdminNotific
 
 export const Route = createFileRoute("/_admin/notifications/")({
   head: () => ({
-    meta: [{ title: "Notifications — Admin" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "Notifications - Admin" }, { name: "robots", content: "noindex" }],
   }),
   component: NotificationsPage,
 });

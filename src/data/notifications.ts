@@ -91,12 +91,6 @@ export const WEEKDAYS = [
   { value: 7, label: "Dim" },
 ];
 
-/** Le backend renvoie des chemins "/admin/..." (ancien préfixe) : on les adapte aux routes de cette app. */
-const ACTION_URL_ALIASES: Record<string, string> = {
-  "contact-messages": "messages",
-  // ajoute ici d'autres correspondances au besoin
-};
-
 export function resolveNotificationActionUrl(actionUrl: string): string {
   const stripped = actionUrl.replace(/^\/admin/, "");
   const [, first, ...rest] = stripped.split("/");

@@ -78,6 +78,7 @@ export function useMarkAsRead() {
     mutationFn: async (id: string) => {
       const response = await adminFetch(`/api/notifications/manage/${id}/read`, { method: "PATCH" });
       await ensureOk(response, "Impossible de marquer la notification comme lue.");
+      return ((await response.json()) as { message?: string }).message ?? "Notification marquée comme lue.";
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }),
   });

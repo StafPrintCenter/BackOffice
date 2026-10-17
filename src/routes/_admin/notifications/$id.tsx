@@ -6,7 +6,7 @@ import { useNotificationDetail } from "@/stores/useAdminNotificationsStore";
 
 export const Route = createFileRoute("/_admin/notifications/$id")({
   head: () => ({
-    meta: [{ title: "Notification — Admin" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "Notification - Admin" }, { name: "robots", content: "noindex" }],
   }),
   component: NotificationDetail,
 });

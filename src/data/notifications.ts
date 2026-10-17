@@ -82,8 +82,13 @@ export type APINotificationPreference = {
 };
 
 export const WEEKDAYS = [
-  { value: 1, label: "Lun" }, { value: 2, label: "Mar" }, { value: 3, label: "Mer" },
-  { value: 4, label: "Jeu" }, { value: 5, label: "Ven" }, { value: 6, label: "Sam" }, { value: 7, label: "Dim" },
+  { value: 1, label: "Lun" },
+  { value: 2, label: "Mar" },
+  { value: 3, label: "Mer" },
+  { value: 4, label: "Jeu" },
+  { value: 5, label: "Ven" },
+  { value: 6, label: "Sam" },
+  { value: 7, label: "Dim" },
 ];
 
 /** Le backend renvoie des chemins "/admin/..." (ancien préfixe) : on les adapte aux routes de cette app. */

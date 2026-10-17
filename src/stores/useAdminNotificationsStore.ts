@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/admin-api-fetch";
+import { adminFetch } from "@/lib/api-url";
 import type {
   APINotificationDetail, APINotificationListItem, APINotificationPreference,
   APINotificationsMeta, DeliveryMode, NotificationCategory,

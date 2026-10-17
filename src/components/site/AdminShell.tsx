@@ -240,7 +240,10 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
         <header className="flex items-center gap-3 bg-card/80 backdrop-blur border-b px-5 h-14 shrink-0">
           <SidebarTrigger />
           <div className="font-display font-semibold text-sm">Admin</div>
-          <div className="ml-auto text-xs text-muted-foreground hidden sm:block">{user?.email}</div>
+          <div className="ml-auto flex items-center gap-3">
+            <NotificationBell />
+            <span className="text-xs text-muted-foreground hidden sm:block">{user?.email}</span>
+          </div>
         </header>
 
         <main className="flex-1 p-6 md:p-10 overflow-y-auto overflow-x-hidden bg-muted/30">

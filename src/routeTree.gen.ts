@@ -18,6 +18,7 @@ import { Route as AuthInviteRouteImport } from './routes/_auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as NotificationsIndexRouteImport } from './routes/notifications/index'
 import { Route as NotificationsIdRouteImport } from './routes/notifications/$id'
+import { Route as NotificationsPreferencesRouteImport } from './routes/notifications/preferences'
 import { Route as AdminAnnouncesIndexRouteImport } from './routes/_admin/announces/index'
 import { Route as AdminAnnouncesIdRouteImport } from './routes/_admin/announces/$id'
 import { Route as AdminAppointmentsIndexRouteImport } from './routes/_admin/appointments/index'
@@ -124,6 +125,12 @@ const NotificationsIdRoute = NotificationsIdRouteImport.update({
   path: '/notifications/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotificationsPreferencesRoute =
+  NotificationsPreferencesRouteImport.update({
+    id: '/notifications/preferences',
+    path: '/notifications/preferences',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AdminAnnouncesIndexRoute = AdminAnnouncesIndexRouteImport.update({
   id: '/announces/',
   path: '/announces/',
@@ -462,6 +469,7 @@ export interface FileRoutesByFullPath {
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
   '/notifications/$id': typeof NotificationsIdRoute
+  '/notifications/preferences': typeof NotificationsPreferencesRoute
   '/notifications/': typeof NotificationsIndexRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
@@ -533,6 +541,7 @@ export interface FileRoutesByTo {
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
   '/notifications/$id': typeof NotificationsIdRoute
+  '/notifications/preferences': typeof NotificationsPreferencesRoute
   '/notifications': typeof NotificationsIndexRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
@@ -607,6 +616,7 @@ export interface FileRoutesById {
   '/_auth/invite': typeof AuthInviteRoute
   '/_auth/login': typeof AuthLoginRoute
   '/notifications/$id': typeof NotificationsIdRoute
+  '/notifications/preferences': typeof NotificationsPreferencesRoute
   '/notifications/': typeof NotificationsIndexRoute
   '/_admin/announces/$id': typeof AdminAnnouncesIdRoute
   '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
@@ -680,6 +690,7 @@ export interface FileRouteTypes {
     | '/invite'
     | '/login'
     | '/notifications/$id'
+    | '/notifications/preferences'
     | '/notifications/'
     | '/announces/$id'
     | '/appointments/$id'
@@ -751,6 +762,7 @@ export interface FileRouteTypes {
     | '/invite'
     | '/login'
     | '/notifications/$id'
+    | '/notifications/preferences'
     | '/notifications'
     | '/announces/$id'
     | '/appointments/$id'
@@ -824,6 +836,7 @@ export interface FileRouteTypes {
     | '/_auth/invite'
     | '/_auth/login'
     | '/notifications/$id'
+    | '/notifications/preferences'
     | '/notifications/'
     | '/_admin/announces/$id'
     | '/_admin/appointments/$id'
@@ -894,6 +907,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   NotificationsIdRoute: typeof NotificationsIdRoute
+  NotificationsPreferencesRoute: typeof NotificationsPreferencesRoute
   NotificationsIndexRoute: typeof NotificationsIndexRoute
 }
 
@@ -960,6 +974,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications/$id'
       fullPath: '/notifications/$id'
       preLoaderRoute: typeof NotificationsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications/preferences': {
+      id: '/notifications/preferences'
+      path: '/notifications/preferences'
+      fullPath: '/notifications/preferences'
+      preLoaderRoute: typeof NotificationsPreferencesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_admin/announces/': {
@@ -1553,6 +1574,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   NotificationsIdRoute: NotificationsIdRoute,
+  NotificationsPreferencesRoute: NotificationsPreferencesRoute,
   NotificationsIndexRoute: NotificationsIndexRoute,
 }
 export const routeTree = rootRouteImport

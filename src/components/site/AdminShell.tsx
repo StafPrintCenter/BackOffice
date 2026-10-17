@@ -147,6 +147,9 @@ function AdminSidebarContent({
                           <span>{item.label}</span>
                         </Link>
                       </SidebarMenuButton>
+                      {item.to === "/notifications" && unreadCount > 0 && (
+                        <SidebarMenuBadge className="bg-destructive text-white">{unreadCount > 99 ? "99+" : unreadCount}</SidebarMenuBadge>
+                      )}
                     </SidebarMenuItem>
                   );
                 })}

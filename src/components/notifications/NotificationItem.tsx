@@ -15,6 +15,7 @@ export function NotificationItem({ notification: n, onClick }: NotificationItemP
 
   const handleMarkAsRead = () =>
     markAsRead.mutate(n.id, {
+      onSuccess: (message) => toast.success(message),
       onError: (e) => toast.error(e.message),
     });
 

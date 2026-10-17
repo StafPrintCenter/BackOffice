@@ -54,6 +54,17 @@ export function useUnreadCount() {
 }
 
 /** Ouvrir le détail marque la notification comme lue côté backend : on rafraîchit liste + badge. */
+function unwrapDetail(json: unknown): APINotificationDetail {
+  const obj = json as Record<string, unknown>;
+  const looksLikeNotification = (o: unknown): o is APINotificationDetail =>
+    !!o && typeof o === "object" && "id" in o && "category" in o;
+
+  if (looksLikeNotification(obj)) return obj;
+  if (looksLikeNotification(obj.data)) return obj.data;
+  throw new Error("Format de notification inattendu.");
+}
+
+/** Ouvrir le détail marque la notification comme lue côté backend : on rafraîchit liste + badge. */
 export function useNotificationDetail(id: string | undefined) {
   const qc = useQueryClient();
   const q = useQuery({

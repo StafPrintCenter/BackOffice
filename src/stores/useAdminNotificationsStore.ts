@@ -74,7 +74,7 @@ export function useNotificationDetail(id: string | undefined) {
       const response = await adminFetch(`/api/notifications/manage/${id}`);
       if (response.status === 404) return null;
       await ensureOk(response, "Erreur lors du chargement de la notification.");
-      const json = (await response.json()) as { data: APINotificationDetail };
+      const notification = unwrapDetail(await response.json());
       qc.invalidateQueries({ queryKey: ["notifications", "list"] });
       qc.invalidateQueries({ queryKey: ["notifications", "unread-count"] });
       return json.data;

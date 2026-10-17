@@ -24,7 +24,10 @@ type NavGroup = { label: string; items: NavItem[] };
 const NAV_GROUPS: NavGroup[] = [
   {
     label: "Général",
-    items: [{ to: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard, exact: true }],
+    items: [
+      { to: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard, exact: true },
+      { to: "/notifications", label: "Notifications", icon: Bell, matchPrefixes: ["/notifications"] },
+    ],
   },
   {
     label: "Contenu",

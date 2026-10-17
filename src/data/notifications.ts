@@ -91,13 +91,6 @@ export const WEEKDAYS = [
   { value: 7, label: "Dim" },
 ];
 
-export function resolveNotificationActionUrl(actionUrl: string): string {
-  const stripped = actionUrl.replace(/^\/admin/, "");
-  const [, first, ...rest] = stripped.split("/");
-  if (first && ACTION_URL_ALIASES[first]) return `/${[ACTION_URL_ALIASES[first], ...rest].join("/")}`;
-  return stripped || "/dashboard";
-}
-
 export function formatNotificationDate(iso: string): string {
   return new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
 }

@@ -48,6 +48,7 @@ function NotificationDetail() {
     );
   }
 
+  console.log("notification detail", n);
   const meta = CATEGORY_META[n.category];
   const Icon = meta.icon;
   const dataEntries = n.data ? Object.entries(n.data) : [];

@@ -76,11 +76,10 @@ function NotificationsPage() {
           <button
             key={c}
             onClick={() => setCategory(c)}
-            className={`cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-              category === c
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-card hover:border-primary"
-            }`}
+            className={`cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium transition ${category === c
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-card hover:border-primary"
+              }`}
           >
             {c === "all" ? "Toutes" : CATEGORY_META[c].label}
           </button>

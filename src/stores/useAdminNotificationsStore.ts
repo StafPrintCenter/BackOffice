@@ -77,7 +77,7 @@ export function useNotificationDetail(id: string | undefined) {
       const notification = unwrapDetail(await response.json());
       qc.invalidateQueries({ queryKey: ["notifications", "list"] });
       qc.invalidateQueries({ queryKey: ["notifications", "unread-count"] });
-      return json.data;
+      return notification;
     },
   });
   return { notification: q.data ?? null, isLoading: q.isLoading, isError: q.isError };

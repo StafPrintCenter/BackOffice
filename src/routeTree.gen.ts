@@ -34,6 +34,7 @@ import { Route as AdminMessagesIndexRouteImport } from './routes/_admin/messages
 import { Route as AdminMessagesIdRouteImport } from './routes/_admin/messages/$id'
 import { Route as AdminNotificationsIndexRouteImport } from './routes/_admin/notifications/index'
 import { Route as AdminNotificationsIdRouteImport } from './routes/_admin/notifications/$id'
+import { Route as AdminNotificationsIdcopyRouteImport } from './routes/_admin/notifications/$id copy'
 import { Route as AdminNotificationsPreferencesRouteImport } from './routes/_admin/notifications/preferences'
 import { Route as AdminProjectsIndexRouteImport } from './routes/_admin/projects/index'
 import { Route as AdminProjectsIdRouteImport } from './routes/_admin/projects/$id'
@@ -205,6 +206,12 @@ const AdminNotificationsIdRoute = AdminNotificationsIdRouteImport.update({
   path: '/notifications/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminNotificationsIdcopyRoute =
+  AdminNotificationsIdcopyRouteImport.update({
+    id: '/notifications/$id copy',
+    path: '/notifications/$id copy',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminNotificationsPreferencesRoute =
   AdminNotificationsPreferencesRouteImport.update({
     id: '/notifications/preferences',
@@ -477,6 +484,7 @@ export interface FileRoutesByFullPath {
   '/internships/$id': typeof AdminInternshipsIdRoute
   '/messages/$id': typeof AdminMessagesIdRoute
   '/notifications/$id': typeof AdminNotificationsIdRoute
+  '/notifications/$id copy': typeof AdminNotificationsIdcopyRoute
   '/notifications/preferences': typeof AdminNotificationsPreferencesRoute
   '/projects/$id': typeof AdminProjectsIdRoute
   '/reports/$id': typeof AdminReportsIdRoute
@@ -549,6 +557,7 @@ export interface FileRoutesByTo {
   '/internships/$id': typeof AdminInternshipsIdRoute
   '/messages/$id': typeof AdminMessagesIdRoute
   '/notifications/$id': typeof AdminNotificationsIdRoute
+  '/notifications/$id copy': typeof AdminNotificationsIdcopyRoute
   '/notifications/preferences': typeof AdminNotificationsPreferencesRoute
   '/projects/$id': typeof AdminProjectsIdRoute
   '/reports/$id': typeof AdminReportsIdRoute
@@ -624,6 +633,7 @@ export interface FileRoutesById {
   '/_admin/internships/$id': typeof AdminInternshipsIdRoute
   '/_admin/messages/$id': typeof AdminMessagesIdRoute
   '/_admin/notifications/$id': typeof AdminNotificationsIdRoute
+  '/_admin/notifications/$id copy': typeof AdminNotificationsIdcopyRoute
   '/_admin/notifications/preferences': typeof AdminNotificationsPreferencesRoute
   '/_admin/projects/$id': typeof AdminProjectsIdRoute
   '/_admin/reports/$id': typeof AdminReportsIdRoute
@@ -698,6 +708,7 @@ export interface FileRouteTypes {
     | '/internships/$id'
     | '/messages/$id'
     | '/notifications/$id'
+    | '/notifications/$id copy'
     | '/notifications/preferences'
     | '/projects/$id'
     | '/reports/$id'
@@ -770,6 +781,7 @@ export interface FileRouteTypes {
     | '/internships/$id'
     | '/messages/$id'
     | '/notifications/$id'
+    | '/notifications/$id copy'
     | '/notifications/preferences'
     | '/projects/$id'
     | '/reports/$id'
@@ -844,6 +856,7 @@ export interface FileRouteTypes {
     | '/_admin/internships/$id'
     | '/_admin/messages/$id'
     | '/_admin/notifications/$id'
+    | '/_admin/notifications/$id copy'
     | '/_admin/notifications/preferences'
     | '/_admin/projects/$id'
     | '/_admin/reports/$id'
@@ -1083,6 +1096,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications/$id'
       fullPath: '/notifications/$id'
       preLoaderRoute: typeof AdminNotificationsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/notifications/$id copy': {
+      id: '/_admin/notifications/$id copy'
+      path: '/notifications/$id copy'
+      fullPath: '/notifications/$id copy'
+      preLoaderRoute: typeof AdminNotificationsIdcopyRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/notifications/preferences': {
@@ -1429,6 +1449,7 @@ interface AdminRouteChildren {
   AdminInternshipsIdRoute: typeof AdminInternshipsIdRoute
   AdminMessagesIdRoute: typeof AdminMessagesIdRoute
   AdminNotificationsIdRoute: typeof AdminNotificationsIdRoute
+  AdminNotificationsIdcopyRoute: typeof AdminNotificationsIdcopyRoute
   AdminNotificationsPreferencesRoute: typeof AdminNotificationsPreferencesRoute
   AdminProjectsIdRoute: typeof AdminProjectsIdRoute
   AdminReportsIdRoute: typeof AdminReportsIdRoute
@@ -1499,6 +1520,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminInternshipsIdRoute: AdminInternshipsIdRoute,
   AdminMessagesIdRoute: AdminMessagesIdRoute,
   AdminNotificationsIdRoute: AdminNotificationsIdRoute,
+  AdminNotificationsIdcopyRoute: AdminNotificationsIdcopyRoute,
   AdminNotificationsPreferencesRoute: AdminNotificationsPreferencesRoute,
   AdminProjectsIdRoute: AdminProjectsIdRoute,
   AdminReportsIdRoute: AdminReportsIdRoute,

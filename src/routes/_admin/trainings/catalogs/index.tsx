@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Plus, Trash2, UserRoundPlus, ClipboardClock } from "lucide-react";
+import { Plus, Trash2, UserRoundPlus, ClipboardClock, Wallet } from "lucide-react";
 import { PageHeader, ConfirmDelete } from "@/components/site";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { DataTable } from "@/components/site/DataTable";
@@ -137,6 +137,14 @@ function AdminTrainings() {
             <UserRoundPlus className="h-4 w-4"
             />
             Voir les inscriptions
+          </Link>
+        </div>
+        <div>
+          <Link to="/trainings/payments"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <Wallet className="h-4 w-4"
+            />
+            Voir les paiements
           </Link>
         </div>
       </div>

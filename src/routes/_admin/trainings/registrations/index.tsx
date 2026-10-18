@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { GraduationCap, ClipboardClock } from "lucide-react";
+import { GraduationCap, ClipboardClock, Wallet } from "lucide-react";
 import { PageHeader, DataTable } from "@/components/site";
 import { useAdminTrainingRegistrationsList } from "@/stores/useTrainingRegistrationsStore";
 import { type APIAdminTrainingRegistration, getStatusBadge, getStatusLabel, } from "@/data/trainingRegistrations";
@@ -42,6 +42,14 @@ function AdminTrainingRegistrations() {
             <ClipboardClock className="h-4 w-4"
             />
             Voir les soummissions en attentes
+          </Link>
+        </div>
+        <div>
+          <Link to="/trainings/payments"
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+            <Wallet className="h-4 w-4"
+            />
+            Voir les paiements
           </Link>
         </div>
       </div>

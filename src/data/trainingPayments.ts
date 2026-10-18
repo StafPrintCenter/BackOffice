@@ -12,6 +12,7 @@ export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
 export const getPaymentMethodLabel = (m: string) => PAYMENT_METHOD_LABELS[m as PaymentMethod] ?? m;
 
 export type APIPaymentListItem = {
+  id: string;
   paymentId: string;
   amount: number;
   method: PaymentMethod;

@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHeader, DataTable } from "@/components/site";
-import { GraduationCap, ClipboardClock, Wallet, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { GraduationCap, ClipboardClock, UserRoundPlus, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PaymentsFilters, type PaymentsFiltersValue } from "@/components/trainings/payments/PaymentsFilters";
 import { PaymentsSummary } from "@/components/trainings/payments/PaymentsSummary";
@@ -37,30 +37,17 @@ function PaymentsPage() {
 
       {/* Raccourci */}
       <div className="flex items-center gap-6 mb-4">
-        <div>
-          <Link to="/trainings/catalogs"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <GraduationCap className="h-4 w-4"
-            />
-            Voir le catalogue des formations
-          </Link>
-        </div>
-        <div>
-          <Link to="/trainings/reviews"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <ClipboardClock className="h-4 w-4"
-            />
-            Voir les soummissions en attentes
-          </Link>
-        </div>
-        <div>
-          <Link to="/trainings/payments"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <Wallet className="h-4 w-4"
-            />
-            Voir les paiements
-          </Link>
-        </div>
+        <Link to="/trainings/catalogs" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <GraduationCap className="h-4 w-4" /> Voir le catalogue des formations
+        </Link>
+
+        <Link to="/trainings/reviews" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <ClipboardClock className="h-4 w-4" /> Voir les soummissions en attentes
+        </Link>
+
+        <Link to="/trainings/registrations" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
+        </Link>
       </div>
 
       {summary && <PaymentsSummary summary={summary} />}

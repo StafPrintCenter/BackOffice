@@ -28,30 +28,17 @@ function AdminTrainingRegistrations() {
 
       {/* Raccourci */}
       <div className="flex items-center gap-6 mb-4">
-        <div>
-          <Link to="/trainings/catalogs"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <GraduationCap className="h-4 w-4"
-            />
-            Voir le catalogue des formations
-          </Link>
-        </div>
-        <div>
-          <Link to="/trainings/reviews"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <ClipboardClock className="h-4 w-4"
-            />
-            Voir les soummissions en attentes
-          </Link>
-        </div>
-        <div>
-          <Link to="/trainings/payments"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <Wallet className="h-4 w-4"
-            />
-            Voir les paiements
-          </Link>
-        </div>
+        <Link to="/trainings/catalogs" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <GraduationCap className="h-4 w-4" /> Voir le catalogue des formations
+        </Link>
+
+        <Link to="/trainings/reviews" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <ClipboardClock className="h-4 w-4" /> Voir les soummissions en attentes
+        </Link>
+
+        <Link to="/trainings/payments" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Wallet className="h-4 w-4" /> Voir les paiements
+        </Link>
       </div>
 
       <DataTable<APIAdminTrainingRegistration>

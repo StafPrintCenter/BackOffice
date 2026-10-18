@@ -9,6 +9,7 @@ import { PaymentStatusBadge } from "@/components/trainings/enrollments/Enrollmen
 import { formatFcfa } from "@/data/trainingEnrollments";
 import { formatPaymentDate, APIPaymentListItem } from "@/data/trainingPayments";
 import { useTrainingPaymentsList } from "@/stores/useTrainingPaymentsStore";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/trainings/payments/")({
@@ -22,8 +23,14 @@ function PaymentsPage() {
   const navigate = useNavigate();
   const [filters, setFilters] = useState<PaymentsFiltersValue>(EMPTY);
   const [page, setPage] = useState(1);
+  const debouncedQuery = useDebouncedValue(filters.query, 400);
 
-  const { payments, summary, meta, isLoading, isError } = useTrainingPaymentsList({ ...filters, page, perPage: 12 });
+  const { payments, summary, meta, isLoading, isError } = useTrainingPaymentsList({
+    ...filters,
+    query: debouncedQuery,
+    page,
+    perPage: 12,
+  });
 
   const updateFilters = (v: PaymentsFiltersValue) => { setFilters(v); setPage(1); };
 

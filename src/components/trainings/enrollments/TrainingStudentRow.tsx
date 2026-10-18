@@ -49,6 +49,11 @@ export function TrainingStudentRow({ student: s, color }: { student: APITraining
           <KeyRound className="h-3 w-3" /> {s.hasContentAccess ? "Accès au contenu" : "Accès restreint"}
         </span>
         <AddPaymentDialog enrollmentId={s.enrollmentId} context={s.name} />
+      </div>
+
+      <div className="flex flex-wrap gap-x-4 text-[11px] text-muted-foreground/80">
+        <span>Inscrit le {formatEnrollmentDate(s.enrolledAt)}</span>
+        {s.completedAt && <span>Terminé le {formatEnrollmentDate(s.completedAt)}</span>}
 
         <div className="flex flex-wrap gap-2">
           <CertificateActions

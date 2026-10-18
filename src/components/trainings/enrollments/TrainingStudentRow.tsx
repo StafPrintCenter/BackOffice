@@ -57,7 +57,9 @@ export function TrainingStudentRow({ student: s, color }: { student: APITraining
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <AddPaymentDialog enrollmentId={s.enrollmentId} context={s.name} />
+        <AddPaymentDialog
+          enrollmentId={s.enrollmentId}
+          context={s.name} />
 
         <CertificateActions
           enrollmentId={s.enrollmentId}

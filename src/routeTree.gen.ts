@@ -76,6 +76,8 @@ import { Route as AdminReviewsInvitesIdRouteImport } from './routes/_admin/revie
 import { Route as AdminReviewsResponsesIndexRouteImport } from './routes/_admin/reviews/responses/index'
 import { Route as AdminReviewsResponsesIdRouteImport } from './routes/_admin/reviews/responses/$id'
 import { Route as AdminTrainingsCatalogsIndexRouteImport } from './routes/_admin/trainings/catalogs/index'
+import { Route as AdminTrainingsPaymentsIndexRouteImport } from './routes/_admin/trainings/payments/index'
+import { Route as AdminTrainingsPaymentsIdRouteImport } from './routes/_admin/trainings/payments/$id'
 import { Route as AdminTrainingsRegistrationsIndexRouteImport } from './routes/_admin/trainings/registrations/index'
 import { Route as AdminTrainingsRegistrationsIdRouteImport } from './routes/_admin/trainings/registrations/$id'
 import { Route as AdminTrainingsReviewsIndexRouteImport } from './routes/_admin/trainings/reviews/index'
@@ -431,6 +433,18 @@ const AdminTrainingsCatalogsIndexRoute =
     path: '/trainings/catalogs/',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminTrainingsPaymentsIndexRoute =
+  AdminTrainingsPaymentsIndexRouteImport.update({
+    id: '/trainings/payments/',
+    path: '/trainings/payments/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminTrainingsPaymentsIdRoute =
+  AdminTrainingsPaymentsIdRouteImport.update({
+    id: '/trainings/payments/$id',
+    path: '/trainings/payments/$id',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminTrainingsRegistrationsIndexRoute =
   AdminTrainingsRegistrationsIndexRouteImport.update({
     id: '/trainings/registrations/',
@@ -514,6 +528,7 @@ export interface FileRoutesByFullPath {
   '/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
+  '/trainings/payments/$id': typeof AdminTrainingsPaymentsIdRoute
   '/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
   '/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
@@ -529,6 +544,7 @@ export interface FileRoutesByFullPath {
   '/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
   '/reviews/responses/': typeof AdminReviewsResponsesIndexRoute
   '/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
+  '/trainings/payments/': typeof AdminTrainingsPaymentsIndexRoute
   '/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
   '/trainings/reviews/': typeof AdminTrainingsReviewsIndexRoute
   '/trainings/catalogs/$id/manage': typeof AdminTrainingsCatalogsIdManageRoute
@@ -586,6 +602,7 @@ export interface FileRoutesByTo {
   '/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
+  '/trainings/payments/$id': typeof AdminTrainingsPaymentsIdRoute
   '/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
   '/articleFeedback/group': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique': typeof AdminArticleFeedbackUniqueIndexRoute
@@ -601,6 +618,7 @@ export interface FileRoutesByTo {
   '/reviews/invites': typeof AdminReviewsInvitesIndexRoute
   '/reviews/responses': typeof AdminReviewsResponsesIndexRoute
   '/trainings/catalogs': typeof AdminTrainingsCatalogsIndexRoute
+  '/trainings/payments': typeof AdminTrainingsPaymentsIndexRoute
   '/trainings/registrations': typeof AdminTrainingsRegistrationsIndexRoute
   '/trainings/reviews': typeof AdminTrainingsReviewsIndexRoute
   '/trainings/catalogs/$id/manage': typeof AdminTrainingsCatalogsIdManageRoute
@@ -661,6 +679,7 @@ export interface FileRoutesById {
   '/_admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/_admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
   '/_admin/reviews/responses/$id': typeof AdminReviewsResponsesIdRoute
+  '/_admin/trainings/payments/$id': typeof AdminTrainingsPaymentsIdRoute
   '/_admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
   '/_admin/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/_admin/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
@@ -676,6 +695,7 @@ export interface FileRoutesById {
   '/_admin/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
   '/_admin/reviews/responses/': typeof AdminReviewsResponsesIndexRoute
   '/_admin/trainings/catalogs/': typeof AdminTrainingsCatalogsIndexRoute
+  '/_admin/trainings/payments/': typeof AdminTrainingsPaymentsIndexRoute
   '/_admin/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
   '/_admin/trainings/reviews/': typeof AdminTrainingsReviewsIndexRoute
   '/_admin/trainings/catalogs/$id/manage': typeof AdminTrainingsCatalogsIdManageRoute
@@ -735,6 +755,7 @@ export interface FileRouteTypes {
     | '/reviews/forms/$id'
     | '/reviews/invites/$id'
     | '/reviews/responses/$id'
+    | '/trainings/payments/$id'
     | '/trainings/registrations/$id'
     | '/articleFeedback/group/'
     | '/articleFeedback/unique/'
@@ -750,6 +771,7 @@ export interface FileRouteTypes {
     | '/reviews/invites/'
     | '/reviews/responses/'
     | '/trainings/catalogs/'
+    | '/trainings/payments/'
     | '/trainings/registrations/'
     | '/trainings/reviews/'
     | '/trainings/catalogs/$id/manage'
@@ -807,6 +829,7 @@ export interface FileRouteTypes {
     | '/reviews/forms/$id'
     | '/reviews/invites/$id'
     | '/reviews/responses/$id'
+    | '/trainings/payments/$id'
     | '/trainings/registrations/$id'
     | '/articleFeedback/group'
     | '/articleFeedback/unique'
@@ -822,6 +845,7 @@ export interface FileRouteTypes {
     | '/reviews/invites'
     | '/reviews/responses'
     | '/trainings/catalogs'
+    | '/trainings/payments'
     | '/trainings/registrations'
     | '/trainings/reviews'
     | '/trainings/catalogs/$id/manage'
@@ -881,6 +905,7 @@ export interface FileRouteTypes {
     | '/_admin/reviews/forms/$id'
     | '/_admin/reviews/invites/$id'
     | '/_admin/reviews/responses/$id'
+    | '/_admin/trainings/payments/$id'
     | '/_admin/trainings/registrations/$id'
     | '/_admin/articleFeedback/group/'
     | '/_admin/articleFeedback/unique/'
@@ -896,6 +921,7 @@ export interface FileRouteTypes {
     | '/_admin/reviews/invites/'
     | '/_admin/reviews/responses/'
     | '/_admin/trainings/catalogs/'
+    | '/_admin/trainings/payments/'
     | '/_admin/trainings/registrations/'
     | '/_admin/trainings/reviews/'
     | '/_admin/trainings/catalogs/$id/manage'
@@ -1379,6 +1405,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTrainingsCatalogsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/trainings/payments/': {
+      id: '/_admin/trainings/payments/'
+      path: '/trainings/payments'
+      fullPath: '/trainings/payments/'
+      preLoaderRoute: typeof AdminTrainingsPaymentsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/trainings/payments/$id': {
+      id: '/_admin/trainings/payments/$id'
+      path: '/trainings/payments/$id'
+      fullPath: '/trainings/payments/$id'
+      preLoaderRoute: typeof AdminTrainingsPaymentsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/trainings/registrations/': {
       id: '/_admin/trainings/registrations/'
       path: '/trainings/registrations'
@@ -1466,6 +1506,7 @@ interface AdminRouteChildren {
   AdminReviewsFormsIdRoute: typeof AdminReviewsFormsIdRoute
   AdminReviewsInvitesIdRoute: typeof AdminReviewsInvitesIdRoute
   AdminReviewsResponsesIdRoute: typeof AdminReviewsResponsesIdRoute
+  AdminTrainingsPaymentsIdRoute: typeof AdminTrainingsPaymentsIdRoute
   AdminTrainingsRegistrationsIdRoute: typeof AdminTrainingsRegistrationsIdRoute
   AdminArticleFeedbackGroupIndexRoute: typeof AdminArticleFeedbackGroupIndexRoute
   AdminArticleFeedbackUniqueIndexRoute: typeof AdminArticleFeedbackUniqueIndexRoute
@@ -1481,6 +1522,7 @@ interface AdminRouteChildren {
   AdminReviewsInvitesIndexRoute: typeof AdminReviewsInvitesIndexRoute
   AdminReviewsResponsesIndexRoute: typeof AdminReviewsResponsesIndexRoute
   AdminTrainingsCatalogsIndexRoute: typeof AdminTrainingsCatalogsIndexRoute
+  AdminTrainingsPaymentsIndexRoute: typeof AdminTrainingsPaymentsIndexRoute
   AdminTrainingsRegistrationsIndexRoute: typeof AdminTrainingsRegistrationsIndexRoute
   AdminTrainingsReviewsIndexRoute: typeof AdminTrainingsReviewsIndexRoute
   AdminTrainingsCatalogsIdManageRoute: typeof AdminTrainingsCatalogsIdManageRoute
@@ -1537,6 +1579,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminReviewsFormsIdRoute: AdminReviewsFormsIdRoute,
   AdminReviewsInvitesIdRoute: AdminReviewsInvitesIdRoute,
   AdminReviewsResponsesIdRoute: AdminReviewsResponsesIdRoute,
+  AdminTrainingsPaymentsIdRoute: AdminTrainingsPaymentsIdRoute,
   AdminTrainingsRegistrationsIdRoute: AdminTrainingsRegistrationsIdRoute,
   AdminArticleFeedbackGroupIndexRoute: AdminArticleFeedbackGroupIndexRoute,
   AdminArticleFeedbackUniqueIndexRoute: AdminArticleFeedbackUniqueIndexRoute,
@@ -1552,6 +1595,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminReviewsInvitesIndexRoute: AdminReviewsInvitesIndexRoute,
   AdminReviewsResponsesIndexRoute: AdminReviewsResponsesIndexRoute,
   AdminTrainingsCatalogsIndexRoute: AdminTrainingsCatalogsIndexRoute,
+  AdminTrainingsPaymentsIndexRoute: AdminTrainingsPaymentsIndexRoute,
   AdminTrainingsRegistrationsIndexRoute: AdminTrainingsRegistrationsIndexRoute,
   AdminTrainingsReviewsIndexRoute: AdminTrainingsReviewsIndexRoute,
   AdminTrainingsCatalogsIdManageRoute: AdminTrainingsCatalogsIdManageRoute,

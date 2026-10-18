@@ -48,7 +48,6 @@ export function TrainingStudentRow({ student: s, color }: { student: APITraining
         <span className={`inline-flex items-center gap-1 ${s.hasContentAccess ? "text-emerald-600" : ""}`}>
           <KeyRound className="h-3 w-3" /> {s.hasContentAccess ? "Accès au contenu" : "Accès restreint"}
         </span>
-        <AddPaymentDialog enrollmentId={s.enrollmentId} context={s.name} />
       </div>
 
       <div className="flex flex-wrap gap-x-4 text-[11px] text-muted-foreground/80">

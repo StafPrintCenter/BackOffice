@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, } from "@/components/ui/dialog";
 import { useAdminStudentDetail, useAlertAdminStudent, useBlockAdminStudent, useReactivateAdminStudent, useResendAdminStudentInvite, } from "@/stores/useStudentsStore";
+import { StudentTrainingsSection } from "@/components/trainings/enrollments/StudentTrainingsSection";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/members/students/$id")({

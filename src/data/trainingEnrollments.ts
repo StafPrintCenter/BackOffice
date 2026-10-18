@@ -63,6 +63,7 @@ const CERTIFICATE_STATUS: Record<string, BadgeMeta> = {
   eligible: { label: "Disponible", className: BLUE },
   issued: { label: "Délivré", className: BLUE },
   downloaded: { label: "Téléchargé", className: GREEN },
+  revoked: { label: "Révoqué", className: RED },
 };
 
 const pick = (map: Record<string, BadgeMeta>, key: string): BadgeMeta =>

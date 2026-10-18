@@ -123,30 +123,17 @@ function AdminTrainings() {
 
       {/* Raccourci */}
       <div className="flex items-center gap-6 mb-4">
-        <div>
-          <Link to="/trainings/reviews"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <ClipboardClock className="h-4 w-4"
-            />
-            Voir les soummissions en attentes
-          </Link>
-        </div>
-        <div>
-          <Link to="/trainings/registrations"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <UserRoundPlus className="h-4 w-4"
-            />
-            Voir les inscriptions
-          </Link>
-        </div>
-        <div>
-          <Link to="/trainings/payments"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <Wallet className="h-4 w-4"
-            />
-            Voir les paiements
-          </Link>
-        </div>
+        <Link to="/trainings/reviews" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <ClipboardClock className="h-4 w-4" /> Voir les soummissions en attentes
+        </Link>
+
+        <Link to="/trainings/registrations" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
+        </Link>
+
+        <Link to="/trainings/payments" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Wallet className="h-4 w-4" /> Voir les paiements
+        </Link>
       </div>
 
       <DataTable<APIAdminTrainingListItem>

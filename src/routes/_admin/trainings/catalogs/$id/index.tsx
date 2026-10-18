@@ -16,6 +16,7 @@ import { TRAINING_INSTRUCTOR_ROLE_LABELS } from "@/data/trainingInstructors";
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";
 import { getTrainingLevelBadgeClass, getTrainingStatusBadgeClass, getTrainingStatusLabel, sanitizeTrainingPayload, getTrainingEnrollmentStatusBadge, } from "@/data/trainings";
 import type { AdminTrainingPayload, TrainingLevel, TrainingProgramModule, TrainingStatus } from "@/data/trainings";
+import { TrainingStudentsSection } from "@/components/trainings/enrollments/TrainingStudentsSection";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/trainings/catalogs/$id/")({
@@ -523,6 +524,8 @@ function TrainingDetail() {
                   </div>
                 )}
               </div>
+
+              <TrainingStudentsSection trainingId={training.id} color={mainColor} />
             </div>
 
             {/* Sidebar sticky - fiche pratique */}

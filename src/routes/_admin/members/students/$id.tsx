@@ -289,6 +289,8 @@ function StudentDetail() {
             )}
           </div>
         </div>
+
+        <StudentTrainingsSection trainings={student.trainings ?? []} />
       </div>
 
       {/* Dialog Alerte */}

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Loader2, CheckCircle2, XCircle, Clock, Calendar, UserRoundPlus, GraduationCap, Search, ChevronLeft, ChevronRight, ShieldCheck, ShieldOff, ArrowUpDown, FolderKanban, ExternalLink, Timer, Award, FileQuestion } from "lucide-react";
+import { Loader2, CheckCircle2, XCircle, Clock, Calendar, UserRoundPlus, GraduationCap, Search, ChevronLeft, ChevronRight, ShieldCheck, ShieldOff, ArrowUpDown, FolderKanban, ExternalLink, Timer, Award, FileQuestion, Wallet } from "lucide-react";
 import { PageHeader } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -110,13 +110,18 @@ function AdminContentReviews() {
         description="Modules, leçons et quiz créés par les instructeurs en attente de validation, groupés par formation."
       />
 
-      {/* Raccourcis */}
+      {/* Raccourci */}
       <div className="flex items-center gap-6 mb-4">
         <Link to="/trainings/catalogs" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <GraduationCap className="h-4 w-4" /> Voir le catalogue des formations
         </Link>
+
         <Link to="/trainings/registrations" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
+        </Link>
+
+        <Link to="/trainings/payments" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Wallet className="h-4 w-4" /> Voir les paiements
         </Link>
       </div>
 

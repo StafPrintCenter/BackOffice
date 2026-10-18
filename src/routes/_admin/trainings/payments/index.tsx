@@ -31,8 +31,8 @@ function PaymentsPage() {
   return (
     <>
       <PageHeader
-        title="Inscriptions aux formations"
-        description="Demandes d'inscription reçues depuis le site public."
+        title="Paiements"
+        description="Tous les paiements des formations."
       />
 
       {/* Raccourci */}
@@ -61,12 +61,6 @@ function PaymentsPage() {
             Voir les paiements
           </Link>
         </div>
-      </div>
-
-
-      <div className="mb-6">
-        <h1 className="font-display text-2xl font-bold">Paiements</h1>
-        <p className="text-sm text-muted-foreground">Tous les paiements des formations.</p>
       </div>
 
       {summary && <PaymentsSummary summary={summary} />}

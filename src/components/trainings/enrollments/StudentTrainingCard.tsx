@@ -5,6 +5,7 @@ import { formatEnrollmentDate, formatFcfa, type StudentTrainingEnrollment } from
 import { CertificateStatusBadge, EnrollmentStatusBadge, PaymentStatusBadge } from "./EnrollmentBadges";
 import { ProgressBar } from "./ProgressBar";
 import { AddPaymentDialog } from "@/components/trainings/payments/AddPaymentDialog";
+import { CertificateActions } from "@/components/trainings/certificates/CertificateActions";
 
 export function StudentTrainingCard({ enrollment: e }: { enrollment: StudentTrainingEnrollment }) {
   return (
@@ -22,7 +23,6 @@ export function StudentTrainingCard({ enrollment: e }: { enrollment: StudentTrai
             Formation : {getTrainingStatusLabel(e.trainingStatus as never)}
           </span>
           <EnrollmentStatusBadge status={e.status} />
-          <AddPaymentDialog enrollmentId={e.enrollmentId} context={e.trainingTitle} />
         </div>
       </div>
 
@@ -51,6 +51,21 @@ export function StudentTrainingCard({ enrollment: e }: { enrollment: StudentTrai
             <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> Terminé le {formatEnrollmentDate(e.completedAt)}
           </div>
         )}
+      </div>
+
+      <div className="flex flex-wrap gap-2 border-t pt-3">
+        <AddPaymentDialog
+          enrollmentId={e.enrollmentId}
+          context={e.trainingTitle}
+        />
+
+        <CertificateActions
+          enrollmentId={e.enrollmentId}
+          certificateId={e.certificateId}
+          certificateStatus={e.certificateStatus}
+          progress={e.progress}
+          context={e.trainingTitle}
+        />
       </div>
     </div>
   );

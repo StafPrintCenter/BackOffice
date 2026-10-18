@@ -1,3 +1,5 @@
+import type { StudentTrainingEnrollment } from "@/data/trainingEnrollments";
+
 export type APIAdminStudentListItem = {
   id: string;
   firstName: string;

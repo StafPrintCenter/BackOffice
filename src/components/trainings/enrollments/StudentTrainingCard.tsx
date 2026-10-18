@@ -4,6 +4,7 @@ import { getTrainingStatusBadgeClass, getTrainingStatusLabel } from "@/data/trai
 import { formatEnrollmentDate, formatFcfa, type StudentTrainingEnrollment } from "@/data/trainingEnrollments";
 import { CertificateStatusBadge, EnrollmentStatusBadge, PaymentStatusBadge } from "./EnrollmentBadges";
 import { ProgressBar } from "./ProgressBar";
+import { AddPaymentDialog } from "@/components/trainings/payments/AddPaymentDialog";
 
 export function StudentTrainingCard({ enrollment: e }: { enrollment: StudentTrainingEnrollment }) {
   return (
@@ -21,6 +22,7 @@ export function StudentTrainingCard({ enrollment: e }: { enrollment: StudentTrai
             Formation : {getTrainingStatusLabel(e.trainingStatus as never)}
           </span>
           <EnrollmentStatusBadge status={e.status} />
+          <AddPaymentDialog enrollmentId={e.enrollmentId} context={e.trainingTitle} />
         </div>
       </div>
 

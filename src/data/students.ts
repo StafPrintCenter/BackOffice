@@ -15,9 +15,9 @@ export type APIAdminStudentListItem = {
   isActive: boolean;
   isBlocked: boolean;
   blockedAt: string | null;
-  trainings: string[] | null;
   createdAt: string;
   updatedAt: string;
+  trainings: StudentTrainingEnrollment[];
 };
 
 export type APIAdminStudentDetail = APIAdminStudentListItem & {

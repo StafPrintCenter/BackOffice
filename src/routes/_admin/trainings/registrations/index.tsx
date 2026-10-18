@@ -33,7 +33,7 @@ function AdminTrainingRegistrations() {
         </Link>
 
         <Link to="/trainings/reviews" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <ClipboardClock className="h-4 w-4" /> Voir les soummissions en attentes
+          <ClipboardClock className="h-4 w-4" /> Voir les soumissions en attente
         </Link>
 
         <Link to="/trainings/payments" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">

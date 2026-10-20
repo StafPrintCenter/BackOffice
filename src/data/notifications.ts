@@ -1,7 +1,7 @@
 import { Bell, CreditCard, GraduationCap, ShieldCheck, UserCircle, Users, type LucideIcon } from "lucide-react";
 
 export type NotificationCategory = "security" | "general" | "profile" | "training" | "payment" | "community";
-export type NotificationAction = "created" | "updated" | "deleted" | "status" | "reminder";
+export type NotificationAction = "created" | "updated" | "deleted" | "status" | "reminder" | "info";
 
 export const NOTIFICATION_CATEGORIES: NotificationCategory[] = [
   "security", "general", "profile", "training", "payment", "community",
@@ -66,6 +66,10 @@ export const ACTION_META: Record<NotificationAction, { label: string; descriptio
   reminder: {
     label: "Rappels",
     description: "Rappels et échéances."
+  },
+  info: {
+    label: "Informations",
+    description: "Notifications et informations."
   },
 };
 

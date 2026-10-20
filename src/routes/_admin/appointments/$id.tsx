@@ -11,7 +11,7 @@ import {
   AppointmentDetailContent,
   AppointmentHandlingInfo,
   AppointmentSidebar,
-} from "@/components/pages/admin/appointments/detail";
+} from "@/components/pages/appointments/detail";
 
 export const Route = createFileRoute("/_admin/appointments/$id")({
   loader: async ({ params }) => {

@@ -50,7 +50,7 @@ export function NotificationBell() {
             </DialogTitle>
           </DialogHeader>
 
-        {/* Liste scrollable */}
+          {/* Liste scrollable */}
           <div className="flex-1 overflow-y-auto px-6 py-4 space-y-2">
             {isLoading ? (
               <div className="flex items-center justify-center gap-2 py-10 text-sm text-muted-foreground">
@@ -63,7 +63,7 @@ export function NotificationBell() {
             )}
           </div>
 
-           {/* Pied de page fixe */}
+          {/* Pied de page fixe */}
           <div className="flex flex-wrap items-center justify-between gap-2 border-t bg-muted/20 px-6 py-4">
             <Button variant="outline" size="sm" onClick={handleMarkAll} disabled={count === 0 || markAll.isPending}>
               <CheckCheck className="mr-1 h-4 w-4" /> Tout marquer comme lu

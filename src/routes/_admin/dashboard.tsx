@@ -13,7 +13,7 @@ import {
   DashboardRecentLists,
   DashboardRecentActivity,
   type RecentItem,
-} from "@/components/pages/admin/dashboard";
+} from "@/components/pages/dashboard";
 
 export const Route = createFileRoute("/_admin/dashboard")({
   head: () => ({

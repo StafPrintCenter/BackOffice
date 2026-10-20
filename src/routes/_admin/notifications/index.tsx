@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { CheckCheck, ChevronLeft, ChevronRight, Loader2, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { NotificationItem } from "@/components/notifications/NotificationItem";
+import { NotificationItem } from "@/components/pages/notifications/NotificationItem";
 import {
   CATEGORY_META,
   NOTIFICATION_CATEGORIES,

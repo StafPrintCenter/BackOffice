@@ -18,7 +18,7 @@ import {
   ArticleContentCard,
   ArticleCoverSidebarCard,
   ArticleSettingsSidebarCard,
-} from "@/components/pages/admin/articles/detail";
+} from "@/components/pages/articles/detail";
 
 export const Route = createFileRoute("/_admin/articles/$id")({
   loader: async ({ params }) => {

@@ -5,7 +5,7 @@ import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminArticlesList, useDeleteAdminArticle, useAdminCategoriesList } from "@/stores";
 import type { APIAdminArticleListItem } from "@/data/articles";
 import { SITE } from "@/data/site";
-import { ArticleCreateModal, getArticleTableColumns } from "@/components/pages/admin/articles/home";
+import { ArticleCreateModal, getArticleTableColumns } from "@/components/pages/articles/home";
 
 export const Route = createFileRoute("/_admin/articles/")({
   head: () => ({

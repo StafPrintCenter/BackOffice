@@ -1,6 +1,7 @@
 import { Bell, CreditCard, GraduationCap, ShieldCheck, UserCircle, Users, type LucideIcon } from "lucide-react";
 
 export type NotificationCategory = "security" | "general" | "profile" | "training" | "payment" | "community";
+export type NotificationAction = "created" | "updated" | "deleted" | "status" | "reminder";
 
 export const NOTIFICATION_CATEGORIES: NotificationCategory[] = [
   "security", "general", "profile", "training", "payment", "community",
@@ -45,6 +46,29 @@ export const CATEGORY_META: Record<NotificationCategory, { label: string; descri
   },
 };
 
+export const ACTION_META: Record<NotificationAction, { label: string; description: string }> = {
+  created: {
+    label: "Créations",
+    description: "Nouveau message, inscription, paiement enregistré…"
+  },
+  updated: {
+    label: "Modifications",
+    description: "Éléments modifiés ou mis à jour."
+  },
+  deleted: {
+    label: "Suppressions",
+    description: "Éléments supprimés, annulés ou révoqués."
+  },
+  status: {
+    label: "Changements de statut",
+    description: "Acceptation, rejet, publication, blocage…"
+  },
+  reminder: {
+    label: "Rappels",
+    description: "Rappels et échéances."
+  },
+};
+
 export type APINotificationListItem = {
   id: string;
   category: NotificationCategory;
@@ -79,6 +103,7 @@ export type APINotificationPreference = {
   scheduleDays: number[];
   scheduleStartTime: string | null; // "HH:mm:ss"
   scheduleEndTime: string | null;
+  actions: APINotificationActionPreference[];
 };
 
 export const WEEKDAYS = [
@@ -90,6 +115,12 @@ export const WEEKDAYS = [
   { value: 6, label: "Sam" },
   { value: 7, label: "Dim" },
 ];
+
+export type APINotificationActionPreference = {
+  action: NotificationAction;
+  locked: boolean;
+  enabled: boolean;
+};
 
 export function formatNotificationDate(iso: string): string {
   return new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });

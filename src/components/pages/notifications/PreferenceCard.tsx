@@ -5,6 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_META, WEEKDAYS, type APINotificationPreference, type DeliveryMode } from "@/data/notifications";
 import { useUpdatePreference } from "@/stores/useNotificationsStore";
+import { ActionPreferences } from "./";
 
 const hhmm = (t: string | null, fallback: string) => (t ? t.slice(0, 5) : fallback);
 
@@ -101,6 +102,12 @@ export function PreferenceCard({ preference: p }: { preference: APINotificationP
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {(p.locked || enabled) && p.actions?.length > 0 && (
+        <div className="mt-5 border-t pt-4">
+          <ActionPreferences category={p.category} actions={p.actions} />
         </div>
       )}
 

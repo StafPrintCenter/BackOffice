@@ -5,7 +5,7 @@ import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminAnnouncementsList, useDeleteAdminAnnouncement } from "@/stores/useAnnouncementsStore";
 import type { APIAdminAnnouncement } from "@/data/announcements";
 import { SITE } from "@/data/site";
-import { AnnouncementCreateModal, announcementTableColumns } from "@/components/pages/admin/announces/home";
+import { AnnouncementCreateModal, announcementTableColumns } from "@/components/pages/announces/home";
 
 export const Route = createFileRoute("/_admin/announces/")({
   head: () => ({

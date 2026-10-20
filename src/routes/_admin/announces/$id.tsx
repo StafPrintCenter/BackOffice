@@ -20,7 +20,7 @@ import {
   AnnouncementConfigSidebarCard,
   AnnouncementPublicationSidebarCard,
   AnnouncementActionSidebarCard,
-} from "@/components/pages/admin/announces/detail";
+} from "@/components/pages/announces/detail";
 
 export const Route = createFileRoute("/_admin/announces/$id")({
   loader: async ({ params }) => {

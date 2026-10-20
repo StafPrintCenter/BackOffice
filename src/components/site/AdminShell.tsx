@@ -7,7 +7,7 @@ import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 import { ConfirmDisconnect } from "@/components/site/AdminBits";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, SidebarInset, useSidebar, SidebarMenuBadge } from "@/components/ui/sidebar";
-import { NotificationBell } from "@/components/notifications/NotificationBell";
+import { NotificationBell } from "@/components/pages/notifications";
 import { useUnreadCount } from "@/stores/useAdminNotificationsStore";
 import { SocialLinks } from "@/components/site/SocialLinks";
 

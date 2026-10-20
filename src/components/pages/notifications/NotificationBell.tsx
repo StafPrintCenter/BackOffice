@@ -4,7 +4,7 @@ import { Bell, CheckCheck, Settings2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { NotificationItem } from "./NotificationItem";
+import { NotificationItem } from "./";
 import { useMarkAllAsRead, useNotificationsList, useUnreadCount } from "@/stores/useAdminNotificationsStore";
 
 export function NotificationBell() {

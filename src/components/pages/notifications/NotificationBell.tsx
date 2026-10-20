@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { NotificationItem } from "./";
-import { useMarkAllAsRead, useNotificationsList, useUnreadCount } from "@/stores/useAdminNotificationsStore";
+import { useMarkAllAsRead, useNotificationsList, useUnreadCount } from "@/stores/useNotificationsStore";
 
 export function NotificationBell() {
   const [open, setOpen] = useState(false);

@@ -9,7 +9,7 @@ import {
   NOTIFICATION_CATEGORIES,
   type NotificationCategory,
 } from "@/data/notifications";
-import { useMarkAllAsRead, useNotificationsList } from "@/stores/useAdminNotificationsStore";
+import { useMarkAllAsRead, useNotificationsList } from "@/stores/useNotificationsStore";
 
 export const Route = createFileRoute("/_admin/notifications/")({
   head: () => ({

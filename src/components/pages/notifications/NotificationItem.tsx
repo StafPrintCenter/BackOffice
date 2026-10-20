@@ -1,7 +1,7 @@
 import { Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { CATEGORY_META, formatNotificationDate, type APINotificationListItem } from "@/data/notifications";
-import { useMarkAsRead } from "@/stores/useAdminNotificationsStore";
+import { useMarkAsRead } from "@/stores/useNotificationsStore";
 
 interface NotificationItemProps {
   notification: APINotificationListItem;

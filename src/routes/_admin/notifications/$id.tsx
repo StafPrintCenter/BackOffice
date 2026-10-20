@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, Loader2, Clock, CheckCircle2, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_META, formatNotificationDate } from "@/data/notifications";
-import { useNotificationDetail } from "@/stores/useAdminNotificationsStore";
+import { useNotificationDetail } from "@/stores/useNotificationsStore";
 
 export const Route = createFileRoute("/_admin/notifications/$id")({
   head: () => ({

@@ -4,7 +4,7 @@ import { Loader2, Lock, Save } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_META, WEEKDAYS, type APINotificationPreference, type DeliveryMode } from "@/data/notifications";
-import { useUpdatePreference } from "@/stores/useAdminNotificationsStore";
+import { useUpdatePreference } from "@/stores/useNotificationsStore";
 
 const hhmm = (t: string | null, fallback: string) => (t ? t.slice(0, 5) : fallback);
 

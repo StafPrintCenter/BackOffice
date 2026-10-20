@@ -3,7 +3,7 @@ import { PageHeader, DataTable } from "@/components/site";
 import { useAdminAppointmentsList } from "@/stores/useAppointmentsStore";
 import { type APIAdminAppointment } from "@/data/appointments";
 import { SITE } from "@/data/site";
-import { appointmentColumns } from "@/components/pages/admin/appointments/home";
+import { appointmentColumns } from "@/components/pages/appointments/home";
 
 export const Route = createFileRoute("/_admin/appointments/")({
   head: () => ({

@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import type {
   APINotificationDetail, APINotificationListItem, APINotificationPreference,
-  APINotificationsMeta, DeliveryMode, NotificationCategory,
+  APINotificationsMeta, DeliveryMode, NotificationCategory, NotificationAction
 } from "@/data/notifications";
 
 async function ensureOk(response: Response, fallback: string): Promise<void> {
@@ -132,7 +132,7 @@ export function useUpdatePreference() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ category, ...body }: UpdatePreferenceParams) => {
-      const response = await adminFetch(`/api/notifications/preferences/${category}`, {
+      const response = await adminFetch(`/api/notifications/preferences/${category}/category`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -141,5 +141,19 @@ export function useUpdatePreference() {
       return ((await response.json()) as { data: APINotificationPreference }).data;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["notification-preferences"] }),
+  });
+}
+
+export function useUpdateActionPreference() {
+  return useMutation({
+    mutationFn: async ({ category, action, enabled }: { category: NotificationCategory; action: NotificationAction; enabled: boolean }) => {
+      const response = await adminFetch(`/api/notifications/preferences/${category}/actions/${action}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ enabled }),
+      });
+      await ensureOk(response, "Impossible d'enregistrer la préférence.");
+      return ((await response.json()) as { message?: string }).message ?? "Préférence mise à jour.";
+    },
   });
 }

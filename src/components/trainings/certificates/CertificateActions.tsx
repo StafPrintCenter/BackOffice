@@ -75,7 +75,7 @@ export function CertificateActions({ enrollmentId, certificateId, certificateSta
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="text-destructive">Révoquer le certificat</DialogTitle>
-            <DialogDescription>{context ? `${context} — ` : ""}Le certificat ne sera plus valide. Vous pourrez ensuite en régénérer un nouveau.</DialogDescription>
+            <DialogDescription>{context ? `${context} - ` : ""}Le certificat ne sera plus valide. Vous pourrez ensuite en régénérer un nouveau.</DialogDescription>
           </DialogHeader>
           <div>
             <Label>Motif de la révocation</Label>

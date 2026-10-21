@@ -37,7 +37,7 @@ export type APIAdminEcosystemSite = {
   description: string;
   url: string;
   logoKey: string;
-  // Champs calculés côté backend à partir de logo_key — jamais envoyés en écriture.
+  // Champs calculés côté backend à partir de logo_key - jamais envoyés en écriture.
   logoBaseUrl: string;
   logoUrl: string;
   logoVariants: EcosystemSiteLogoVariants;

@@ -31,7 +31,7 @@ export interface QuizQuestion {
 }
 
 // ⚠️ Le quiz partage le même enum de statut que module/leçon (ContentStatus), pas un
-// enum séparé — confirmé par ContentReviewableType::MAP qui inclut désormais Quiz.
+// enum séparé - confirmé par ContentReviewableType::MAP qui inclut désormais Quiz.
 export type APIAdminQuiz = {
   id: string;
   lessonId: string;

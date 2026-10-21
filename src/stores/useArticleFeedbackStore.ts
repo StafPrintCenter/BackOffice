@@ -4,7 +4,7 @@ import { adminFetch } from "@/lib/api-url";
 import type { AdminListParams } from "./createResourceStore";
 import type { APIAdminArticleFeedback, APIAdminArticleFeedbackGroup, APIAdminArticleFeedbackGroupDetail } from "@/data/articleFeedback";
 
-// Pas de create/update pour cette ressource — seuls list/detail/delete existent.
+// Pas de create/update pour cette ressource - seuls list/detail/delete existent.
 const store = createResourceStore<APIAdminArticleFeedback>({
   resourceKey: "article-feedback",
   basePath: "docs/article-feedback",

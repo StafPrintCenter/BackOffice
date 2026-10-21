@@ -59,7 +59,7 @@ function PaymentDetail() {
     <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         {back}
-        <AddPaymentDialog enrollmentId={e.id} context={`${s.name} — ${t.title}`} size="default" />
+        <AddPaymentDialog enrollmentId={e.id} context={`${s.name} - ${t.title}`} size="default" />
       </div>
 
       <div className="grid max-w-5xl gap-6 lg:grid-cols-3">

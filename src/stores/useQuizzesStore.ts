@@ -103,7 +103,7 @@ export function useDeleteAdminQuiz() {
 
 async function publishQuiz(quizId: string): Promise<APIAdminQuiz> {
   const response = await adminFetch(`/api/admin/trainings/quizzes/${quizId}/publish`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la publication du quiz — le quiz doit avoir au moins une question");
+  if (!response.ok) throw new Error("Erreur lors de la publication du quiz - le quiz doit avoir au moins une question");
   const json: { data: APIAdminQuiz } = await response.json();
   return json.data;
 }

@@ -55,7 +55,7 @@ const KINDS_WITH_CONTENT: LessonKind[] = ["reading"];
 const KINDS_WITH_BRIEF: LessonKind[] = ["quiz", "exercise", "assignment", "project"];
 
 function formatDate(dateStr?: string | null): string {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
 }
 

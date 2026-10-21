@@ -103,7 +103,7 @@ function AdminInstructors() {
             label: "Origine",
             render: (r) => (
               <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium">
-                {r.registrationSource === "invited" ? "Invité" : r.registrationSource === "self_registered" ? "Auto-inscrit" : "—"}
+                {r.registrationSource === "invited" ? "Invité" : r.registrationSource === "self_registered" ? "Auto-inscrit" : "-"}
               </span>
             ),
           },

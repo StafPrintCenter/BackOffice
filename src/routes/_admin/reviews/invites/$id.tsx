@@ -196,7 +196,7 @@ function InvitationDetail() {
               <div className="flex justify-between py-3">
                 <dt className="text-muted-foreground">Projet associé</dt>
                 <dd className="font-medium text-foreground">
-                  {invitation.project ?? invitation.projectName ?? "—"}
+                  {invitation.project ?? invitation.projectName ?? "-"}
                 </dd>
               </div>
               <div className="flex justify-between py-3">
@@ -254,7 +254,7 @@ function InvitationDetail() {
                   <span className="text-muted-foreground">
                     {invitation.expiresAt
                       ? new Date(invitation.expiresAt).toLocaleString()
-                      : "—"}
+                      : "-"}
                   </span>
                 </div>
               </div>

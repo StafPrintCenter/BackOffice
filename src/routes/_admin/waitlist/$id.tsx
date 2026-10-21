@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_admin/waitlist/$id")({
 });
 
 function formatDate(dateStr?: string | null): string {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
 }
 

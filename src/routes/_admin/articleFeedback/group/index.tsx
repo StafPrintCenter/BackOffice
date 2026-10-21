@@ -20,7 +20,7 @@ function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("fr-FR");
 }
 
-// DataTable exige un champ id: string — articleKey en tient lieu ici (identifiant
+// DataTable exige un champ id: string - articleKey en tient lieu ici (identifiant
 // naturel de la ressource), le type de données réel reste inchangé.
 type FeedbackGroupRow = APIAdminArticleFeedbackGroup & { id: string };
 

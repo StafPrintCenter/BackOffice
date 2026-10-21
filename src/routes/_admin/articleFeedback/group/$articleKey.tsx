@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_admin/articleFeedback/group/$articleKey"
 });
 
 function formatDate(dateStr?: string | null): string {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
 }
 
@@ -262,7 +262,7 @@ function ArticleFeedbackGroupDetail() {
                     <span className="text-xs font-medium text-muted-foreground">Ratio (+/-)</span>
                   </div>
                   <span className="text-lg font-bold">
-                    {group.upDownRatio != null ? group.upDownRatio : "—"}
+                    {group.upDownRatio != null ? group.upDownRatio : "-"}
                   </span>
                 </div>
 

@@ -19,7 +19,7 @@ function buildFormData(payload: Record<string, unknown>): FormData {
 
 /* ---- Création ----
    ⚠️ URL supposée déplacée vers /admin/trainings/modules/{moduleId}/lessons/create
-   par cohérence avec le nouveau préfixe des modules — non confirmée. */
+   par cohérence avec le nouveau préfixe des modules - non confirmée. */
 
 async function createLesson(moduleId: string, payload: AdminLessonPayload): Promise<APIAdminLesson> {
   const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}/lessons/create`, {
@@ -45,7 +45,7 @@ export function useCreateAdminLesson() {
 }
 
 /* ---- Détail ----
-   ⚠️ URL non confirmée par curl (seul le JSON de réponse a été fourni) — supposée
+   ⚠️ URL non confirmée par curl (seul le JSON de réponse a été fourni) - supposée
    /admin/trainings/lessons/{id} par cohérence avec le déplacement des modules.
    Réponse plate (pas de double "data" imbriqué comme pour les modules) :
    { training, module, data: lesson } */
@@ -82,7 +82,7 @@ export function useAdminLessonDetail(lessonId: string | undefined) {
 }
 
 /* ---- Update / delete / publish ----
-   ⚠️ URL supposée déplacée vers /admin/trainings/lessons/{id} — non confirmée. */
+   ⚠️ URL supposée déplacée vers /admin/trainings/lessons/{id} - non confirmée. */
 
 async function updateLesson(lessonId: string, payload: AdminLessonPayload): Promise<APIAdminLesson> {
   const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}`, {

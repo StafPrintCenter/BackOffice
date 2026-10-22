@@ -23,7 +23,7 @@ function NotificationDetail() {
 
   const back = (
     <Button
-      variant="ghost"
+      variant="outline"
       size="sm"
       className="group -ml-2 text-muted-foreground hover:text-foreground transition-colors"
       onClick={() => navigate({ to: "/notifications" })}

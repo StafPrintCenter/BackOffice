@@ -53,7 +53,7 @@ function NotificationsPage() {
 
   return (
     <>
-      <div className="max-w-4xl pb-16 space-y-6">
+      <div className="mx-auto max-w-4xl pb-16 space-y-6">
         {/* En-tête de la page */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-5">
           <div>

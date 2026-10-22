@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PreferenceCard } from "@/components/pages/notifications";
+import { PreferenceCard, CleanupSettingsCard } from "@/components/pages/notifications";
 import { useNotificationPreferences } from "@/stores/useNotificationsStore";
 
 export const Route = createFileRoute("/_admin/notifications/preferences")({
@@ -44,7 +44,13 @@ function PreferencesPage() {
           {preferences.map((p) => (
             <PreferenceCard key={p.category} preference={p} />
           ))}
+
+          <div className="mt-6 max-w-4xl">
+            <CleanupSettingsCard />
+          </div>
         </div>
+
+
       )}
     </>
   );

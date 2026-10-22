@@ -162,7 +162,7 @@ export function useDeleteNotification() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const response = await adminFetch(`/api/notifications/manage/delete/${id}`, { method: "DELETE" });
+      const response = await adminFetch(`/api/notifications/manage/${id}/delete`, { method: "DELETE" });
       await ensureOk(response, "Impossible de supprimer la notification.");
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }),

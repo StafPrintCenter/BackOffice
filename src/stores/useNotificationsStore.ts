@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
 import type {
   APINotificationDetail, APINotificationListItem, APINotificationPreference,
-  APINotificationsMeta, DeliveryMode, NotificationCategory, NotificationAction
+  APINotificationsMeta, DeliveryMode, NotificationCategory, NotificationAction, APICleanupSettings
 } from "@/data/notifications";
 
 async function ensureOk(response: Response, fallback: string): Promise<void> {
@@ -155,5 +155,68 @@ export function useUpdateActionPreference() {
       await ensureOk(response, "Impossible d'enregistrer la préférence.");
       return ((await response.json()) as { message?: string }).message ?? "Préférence mise à jour.";
     },
+  });
+}
+
+export function useDeleteNotification() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await adminFetch(`/api/notifications/manage/delete/${id}`, { method: "DELETE" });
+      await ensureOk(response, "Impossible de supprimer la notification.");
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }),
+  });
+}
+
+export type BulkDeleteParams =
+  | { scope: "selected"; ids: string[] }
+  | { scope: "all"; category?: NotificationCategory | ""; readOnly?: boolean };
+
+export function useBulkDeleteNotifications() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (params: BulkDeleteParams) => {
+      const qp = new URLSearchParams({ scope: params.scope });
+      if (params.scope === "selected") {
+        params.ids.forEach((id) => qp.append("ids[]", id));
+      } else {
+        if (params.category) qp.append("category", params.category);
+        if (params.readOnly) qp.append("readOnly", "1");
+      }
+      const response = await adminFetch(`/api/notifications/manage/delete?${qp.toString()}`, { method: "DELETE" });
+      await ensureOk(response, "Impossible de supprimer les notifications.");
+      const json = (await response.json()) as { message?: string; data?: { deleted: number } };
+      return { message: json.message ?? "Notifications supprimées.", deleted: json.data?.deleted ?? 0 };
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }),
+  });
+}
+
+export function useCleanupSettings() {
+  const q = useQuery({
+    queryKey: ["notification-cleanup"],
+    queryFn: async () => {
+      const response = await adminFetch(`/api/notifications/settings/cleanup`);
+      await ensureOk(response, "Erreur lors du chargement des réglages de nettoyage.");
+      return ((await response.json()) as { data: APICleanupSettings }).data;
+    },
+  });
+  return { settings: q.data ?? null, isLoading: q.isLoading, isError: q.isError };
+}
+
+export function useUpdateCleanupSettings() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (body: { enabled: boolean; days: number; includeUnread: boolean }) => {
+      const response = await adminFetch(`/api/notifications/settings/cleanup`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      await ensureOk(response, "Impossible d'enregistrer les réglages.");
+      return ((await response.json()) as { message?: string }).message ?? "Réglages enregistrés.";
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["notification-cleanup"] }),
   });
 }

@@ -1,8 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ExternalLink, Loader2, Clock, CheckCircle2, ShieldAlert } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, ExternalLink, Loader2, Clock, CheckCircle2, ShieldAlert, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_META, formatNotificationDate } from "@/data/notifications";
-import { useNotificationDetail } from "@/stores/useNotificationsStore";
+import { useNotificationDetail, useDeleteNotification } from "@/stores/useNotificationsStore";
+import { ConfirmDelete } from "@/components/site/AdminBits";
 
 export const Route = createFileRoute("/_admin/notifications/$id")({
   head: () => ({
@@ -15,18 +18,19 @@ function NotificationDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const { notification: n, isLoading } = useNotificationDetail(id);
+  const remove = useDeleteNotification();
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const back = (
+  <div className="mb-6 flex items-center justify-between gap-3">
+    {back}
     <Button
-      variant="ghost"
-      size="sm"
-      className="group -ml-2 text-muted-foreground hover:text-foreground transition-colors"
-      onClick={() => navigate({ to: "/notifications" })}
+      variant="outline" size="sm"
+      className="text-destructive hover:bg-destructive/10"
+      onClick={() => setConfirmOpen(true)}
     >
-      <ArrowLeft className="mr-1.5 h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-      Retour aux notifications
+      <Trash2 className="mr-1 h-4 w-4" /> Supprimer
     </Button>
-  );
+  </div>
 
   if (isLoading) {
     return (
@@ -155,6 +159,18 @@ function NotificationDetail() {
             </dl>
           </div>
         )}
+
+        <ConfirmDelete
+          open={confirmOpen}
+          onOpenChange={setConfirmOpen}
+          onConfirm={() =>
+            remove.mutate(n.id, {
+              onSuccess: () => { toast.success("Notification supprimée"); navigate({ to: "/notifications" }); },
+              onError: (e) => toast.error(e.message),
+            })
+          }
+          title="Supprimer cette notification ?"
+        />
       </div>
     </>
   );

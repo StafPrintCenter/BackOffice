@@ -126,6 +126,17 @@ export type APINotificationActionPreference = {
   enabled: boolean;
 };
 
+export type APICleanupSettings = {
+  enabled: boolean;
+  days: number;
+  includeUnread: boolean;
+  isDefault: boolean;
+  defaultDays?: number;
+  presets?: number[];
+  minDays?: number;
+  maxDays?: number;
+};
+
 export function formatNotificationDate(iso: string): string {
   return new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
 }

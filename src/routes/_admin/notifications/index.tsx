@@ -11,6 +11,7 @@ import {
   type NotificationCategory,
 } from "@/data/notifications";
 import { useMarkAllAsRead, useNotificationsList, useBulkDeleteNotifications } from "@/stores/useNotificationsStore";
+import { CleanupSettingsDialog } from "@/components/pages/notifications";
 
 export const Route = createFileRoute("/_admin/notifications/")({
   head: () => ({
@@ -62,14 +63,6 @@ function NotificationsPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button
-            variant="outline" size="sm"
-            className="text-destructive hover:bg-destructive/10"
-            disabled={(meta?.total ?? 0) === 0}
-            onClick={() => setDeleteAllOpen(true)}
-          >
-            <Trash2 className="mr-1 h-4 w-4" /> Tout supprimer
-          </Button>
 
           <Button
             variant="outline"
@@ -84,11 +77,23 @@ function NotificationsPage() {
           >
             <CheckCheck className="mr-1 h-4 w-4" /> Tout marquer comme lu
           </Button>
+
+          <Button
+            variant="outline" size="sm"
+            className="text-destructive hover:bg-destructive/10"
+            disabled={(meta?.total ?? 0) === 0}
+            onClick={() => setDeleteAllOpen(true)}
+          >
+            <Trash2 className="mr-1 h-4 w-4" /> Tout supprimer
+          </Button>
+
           <Button asChild size="sm" variant="outline">
             <Link to="/notifications/preferences">
               <Settings2 className="mr-1 h-4 w-4" /> Préférences
             </Link>
           </Button>
+
+          <CleanupSettingsDialog />
         </div>
       </div>
 

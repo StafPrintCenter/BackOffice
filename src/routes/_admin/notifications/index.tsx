@@ -1,15 +1,16 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { CheckCheck, ChevronLeft, ChevronRight, Loader2, Settings2 } from "lucide-react";
+import { CheckCheck, ChevronLeft, ChevronRight, Loader2, Settings2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { NotificationItem } from "@/components/pages/notifications";
+import { NotificationItem, DeleteAllDialog } from "@/components/pages/notifications";
+import { ConfirmDelete } from "@/components/site/AdminBits";
 import {
   CATEGORY_META,
   NOTIFICATION_CATEGORIES,
   type NotificationCategory,
 } from "@/data/notifications";
-import { useMarkAllAsRead, useNotificationsList } from "@/stores/useNotificationsStore";
+import { useMarkAllAsRead, useNotificationsList, useBulkDeleteNotifications } from "@/stores/useNotificationsStore";
 
 export const Route = createFileRoute("/_admin/notifications/")({
   head: () => ({
@@ -38,6 +39,17 @@ function NotificationsPage() {
 
   const unread = meta?.unreadTotal ?? 0;
 
+  const [selected, setSelected] = useState<string[]>([]);
+  const [confirmSelected, setConfirmSelected] = useState(false);
+  const [deleteAllOpen, setDeleteAllOpen] = useState(false);
+  const bulk = useBulkDeleteNotifications();
+
+  const toggleSelect = (id: string) =>
+    setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  const allVisibleSelected = filtered.length > 0 && filtered.every((n) => selected.includes(n.id));
+  const toggleAllVisible = () =>
+    setSelected(allVisibleSelected ? [] : filtered.map((n) => n.id));
+
   return (
     <>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
@@ -50,6 +62,15 @@ function NotificationsPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="outline" size="sm"
+            className="text-destructive hover:bg-destructive/10"
+            disabled={(meta?.total ?? 0) === 0}
+            onClick={() => setDeleteAllOpen(true)}
+          >
+            <Trash2 className="mr-1 h-4 w-4" /> Tout supprimer
+          </Button>
+
           <Button
             variant="outline"
             size="sm"
@@ -84,6 +105,7 @@ function NotificationsPage() {
             {c === "all" ? "Toutes" : CATEGORY_META[c].label}
           </button>
         ))}
+
         <label className="ml-auto flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
           <input
             type="checkbox"
@@ -92,7 +114,22 @@ function NotificationsPage() {
           />
           Non lues uniquement
         </label>
+
+        {filtered.length > 0 && (
+          <div className="flex max-w-3xl items-center gap-3 text-xs">
+            <label className="flex cursor-pointer items-center gap-2 text-muted-foreground">
+              <input type="checkbox" checked={allVisibleSelected} onChange={toggleAllVisible} />
+              Tout sélectionner (page)
+            </label>
+            {selected.length > 0 && (
+              <Button size="sm" variant="destructive" onClick={() => setConfirmSelected(true)}>
+                <Trash2 className="mr-1 h-3.5 w-3.5" /> Supprimer la sélection ({selected.length})
+              </Button>
+            )}
+          </div>
+        )}
       </div>
+
 
       <div className="max-w-3xl space-y-2">
         {isLoading ? (
@@ -108,6 +145,9 @@ function NotificationsPage() {
             <NotificationItem
               key={n.id}
               notification={n}
+              selectable
+              selected={selected.includes(n.id)}
+              onToggleSelect={toggleSelect}
               onClick={() => navigate({ to: "/notifications/$id", params: { id: n.id } })}
             />
           ))
@@ -137,6 +177,28 @@ function NotificationsPage() {
           </div>
         )}
       </div>
+
+      <ConfirmDelete
+        open={confirmSelected}
+        onOpenChange={setConfirmSelected}
+        onConfirm={() =>
+          bulk.mutate(
+            { scope: "selected", ids: selected },
+            {
+              onSuccess: ({ message, deleted }) => { toast.success(message, { description: `${deleted} supprimée(s)` }); setSelected([]); setConfirmSelected(false); },
+              onError: (e) => toast.error(e.message),
+            },
+          )
+        }
+        title={`Supprimer ${selected.length} notification(s) ?`}
+      />
+
+      <DeleteAllDialog
+        open={deleteAllOpen}
+        onOpenChange={setDeleteAllOpen}
+        defaultCategory={category === "all" ? "" : category}
+        onDone={() => { setSelected([]); setPage(1); }}
+      />
     </>
   );
 }

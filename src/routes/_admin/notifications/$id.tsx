@@ -21,16 +21,17 @@ function NotificationDetail() {
   const remove = useDeleteNotification();
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  <div className="mb-6 flex items-center justify-between gap-3">
-    {back}
+  const back = (
     <Button
-      variant="outline" size="sm"
-      className="text-destructive hover:bg-destructive/10"
-      onClick={() => setConfirmOpen(true)}
+      variant="ghost"
+      size="sm"
+      className="group -ml-2 text-muted-foreground hover:text-foreground transition-colors"
+      onClick={() => navigate({ to: "/notifications" })}
     >
-      <Trash2 className="mr-1 h-4 w-4" /> Supprimer
+      <ArrowLeft className="mr-1.5 h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+      Retour aux notifications
     </Button>
-  </div>
+  );
 
   if (isLoading) {
     return (
@@ -69,8 +70,18 @@ function NotificationDetail() {
   return (
     <>
       <div className="max-w-3xl mx-auto pb-12 space-y-6">
-        {/* Navigation de retour */}
-        <div>{back}</div>
+        {/* En-tête avec bouton retour et suppression */}
+        <div className="flex items-center justify-between gap-3">
+          {back}
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-destructive hover:bg-destructive/10"
+            onClick={() => setConfirmOpen(true)}
+          >
+            <Trash2 className="mr-1 h-4 w-4" /> Supprimer
+          </Button>
+        </div>
 
         {/* Carte principale */}
         <div className="overflow-hidden rounded-2xl border bg-card shadow-sm transition-all">

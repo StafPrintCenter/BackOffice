@@ -6,7 +6,7 @@ import type { TrainingProgramModule } from "@/data/trainings";
 
 interface Props { value: TrainingProgramModule[]; onChange: (v: TrainingProgramModule[]) => void }
 
-export function TrainingProgramField({ value, onChange }: Props) {
+export function TrainingDetailProgramField({ value, onChange }: Props) {
   const setModule = (mi: number, patch: Partial<TrainingProgramModule>) =>
     onChange(value.map((m, i) => (i === mi ? { ...m, ...patch } : m)));
 

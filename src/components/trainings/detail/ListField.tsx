@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 
 interface Props { label: string; values: string[]; onChange: (v: string[]) => void }
 
-export function TrainingListField({ label, values, onChange }: Props) {
+export function TrainingDetailListField({ label, values, onChange }: Props) {
   return (
     <div>
       <Label>{label}</Label>

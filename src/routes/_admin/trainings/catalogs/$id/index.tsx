@@ -97,7 +97,7 @@ function TrainingDetail() {
               <TrainingSessionsCard trainingId={training.id} color={mainColor} />
               <TrainingStudentsSection trainingId={training.id} color={mainColor} />
             </div>
-            <TrainingSidebar training={training} mainColor={mainColor} />
+            <TrainingDetailSidebar training={training} mainColor={mainColor} />
           </div>
         </div>
       )}

@@ -14,7 +14,7 @@ export function SessionCard({ session: s, hideTraining }: Props) {
     <Link
       to="/trainings/sessions/$id"
       params={{ id: s.id }}
-      className="block space-y-2 rounded-lg border p-4 text-sm transition hover:bg-muted/40"
+      className="block space-y-2 rounded-lg border p-4 text-sm transition bg-card hover:bg-card/80 hover:border-primary"
     >
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
@@ -47,13 +47,14 @@ export function SessionCard({ session: s, hideTraining }: Props) {
         <span className="inline-flex items-center gap-1 text-emerald-600">
           <CheckCircle2 className="h-3 w-3" /> {s.confirmedCount}
         </span>
-        <span className="inline-flex items-center gap-1 text-rose-600">
+        <span className="inline-flex items-center gap-1 text-destructive">
           <XCircle className="h-3 w-3" /> {s.declinedCount}
         </span>
       </div>
 
       {s.status === "suspended" && s.suspensionReason && (
-        <p className="rounded-md bg-rose-500/5 px-2 py-1 text-xs text-rose-600">Motif : {s.suspensionReason}</p>
+        <p className="rounded-md bg-rose-500/5 px-2 py-1 text-xs text-destructive">
+          Motif : {s.suspensionReason}</p>
       )}
     </Link>
   );

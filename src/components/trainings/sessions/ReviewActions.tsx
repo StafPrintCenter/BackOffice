@@ -30,9 +30,21 @@ export function ReviewActions({ requestId, sessionTitle }: { requestId: string; 
   return (
     <>
       <div className="flex gap-2">
-        <Button size="sm" onClick={() => setMode("validated")}><Check className="mr-1 h-3.5 w-3.5" /> Valider</Button>
-        <Button size="sm" variant="outline" className="border-destructive/30 text-destructive hover:bg-destructive/10" onClick={() => setMode("rejected")}>
-          <X className="mr-1 h-3.5 w-3.5" /> Rejeter
+        <Button
+          size="sm"
+          onClick={() => setMode("validated")}>
+          <Check className="mr-1 h-3.5 w-3.5" />
+          Valider
+        </Button>
+
+        <Button
+          size="sm"
+          variant="outline"
+          className="border-destructive/30 text-destructive hover:bg-destructive/10"
+          onClick={() => setMode("rejected")}
+        >
+          <X className="mr-1 h-3.5 w-3.5" />
+          Rejeter
         </Button>
       </div>
 

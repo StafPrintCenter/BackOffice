@@ -3,8 +3,7 @@ import { PageHeader } from "@/components/site";
 import { GraduationCap, ClipboardClock, UserRoundPlus, Wallet } from "lucide-react";
 import { SITE } from "@/data/site";
 import { useReviewRequests } from "@/stores/useTrainingSessionsStore";
-import { SessionsTab } from "@/components/trainings/sessions/SessionsTab";
-import { ReviewRequestsTab } from "@/components/trainings/sessions/ReviewRequestsTab";
+import { SessionsTab, ReviewRequestsTab } from "@/components/trainings/sessions";
 
 type Search = { tab?: "sessions" | "reviews"; trainingId?: string };
 

@@ -12,7 +12,6 @@ import { SITE } from "@/data/site";
 import { toPayload } from "@/components/trainings/detail/training-form";
 import { TrainingDetailHero, TrainingDetailInstructorsSection, TrainingDetailEditForm, TrainingDetailSidebar } from "@/components/trainings/detail";
 import { TrainingObjectivesCard, TrainingProgramCard } from "@/components/trainings/detail/TrainingContentCards";
-import { TrainingSidebar } from "@/components/trainings/detail/TrainingSidebar";
 import { TrainingSessionsCard } from "@/components/trainings/detail/TrainingSessionsCard";
 import { TrainingStudentsSection } from "@/components/trainings/enrollments/TrainingStudentsSection";
 

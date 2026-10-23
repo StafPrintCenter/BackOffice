@@ -81,6 +81,7 @@ import { Route as AdminTrainingsPaymentsIdRouteImport } from './routes/_admin/tr
 import { Route as AdminTrainingsRegistrationsIndexRouteImport } from './routes/_admin/trainings/registrations/index'
 import { Route as AdminTrainingsRegistrationsIdRouteImport } from './routes/_admin/trainings/registrations/$id'
 import { Route as AdminTrainingsReviewsIndexRouteImport } from './routes/_admin/trainings/reviews/index'
+import { Route as AdminTrainingsSessionsIndexRouteImport } from './routes/_admin/trainings/sessions/index'
 import { Route as AdminTrainingsCatalogsIdIndexRouteImport } from './routes/_admin/trainings/catalogs/$id/index'
 import { Route as AdminTrainingsCatalogsIdManageRouteImport } from './routes/_admin/trainings/catalogs/$id/manage'
 
@@ -463,6 +464,12 @@ const AdminTrainingsReviewsIndexRoute =
     path: '/trainings/reviews/',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminTrainingsSessionsIndexRoute =
+  AdminTrainingsSessionsIndexRouteImport.update({
+    id: '/trainings/sessions/',
+    path: '/trainings/sessions/',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminTrainingsCatalogsIdIndexRoute =
   AdminTrainingsCatalogsIdIndexRouteImport.update({
     id: '/trainings/catalogs/$id/',
@@ -547,6 +554,7 @@ export interface FileRoutesByFullPath {
   '/trainings/payments/': typeof AdminTrainingsPaymentsIndexRoute
   '/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
   '/trainings/reviews/': typeof AdminTrainingsReviewsIndexRoute
+  '/trainings/sessions/': typeof AdminTrainingsSessionsIndexRoute
   '/trainings/catalogs/$id/manage': typeof AdminTrainingsCatalogsIdManageRoute
   '/trainings/catalogs/$id/': typeof AdminTrainingsCatalogsIdIndexRoute
 }
@@ -621,6 +629,7 @@ export interface FileRoutesByTo {
   '/trainings/payments': typeof AdminTrainingsPaymentsIndexRoute
   '/trainings/registrations': typeof AdminTrainingsRegistrationsIndexRoute
   '/trainings/reviews': typeof AdminTrainingsReviewsIndexRoute
+  '/trainings/sessions': typeof AdminTrainingsSessionsIndexRoute
   '/trainings/catalogs/$id/manage': typeof AdminTrainingsCatalogsIdManageRoute
   '/trainings/catalogs/$id': typeof AdminTrainingsCatalogsIdIndexRoute
 }
@@ -698,6 +707,7 @@ export interface FileRoutesById {
   '/_admin/trainings/payments/': typeof AdminTrainingsPaymentsIndexRoute
   '/_admin/trainings/registrations/': typeof AdminTrainingsRegistrationsIndexRoute
   '/_admin/trainings/reviews/': typeof AdminTrainingsReviewsIndexRoute
+  '/_admin/trainings/sessions/': typeof AdminTrainingsSessionsIndexRoute
   '/_admin/trainings/catalogs/$id/manage': typeof AdminTrainingsCatalogsIdManageRoute
   '/_admin/trainings/catalogs/$id/': typeof AdminTrainingsCatalogsIdIndexRoute
 }
@@ -774,6 +784,7 @@ export interface FileRouteTypes {
     | '/trainings/payments/'
     | '/trainings/registrations/'
     | '/trainings/reviews/'
+    | '/trainings/sessions/'
     | '/trainings/catalogs/$id/manage'
     | '/trainings/catalogs/$id/'
   fileRoutesByTo: FileRoutesByTo
@@ -848,6 +859,7 @@ export interface FileRouteTypes {
     | '/trainings/payments'
     | '/trainings/registrations'
     | '/trainings/reviews'
+    | '/trainings/sessions'
     | '/trainings/catalogs/$id/manage'
     | '/trainings/catalogs/$id'
   id:
@@ -924,6 +936,7 @@ export interface FileRouteTypes {
     | '/_admin/trainings/payments/'
     | '/_admin/trainings/registrations/'
     | '/_admin/trainings/reviews/'
+    | '/_admin/trainings/sessions/'
     | '/_admin/trainings/catalogs/$id/manage'
     | '/_admin/trainings/catalogs/$id/'
   fileRoutesById: FileRoutesById
@@ -1440,6 +1453,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTrainingsReviewsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/trainings/sessions/': {
+      id: '/_admin/trainings/sessions/'
+      path: '/trainings/sessions'
+      fullPath: '/trainings/sessions/'
+      preLoaderRoute: typeof AdminTrainingsSessionsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/trainings/catalogs/$id/': {
       id: '/_admin/trainings/catalogs/$id/'
       path: '/trainings/catalogs/$id'
@@ -1525,6 +1545,7 @@ interface AdminRouteChildren {
   AdminTrainingsPaymentsIndexRoute: typeof AdminTrainingsPaymentsIndexRoute
   AdminTrainingsRegistrationsIndexRoute: typeof AdminTrainingsRegistrationsIndexRoute
   AdminTrainingsReviewsIndexRoute: typeof AdminTrainingsReviewsIndexRoute
+  AdminTrainingsSessionsIndexRoute: typeof AdminTrainingsSessionsIndexRoute
   AdminTrainingsCatalogsIdManageRoute: typeof AdminTrainingsCatalogsIdManageRoute
   AdminTrainingsCatalogsIdIndexRoute: typeof AdminTrainingsCatalogsIdIndexRoute
 }
@@ -1598,6 +1619,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminTrainingsPaymentsIndexRoute: AdminTrainingsPaymentsIndexRoute,
   AdminTrainingsRegistrationsIndexRoute: AdminTrainingsRegistrationsIndexRoute,
   AdminTrainingsReviewsIndexRoute: AdminTrainingsReviewsIndexRoute,
+  AdminTrainingsSessionsIndexRoute: AdminTrainingsSessionsIndexRoute,
   AdminTrainingsCatalogsIdManageRoute: AdminTrainingsCatalogsIdManageRoute,
   AdminTrainingsCatalogsIdIndexRoute: AdminTrainingsCatalogsIdIndexRoute,
 }

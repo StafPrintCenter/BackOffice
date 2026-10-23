@@ -1,6 +1,6 @@
 import { BookOpen, Target } from "lucide-react";
 import type { TrainingProgramModule } from "@/data/trainings";
-import type { TrainingDetailItem } from "./training-form";
+import type { TrainingDetailItem } from "./form";
 
 export function TrainingDetailObjectivesCard({ training, mainColor }: { training: TrainingDetailItem; mainColor: string }) {
   return (

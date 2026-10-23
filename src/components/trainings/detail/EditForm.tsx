@@ -16,7 +16,7 @@ function Field({ label, className, children }: { label: string; className?: stri
   return <div className={className}><Label>{label}</Label>{children}</div>;
 }
 
-export function TrainingEditForm({ form, setForm, themes }: Props) {
+export function TrainingDetailEditForm({ form, setForm, themes }: Props) {
   const set = <K extends keyof AdminTrainingPayload>(k: K, v: AdminTrainingPayload[K]) => setForm({ ...form, [k]: v });
 
   return (

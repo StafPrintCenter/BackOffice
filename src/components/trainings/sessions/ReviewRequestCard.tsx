@@ -1,0 +1,39 @@
+import { Link } from "@tanstack/react-router";
+import { User } from "lucide-react";
+import { formatSessionDate, type APIReviewRequest } from "@/data/trainingSessions";
+import { ReviewStatusBadge } from "./SessionBadges";
+import { ReviewActions } from "./ReviewActions";
+
+export function ReviewRequestCard({ request: r }: { request: APIReviewRequest }) {
+  return (
+    <div className="space-y-3 rounded-lg border p-4 text-sm">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div className="min-w-0">
+          <Link to="/trainings/sessions/$id" params={{ id: r.session.id }} className="font-medium text-primary hover:underline">
+            {r.session.title}
+          </Link>
+          <div className="text-xs text-muted-foreground">{r.session.trainingTitle} · {formatSessionDate(r.session.startsAt)}</div>
+        </div>
+        <ReviewStatusBadge status={r.status} />
+      </div>
+
+      {r.session.suspensionReason && (
+        <p className="rounded-md bg-rose-500/5 px-2 py-1 text-xs text-rose-600">Suspendue : {r.session.suspensionReason}</p>
+      )}
+
+      <div className="rounded-md bg-muted/40 p-3">
+        <div className="mb-1 inline-flex items-center gap-1 text-xs text-muted-foreground"><User className="h-3 w-3" /> {r.instructorName} · {formatSessionDate(r.createdAt)}</div>
+        <p className="whitespace-pre-line text-sm">{r.message}</p>
+      </div>
+
+      {r.status === "pending" ? (
+        <ReviewActions requestId={r.id} sessionTitle={r.session.title} />
+      ) : (
+        <div className="text-xs text-muted-foreground">
+          Traitée par {r.reviewedBy ?? "-"} le {formatSessionDate(r.reviewedAt)}
+          {r.rejectionReason && <span className="block text-rose-600">Motif du rejet : {r.rejectionReason}</span>}
+        </div>
+      )}
+    </div>
+  );
+}

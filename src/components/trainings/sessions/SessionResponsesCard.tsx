@@ -8,7 +8,13 @@ export function SessionResponsesCard({ session: s }: { session: APISessionDetail
       <div className="mb-3 flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-semibold"><Users className="h-4 w-4" /> Réponses des apprenants</h2>
         <span className="text-xs text-muted-foreground">
-          {s.invitedCount ?? "-"} invité(s) · <span className="text-emerald-600">{s.confirmedCount} ✓</span> · <span className="text--destructive">{s.declinedCount} ✗</span>
+          {s.invitedCount ?? "-"} invité(s)
+          · <span className="text-emerald-600">
+            {s.confirmedCount} ✓
+          </span>
+
+          · <span className="text--destructive">
+            {s.declinedCount} ✗</span>
         </span>
       </div>
       {s.responses.length === 0 ? (

@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { User } from "lucide-react";
 import { formatSessionDate, type APIReviewRequest } from "@/data/trainingSessions";
-import { ReviewStatusBadge } from "./SessionBadges";
-import { ReviewActions } from "./ReviewActions";
+import { ReviewStatusBadge, ReviewActions } from "./";
 
 export function ReviewRequestCard({ request: r }: { request: APIReviewRequest }) {
   return (
@@ -31,8 +30,13 @@ export function ReviewRequestCard({ request: r }: { request: APIReviewRequest })
       )}
 
       <div className="rounded-md bg-muted/40 p-3">
-        <div className="mb-1 inline-flex items-center gap-1 text-xs text-muted-foreground"><User className="h-3 w-3" /> {r.instructorName} · {formatSessionDate(r.createdAt)}</div>
-        <p className="whitespace-pre-line text-sm">{r.message}</p>
+        <div className="mb-1 inline-flex items-center gap-1 text-xs text-muted-foreground">
+          <User className="h-3 w-3" />
+          {r.instructorName} · {formatSessionDate(r.createdAt)}
+        </div>
+        <p className="whitespace-pre-line text-sm">
+          {r.message}
+        </p>
       </div>
 
       {r.status === "pending" ? (

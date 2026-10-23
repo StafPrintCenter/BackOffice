@@ -1,4 +1,4 @@
-export { TrainingObjectivesCard, TrainingProgramCard } from "./TrainingContentCards";
+export { TrainingDetailObjectivesCard, TrainingDetailProgramCard } from "./ContentCards";
 export { TrainingDetailEditForm } from "./EditForm";
 export { TrainingDetailHero } from "./Hero";
 export { TrainingDetailInstructorsSection } from "./InstructorsSection";

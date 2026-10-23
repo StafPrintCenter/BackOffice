@@ -17,15 +17,33 @@ export function SessionsTab({ trainingId }: { trainingId?: string }) {
     <>
       <SessionsFilters value={filters} onChange={(v) => { setFilters(v); setPage(1); }} />
       {isLoading ? (
-        <div className="flex items-center justify-center gap-2 py-16 text-sm text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Chargement…</div>
+        <div className="flex items-center justify-center gap-2 py-16 text-sm text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          Chargement…
+        </div>
       ) : isError ? (
-        <p className="text-sm text-destructive">Impossible de charger les sessions.</p>
+        <p className="text-sm text-destructive">
+          Impossible de charger les sessions.
+        </p>
       ) : sessions.length === 0 ? (
-        <p className="rounded-xl border border-dashed py-16 text-center text-sm text-muted-foreground">Aucune session ne correspond.</p>
+        <p className="rounded-xl border border-dashed py-16 text-center text-sm text-muted-foreground">
+          Aucune session ne correspond.
+        </p>
       ) : (
-        <div className="max-w-4xl space-y-3">{sessions.map((s) => <SessionCard key={s.id} session={s} />)}</div>
-      )}
-      {meta && <Pager page={meta.currentPage} lastPage={meta.lastPage} total={meta.total} onChange={setPage} />}
+        <div className="max-w-4xl space-y-3">
+          {sessions.map((s) => <SessionCard key={s.id} session={s} />)}
+        </div>
+      )
+      }
+
+      {meta &&
+        <Pager
+          page={meta.currentPage}
+          lastPage={meta.lastPage}
+          total={meta.total}
+          onChange={setPage}
+        />
+      }
     </>
   );
 }

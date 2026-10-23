@@ -13,7 +13,7 @@ export function SessionResponsesCard({ session: s }: { session: APISessionDetail
             {s.confirmedCount} ✓
           </span>
 
-          · <span className="text--destructive">
+          · <span className="text-destructive">
             {s.declinedCount} ✗</span>
         </span>
       </div>

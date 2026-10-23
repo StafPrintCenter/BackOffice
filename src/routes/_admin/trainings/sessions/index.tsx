@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { PageHeader } from "@/components/site";
-import { GraduationCap, ClipboardClock, UserRoundPlus, Speech } from "lucide-react";
+import { GraduationCap, ClipboardClock, UserRoundPlus, Wallet } from "lucide-react";
 import { SITE } from "@/data/site";
 import { useReviewRequests } from "@/stores/useTrainingSessionsStore";
 import { SessionsTab } from "@/components/trainings/sessions/SessionsTab";
@@ -52,20 +52,36 @@ function SessionsPage() {
           <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
         </Link>
 
-        <Link to="/trainings/sessions" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Speech className="h-4 w-4" /> Voir sessions
+        <Link to="/trainings/payments" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Wallet className="h-4 w-4" /> Voir les paiements
         </Link>
       </div>
 
       <div className="mb-6 flex gap-1 border-b">
-        <button className={tabClass(tab === "sessions")} onClick={() => go("sessions")}>Sessions</button>
-        <button className={tabClass(tab === "reviews")} onClick={() => go("reviews")}>
+        <button
+          className={tabClass(tab === "sessions")}
+          onClick={() => go("sessions")}
+        >
+          Sessions
+        </button>
+
+        <button
+          className={tabClass(tab === "reviews")}
+          onClick={() => go("reviews")}
+        >
           Demandes d'examen
-          {pending > 0 && <span className="ml-2 rounded-full bg-destructive px-1.5 py-0.5 text-[10px] font-bold text-white">{pending}</span>}
+          {pending > 0 &&
+            <span className="ml-2 rounded-full bg-destructive px-1.5 py-0.5 text-[10px] font-bold text-white">
+              {pending}
+            </span>
+          }
         </button>
       </div>
 
-      {tab === "reviews" ? <ReviewRequestsTab trainingId={trainingId} /> : <SessionsTab trainingId={trainingId} />}
+      {
+        tab === "reviews"
+          ? <ReviewRequestsTab trainingId={trainingId} />
+          : <SessionsTab trainingId={trainingId} />}
     </>
   );
 }

@@ -31,8 +31,8 @@ function SessionsPage() {
   return (
     <>
       <PageHeader
-        title="Paiements"
-        description="Tous les paiements des formations."
+        title="Sessions"
+        description="Sessions de toutes les formations."
       />
 
       {/* Raccourci */}
@@ -54,12 +54,10 @@ function SessionsPage() {
         </Link>
       </div>
 
-      <div className="mb-6">
-        <h1 className="font-display text-2xl font-bold">Sessions</h1>
-        <p className="text-sm text-muted-foreground">
-          Sessions de toutes les formations{trainingId && " (filtrées sur une formation)"}.
-        </p>
-      </div>
+      <p className="text-sm text-muted-foreground">
+        Sessions de toutes les formations{trainingId && " (filtrées sur une formation)"}.
+      </p>
+
 
       <div className="mb-6 flex gap-1 border-b">
         <button className={tabClass(tab === "sessions")} onClick={() => go("sessions")}>Sessions</button>

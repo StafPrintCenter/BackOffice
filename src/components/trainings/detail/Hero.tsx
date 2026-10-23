@@ -1,6 +1,6 @@
 import { Clock, MapPin, Signal } from "lucide-react";
 import { getTrainingLevelBadgeClass, getTrainingStatusBadgeClass, getTrainingStatusLabel } from "@/data/trainings";
-import type { TrainingDetailItem } from "./training-form";
+import type { TrainingDetailItem } from "./form";
 
 interface Props { training: TrainingDetailItem; themeColorClass: string; mainColor: string }
 

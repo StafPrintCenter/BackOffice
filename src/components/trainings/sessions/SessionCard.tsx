@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CalendarClock, CheckCircle2, Clock, Flag, User, XCircle } from "lucide-react";
+import { CalendarClock, UserRoundPlus, Clock, Flag, User, UserRoundMinus } from "lucide-react";
 import { formatDuration, formatSessionRange, type APISession } from "@/data/trainingSessions";
 import { ModalityBadge, SessionStatusBadge } from "./SessionBadges";
 
@@ -45,10 +45,10 @@ export function SessionCard({ session: s, hideTraining }: Props) {
           <User className="h-3 w-3" /> {s.instructorName}
         </span>
         <span className="inline-flex items-center gap-1 text-emerald-600">
-          <CheckCircle2 className="h-3 w-3" /> {s.confirmedCount}
+          <UserRoundPlus className="h-3 w-3" /> {s.confirmedCount}
         </span>
         <span className="inline-flex items-center gap-1 text-destructive">
-          <XCircle className="h-3 w-3" /> {s.declinedCount}
+          <UserRoundMinus className="h-3 w-3" /> {s.declinedCount}
         </span>
       </div>
 

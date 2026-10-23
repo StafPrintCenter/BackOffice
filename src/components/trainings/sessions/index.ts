@@ -6,4 +6,7 @@ export { ReviewRequestsTab } from "./ReviewRequestsTab";
 export { SessionStatusBadge, ModalityBadge, ReviewStatusBadge } from "./SessionBadges";
 export { SessionCard } from "./SessionCard";
 export { SessionInfoCard } from "./SessionInfoCard";
+export { SessionResponsesCard } from "./SessionResponsesCard";
+export { SessionReviewHistory } from "./SessionReviewHistory";
 export { EMPTY_SESSION_FILTERS, SessionsFilters, type SessionsFiltersValue } from "./SessionsFilters";
+export { SuspendSessionDialog } from "./SuspendSessionDialog";

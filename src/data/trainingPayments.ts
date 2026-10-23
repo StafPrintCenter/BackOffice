@@ -5,7 +5,7 @@ export const PAYMENT_METHODS: PaymentMethod[] = ["cash", "mobile_money", "bank_t
 export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
   cash: "Espèces",
   mobile_money: "Mobile Money",
-  bank_transfer: "Virement bancaire",
+  bank_transfer: "Virement",
   other: "Autre",
 };
 

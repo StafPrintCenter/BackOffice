@@ -11,7 +11,7 @@ import { useTrainingInstructorsList, useAssignAdminTrainingInstructor, useRemove
 import { useAdminInstructorsList } from "@/stores/useInstructorsStore";
 import { TRAINING_INSTRUCTOR_ROLE_LABELS } from "@/data/trainingInstructors";
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";
-import { formatAssignedAt } from "./training-form";
+import { formatAssignedAt } from "./form";
 
 export function TrainingDetailInstructorsSection({ trainingId, mainColor }: { trainingId: string; mainColor: string }) {
   const { assignments, isLoading } = useTrainingInstructorsList(trainingId);

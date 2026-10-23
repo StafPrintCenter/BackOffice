@@ -25,9 +25,21 @@ export function SessionsFilters({ value, onChange }: Props) {
           <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input className="pl-9" placeholder="Rechercher une session…" value={value.query} onChange={(e) => onChange({ ...value, query: e.target.value })} />
         </div>
-        <select className={select} value={value.status} onChange={(e) => onChange({ ...value, status: e.target.value as SessionStatus | "" })}>
+
+        <select
+          className={select} value={value.status} onChange={(e) => onChange({
+            ...value, status: e.target.value as SessionStatus | ""
+
+          })}
+        >
           <option value="">Tous les statuts</option>
-          {(Object.keys(SESSION_STATUS_LABELS) as SessionStatus[]).map((s) => <option key={s} value={s}>{SESSION_STATUS_LABELS[s]}</option>)}
+
+          {(
+            Object.keys(SESSION_STATUS_LABELS) as SessionStatus[]).map((s) =>
+              <option key={s} value={s}>
+                {SESSION_STATUS_LABELS[s]}
+              </option>
+            )}
         </select>
         <select className={select} value={value.modality} onChange={(e) => onChange({ ...value, modality: e.target.value as SessionModality | "" })}>
           <option value="">Toutes modalités</option>

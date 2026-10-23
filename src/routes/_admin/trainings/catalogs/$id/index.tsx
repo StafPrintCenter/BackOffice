@@ -10,9 +10,8 @@ import { sanitizeTrainingPayload } from "@/data/trainings";
 import type { AdminTrainingPayload } from "@/data/trainings";
 import { SITE } from "@/data/site";
 import { toPayload } from "@/components/trainings/detail/training-form";
-import { TrainingDetailHero, TrainingDetailInstructorsSection, TrainingDetailEditForm, TrainingDetailSidebar } from "@/components/trainings/detail";
+import { TrainingDetailHero, TrainingDetailInstructorsSection, TrainingDetailEditForm, TrainingDetailSidebar, TrainingDetailSessionsCard } from "@/components/trainings/detail";
 import { TrainingObjectivesCard, TrainingProgramCard } from "@/components/trainings/detail/TrainingContentCards";
-import { TrainingSessionsCard } from "@/components/trainings/detail/TrainingSessionsCard";
 import { TrainingStudentsSection } from "@/components/trainings/enrollments/TrainingStudentsSection";
 
 export const Route = createFileRoute("/_admin/trainings/catalogs/$id/")({
@@ -94,7 +93,7 @@ function TrainingDetail() {
               <TrainingObjectivesCard training={training} mainColor={mainColor} />
               <TrainingProgramCard training={training} mainColor={mainColor} />
               <TrainingDetailInstructorsSection trainingId={id} mainColor={mainColor} />
-              <TrainingSessionsCard trainingId={training.id} color={mainColor} />
+              <TrainingDetailSessionsCard trainingId={training.id} color={mainColor} />
               <TrainingStudentsSection trainingId={training.id} color={mainColor} />
             </div>
             <TrainingDetailSidebar training={training} mainColor={mainColor} />

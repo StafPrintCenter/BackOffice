@@ -1,4 +1,6 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { PageHeader } from "@/components/site";
+import { GraduationCap, ClipboardClock, UserRoundPlus, Speech } from "lucide-react";
 import { SITE } from "@/data/site";
 import { useReviewRequests } from "@/stores/useTrainingSessionsStore";
 import { SessionsTab } from "@/components/trainings/sessions/SessionsTab";
@@ -28,6 +30,30 @@ function SessionsPage() {
 
   return (
     <>
+      <PageHeader
+        title="Paiements"
+        description="Tous les paiements des formations."
+      />
+
+      {/* Raccourci */}
+      <div className="flex items-center gap-6 mb-4">
+        <Link to="/trainings/catalogs" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <GraduationCap className="h-4 w-4" /> Voir le catalogue des formations
+        </Link>
+
+        <Link to="/trainings/reviews" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <ClipboardClock className="h-4 w-4" /> Voir les soumissions en attente
+        </Link>
+
+        <Link to="/trainings/registrations" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
+        </Link>
+
+        <Link to="/trainings/sessions" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Speech className="h-4 w-4" /> Voir sessions
+        </Link>
+      </div>
+
       <div className="mb-6">
         <h1 className="font-display text-2xl font-bold">Sessions</h1>
         <p className="text-sm text-muted-foreground">

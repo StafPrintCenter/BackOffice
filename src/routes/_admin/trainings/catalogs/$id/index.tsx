@@ -11,9 +11,8 @@ import type { AdminTrainingPayload } from "@/data/trainings";
 import { SITE } from "@/data/site";
 import { toPayload } from "@/components/trainings/detail/training-form";
 import { TrainingEditForm } from "@/components/trainings/detail/TrainingEditForm";
-import { TrainingDetailHero } from "@/components/trainings/detail";
+import { TrainingDetailHero, TrainingDetailInstructorsSection } from "@/components/trainings/detail";
 import { TrainingObjectivesCard, TrainingProgramCard } from "@/components/trainings/detail/TrainingContentCards";
-import { TrainingInstructorsSection } from "@/components/trainings/detail/TrainingInstructorsSection";
 import { TrainingSidebar } from "@/components/trainings/detail/TrainingSidebar";
 import { TrainingSessionsCard } from "@/components/trainings/detail/TrainingSessionsCard";
 import { TrainingStudentsSection } from "@/components/trainings/enrollments/TrainingStudentsSection";
@@ -96,7 +95,7 @@ function TrainingDetail() {
             <div className="space-y-6 lg:col-span-2">
               <TrainingObjectivesCard training={training} mainColor={mainColor} />
               <TrainingProgramCard training={training} mainColor={mainColor} />
-              <TrainingInstructorsSection trainingId={id} mainColor={mainColor} />
+              <TrainingDetailInstructorsSection trainingId={id} mainColor={mainColor} />
               <TrainingSessionsCard trainingId={training.id} color={mainColor} />
               <TrainingStudentsSection trainingId={training.id} color={mainColor} />
             </div>

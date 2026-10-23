@@ -26,7 +26,7 @@ export function ReviewRequestCard({ request: r }: { request: APIReviewRequest })
       </div>
 
       {r.session.suspensionReason && (
-        <p className="rounded-md bg-rose-500/5 px-2 py-1 text-xs text-destructive">
+        <p className="rounded-md bg-destructive/5 px-2 py-1 text-xs text-destructive">
           Suspendue : {r.session.suspensionReason}</p>
       )}
 

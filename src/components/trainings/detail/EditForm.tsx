@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { AdminTrainingPayload, TrainingLevel, TrainingStatus } from "@/data/trainings";
-import { STATUS_OPTIONS, TrainingListField, TrainingProgramField } from "./";
+import { STATUS_OPTIONS, TrainingDetailListField, TrainingDetailProgramField } from "./";
 
 interface Props {
   form: AdminTrainingPayload;
@@ -68,9 +68,9 @@ export function TrainingDetailEditForm({ form, setForm, themes }: Props) {
         <Field label="Horaires" className="sm:col-span-2"><Input value={form.schedule} onChange={(e) => set("schedule", e.target.value)} /></Field>
       </div>
       <Field label="Résumé (short)"><Input value={form.short} onChange={(e) => set("short", e.target.value)} /></Field>
-      <TrainingListField label="Objectifs" values={form.objectives} onChange={(v) => set("objectives", v)} />
-      <TrainingListField label="Prérequis" values={form.prerequisites} onChange={(v) => set("prerequisites", v)} />
-      <TrainingProgramField value={form.program} onChange={(v) => set("program", v)} />
+      <TrainingDetailListField label="Objectifs" values={form.objectives} onChange={(v) => set("objectives", v)} />
+      <TrainingDetailListField label="Prérequis" values={form.prerequisites} onChange={(v) => set("prerequisites", v)} />
+      <TrainingDetailProgramField value={form.program} onChange={(v) => set("program", v)} />
     </div>
   );
 }

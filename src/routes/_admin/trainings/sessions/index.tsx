@@ -32,11 +32,8 @@ function SessionsPage() {
     <>
       <PageHeader
         title="Sessions"
-        description="Sessions de toutes les formations."
+        description={`Sessions de toutes les formations${trainingId ? " (filtrées sur une formation)" : "."}`}
       />
-      <p className="text-sm text-muted-foreground">
-        Sessions de toutes les formations{trainingId && " (filtrées sur une formation)"}.
-      </p>
 
       {/* Raccourci */}
       <div className="flex items-center gap-6 mb-4">

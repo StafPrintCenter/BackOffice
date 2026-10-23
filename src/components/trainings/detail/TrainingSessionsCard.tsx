@@ -3,6 +3,8 @@ import { CalendarRange } from "lucide-react";
 import { useSessionsList } from "@/stores/useTrainingSessionsStore";
 import { SessionCard } from "../sessions/SessionCard";
 
+
+
 export function TrainingSessionsCard({ trainingId, color }: { trainingId: string; color?: string }) {
   const { sessions, meta, isLoading, isError } = useSessionsList({ perPage: 5 }, trainingId);
 

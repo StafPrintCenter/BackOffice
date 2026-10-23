@@ -41,11 +41,21 @@ export function SessionsFilters({ value, onChange }: Props) {
               </option>
             )}
         </select>
-        <select className={select} value={value.modality} onChange={(e) => onChange({ ...value, modality: e.target.value as SessionModality | "" })}>
+
+        <select
+          className={select}
+          value={value.modality} onChange={(e) => onChange({ ...value, modality: e.target.value as SessionModality | "" })}>
           <option value="">Toutes modalités</option>
-          {(Object.keys(MODALITY_LABELS) as SessionModality[]).map((m) => <option key={m} value={m}>{MODALITY_LABELS[m]}</option>)}
+
+          {(
+            Object.keys(MODALITY_LABELS) as SessionModality[]).map((m) =>
+              <option key={m} value={m}>
+                {MODALITY_LABELS[m]}
+              </option>
+            )}
         </select>
       </div>
+
       <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
         <label className="flex items-center gap-2">Du <Input type="date" className="h-8 w-38" value={value.from} onChange={(e) => onChange({ ...value, from: e.target.value })} /></label>
         <label className="flex items-center gap-2">au <Input type="date" className="h-8 w-38" min={value.from || undefined} value={value.to} onChange={(e) => onChange({ ...value, to: e.target.value })} /></label>

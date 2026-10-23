@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
 import { formatSessionDate } from "@/data/trainingSessions";
 import { useSessionDetail } from "@/stores/useTrainingSessionsStore";
-import { SessionInfoCard } from "@/components/trainings/sessions/SessionInfoCard";
-import { SessionResponsesCard } from "@/components/trainings/sessions/SessionResponsesCard";
-import { SessionReviewHistory } from "@/components/trainings/sessions/SessionReviewHistory";
-import { SuspendSessionDialog } from "@/components/trainings/sessions/SuspendSessionDialog";
-import { ReactivateSessionButton } from "@/components/trainings/sessions/ReactivateSessionButton";
+import { SessionInfoCard, SessionResponsesCard, SessionReviewHistory, SuspendSessionDialog, ReactivateSessionButton } from "@/components/trainings/sessions";
+import { } from "@/components/trainings/sessions/SessionResponsesCard";
+import { } from "@/components/trainings/sessions/SessionReviewHistory";
+import { } from "@/components/trainings/sessions/SuspendSessionDialog";
+import { } from "@/components/trainings/sessions/ReactivateSessionButton";
 
 export const Route = createFileRoute("/_admin/trainings/sessions/$id")({
   head: () => ({ meta: [{ title: `Session | ${SITE.name}` }, { name: "robots", content: "noindex" }] }),

@@ -26,7 +26,7 @@ export function ReviewRequestCard({ request: r }: { request: APIReviewRequest })
       </div>
 
       {r.session.suspensionReason && (
-        <p className="rounded-md bg-rose-500/5 px-2 py-1 text-xs text-rose-600">
+        <p className="rounded-md bg-rose-500/5 px-2 py-1 text-xs text-destructive">
           Suspendue : {r.session.suspensionReason}</p>
       )}
 
@@ -40,7 +40,7 @@ export function ReviewRequestCard({ request: r }: { request: APIReviewRequest })
       ) : (
         <div className="text-xs text-muted-foreground">
           Traitée par {r.reviewedBy ?? "-"} le {formatSessionDate(r.reviewedAt)}
-          {r.rejectionReason && <span className="block text-rose-600">Motif du rejet : {r.rejectionReason}</span>}
+          {r.rejectionReason && <span className="block text-destructive">Motif du rejet : {r.rejectionReason}</span>}
         </div>
       )}
     </div>

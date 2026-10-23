@@ -40,6 +40,7 @@ export function ReviewRequestsTab({ trainingId }: { trainingId?: string }) {
           {requests.map((r) => <ReviewRequestCard key={r.id} request={r} />)}
         </div>
       )}
+
       {meta &&
         <Pager
           page={meta.currentPage}

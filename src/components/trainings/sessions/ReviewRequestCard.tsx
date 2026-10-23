@@ -14,13 +14,7 @@ export function ReviewRequestCard({ request: r }: { request: APIReviewRequest })
       <div className="space-y-3 p-4 text-sm">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0">
-            <Link
-              to="/trainings/sessions/$id"
-              params={{ id: r.session.id }}
-              className="font-medium text-primary hover:underline"
-            >
-              {r.session.title}
-            </Link>
+            {r.session.title}
 
             <div className="text-xs text-muted-foreground">
               {r.session.trainingTitle} · {formatSessionDate(r.session.startsAt)}

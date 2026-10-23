@@ -2,9 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { AdminTrainingPayload, TrainingLevel, TrainingStatus } from "@/data/trainings";
-import { STATUS_OPTIONS } from "./form";
-import { TrainingListField } from "./TrainingListField";
-import { TrainingProgramField } from "./TrainingProgramField";
+import { STATUS_OPTIONS, TrainingListField, TrainingProgramField } from "./";
 
 interface Props {
   form: AdminTrainingPayload;

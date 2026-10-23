@@ -9,16 +9,25 @@ export function ReviewRequestCard({ request: r }: { request: APIReviewRequest })
     <div className="space-y-3 rounded-lg border p-4 text-sm">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
-          <Link to="/trainings/sessions/$id" params={{ id: r.session.id }} className="font-medium text-primary hover:underline">
+          <Link
+            to="/trainings/sessions/$id"
+            params={{ id: r.session.id }}
+            className="font-medium text-primary hover:underline"
+          >
             {r.session.title}
           </Link>
-          <div className="text-xs text-muted-foreground">{r.session.trainingTitle} · {formatSessionDate(r.session.startsAt)}</div>
+
+          <div className="text-xs text-muted-foreground">
+            {r.session.trainingTitle} · {formatSessionDate(r.session.startsAt)}
+          </div>
+
         </div>
         <ReviewStatusBadge status={r.status} />
       </div>
 
       {r.session.suspensionReason && (
-        <p className="rounded-md bg-rose-500/5 px-2 py-1 text-xs text-rose-600">Suspendue : {r.session.suspensionReason}</p>
+        <p className="rounded-md bg-rose-500/5 px-2 py-1 text-xs text-rose-600">
+          Suspendue : {r.session.suspensionReason}</p>
       )}
 
       <div className="rounded-md bg-muted/40 p-3">

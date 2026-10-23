@@ -1,6 +1,6 @@
 import { Award, CalendarClock, ListChecks, PercentCircle, Palette, Users, Wallet } from "lucide-react";
 import { getTrainingEnrollmentStatusBadge } from "@/data/trainings";
-import { formatDate, type TrainingDetailItem } from "./training-form";
+import { formatDate, type TrainingDetailItem } from "./form";
 
 export function TrainingDetailSidebar({ training, mainColor }: { training: TrainingDetailItem; mainColor: string }) {
   const badge = getTrainingEnrollmentStatusBadge(training.enrollmentStatus);

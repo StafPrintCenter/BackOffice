@@ -85,7 +85,7 @@ function TrainingDetail() {
       </div>
 
       {isEditing ? (
-        <TrainingEditForm form={form} setForm={setForm} themes={themes} />
+        <TrainingDetailEditForm form={form} setForm={setForm} themes={themes} />
       ) : (
         <div className="space-y-6">
           <TrainingDetailHero training={training} themeColorClass={themeColorClass} mainColor={mainColor} />

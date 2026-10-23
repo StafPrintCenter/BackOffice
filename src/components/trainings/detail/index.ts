@@ -1,5 +1,5 @@
 export { TrainingObjectivesCard, TrainingProgramCard } from "./TrainingContentCards";
-export { TrainingEditForm } from "./TrainingEditForm";
+export { TrainingEditForm } from "./EditForm";
 export { TrainingDetailHero } from "./Hero";
 export { TrainingDetailInstructorsSection } from "./InstructorsSection";
 export { TrainingListField } from "./TrainingListField";

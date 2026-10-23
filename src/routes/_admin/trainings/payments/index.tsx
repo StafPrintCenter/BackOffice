@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHeader, DataTable } from "@/components/site";
-import { GraduationCap, ClipboardClock, UserRoundPlus } from "lucide-react";
+import { GraduationCap, ClipboardClock, UserRoundPlus, Speech } from "lucide-react";
 import { PaymentsFilters, type PaymentsFiltersValue } from "@/components/trainings/payments/PaymentsFilters";
 import { PaymentsSummary } from "@/components/trainings/payments/PaymentsSummary";
 import { PaymentMethodBadge } from "@/components/trainings/payments/PaymentMethodBadge";
@@ -53,6 +53,10 @@ function PaymentsPage() {
 
         <Link to="/trainings/registrations" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
+        </Link>
+
+        <Link to="/trainings/sessions" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Speech className="h-4 w-4" /> Voir sessions
         </Link>
       </div>
 

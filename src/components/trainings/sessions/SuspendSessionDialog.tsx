@@ -31,16 +31,24 @@ export function SuspendSessionDialog({ sessionId, title }: { sessionId: string; 
       <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) { setReason(""); setError(null); } }}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-destructive">Suspendre la session</DialogTitle>
-            <DialogDescription>« {title} » ne sera plus proposée. Le formateur pourra demander un examen.</DialogDescription>
+            <DialogTitle className="text-destructive">
+              Suspendre la session
+            </DialogTitle>
+            <DialogDescription>
+              « {title} » ne sera plus proposée. Le formateur pourra demander un examen.
+            </DialogDescription>
           </DialogHeader>
+
           <div>
             <Label>Motif</Label>
             <Textarea rows={3} maxLength={1000} value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Ex : hors du cadre de la formation…" />
             {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
           </div>
+
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Annuler
+            </Button>
             <Button variant="destructive" onClick={submit} disabled={suspend.isPending}>
               {suspend.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Confirmer
             </Button>

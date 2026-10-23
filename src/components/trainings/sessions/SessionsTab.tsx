@@ -3,8 +3,7 @@ import { Loader2 } from "lucide-react";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useSessionsList } from "@/stores/useTrainingSessionsStore";
 import { EMPTY_SESSION_FILTERS, SessionsFilters, type SessionsFiltersValue } from "./SessionsFilters";
-import { Pager } from "./Pager";
-import { SessionCard } from "./SessionCard";
+import { Pager, SessionCard } from "./";
 
 export function SessionsTab({ trainingId }: { trainingId?: string }) {
   const [filters, setFilters] = useState<SessionsFiltersValue>(EMPTY_SESSION_FILTERS);

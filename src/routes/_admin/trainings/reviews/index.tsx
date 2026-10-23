@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Loader2, CheckCircle2, XCircle, Clock, Calendar, UserRoundPlus, GraduationCap, Search, ChevronLeft, ChevronRight, ShieldCheck, ShieldOff, ArrowUpDown, FolderKanban, ExternalLink, Timer, Award, FileQuestion, Wallet } from "lucide-react";
+import { Loader2, CheckCircle2, XCircle, Clock, Calendar, UserRoundPlus, GraduationCap, Search, ChevronLeft, ChevronRight, ShieldCheck, ShieldOff, ArrowUpDown, FolderKanban, ExternalLink, Timer, Award, FileQuestion, Wallet, Speech } from "lucide-react";
 import { PageHeader } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,6 +118,10 @@ function AdminContentReviews() {
 
         <Link to="/trainings/registrations" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
+        </Link>
+
+        <Link to="/trainings/sessions" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Speech className="h-4 w-4" /> Voir sessions
         </Link>
 
         <Link to="/trainings/payments" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">

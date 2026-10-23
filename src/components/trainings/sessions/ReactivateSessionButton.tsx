@@ -14,7 +14,11 @@ export function ReactivateSessionButton({ sessionId }: { sessionId: string }) {
         onError: (e) => toast.error(e.message),
       })}
     >
-      {reactivate.isPending ? <Loader2 className="mr-1 h-4 w-4 animate-spin" /> : <ShieldCheck className="mr-1 h-4 w-4" />} Réactiver
+      {
+        reactivate.isPending ? <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+          : <ShieldCheck className="mr-1 h-4 w-4" />
+      }
+      Réactiver
     </Button>
   );
 }

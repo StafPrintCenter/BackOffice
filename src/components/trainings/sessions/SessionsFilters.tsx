@@ -57,10 +57,33 @@ export function SessionsFilters({ value, onChange }: Props) {
       </div>
 
       <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-        <label className="flex items-center gap-2">Du <Input type="date" className="h-8 w-38" value={value.from} onChange={(e) => onChange({ ...value, from: e.target.value })} /></label>
-        <label className="flex items-center gap-2">au <Input type="date" className="h-8 w-38" min={value.from || undefined} value={value.to} onChange={(e) => onChange({ ...value, to: e.target.value })} /></label>
-        <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={value.upcoming} onChange={(e) => onChange({ ...value, upcoming: e.target.checked })} /> À venir</label>
-        <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={value.awaitingReview} onChange={(e) => onChange({ ...value, awaitingReview: e.target.checked })} /> Examen en attente</label>
+        <label className="flex items-center gap-2">
+          Du <Input
+            type="date"
+            className="h-8 w-38"
+            value={value.from} onChange={(e) => onChange({ ...value, from: e.target.value })}
+          />
+        </label>
+
+        <label className="flex items-center gap-2">
+          au <Input
+            type="date"
+            className="h-8 w-38"
+            min={value.from || undefined}
+            value={value.to} onChange={(e) => onChange({ ...value, to: e.target.value })}
+          />
+        </label>
+
+        <label className="flex cursor-pointer items-center gap-2">
+          <input
+            type="checkbox"
+            checked={value.upcoming} onChange={(e) => onChange({ ...value, upcoming: e.target.checked })}
+          />
+          À venir
+        </label>
+
+        <label className="flex cursor-pointer items-center gap-2">
+          <input type="checkbox" checked={value.awaitingReview} onChange={(e) => onChange({ ...value, awaitingReview: e.target.checked })} /> Examen en attente</label>
         {active && <Button variant="ghost" size="sm" onClick={() => onChange(EMPTY_SESSION_FILTERS)}><X className="mr-1 h-3.5 w-3.5" /> Réinitialiser</Button>}
       </div>
     </div>

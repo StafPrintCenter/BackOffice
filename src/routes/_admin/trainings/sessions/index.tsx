@@ -34,6 +34,9 @@ function SessionsPage() {
         title="Sessions"
         description="Sessions de toutes les formations."
       />
+      <p className="text-sm text-muted-foreground">
+        Sessions de toutes les formations{trainingId && " (filtrées sur une formation)"}.
+      </p>
 
       {/* Raccourci */}
       <div className="flex items-center gap-6 mb-4">
@@ -53,11 +56,6 @@ function SessionsPage() {
           <Speech className="h-4 w-4" /> Voir sessions
         </Link>
       </div>
-
-      <p className="text-sm text-muted-foreground">
-        Sessions de toutes les formations{trainingId && " (filtrées sur une formation)"}.
-      </p>
-
 
       <div className="mb-6 flex gap-1 border-b">
         <button className={tabClass(tab === "sessions")} onClick={() => go("sessions")}>Sessions</button>

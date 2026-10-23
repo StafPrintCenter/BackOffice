@@ -4,7 +4,7 @@ import type { TrainingDetailItem } from "./training-form";
 
 interface Props { training: TrainingDetailItem; themeColorClass: string; mainColor: string }
 
-export function TrainingHero({ training, themeColorClass, mainColor }: Props) {
+export function TrainingDetailHero({ training, themeColorClass, mainColor }: Props) {
   return (
     <div className="relative overflow-hidden rounded-2xl border p-6 lg:p-8" style={{ background: `linear-gradient(135deg, ${mainColor}15 0%, ${mainColor}03 100%)` }}>
       <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full opacity-20 blur-3xl" style={{ backgroundColor: mainColor }} />

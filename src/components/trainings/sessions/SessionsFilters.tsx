@@ -95,7 +95,12 @@ export function SessionsFilters({ value, onChange }: Props) {
         </label>
 
         {
-          active && <Button variant="ghost" size="sm" onClick={() => onChange(EMPTY_SESSION_FILTERS)}><X className="mr-1 h-3.5 w-3.5" />
+          active && <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onChange(EMPTY_SESSION_FILTERS)}
+          >
+            <X className="mr-1 h-3.5 w-3.5" />
             Réinitialiser
           </Button>
         }

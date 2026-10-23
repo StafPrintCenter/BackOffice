@@ -9,5 +9,6 @@ export { SessionInfoCard } from "./SessionInfoCard";
 export { SessionResponsesCard } from "./SessionResponsesCard";
 export { SessionReviewHistory } from "./SessionReviewHistory";
 export { EMPTY_SESSION_FILTERS, SessionsFilters, type SessionsFiltersValue } from "./SessionsFilters";
+export { SessionsTab } from "./SessionsTab";
 export { SuspendSessionDialog } from "./SuspendSessionDialog";
 export { TrainingSessionsCard } from "./TrainingSessionsCard";

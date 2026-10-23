@@ -10,8 +10,7 @@ import { sanitizeTrainingPayload } from "@/data/trainings";
 import type { AdminTrainingPayload } from "@/data/trainings";
 import { SITE } from "@/data/site";
 import { toPayload } from "@/components/trainings/detail/training-form";
-import { TrainingDetailHero, TrainingDetailInstructorsSection, TrainingDetailEditForm, TrainingDetailSidebar, TrainingDetailSessionsCard } from "@/components/trainings/detail";
-import { TrainingObjectivesCard, TrainingProgramCard } from "@/components/trainings/detail/TrainingContentCards";
+import { TrainingDetailHero, TrainingDetailInstructorsSection, TrainingDetailEditForm, TrainingDetailSidebar, TrainingDetailSessionsCard, TrainingDetailObjectivesCard, TrainingDetailProgramCard } from "@/components/trainings/detail";
 import { TrainingStudentsSection } from "@/components/trainings/enrollments/TrainingStudentsSection";
 
 export const Route = createFileRoute("/_admin/trainings/catalogs/$id/")({
@@ -90,8 +89,8 @@ function TrainingDetail() {
           <TrainingDetailHero training={training} themeColorClass={themeColorClass} mainColor={mainColor} />
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="space-y-6 lg:col-span-2">
-              <TrainingObjectivesCard training={training} mainColor={mainColor} />
-              <TrainingProgramCard training={training} mainColor={mainColor} />
+              <TrainingDetailObjectivesCard training={training} mainColor={mainColor} />
+              <TrainingDetailProgramCard training={training} mainColor={mainColor} />
               <TrainingDetailInstructorsSection trainingId={id} mainColor={mainColor} />
               <TrainingDetailSessionsCard trainingId={training.id} color={mainColor} />
               <TrainingStudentsSection trainingId={training.id} color={mainColor} />

@@ -4,7 +4,7 @@ import { Bell, CheckCheck, Settings2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { NotificationItem } from "./";
+import { NotificationItem, CleanupSettingsDialog } from "./";
 import { useMarkAllAsRead, useNotificationsList, useUnreadCount } from "@/stores/useNotificationsStore";
 
 export function NotificationBell() {
@@ -42,12 +42,26 @@ export function NotificationBell() {
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="flex max-h-[85vh] max-w-lg flex-col overflow-hidden p-0">
-          {/* En-tête fixe */}
-          <DialogHeader className="px-6 pt-6 pb-4 border-b">
+          {/* En-tête" */}
+          <DialogHeader className="flex flex-row items-center justify-between px-6 pt-6 pb-4 border-b space-y-0">
             <DialogTitle className="flex items-center gap-2">
               <Bell className="h-4 w-4" /> Notifications
-              {count > 0 && <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">{count} non lue{count > 1 ? "s" : ""}</span>}
+              {count > 0 && (
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
+                  {count} non lue{count > 1 ? "s" : ""}
+                </span>
+              )}
             </DialogTitle>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleMarkAll}
+              disabled={count === 0 || markAll.isPending}
+              className="h-8 px-2 text-xs"
+            >
+              <CheckCheck className="mr-1 h-4 w-4" /> Tout marquer comme lu
+            </Button>
           </DialogHeader>
 
           {/* Liste scrollable */}
@@ -63,19 +77,20 @@ export function NotificationBell() {
             )}
           </div>
 
-          {/* Pied de page fixe */}
+          {/* Pied de page */}
           <div className="flex flex-wrap items-center justify-between gap-2 border-t bg-muted/20 px-6 py-4">
-            <Button variant="outline" size="sm" onClick={handleMarkAll} disabled={count === 0 || markAll.isPending}>
-              <CheckCheck className="mr-1 h-4 w-4" /> Tout marquer comme lu
-            </Button>
-            <div className="flex gap-2">
-              <Button asChild variant="ghost" size="sm" onClick={() => setOpen(false)}>
-                <Link to="/notifications/preferences"><Settings2 className="mr-1 h-4 w-4" /> Préférences</Link>
+            <div className="flex items-center gap-2">
+              <Button asChild variant="outline" size="sm" onClick={() => setOpen(false)}>
+                <Link to="/notifications/preferences">
+                  <Settings2 className="mr-1 h-4 w-4" /> Préférences
+                </Link>
               </Button>
-              <Button asChild size="sm" onClick={() => setOpen(false)}>
-                <Link to="/notifications">Voir tout</Link>
-              </Button>
+              <CleanupSettingsDialog variant="outline" size="sm" />
             </div>
+
+            <Button asChild size="sm" onClick={() => setOpen(false)}>
+              <Link to="/notifications">Voir tout</Link>
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

@@ -27,7 +27,7 @@ interface GroupListResponse {
 async function fetchArticleFeedbackGroups(params: AdminListParams = {}): Promise<GroupListResponse> {
   const qp = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
-    if (value !== undefined && value !== "") qp.append(key, String(value));
+    if (value !== undefined && value !== "") { qp.append(key, String(value)) }
   }
   const response = await adminFetch(`/api/admin/docs/article-feedback/groups?${qp.toString()}`);
   if (!response.ok) throw new Error("Erreur lors de la récupération des groupes de retours");

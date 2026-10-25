@@ -5,7 +5,7 @@ import { ConfirmDelete } from "@/components/site/AdminBits";
 import { type NotificationCategory } from "@/data/notifications";
 import { useMarkAllAsRead, useNotificationsList, useBulkDeleteNotifications } from "@/stores/useNotificationsStore";
 import { DeleteAllDialog } from "@/components/pages/notifications";
-import { NotificationsHeader, FilterBar, List } from "@/components/pages/notifications/home";
+import { NotificationsHeader, NotificationsFilterBar, NotificationsList } from "@/components/pages/notifications/home";
 
 export const Route = createFileRoute("/_admin/notifications/")({
   head: () => ({

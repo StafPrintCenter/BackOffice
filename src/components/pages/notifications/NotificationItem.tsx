@@ -8,7 +8,6 @@ import { useDeleteNotification, useMarkAsRead } from "@/stores/useNotificationsS
 interface NotificationItemProps {
   notification: APINotificationListItem;
   onClick: () => void;
-  /** Mode sélection (suppression en lot) : affiche une case à cocher */
   selectable?: boolean;
   selected?: boolean;
   onToggleSelect?: (id: string) => void;
@@ -21,27 +20,40 @@ export function NotificationItem({ notification: n, onClick, selectable, selecte
   const remove = useDeleteNotification();
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const handleMarkAsRead = () =>
+  const handleMarkAsRead = (e: React.MouseEvent) => {
+    e.stopPropagation();
     markAsRead.mutate(n.id, {
       onSuccess: (message) => toast.success(message),
       onError: (e) => toast.error(e.message),
     });
+  };
 
-  const handleDelete = () =>
+  const handleDelete = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     remove.mutate(n.id, {
       onSuccess: () => { toast.success("Notification supprimée"); setConfirmOpen(false); },
       onError: (e) => toast.error(e.message),
     });
+  };
 
   return (
     <div
-      className={`flex items-stretch gap-1 rounded-lg border transition ${selected ? "border-primary bg-primary/10" : n.isRead ? "border-border bg-card" : "border-primary/30 bg-primary/5"
+      onClick={onClick}
+      className={`group relative flex cursor-pointer items-center gap-2 rounded-lg border p-3 transition sm:gap-3 sm:px-4 sm:py-3 ${selected
+        ? "border-primary bg-primary/10"
+        : n.isRead
+          ? "border-border bg-card hover:bg-muted/50"
+          : "border-primary/30 bg-primary/5 hover:bg-primary/10"
         }`}
     >
       {selectable && (
-        <label className="flex w-10 shrink-0 cursor-pointer items-center justify-center">
+        <label
+          className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center"
+          onClick={(e) => e.stopPropagation()}
+        >
           <input
             type="checkbox"
+            className="rounded border-input text-primary focus:ring-primary h-4 w-4"
             checked={!!selected}
             onChange={() => onToggleSelect?.(n.id)}
             aria-label="Sélectionner la notification"
@@ -49,47 +61,49 @@ export function NotificationItem({ notification: n, onClick, selectable, selecte
         </label>
       )}
 
-      <button
-        onClick={onClick}
-        className={`flex min-w-0 flex-1 cursor-pointer items-start gap-3 px-4 py-3 text-left transition hover:bg-muted/60 ${selectable ? "" : "rounded-l-lg"}`}
-      >
-        <span className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${meta.className}`}>
-          <Icon className="h-4 w-4" />
-        </span>
-        <span className="min-w-0 flex-1">
+      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${meta.className}`}>
+        <Icon className="h-4 w-4" />
+      </span>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
           <span className={`block truncate text-sm ${n.isRead ? "font-medium" : "font-semibold"}`}>{n.title}</span>
-          <span className="mt-0.5 block text-xs text-muted-foreground">
-            {meta.label} · {formatNotificationDate(n.deliveredAt)}
-          </span>
+          {!n.isRead && <span className="h-2 w-2 shrink-0 rounded-full bg-primary sm:hidden" aria-label="Non lue" />}
+        </div>
+        <span className="mt-0.5 block text-xs text-muted-foreground truncate">
+          {meta.label} · {formatNotificationDate(n.deliveredAt)}
         </span>
-        {!n.isRead && <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary" aria-label="Non lue" />}
-      </button>
+      </div>
 
-      {!n.isRead && (
+      <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+        {!n.isRead && (
+          <button
+            onClick={handleMarkAsRead}
+            disabled={markAsRead.isPending}
+            title="Marquer comme lue"
+            aria-label="Marquer comme lue"
+            className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-primary/10 hover:text-primary disabled:opacity-50"
+          >
+            {markAsRead.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+          </button>
+        )}
+
         <button
-          onClick={handleMarkAsRead}
-          disabled={markAsRead.isPending}
-          title="Marquer comme lue"
-          aria-label="Marquer comme lue"
-          className="flex w-10 shrink-0 cursor-pointer items-center justify-center text-muted-foreground transition hover:bg-primary/10 hover:text-primary disabled:opacity-50"
+          onClick={() => setConfirmOpen(true)}
+          title="Supprimer"
+          aria-label="Supprimer la notification"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-destructive/10 hover:text-destructive"
         >
-          {markAsRead.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+          <Trash2 className="h-4 w-4" />
         </button>
-      )}
+      </div>
 
-      <button
-        onClick={() => setConfirmOpen(true)}
-        title="Supprimer"
-        aria-label="Supprimer la notification"
-        className="flex w-10 shrink-0 cursor-pointer items-center justify-center rounded-r-lg text-muted-foreground transition hover:bg-destructive/10 hover:text-destructive"
-      >
-        <Trash2 className="h-4 w-4" />
-      </button>
+      {!n.isRead && <span className="hidden h-2 w-2 shrink-0 rounded-full bg-primary sm:block" aria-label="Non lue" />}
 
       <ConfirmDelete
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
-        onConfirm={handleDelete}
+        onConfirm={() => handleDelete()}
         title="Supprimer cette notification ?"
       />
     </div>

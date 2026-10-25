@@ -1,11 +1,11 @@
 import { Loader2, Filter, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NotificationItem } from "@/components/pages/notifications";
-import type { Notification } from "@/data/notifications";
+import type { APINotificationListItem } from "@/data/notifications";
 
 interface NotificationsListProps {
   isLoading: boolean;
-  filtered: Notification[];
+  filtered: APINotificationListItem[];
   selected: string[];
   toggleSelect: (id: string) => void;
   onItemClick: (id: string) => void;

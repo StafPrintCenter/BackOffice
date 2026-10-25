@@ -29,7 +29,7 @@ export function NotificationsHeader({
         </p>
       </div>
 
-      {/* Boutons d'actions globales */}
+      {/* Boutons d'actions */}
       <div className="flex flex-wrap items-center gap-2">
         <Button
           variant="outline"

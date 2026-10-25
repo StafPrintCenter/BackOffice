@@ -43,7 +43,7 @@ export function NotificationsFilterBar({
         ))}
       </div>
 
-      {/* Options secondaires : Checkboxes et Actions groupées */}
+      {/* Checkboxes et Actions groupées */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t text-xs">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
           <label className="flex cursor-pointer items-center gap-2 font-medium text-foreground hover:opacity-80">
@@ -53,7 +53,7 @@ export function NotificationsFilterBar({
               checked={unreadOnly}
               onChange={(e) => setUnreadOnly(e.target.checked)}
             />
-            Afficher uniquement les non lues
+            Non lues uniquement
           </label>
 
           {hasFilteredItems && (
@@ -64,7 +64,7 @@ export function NotificationsFilterBar({
                 checked={allVisibleSelected}
                 onChange={toggleAllVisible}
               />
-              Tout sélectionner sur cette page
+              Tout sélectionner
             </label>
           )}
         </div>

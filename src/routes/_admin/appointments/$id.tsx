@@ -18,16 +18,19 @@ export const Route = createFileRoute("/_admin/appointments/$id")({
     const item = await fetchAdminAppointmentById(params.id);
     return { item };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      {
-        title: loaderData?.item?.subject
-          ? `Rendez-vous : ${loaderData.item.subject} | ${SITE.name}`
-          : `Détail rendez-vous | ${SITE.name}`,
-      },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const headTitle = loaderData?.item?.subject;
+    return {
+      meta: [
+        {
+          title: headTitle
+            ? `Rendez-vous : ${headTitle} | ${SITE.name}`
+            : `Détail rendez-vous | ${SITE.name}`,
+        },
+        { name: "robots", content: "noindex" },
+      ],
+    }
+  },
   component: AppointmentDetail,
 });
 

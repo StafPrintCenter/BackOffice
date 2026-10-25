@@ -22,16 +22,19 @@ export const Route = createFileRoute("/_admin/articleFeedback/unique/$id")({
     const item = await fetchAdminArticleFeedbackById(params.id);
     return { item };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      {
-        title: loaderData?.item?.articleKey
-          ? `Feedback unique : ${loaderData.item.articleKey} | ${SITE.name}`
-          : `Feedback unique | ${SITE.name}`,
-      },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const headTitle = loaderData?.item?.articleKey;
+    return {
+      meta: [
+        {
+          title: headTitle
+            ? `Feedback unique : ${headTitle} | ${SITE.name}`
+            : `Feedback unique | ${SITE.name}`,
+        },
+        { name: "robots", content: "noindex" },
+      ],
+    };
+  },
   component: ArticleFeedbackDetail,
 });
 

@@ -1,4 +1,4 @@
-import { PreferenceCard } from "@/components/pages/notifications/shared";
+import { PreferenceCard } from "./";
 import type { APINotificationPreference } from "@/data/notifications";
 
 interface PreferencesGridProps {

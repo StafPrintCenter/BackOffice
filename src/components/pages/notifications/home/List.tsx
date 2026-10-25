@@ -1,6 +1,6 @@
 import { Loader2, Filter, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { NotificationItem } from "@/components/pages/notifications";
+import { NotificationItem } from "@/components/pages/notifications/shared";
 import type { APINotificationListItem } from "@/data/notifications";
 
 interface NotificationsListProps {

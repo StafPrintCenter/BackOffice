@@ -1,8 +1,9 @@
 import { Layers } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { EcosystemSiteLogoVariants } from "@/data/ecosystemSites";
 
 interface LogoVariantsCardProps {
-  logoVariants: Record<string, string>;
+  logoVariants: EcosystemSiteLogoVariants;
 }
 
 export function LogoVariantsCard({ logoVariants }: LogoVariantsCardProps) {

@@ -30,7 +30,9 @@ async function fetchArticleFeedbackGroups(params: AdminListParams = {}): Promise
     if (value !== undefined && value !== "") { qp.append(key, String(value)) }
   }
   const response = await adminFetch(`/api/admin/docs/article-feedback/groups?${qp.toString()}`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération des groupes de retours");
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération des groupes de retours");
+  }
   return response.json();
 }
 

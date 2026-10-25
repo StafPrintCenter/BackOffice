@@ -25,16 +25,19 @@ export const Route = createFileRoute("/_admin/articles/$id")({
     const item = await fetchAdminArticleById(params.id);
     return { item };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      {
-        title: loaderData?.item?.title
-          ? `Article : ${loaderData.item.title} | ${SITE.name}`
-          : `Détail article | ${SITE.name}`,
-      },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const headTitle = loaderData?.item?.title;
+    return {
+      meta: [
+        {
+          title: headTitle
+            ? `Article : ${headTitle} | ${SITE.name}`
+            : `Détail article | ${SITE.name}`,
+        },
+        { name: "robots", content: "noindex" },
+      ],
+    };
+  },
   component: ArticleDetail,
 });
 

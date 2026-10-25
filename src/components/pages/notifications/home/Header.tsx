@@ -1,6 +1,6 @@
 import { CheckCheck, Settings2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CleanupSettingsDialog } from "@/components/pages/notifications";
+import { CleanupSettingsDialog } from "@/components/pages/notifications/shared";
 import { Link } from "@tanstack/react-router";
 
 interface NotificationsHeaderProps {

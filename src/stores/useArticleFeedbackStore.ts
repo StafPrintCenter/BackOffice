@@ -54,8 +54,8 @@ export function useAdminArticleFeedbackGroupsList(params: AdminListParams = {}) 
 async function fetchArticleFeedbackGroup(articleKey: string): Promise<APIAdminArticleFeedbackGroupDetail | null> {
   const qp = new URLSearchParams({ article_key: articleKey });
   const response = await adminFetch(`/api/admin/docs/article-feedback/group?${qp.toString()}`);
-  if (response.status === 404) return null;
-  if (!response.ok) throw new Error("Erreur lors de la récupération du groupe de retours");
+  if (response.status === 404) { return null };
+  if (!response.ok) { throw new Error("Erreur lors de la récupération du groupe de retours") };
   const json: { data: APIAdminArticleFeedbackGroupDetail } = await response.json();
   return json.data;
 }

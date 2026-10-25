@@ -22,11 +22,13 @@ export const Route = createFileRoute("/_admin/articleFeedback/group/$articleKey"
     return { item };
   },
   head: ({ loaderData }) => {
-    const key = loaderData?.item?.articleKey;
+    const headTitle = loaderData?.item?.articleKey;
     return {
       meta: [
         {
-          title: key ? `Retours : ${key} | ${SITE.name}` : `Retours sur article | ${SITE.name}`,
+          title: headTitle
+            ? `Retours : ${headTitle} | ${SITE.name}`
+            : `Retours sur article | ${SITE.name}`,
         },
         { name: "robots", content: "noindex text" },
       ],

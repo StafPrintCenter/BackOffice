@@ -60,6 +60,9 @@ async function fetchArticleFeedbackGroup(articleKey: string): Promise<APIAdminAr
   return json.data;
 }
 
+export const fetchAdminArticleFeedbackGroupDetail =
+  fetchArticleFeedbackGroup;
+
 export function useAdminArticleFeedbackGroupDetail(articleKey: string | undefined) {
   const query = useQuery({
     queryKey: ["article-feedback-groups", "admin-detail", articleKey],

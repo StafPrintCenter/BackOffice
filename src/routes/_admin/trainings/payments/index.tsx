@@ -42,7 +42,7 @@ function PaymentsPage() {
       />
 
       {/* Raccourci */}
-      <div className="flex items-center gap-6 mb-4">
+      <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-3">
         <Link to="/trainings/catalogs" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <GraduationCap className="h-4 w-4" /> Voir le catalogue des formations
         </Link>

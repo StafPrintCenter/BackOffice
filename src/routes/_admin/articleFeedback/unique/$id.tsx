@@ -26,8 +26,8 @@ export const Route = createFileRoute("/_admin/articleFeedback/unique/$id")({
     meta: [
       {
         title: loaderData?.item?.articleKey
-          ? `Retour : ${loaderData.item.articleKey} | ${SITE.name}`
-          : `Retour sur article | ${SITE.name}`,
+          ? `Feedback unique : ${loaderData.item.articleKey} | ${SITE.name}`
+          : `Feedback unique | ${SITE.name}`,
       },
       { name: "robots", content: "noindex" },
     ],

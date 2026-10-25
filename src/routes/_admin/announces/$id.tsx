@@ -27,16 +27,19 @@ export const Route = createFileRoute("/_admin/announces/$id")({
     const item = await fetchAdminAnnouncementById(params.id);
     return { item };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      {
-        title: loaderData?.item?.title
-          ? `Annonce : ${loaderData.item.title} | ${SITE.name}`
-          : `Détail annonce | ${SITE.name}`,
-      },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const headTitle = loaderData?.item?.title;
+    return {
+      meta: [
+        {
+          title: headTitle
+            ? `Annonce : ${headTitle} | ${SITE.name}`
+            : `Détail annonce | ${SITE.name}`,
+        },
+        { name: "robots", content: "noindex" },
+      ],
+    };
+  },
   component: AnnouncementDetail,
 });
 

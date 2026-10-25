@@ -1,8 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { PreferenceCard, CleanupSettingsDialog } from "@/components/pages/notifications/shared";
+import { createFileRoute } from "@tanstack/react-router";
+import { Loader2 } from "lucide-react";
 import { useNotificationPreferences } from "@/stores/useNotificationsStore";
+import { PreferencesHeader, PreferencesGrid } from "@/components/pages/notifications/preferences";
 
 export const Route = createFileRoute("/_admin/notifications/preferences")({
   head: () => ({
@@ -18,37 +17,19 @@ function PreferencesPage() {
   const { preferences, isLoading, isError } = useNotificationPreferences();
 
   return (
-    <>
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="font-display text-2xl font-bold">Préférences de notifications</h1>
-          <p className="text-sm text-muted-foreground">
-            Choisissez ce que vous recevez, et à quels moments.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <CleanupSettingsDialog />
-          <Button asChild variant="outline" size="sm">
-            <Link to="/notifications">
-              <ArrowLeft className="mr-1 h-4 w-4" /> Notifications
-            </Link>
-          </Button>
-        </div>
-      </div>
+    <div className="mx-auto max-w-4xl pb-16 px-4 sm:px-0">
+      <PreferencesHeader />
 
       {isLoading ? (
-        <div className="flex items-center justify-center gap-2 py-24 text-muted-foreground">
-          <Loader2 className="h-5 w-5 animate-spin" /> Chargement…
+        <div className="flex flex-col items-center justify-center gap-2 py-24 text-muted-foreground">
+          <Loader2 className="h-5 w-5 animate-spin text-primary" />
+          <span className="text-sm">Chargement…</span>
         </div>
       ) : isError ? (
-        <p className="text-sm text-destructive">Impossible de charger vos préférences.</p>
+        <p className="text-sm text-destructive py-10 text-center">Impossible de charger vos préférences.</p>
       ) : (
-        <div className="grid max-w-4xl gap-4 md:grid-cols-2">
-          {preferences.map((p) => (
-            <PreferenceCard key={p.category} preference={p} />
-          ))}
-        </div>
+        <PreferencesGrid preferences={preferences} />
       )}
-    </>
+    </div>
   );
 }

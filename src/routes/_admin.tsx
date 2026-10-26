@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { createFileRoute, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
+import { LogoLoader } from "@/components/site/Logo/Loader";
 import { AdminShell } from "@/components/site/AdminShell";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
@@ -37,12 +37,11 @@ function AdminLayout() {
 
   if (!ready || !isAuthenticated) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-background text-foreground">
-        <Loader2 className="size-8 animate-spin text-accent" />
-        <p className="text-sm text-muted-foreground">
-          Vérification de votre session…
-        </p>
-      </div>
+      <LogoLoader
+        fullScreen
+        size={140}
+        text="Vérification de votre session…"
+      />
     );
   }
 

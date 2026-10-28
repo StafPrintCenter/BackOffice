@@ -20,8 +20,9 @@ const searchSchema = z.object({
 export const Route = createFileRoute("/_auth/invite")({
   head: () => ({
     meta: [
-      { title: `Accepter l'invitation | ${SITE.name}` },
-      { name: "robots", content: "noindex" },
+      { title: `${SITE.tool} - Activation du compte | ${SITE.name}` },
+      { name: "description", content: `Finalisez l'activation de votre compte administrateurr ${SITE.name} à partir de votre invitation.` },
+      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
   validateSearch: searchSchema,

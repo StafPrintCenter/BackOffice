@@ -14,8 +14,13 @@ export const Route = createFileRoute("/_auth/login")({
   validateSearch: z.object({ redirectTo: z.string().optional() }),
   head: () => ({
     meta: [
-      { title: `Connexion | ${SITE.name}` },
-      { name: "robots", content: "noindex" },
+      { title: `${SITE.tool} - Connexion | ${SITE.name}` },
+      {
+        name: "description",
+        content: `Connectez-vous à votre ${SITE.tool} ${SITE.name} pour retrouver gérer vos travaux.`,
+      },
+      { property: "og:title", content: `${SITE.tool} - Connexion | ${SITE.name}` },
+      { property: "og:description", content: `Connectez-vous à votre ${SITE.tool} ${SITE.name} pour retrouver gérer vos travaux.` },
     ],
   }),
   component: LoginPage,

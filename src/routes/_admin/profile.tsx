@@ -13,8 +13,9 @@ import { SITE } from "@/data/site";
 export const Route = createFileRoute("/_admin/profile")({
   head: () => ({
     meta: [
-      { title: `Profil | ${SITE.name}` },
-      { name: "robots", content: "noindex" }]
+      { title: `${SITE.tool} - Mon profil | ${SITE.name}` },
+      { name: "description", content: "Consultez et mettez à jour les informations de votre compte formateur et vos préférences." },
+    ]
   }),
   component: ProfilePage,
 });

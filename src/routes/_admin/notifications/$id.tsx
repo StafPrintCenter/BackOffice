@@ -24,6 +24,10 @@ function NotificationDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const { notification: n, isLoading } = useNotificationDetail(id);
+  useDynamicPageMetadata(
+    n ? `${SITE.tool} - ${n.title} | ${SITE.name}` : undefined,
+    n?.body,
+  );
   const remove = useDeleteNotification();
   const [confirmOpen, setConfirmOpen] = useState(false);
 

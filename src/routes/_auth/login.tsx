@@ -21,6 +21,7 @@ export const Route = createFileRoute("/_auth/login")({
       },
       { property: "og:title", content: `${SITE.tool} - Connexion | ${SITE.name}` },
       { property: "og:description", content: `Connectez-vous à votre ${SITE.tool} ${SITE.name} pour retrouver gérer vos travaux.` },
+      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
   component: LoginPage,

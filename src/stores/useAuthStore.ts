@@ -5,7 +5,7 @@ import type { APIAdminUser, APIAdminLoginResponse, AdminInviteVerifyResponse } f
 
 export class AdminAuthApiError extends Error { }
 
-export async function loginAdmin(email: string, password: string): Promise<APILoginResponse> {
+export async function loginAdmin(email: string, password: string): Promise<APIAdminLoginResponse> {
   const formData = new FormData();
   formData.append("email", email);
   formData.append("password", password);

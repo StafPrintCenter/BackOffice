@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_admin/notifications/")({
   head: () => ({
     meta: [
       { title: `${SITE.tool} - Notifications | ${SITE.name}` },
-      { name: "description", content: "Consultez les notifications liées à vos formations, vos projets et vos travaux." },
+      { name: "description", content: "Consultez les notifications liées à vos formations, vos activités et vos travaux." },
     ],
   }),
   component: NotificationsPage,

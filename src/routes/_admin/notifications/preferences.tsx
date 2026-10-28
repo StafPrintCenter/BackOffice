@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_admin/notifications/preferences")({
   head: () => ({
     meta: [
       { title: `${SITE.tool} - Préférences de notifications | ${SITE.name}` },
-      { name: "description", content: "Choisissez les notifications que vous souhaitez recevoir au sujet de vos formations et de vos apprenants." },
+      { name: "description", content: "Choisissez les notifications que vous souhaitez recevoir au sujet de vos travaux et de cos activités." },
     ],
   }),
   component: PreferencesPage,

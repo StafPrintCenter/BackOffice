@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_admin/profile")({
   head: () => ({
     meta: [
       { title: `${SITE.tool} - Mon profil | ${SITE.name}` },
-      { name: "description", content: "Consultez et mettez à jour les informations de votre compte formateur et vos préférences." },
+      { name: "description", content: "Consultez et mettez à jour les informations de votre compte administrateur et vos préférences." },
     ]
   }),
   component: ProfilePage,

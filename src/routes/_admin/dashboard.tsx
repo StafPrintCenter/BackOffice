@@ -14,8 +14,6 @@ export const Route = createFileRoute("/_admin/dashboard")({
     meta: [
       { title: `${SITE.tool} - Tableau de bord et gestion de la plateforme | ${SITE.name}` },
       { name: "description", content: `Gérez les activités, les contenus, les utilisateurs et les opérations de ${SITE.name} depuis votre espace d'administration.` },
-      { property: "og:title", content: `${SITE.tool} - Tableau de bord et gestion de la plateforme | ${SITE.name}` },
-      { property: "og:description", content: `Pilotez les activités de ${SITE.name}, supervisez les opérations et accédez aux outils de gestion de votre plateforme.` },
     ],
   }),
   component: DashboardPage,

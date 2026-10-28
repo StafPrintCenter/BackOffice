@@ -7,19 +7,15 @@ import { ANNOUNCEMENT_TYPE_LABELS } from "@/data/announcements";
 import { JOB_OFFER_CONTRACT_LABELS } from "@/data/jobOffers";
 import { JOB_APPLICATION_STATUS_LABELS } from "@/data/jobApplications";
 import { INTERNSHIP_REQUEST_STATUS_LABELS } from "@/data/internshipRequests";
-import {
-  DashboardKpiGrid,
-  DashboardChartsGrid,
-  DashboardRecentLists,
-  DashboardRecentActivity,
-  type RecentItem,
-} from "@/components/pages/dashboard";
+import { DashboardKpiGrid, DashboardChartsGrid, DashboardRecentLists, DashboardRecentActivity, type RecentItem } from "@/components/pages/dashboard";
 
 export const Route = createFileRoute("/_admin/dashboard")({
   head: () => ({
     meta: [
-      { title: `Tableau de bord | ${SITE.name}` },
-      { name: "robots", content: "noindex" },
+      { title: `${SITE.tool} - Tableau de bord | ${SITE.name}` },
+      { name: "description", content: "Consultez vos formations, les progrès des apprenants, les travaux à corriger et vos prochaines sessions." },
+      { property: "og:title", content: `${SITE.tool} - Tableau de bord | ${SITE.name}` },
+      { property: "og:description", content: "Retrouvez vos priorités pédagogiques et l'activité de vos formations." },
     ],
   }),
   component: DashboardPage,

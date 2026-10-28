@@ -12,10 +12,10 @@ import { DashboardKpiGrid, DashboardChartsGrid, DashboardRecentLists, DashboardR
 export const Route = createFileRoute("/_admin/dashboard")({
   head: () => ({
     meta: [
-      { title: `${SITE.tool} - Tableau de bord | ${SITE.name}` },
-      { name: "description", content: "Consultez vos formations, les progrès des apprenants, les travaux à corriger et vos prochaines sessions." },
-      { property: "og:title", content: `${SITE.tool} - Tableau de bord | ${SITE.name}` },
-      { property: "og:description", content: "Retrouvez vos priorités pédagogiques et l'activité de vos formations." },
+      { title: `${SITE.tool} - Tableau de bord et gestion de la plateforme | ${SITE.name}` },
+      { name: "description", content: `Gérez les activités, les contenus, les utilisateurs et les opérations de ${SITE.name} depuis votre espace d'administration.` },
+      { property: "og:title", content: `${SITE.tool} - Tableau de bord et gestion de la plateforme | ${SITE.name}` },
+      { property: "og:description", content: `Pilotez les activités de ${SITE.name}, supervisez les opérations et accédez aux outils de gestion de votre plateforme.` },
     ],
   }),
   component: DashboardPage,

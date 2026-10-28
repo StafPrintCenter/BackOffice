@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api-url";
+import { parseApiError } from "@/lib/api-error";
 
 export type AdminListParams = Record<string, string | number | undefined>;
 
@@ -43,14 +44,14 @@ export function createResourceStore<T extends { id: string }, TPayload = Record<
     }
 
     const response = await adminFetch(`/api/admin/${basePath}/list?${qp.toString()}`);
-    if (!response.ok) throw new Error(`Erreur lors de la récupération de "${resourceKey}"`);
+    if (!response.ok) throw await parseApiError(response, `Erreur lors de la récupération de "${resourceKey}"`);
     return response.json();
   }
 
   async function fetchById(id: string): Promise<T | null> {
     const response = await adminFetch(`/api/admin/${basePath}/${id}`);
     if (response.status === 404) return null;
-    if (!response.ok) throw new Error(`Erreur lors de la récupération de l'élément "${resourceKey}"`);
+    if (!response.ok) throw await parseApiError(response, `Erreur lors de la récupération de l'élément "${resourceKey}"`);
     const json: DetailResponse<T> = await response.json();
     return json.data;
   }
@@ -60,7 +61,7 @@ export function createResourceStore<T extends { id: string }, TPayload = Record<
       method: "POST",
       body: buildFormData(payload as Record<string, unknown>),
     });
-    if (!response.ok) throw new Error(`Erreur lors de la création de "${resourceKey}"`);
+    if (!response.ok) throw await parseApiError(response, `Erreur lors de la création de "${resourceKey}"`);
     const json: DetailResponse<T> = await response.json();
     return json.data;
   }
@@ -70,14 +71,16 @@ export function createResourceStore<T extends { id: string }, TPayload = Record<
       method: "PUT",
       body: buildFormData(payload as Record<string, unknown>),
     });
-    if (!response.ok) throw new Error(`Erreur lors de la modification de "${resourceKey}"`);
+    if (!response.ok) throw await parseApiError(response, `Erreur lors de la modification de "${resourceKey}"`);
     const json: DetailResponse<T> = await response.json();
     return json.data;
   }
 
   async function removeItem(id: string): Promise<void> {
     const response = await adminFetch(`/api/admin/${basePath}/${id}`, { method: "DELETE" });
-    if (!response.ok && response.status !== 204) throw new Error(`Erreur lors de la suppression de "${resourceKey}"`);
+    if (!response.ok && response.status !== 204) {
+      throw await parseApiError(response, `Erreur lors de la suppression de "${resourceKey}"`);
+    }
   }
 
   function useList(params: AdminListParams = {}) {

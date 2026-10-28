@@ -2,16 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useNotificationPreferences } from "@/stores/useNotificationsStore";
 import { PreferencesHeader, PreferencesGrid } from "@/components/pages/notifications/preferences";
+import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/notifications/preferences")({
   head: () => ({
     meta: [
-      { title: "Préférences de notifications - Admin" },
-      { name: "robots", content: "noindex" },
+      { title: `${SITE.tool} - Préférences de notifications | ${SITE.name}` },
+      { name: "description", content: "Choisissez les notifications que vous souhaitez recevoir au sujet de vos formations et de vos apprenants." },
     ],
   }),
   component: PreferencesPage,
 });
+
 
 function PreferencesPage() {
   const { preferences, isLoading, isError } = useNotificationPreferences();

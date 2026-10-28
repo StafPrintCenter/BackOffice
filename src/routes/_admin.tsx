@@ -5,6 +5,9 @@ import { AdminShell } from "@/components/site/AdminShell";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 export const Route = createFileRoute("/_admin")({
+  head: () => ({
+    meta: [{ name: "robots", content: "noindex, nofollow" }],
+  }),
   component: AdminLayout,
 });
 

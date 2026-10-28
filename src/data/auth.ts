@@ -35,7 +35,7 @@ export type APIAdminUser = {
   updated_at?: string;
 };
 
-export type APILoginResponse = {
+export type APIAdminLoginResponse = {
   admin: APIAdminUser;
   token: string;
 };

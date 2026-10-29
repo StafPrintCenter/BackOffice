@@ -1,15 +1,10 @@
-import { Activity, MessagesSquare, Star, LucideIcon } from "lucide-react";
-
-export interface RecentItem {
-  type: string;
-  title: string;
-  meta: string;
-  icon: LucideIcon;
-}
+import { Activity, MessagesSquare, Star } from "lucide-react";
+import type { DashboardRecentItem } from "@/lib/dashboard";
+import type { APIAdminTestimonial } from "@/data/testimonials";
 
 interface DashboardRecentActivityProps {
-  recent: RecentItem[];
-  testimonials: any[];
+  recent: DashboardRecentItem[];
+  testimonials: APIAdminTestimonial[];
   testimonialsLoading: boolean;
   avgRating: string;
 }

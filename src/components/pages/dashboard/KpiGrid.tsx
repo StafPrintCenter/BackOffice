@@ -1,57 +1,27 @@
-import { Wrench, GraduationCap, FolderKanban, FileText, Users, Inbox, ShieldAlert, MousePointerClick, ShieldUser, CircleUser, SquareUser, UserCheck, Megaphone, Briefcase, FileCheck2, UserPlus } from "lucide-react";
+import {
+  Wrench,
+  GraduationCap,
+  FolderKanban,
+  FileText,
+  Users,
+  Inbox,
+  ShieldAlert,
+  MousePointerClick,
+  ShieldUser,
+  CircleUser,
+  SquareUser,
+  UserCheck,
+  Megaphone,
+  Briefcase,
+  FileCheck2,
+  UserPlus,
+} from "lucide-react";
 import { StatCard } from "@/components/site";
+import type { DashboardLoaders, DashboardStats } from "@/lib/dashboard";
 
 interface DashboardKpiGridProps {
-  stats: {
-    publishedJobOffers: number;
-    jobOffersTotal: number;
-    jobApplicationsTotal: number;
-    pendingJobApplications: number;
-    internshipRequestsTotal: number;
-    pendingInternshipRequests: number;
-    servicesTotal: number;
-    featuredServices: number;
-    trainingsTotal: number;
-    projectsTotal: number;
-    publicProjects: number;
-    articlesTotal: number;
-    newMessages: number;
-    contactsTotal: number;
-    openReports: number;
-    reportsTotal: number;
-    activeAnnouncements: number;
-    announcementsTotal: number;
-    totalClicks: number;
-    activeShortLinks: number;
-    activeMembers: number;
-    totalMembers: number;
-    activeUsers: number;
-    usersTotal: number;
-    activeStudents: number;
-    studentsTotal: number;
-    activeInstructors: number;
-    instructorsTotal: number;
-    activeAdmins: number;
-    adminsTotal: number;
-  };
-  loaders: {
-    jobOffersLoading: boolean;
-    jobApplicationsLoading: boolean;
-    internshipRequestsLoading: boolean;
-    servicesLoading: boolean;
-    trainingsLoading: boolean;
-    projectsLoading: boolean;
-    articlesLoading: boolean;
-    contactsLoading: boolean;
-    reportsLoading: boolean;
-    announcementsLoading: boolean;
-    shortLinksLoading: boolean;
-    membersLoading: boolean;
-    usersLoading: boolean;
-    studentsLoading: boolean;
-    instructorsLoading: boolean;
-    adminsLoading: boolean;
-  };
+  stats: DashboardStats;
+  loaders: DashboardLoaders;
 }
 
 export function DashboardKpiGrid({ stats, loaders }: DashboardKpiGridProps) {

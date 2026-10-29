@@ -3,13 +3,14 @@ import {
   JOB_OFFER_CONTRACT_LABELS,
   JOB_OFFER_STATUS_LABELS,
   getJobOfferStatusBadge,
+  type APIAdminJobOffer,
 } from "@/data/jobOffers";
-import { JOB_APPLICATION_STATUS_LABELS } from "@/data/jobApplications";
+import { JOB_APPLICATION_STATUS_LABELS, type APIAdminJobApplication } from "@/data/jobApplications";
 
 interface DashboardRecentListsProps {
-  jobOffers: any[];
+  jobOffers: APIAdminJobOffer[];
   jobOffersLoading: boolean;
-  jobApplications: any[];
+  jobApplications: APIAdminJobApplication[];
   jobApplicationsLoading: boolean;
 }
 
@@ -33,14 +34,9 @@ export function DashboardRecentLists({
           )}
           {jobOffers.slice(0, 4).map((offer) => {
             const contractLabel =
-              (JOB_OFFER_CONTRACT_LABELS as Record<string, string>)[offer.contractType] ||
-              offer.contractType;
-            const statusLabel =
-              (JOB_OFFER_STATUS_LABELS as Record<string, string>)[offer.status] ||
-              offer.status;
-            const statusBadgeClass = (
-              getJobOfferStatusBadge as unknown as (status: string) => string
-            )(offer.status);
+              JOB_OFFER_CONTRACT_LABELS[offer.contractType] || offer.contractType;
+            const statusLabel = JOB_OFFER_STATUS_LABELS[offer.status] || offer.status;
+            const statusBadgeClass = getJobOfferStatusBadge(offer.status);
 
             return (
               <li key={offer.id} className="flex items-center justify-between py-3">
@@ -50,7 +46,9 @@ export function DashboardRecentLists({
                     {contractLabel} • {offer.location}
                   </div>
                 </div>
-                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass}`}>
+                <span
+                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusBadgeClass}`}
+                >
                   {statusLabel}
                 </span>
               </li>
@@ -81,7 +79,7 @@ export function DashboardRecentLists({
                 <div className="text-xs text-muted-foreground">{app.email}</div>
               </div>
               <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-                {(JOB_APPLICATION_STATUS_LABELS as Record<string, string>)[app.status] || app.status}
+                {JOB_APPLICATION_STATUS_LABELS[app.status] || app.status}
               </span>
             </li>
           ))}

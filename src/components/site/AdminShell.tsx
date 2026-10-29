@@ -229,6 +229,8 @@ export function AdminShell({ children }: { children?: React.ReactNode }) {
     navigate({ to: "/login" });
   };
 
+  const displayName = user?.name && user.name !== "undefined undefined" ? user.name : "Admin";
+
   return (
     <SidebarProvider>
       <AdminSidebarContent

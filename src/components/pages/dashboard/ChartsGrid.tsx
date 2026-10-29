@@ -1,4 +1,4 @@
-import { ContentCharts } from "./charts/ContentCharts";
+import { ContentCharts } from "./charts/Content";
 import { PlatformCharts } from "./charts/PlatformCharts";
 import { TrafficCharts } from "./charts/TrafficCharts";
 import type { DashboardCharts } from "@/lib/dashboard";

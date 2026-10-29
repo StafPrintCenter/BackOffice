@@ -11,7 +11,7 @@ import { useAdminJobApplicationDetail, useUpdateAdminJobApplicationStatus, useAc
 import type { AdminJobApplicationStatusPayload, JobApplicationManualStatus } from "@/data/jobApplications";
 import { JOB_APPLICATION_STATUS_LABELS, getJobApplicationStatusBadge } from "@/data/jobApplications";
 import { SITE } from "@/data/site";
-import { resolveStorageUrl } from "@/lib/file-url";
+import { resolveStorageUrl } from "@/lib/api/file";
 
 export const Route = createFileRoute("/_admin/jobs/applications/$id")({
   head: () => ({

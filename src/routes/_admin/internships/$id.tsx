@@ -12,7 +12,7 @@ import { useAdminInternshipRequestDetail, useUpdateAdminInternshipRequestStatus,
 import type { AdminInternshipRequestStatusPayload, InternshipRequestManualStatus } from "@/data/internshipRequests";
 import { INTERNSHIP_REQUEST_STATUS_LABELS, getInternshipRequestStatusBadge } from "@/data/internshipRequests";
 import { SITE } from "@/data/site";
-import { resolveStorageUrl } from "@/lib/file-url";
+import { resolveStorageUrl } from "@/lib/api/file";
 
 export const Route = createFileRoute("/_admin/internships/$id")({
   head: () => ({

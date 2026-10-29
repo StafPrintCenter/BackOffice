@@ -1,5 +1,5 @@
 import { ContentCharts } from "./charts/Content";
-import { PlatformCharts } from "./charts/PlatformCharts";
+import { PlatformCharts } from "./charts/Platform";
 import { TrafficCharts } from "./charts/TrafficCharts";
 import type { DashboardCharts } from "@/lib/dashboard";
 

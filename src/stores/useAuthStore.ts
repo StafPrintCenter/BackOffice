@@ -12,7 +12,8 @@ export async function loginAdmin(email: string, password: string): Promise<APIAd
 
   const response = await adminFetch(`/api/admin/auth/login`, { method: "POST", body: formData });
   if (!response.ok) {
-    throw new AdminAuthApiError("Email ou mot de passe incorrect.");
+    const error = await parseApiError(response, "Email ou mot de passe incorrect.");
+    throw new AdminAuthApiError(error.message);
   }
 
   return response.json();
@@ -26,14 +27,18 @@ export async function fetchAdminMe(): Promise<APIAdminUser | null> {
   const response = await adminFetch(`/api/admin/auth/me`);
   if (response.status === 401) return null;
   if (!response.ok) {
-    throw new AdminAuthApiError("Erreur lors de la vérification de la session.");
+    const error = await parseApiError(response, "Erreur lors de la vérification de la session.");
+    throw new AdminAuthApiError(error.message);
   }
   const body = await response.json();
   return body?.data ?? body?.admin ?? body;
 }
 
 export async function logoutAdmin(): Promise<void> {
-  await adminFetch(`/api/admin/auth/logout`, { method: "POST" });
+  const response = await adminFetch(`/api/admin/auth/logout`, { method: "POST" });
+  if (!response.ok) {
+    throw await parseApiError(response, "Erreur lors de la déconnexion.");
+  }
 }
 
 function buildInviteQuery(params: { admin: string; expires: string; signature: string }) {
@@ -49,11 +54,14 @@ export async function verifyAdminInvite(params: {
   expires: string;
   signature: string;
 }): Promise<AdminInviteVerifyResponse> {
-  const response = await adminFetch(`/api/admin/auth/invite-accept?${buildInviteQuery(params)}`);
-  const body = await response.json().catch(() => null);
+  const response = await adminFetch(
+    `/api/admin/auth/invite-accept?${buildInviteQuery(params)}`
+  );
   if (!response.ok) {
-    throw new AdminAuthApiError(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
+    const error = await parseApiError(response, "Ce lien d'invitation est invalide ou a expiré.");
+    throw new AdminAuthApiError(error.message);
   }
+  const body = await response.json();
   return body.data as AdminInviteVerifyResponse;
 }
 
@@ -66,14 +74,18 @@ export async function acceptAdminInvite(params: {
   const fd = new FormData();
   fd.append("password", params.password);
 
-  const response = await adminFetch(`/api/admin/auth/invite-accept?${buildInviteQuery(params)}`, {
-    method: "POST",
-    body: fd,
-  });
-  const body = await response.json().catch(() => null);
+  const response = await adminFetch(
+    `/api/admin/auth/invite-accept?${buildInviteQuery(params)}`,
+    {
+      method: "POST",
+      body: fd,
+    }
+  );
   if (!response.ok) {
-    throw new AdminAuthApiError(body?.message || "Ce lien d'invitation est invalide ou a expiré.");
+    const error = await parseApiError(response, "Ce lien d'invitation est invalide ou a expiré.");
+    throw new AdminAuthApiError(error.message);
   }
+  const body = await response.json();
   return body as { message: string };
 }
 

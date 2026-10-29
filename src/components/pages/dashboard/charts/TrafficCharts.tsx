@@ -1,5 +1,5 @@
 import { Link2 } from "lucide-react";
-import { BarChartCard, BarChartView, PieChartCard } from "./ChartCards";
+import { BarChartCard, BarChartView, PieChartCard } from "./Cards";
 import type { DashboardCharts } from "@/lib/dashboard";
 
 type TrafficChartData = Pick<

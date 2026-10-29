@@ -1,4 +1,4 @@
-import { BarChartCard } from "./ChartCards";
+import { BarChartCard } from "./Cards";
 import type { DashboardCharts } from "@/lib/dashboard";
 
 type PlatformChartData = Pick<

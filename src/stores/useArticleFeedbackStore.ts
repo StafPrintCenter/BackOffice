@@ -1,6 +1,6 @@
 import { createResourceStore } from "./createResourceStore";
 import { useQuery } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import type { AdminListParams } from "./createResourceStore";
 import type { APIAdminArticleFeedback, APIAdminArticleFeedbackGroup, APIAdminArticleFeedbackGroupDetail } from "@/data/articleFeedback";
 

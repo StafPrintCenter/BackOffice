@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import { parseApiError } from "@/lib/api-error";
 import type { APIAdminUser, APIAdminLoginResponse, AdminInviteVerifyResponse } from "@/data/auth";
 

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import { createResourceStore } from "./createResourceStore";
 import type { APIAdminJobOffer, AdminJobOfferCreatePayload, AdminJobOfferUpdatePayload, APIAdminJobOfferDetailWithApplicants, APIAdminJobOfferApplicant } from "@/data/jobOffers";
 

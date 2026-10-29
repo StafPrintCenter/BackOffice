@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import type { AdminReviewQuestionPayload } from "@/data/reviewsForms";
 
 // On invalide le cache du formulaire parent : il n'existe pas d'endpoint "liste des questions"

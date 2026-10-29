@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createResourceStore } from "./createResourceStore";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import type { APIAdminShortLinkDetail, AdminShortLinkPayload, ShortLinkStats } from "@/data/shortlinks";
 
 const store = createResourceStore<APIAdminShortLinkDetail, AdminShortLinkPayload>({

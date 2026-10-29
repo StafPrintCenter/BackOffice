@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import type {
   APIPaymentDetailResponse, APIPaymentListItem, APIPaymentsSummary,
   CreatePaymentPayload, PaymentsListParams,

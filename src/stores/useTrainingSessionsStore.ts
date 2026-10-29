@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import type {
   APIReviewRequest, APISession, APISessionDetail, ReviewStatus, SessionsListParams,
 } from "@/data/trainingSessions";

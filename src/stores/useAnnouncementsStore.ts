@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import type { AdminAnnouncementAnalytics } from "@/data/announcements";
 import { createResourceStore } from "./createResourceStore";
 import type { APIAdminAnnouncement, AdminAnnouncementPayload } from "@/data/announcements";

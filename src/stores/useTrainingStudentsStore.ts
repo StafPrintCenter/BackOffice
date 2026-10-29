@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import type { APITrainingStudent } from "@/data/trainingEnrollments";
 
 type Meta = { currentPage: number; lastPage: number; perPage: number; total: number };

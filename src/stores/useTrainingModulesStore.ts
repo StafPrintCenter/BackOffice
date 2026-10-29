@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminFetch } from "@/lib/api-url";
+import { adminFetch } from "@/lib/api/resolve-url";
 import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, ModuleTrainingSummary } from "@/data/trainingModules";
 
 function buildFormData(payload: Record<string, unknown>): FormData {

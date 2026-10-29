@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, UserCircle, MessageSquareDiff, Group, Bell } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, LogOut, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, UserCircle, MessageSquareDiff, Group, Bell, ChevronDown } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 import { ConfirmDisconnect } from "@/components/site/AdminBits";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, SidebarInset, useSidebar, SidebarMenuBadge } from "@/components/ui/sidebar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { NotificationBell } from "@/components/pages/notifications/shared";
 import { useUnreadCount } from "@/stores/useNotificationsStore";
 import { SocialLinks } from "@/components/site/SocialLinks";

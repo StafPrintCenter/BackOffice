@@ -1,6 +1,6 @@
 import { ContentCharts } from "./charts/Content";
 import { PlatformCharts } from "./charts/Platform";
-import { TrafficCharts } from "./charts/TrafficCharts";
+import { TrafficCharts } from "./charts/Traffic";
 import type { DashboardCharts } from "@/lib/dashboard";
 
 interface DashboardChartsGridProps extends DashboardCharts {

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { AdminAnnouncementAnalytics } from "@/data/announcements";
 import { createResourceStore } from "./createResourceStore";
 import type { APIAdminAnnouncement, AdminAnnouncementPayload } from "@/data/announcements";
@@ -23,7 +24,7 @@ export const useDeleteAdminAnnouncement = store.useRemove;
 
 async function fetchAnalytics(id: string): Promise<AdminAnnouncementAnalytics> {
   const response = await adminFetch(`/api/admin/announcements/${id}/analytics`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération des analyses");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération des analyses");
   return response.json();
 }
 

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type {
   APIAdminNewsletterCampaignDetail,
@@ -43,21 +44,21 @@ async function scheduleCampaign(id: string, payload: AdminNewsletterCampaignSche
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la programmation de la campagne");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la programmation de la campagne");
   const json = await response.json();
   return json.data;
 }
 
 async function cancelScheduleCampaign(id: string): Promise<APIAdminNewsletterCampaignDetail> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/cancel-schedule`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de l'annulation de la programmation");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'annulation de la programmation");
   const json = await response.json();
   return json.data;
 }
 
 async function sendCampaign(id: string): Promise<APIAdminNewsletterCampaignDetail> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/send`, { method: "POST" });
-  if (!response.ok) throw new Error("Erreur lors de l'envoi de la campagne");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'envoi de la campagne");
   const json = await response.json();
   return json.data;
 }

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type {
   APIAdminInstructor, AdminInstructorInvitePayload, AdminInstructorAlertPayload, AdminInstructorBlockPayload,
@@ -35,7 +36,7 @@ async function inviteInstructor(payload: AdminInstructorInvitePayload): Promise<
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de l'invitation de l'instructeur");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'invitation de l'instructeur");
   const json = await response.json();
   return json.data;
 }
@@ -54,20 +55,20 @@ export function useInviteAdminInstructor() {
 
 async function approveInstructor(id: string): Promise<APIAdminInstructor> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/approve`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de l'approbation de l'instructeur");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'approbation de l'instructeur");
   const json = await response.json();
   return json.data;
 }
 
 async function resendInstructorInvite(id: string): Promise<{ message: string }> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/invite/resend`, { method: "POST" });
-  if (!response.ok) throw new Error("Erreur lors du renvoi de l'invitation");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors du renvoi de l'invitation");
   return response.json();
 }
 
 async function revokeInstructorInvite(id: string): Promise<APIAdminInstructor> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/invite/revoke`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la révocation de l'invitation");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la révocation de l'invitation");
   const json = await response.json();
   return json.data;
 }
@@ -77,7 +78,7 @@ async function alertInstructor(id: string, payload: AdminInstructorAlertPayload)
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de l'envoi de l'alerte");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'envoi de l'alerte");
   return response.json();
 }
 
@@ -86,14 +87,14 @@ async function blockInstructor(id: string, payload: AdminInstructorBlockPayload)
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors du blocage de l'instructeur");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors du blocage de l'instructeur");
   const json = await response.json();
   return json.data;
 }
 
 async function reactivateInstructor(id: string): Promise<APIAdminInstructor> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/reactivate`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la réactivation de l'instructeur");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la réactivation de l'instructeur");
   const json = await response.json();
   return json.data;
 }

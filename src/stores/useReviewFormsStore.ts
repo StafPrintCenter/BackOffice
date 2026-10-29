@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type {
   APIAdminReviewFormDetail,
@@ -31,28 +32,28 @@ export const useDeleteAdminReviewForm = store.useRemove;
 
 async function fetchAnalytics(id: string): Promise<AdminReviewFormAnalytics> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/analytics`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération des analyses");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération des analyses");
   // Pas d'enveloppe { data } sur cet endpoint, contrairement au reste de la ressource.
   return response.json();
 }
 
 async function publishForm(id: string): Promise<APIAdminReviewFormDetail> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/publish`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la publication du formulaire");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la publication du formulaire");
   const json = await response.json();
   return json.data;
 }
 
 async function disableForm(id: string): Promise<APIAdminReviewFormDetail> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/disable`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la désactivation du formulaire");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la désactivation du formulaire");
   const json = await response.json();
   return json.data;
 }
 
 async function duplicateForm(id: string): Promise<APIAdminReviewFormDetail> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/duplicate`, { method: "POST" });
-  if (!response.ok) throw new Error("Erreur lors de la duplication du formulaire");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la duplication du formulaire");
   const json = await response.json();
   return json.data;
 }

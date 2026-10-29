@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type { APIAdminReviewInvitation, AdminReviewInvitationPayload } from "@/data/reviewInvitations";
 
@@ -23,7 +24,7 @@ export const useCreateAdminReviewInvitation = store.useCreate;
 
 async function revokeInvitation(id: string): Promise<APIAdminReviewInvitation> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/revoke`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la révocation de l'invitation");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la révocation de l'invitation");
   const json = await response.json();
   return json.data;
 }
@@ -38,7 +39,7 @@ export function useRevokeAdminReviewInvitation() {
 
 async function resendInvitation(id: string): Promise<void> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/resend`, { method: "POST" });
-  if (!response.ok) throw new Error("Erreur lors du renvoi de l'invitation");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors du renvoi de l'invitation");
 }
 
 export function useResendAdminReviewInvitation() {

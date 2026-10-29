@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { AdminListParams } from "./createResourceStore";
 import type { APIAdminNewsletterSubscriberListItem, APIAdminNewsletterSubscriberDetail, AdminNewsletterBlockPayload, } from "@/data/newsletterSubscriber";
 
@@ -31,21 +32,21 @@ async function fetchList(params: AdminListParams = {}): Promise<ListResponse<API
     if (value !== undefined && value !== "") qp.append(key, String(value));
   }
   const response = await adminFetch(`/api/admin/${basePath}/list?${qp.toString()}`);
-  if (!response.ok) throw new Error(`Erreur lors de la récupération de "${resourceKey}"`);
+  if (!response.ok) throw await parseApiError(response, `Erreur lors de la récupération de "${resourceKey}"`);
   return response.json();
 }
 
 async function fetchById(id: string): Promise<APIAdminNewsletterSubscriberDetail | null> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}`);
   if (response.status === 404) return null;
-  if (!response.ok) throw new Error(`Erreur lors de la récupération de l'élément "${resourceKey}"`);
+  if (!response.ok) throw await parseApiError(response, `Erreur lors de la récupération de l'élément "${resourceKey}"`);
   const json: DetailResponse<APIAdminNewsletterSubscriberDetail> = await response.json();
   return json.data;
 }
 
 async function removeItem(id: string): Promise<void> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}`, { method: "DELETE" });
-  if (!response.ok && response.status !== 204) throw new Error(`Erreur lors de la suppression de "${resourceKey}"`);
+  if (!response.ok && response.status !== 204) throw await parseApiError(response, `Erreur lors de la suppression de "${resourceKey}"`);
 }
 
 async function blockSubscriber(id: string, payload: AdminNewsletterBlockPayload): Promise<APIAdminNewsletterSubscriberDetail> {
@@ -53,14 +54,14 @@ async function blockSubscriber(id: string, payload: AdminNewsletterBlockPayload)
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error(`Erreur lors du blocage de l'abonné`);
+  if (!response.ok) throw await parseApiError(response, `Erreur lors du blocage de l'abonné`);
   const json: DetailResponse<APIAdminNewsletterSubscriberDetail> = await response.json();
   return json.data;
 }
 
 async function reactivateSubscriber(id: string): Promise<APIAdminNewsletterSubscriberDetail> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/reactivate`, { method: "PUT" });
-  if (!response.ok) throw new Error(`Erreur lors de la réactivation de l'abonné`);
+  if (!response.ok) throw await parseApiError(response, `Erreur lors de la réactivation de l'abonné`);
   const json: DetailResponse<APIAdminNewsletterSubscriberDetail> = await response.json();
   return json.data;
 }

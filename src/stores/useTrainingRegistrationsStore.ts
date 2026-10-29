@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type { APIAdminTrainingRegistration, AdminTrainingRegistrationStatusPayload } from "@/data/trainingRegistrations";
 
@@ -31,7 +32,7 @@ async function updateTrainingRegistrationStatus(
     method: "PUT",
     body: fd,
   });
-  if (!response.ok) throw new Error("Erreur lors de la mise à jour du statut de l'inscription");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la mise à jour du statut de l'inscription");
   const json: { data: APIAdminTrainingRegistration } = await response.json();
   return json.data;
 }

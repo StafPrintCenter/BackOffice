@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type {
   APIAdminInternshipRequest, AdminInternshipRequestStatusPayload, AdminInternshipRequestInfoPayload,
@@ -35,7 +36,7 @@ async function updateStatus(id: string, payload: AdminInternshipRequestStatusPay
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la mise à jour de la demande");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la mise à jour de la demande");
   const json: { data: APIAdminInternshipRequest } = await response.json();
   return json.data;
 }
@@ -57,21 +58,21 @@ async function requestInfo(id: string, payload: AdminInternshipRequestInfoPayloa
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la demande d'informations");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la demande d'informations");
   const json = await response.json();
   return json.data;
 }
 
 async function acceptRequest(id: string): Promise<APIAdminInternshipRequest> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/accept`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de l'acceptation de la demande");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'acceptation de la demande");
   const json = await response.json();
   return json.data;
 }
 
 async function rejectRequest(id: string): Promise<APIAdminInternshipRequest> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/reject`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors du rejet de la demande");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors du rejet de la demande");
   const json = await response.json();
   return json.data;
 }

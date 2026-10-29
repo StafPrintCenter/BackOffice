@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type { APIAdminJobOffer, AdminJobOfferCreatePayload, AdminJobOfferUpdatePayload, APIAdminJobOfferDetailWithApplicants, APIAdminJobOfferApplicant } from "@/data/jobOffers";
 
@@ -43,7 +44,7 @@ async function updateOffer(id: string, payload: AdminJobOfferUpdatePayload): Pro
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la modification de l'offre");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la modification de l'offre");
   const json = await response.json();
   return json.data;
 }
@@ -62,28 +63,28 @@ export function useUpdateAdminJobOffer() {
 
 async function publishOffer(id: string): Promise<APIAdminJobOffer> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/publish`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la publication de l'offre");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la publication de l'offre");
   const json = await response.json();
   return json.data;
 }
 
 async function disableOffer(id: string): Promise<APIAdminJobOffer> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/disable`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la désactivation de l'offre");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la désactivation de l'offre");
   const json = await response.json();
   return json.data;
 }
 
 async function reactivateOffer(id: string): Promise<APIAdminJobOffer> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/reactivate`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la réactivation de l'offre");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la réactivation de l'offre");
   const json = await response.json();
   return json.data;
 }
 
 async function fetchOfferWithApplicants(id: string): Promise<APIAdminJobOfferDetailWithApplicants> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération de l'offre");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération de l'offre");
   const json: { data: APIAdminJobOffer; applicants: APIAdminJobOfferApplicant[] } = await response.json();
   return { offer: json.data, applicants: json.applicants ?? [] };
 }

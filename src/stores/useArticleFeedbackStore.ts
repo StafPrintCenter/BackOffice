@@ -1,6 +1,7 @@
 import { createResourceStore } from "./createResourceStore";
 import { useQuery } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { AdminListParams } from "./createResourceStore";
 import type { APIAdminArticleFeedback, APIAdminArticleFeedbackGroup, APIAdminArticleFeedbackGroupDetail } from "@/data/articleFeedback";
 
@@ -31,7 +32,7 @@ async function fetchArticleFeedbackGroups(params: AdminListParams = {}): Promise
   }
   const response = await adminFetch(`/api/admin/docs/article-feedback/groups?${qp.toString()}`);
   if (!response.ok) {
-    throw new Error("Erreur lors de la récupération des groupes de retours");
+    throw await parseApiError(response, "Erreur lors de la récupération des groupes de retours");
   }
   return response.json();
 }
@@ -55,7 +56,7 @@ async function fetchArticleFeedbackGroup(articleKey: string): Promise<APIAdminAr
   const qp = new URLSearchParams({ article_key: articleKey });
   const response = await adminFetch(`/api/admin/docs/article-feedback/group?${qp.toString()}`);
   if (response.status === 404) { return null };
-  if (!response.ok) { throw new Error("Erreur lors de la récupération du groupe de retours") };
+  if (!response.ok) { throw await parseApiError(response, "Erreur lors de la récupération du groupe de retours") };
   const json: { data: APIAdminArticleFeedbackGroupDetail } = await response.json();
   return json.data;
 }

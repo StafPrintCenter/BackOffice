@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, ModuleTrainingSummary } from "@/data/trainingModules";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
@@ -18,7 +19,7 @@ function buildFormData(payload: Record<string, unknown>): FormData {
 
 async function fetchTrainingModules(trainingId: string): Promise<APIAdminTrainingModule[]> {
   const response = await adminFetch(`/api/admin/trainings/${trainingId}/modules/list`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération des modules");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération des modules");
 
   const json: { data: Array<{ training: ModuleTrainingSummary; module: APIAdminTrainingModule }> } = await response.json();
   return json.data.map((item) => item.module);
@@ -40,7 +41,7 @@ async function createModule(trainingId: string, payload: AdminTrainingModulePayl
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la création du module");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la création du module");
   const json: { data: APIAdminTrainingModule } = await response.json();
   return json.data;
 }
@@ -68,7 +69,7 @@ export interface ModuleDetailWithLessons {
 
 async function fetchModuleDetail(moduleId: string): Promise<ModuleDetailWithLessons> {
   const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération du module");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération du module");
   const json: {
     data: { training: ModuleTrainingSummary; module: APIAdminTrainingModule };
     lessons: Array<{ training: ModuleTrainingSummary; module: unknown; lesson: APIAdminLesson }>;
@@ -104,7 +105,7 @@ async function updateModule(moduleId: string, payload: AdminTrainingModulePayloa
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la modification du module");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la modification du module");
   const json: { data: APIAdminTrainingModule } = await response.json();
   return json.data;
 }
@@ -125,7 +126,7 @@ export function useUpdateAdminTrainingModule() {
 
 async function deleteModule(moduleId: string): Promise<void> {
   const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}`, { method: "DELETE" });
-  if (!response.ok && response.status !== 204) throw new Error("Erreur lors de la suppression du module");
+  if (!response.ok && response.status !== 204) throw await parseApiError(response, "Erreur lors de la suppression du module");
 }
 
 export const deleteAdminTrainingModule = deleteModule;
@@ -142,7 +143,7 @@ export function useDeleteAdminTrainingModule() {
 
 async function publishModule(moduleId: string): Promise<APIAdminTrainingModule> {
   const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}/publish`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la publication du module");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la publication du module");
   const json: { data: APIAdminTrainingModule } = await response.json();
   return json.data;
 }

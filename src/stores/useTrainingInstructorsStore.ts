@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { APITrainingInstructorAssignment, AdminTrainingInstructorAssignPayload } from "@/data/trainingInstructors";
 
 
@@ -14,7 +15,7 @@ function buildFormData(payload: Record<string, unknown>): FormData {
 
 async function fetchTrainingInstructors(trainingId: string): Promise<APITrainingInstructorAssignment[]> {
   const response = await adminFetch(`/api/admin/trainings/${trainingId}/instructors/list`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération des formateurs assignés");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération des formateurs assignés");
   const json: { data: APITrainingInstructorAssignment[] } = await response.json();
   return json.data;
 }
@@ -33,16 +34,7 @@ async function assignInstructor(trainingId: string, payload: AdminTrainingInstru
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) {
-    let message = "Erreur lors de l'assignation du formateur";
-    try {
-      const json = await response.json();
-      if (json?.message) message = json.message;
-    } catch {
-      // réponse non-JSON, on garde le message générique
-    }
-    throw new Error(message);
-  }
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'assignation du formateur");
   return response.json();
 }
 
@@ -64,7 +56,7 @@ async function removeInstructorAssignment(assignmentId: string): Promise<void> {
   const response = await adminFetch(`/api/admin/trainings/instructors/${assignmentId}`, {
     method: "DELETE",
   });
-  if (!response.ok && response.status !== 204) throw new Error("Erreur lors du retrait du formateur");
+  if (!response.ok && response.status !== 204) throw await parseApiError(response, "Erreur lors du retrait du formateur");
 }
 
 export const removeAdminTrainingInstructorAssignment = removeInstructorAssignment;

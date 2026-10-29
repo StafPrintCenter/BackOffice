@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { APIAdminQuiz, APIAdminQuizDetail, AdminQuizPayload, AdminQuizQuestionPayload, QuizQuestion } from "@/data/quizzes";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
@@ -24,7 +25,7 @@ async function createQuiz(lessonId: string, payload: AdminQuizPayload): Promise<
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la création du quiz");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la création du quiz");
   const json: { data: APIAdminQuiz } = await response.json();
   return json.data;
 }
@@ -45,7 +46,7 @@ export function useCreateAdminQuiz() {
 
 async function fetchQuizDetail(quizId: string): Promise<APIAdminQuizDetail> {
   const response = await adminFetch(`/api/admin/trainings/quizzes/${quizId}`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération du quiz");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération du quiz");
   const json: { data: APIAdminQuizDetail } = await response.json();
   return json.data;
 }
@@ -66,7 +67,7 @@ async function updateQuiz(quizId: string, payload: AdminQuizPayload): Promise<AP
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la modification du quiz");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la modification du quiz");
   const json: { data: APIAdminQuiz } = await response.json();
   return json.data;
 }
@@ -86,7 +87,7 @@ export function useUpdateAdminQuiz() {
 
 async function deleteQuiz(quizId: string): Promise<void> {
   const response = await adminFetch(`/api/admin/trainings/quizzes/${quizId}`, { method: "DELETE" });
-  if (!response.ok && response.status !== 204) throw new Error("Erreur lors de la suppression du quiz");
+  if (!response.ok && response.status !== 204) throw await parseApiError(response, "Erreur lors de la suppression du quiz");
 }
 
 export const deleteAdminQuiz = deleteQuiz;
@@ -103,7 +104,7 @@ export function useDeleteAdminQuiz() {
 
 async function publishQuiz(quizId: string): Promise<APIAdminQuiz> {
   const response = await adminFetch(`/api/admin/trainings/quizzes/${quizId}/publish`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la publication du quiz - le quiz doit avoir au moins une question");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la publication du quiz - le quiz doit avoir au moins une question");
   const json: { data: APIAdminQuiz } = await response.json();
   return json.data;
 }
@@ -128,7 +129,7 @@ async function createQuestion(quizId: string, payload: AdminQuizQuestionPayload)
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de l'ajout de la question");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'ajout de la question");
   const json: { data: QuizQuestion } = await response.json();
   return json.data;
 }
@@ -150,7 +151,7 @@ async function updateQuestion(questionId: string, payload: AdminQuizQuestionPayl
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la modification de la question");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la modification de la question");
   const json: { data: QuizQuestion } = await response.json();
   return json.data;
 }
@@ -170,7 +171,7 @@ export function useUpdateAdminQuizQuestion() {
 
 async function deleteQuestion(questionId: string): Promise<void> {
   const response = await adminFetch(`/api/admin/trainings/questions/${questionId}`, { method: "DELETE" });
-  if (!response.ok && response.status !== 204) throw new Error("Erreur lors de la suppression de la question");
+  if (!response.ok && response.status !== 204) throw await parseApiError(response, "Erreur lors de la suppression de la question");
 }
 
 export const deleteAdminQuizQuestion = deleteQuestion;

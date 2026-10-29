@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type { APIAdminAppointment, AdminAppointmentStatusPayload } from "@/data/appointments";
 
@@ -26,7 +27,7 @@ async function updateAppointmentStatus(
     method: "PUT",
     body: fd,
   });
-  if (!response.ok) throw new Error("Erreur lors de la mise à jour du statut du rendez-vous");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la mise à jour du statut du rendez-vous");
   const json: { data: APIAdminAppointment } = await response.json();
   return json.data;
 }

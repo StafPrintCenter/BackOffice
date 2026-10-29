@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { PendingReviewsResponse, PendingReviewsParams, AdminContentReviewPayload, APIAdminContentReview } from "@/data/contentReviews";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
@@ -20,7 +21,7 @@ async function fetchPendingReviews(params: PendingReviewsParams = {}): Promise<P
   if (params.page) qp.append("page", String(params.page));
 
   const response = await adminFetch(`/api/admin/trainings/content-reviews/pending?${qp.toString()}`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération des soumissions en attente");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération des soumissions en attente");
   return response.json();
 }
 
@@ -54,7 +55,7 @@ async function createReview(payload: AdminContentReviewPayload): Promise<APIAdmi
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de l'enregistrement de la décision");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'enregistrement de la décision");
   const json: { data: APIAdminContentReview } = await response.json();
   return json.data;
 }

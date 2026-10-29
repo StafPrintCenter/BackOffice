@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type {
   APIReviewRequest, APISession, APISessionDetail, ReviewStatus, SessionsListParams,
 } from "@/data/trainingSessions";
@@ -7,14 +8,7 @@ import type {
 type Meta = { currentPage: number; lastPage: number; perPage: number; total: number; pendingTotal?: number };
 
 async function ensureOk(response: Response, fallback: string): Promise<void> {
-  if (response.ok) return;
-  let message = fallback;
-  try {
-    const json = await response.json();
-    if (typeof json?.message === "string") message = json.message;
-    else if (json?.errors) message = Object.values(json.errors).flat().join(" ") || fallback;
-  } catch { /* corps non-JSON */ }
-  throw new Error(message);
+  if (!response.ok) throw await parseApiError(response, fallback);
 }
 
 function toQuery(params: Record<string, unknown>): string {

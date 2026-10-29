@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type {
   APIAdminReviewResponseDetail,
@@ -33,15 +34,7 @@ async function updatePublicationStatus(
     body: fd,
   });
   if (!response.ok) {
-    // Le backend renvoie un message métier explicite (ex: avis non autorisé à la publication) → on le propage.
-    let message = "Erreur lors de la mise à jour du statut de publication";
-    try {
-      const body = await response.json();
-      if (body?.message) message = body.message;
-    } catch {
-      // ignore, on garde le message générique
-    }
-    throw new Error(message);
+    throw await parseApiError(response, "Erreur lors de la mise à jour du statut de publication");
   }
   const json: { data: APIAdminReviewResponseDetail } = await response.json();
   return json.data;

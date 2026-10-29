@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
 import type { APIAdminJobApplication, AdminJobApplicationStatusPayload } from "@/data/jobApplications";
 
@@ -31,7 +32,7 @@ async function updateStatus(id: string, payload: AdminJobApplicationStatusPayloa
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la mise à jour de la candidature");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la mise à jour de la candidature");
   const json: { data: APIAdminJobApplication } = await response.json();
   return json.data;
 }
@@ -50,14 +51,14 @@ export function useUpdateAdminJobApplicationStatus() {
 
 async function acceptApplication(id: string): Promise<APIAdminJobApplication> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/accept`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de l'acceptation de la candidature");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'acceptation de la candidature");
   const json = await response.json();
   return json.data;
 }
 
 async function rejectApplication(id: string): Promise<APIAdminJobApplication> {
   const response = await adminFetch(`/api/admin/${basePath}/${id}/reject`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors du rejet de la candidature");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors du rejet de la candidature");
   const json = await response.json();
   return json.data;
 }

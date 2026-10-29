@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 
 async function readMessage(response: Response, fallback: string): Promise<string> {
   try {
@@ -23,8 +24,8 @@ export function useRegenerateCertificate() {
   return useMutation({
     mutationFn: async (enrollmentId: string) => {
       const response = await adminFetch(`/api/admin/trainings/enrollments/${enrollmentId}/certificates/regenerate`, { method: "POST" });
+      if (!response.ok) throw await parseApiError(response, "Impossible de relancer la génération.");
       const message = await readMessage(response, "Impossible de relancer la génération.");
-      if (!response.ok) throw new Error(message); // 409 : message métier du backend
       return message;
     },
     onSuccess: invalidate,
@@ -38,8 +39,8 @@ export function useRevokeCertificate() {
       const fd = new FormData();
       fd.append("reason", reason);
       const response = await adminFetch(`/api/admin/trainings/enrollments/certificates/${certificateId}/revoke`, { method: "PUT", body: fd });
+      if (!response.ok) throw await parseApiError(response, "Impossible de révoquer le certificat.");
       const message = await readMessage(response, "Impossible de révoquer le certificat.");
-      if (!response.ok) throw new Error(message);
       return message;
     },
     onSuccess: invalidate,

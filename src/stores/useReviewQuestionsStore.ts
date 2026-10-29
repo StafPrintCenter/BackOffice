@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { AdminReviewQuestionPayload } from "@/data/reviewsForms";
 
 // On invalide le cache du formulaire parent : il n'existe pas d'endpoint "liste des questions"
@@ -21,7 +22,7 @@ async function createQuestion(formId: string, payload: AdminReviewQuestionPayloa
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de l'ajout de la question");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de l'ajout de la question");
   const json = await response.json();
   return json.data;
 }
@@ -31,14 +32,14 @@ async function updateQuestion(questionId: string, payload: AdminReviewQuestionPa
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la modification de la question");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la modification de la question");
   const json = await response.json();
   return json.data;
 }
 
 async function deleteQuestion(questionId: string): Promise<void> {
   const response = await adminFetch(`/api/admin/${basePath}/${questionId}`, { method: "DELETE" });
-  if (!response.ok && response.status !== 204) throw new Error("Erreur lors de la suppression de la question");
+  if (!response.ok && response.status !== 204) throw await parseApiError(response, "Erreur lors de la suppression de la question");
 }
 
 /** Format confirmé par ReorderController.php : order = [{"id":"uuid","order":0}, ...] */
@@ -47,7 +48,7 @@ async function reorderQuestions(formId: string, orderedItems: { id: string; orde
     method: "PUT",
     body: buildFormData({ order: JSON.stringify(orderedItems) }),
   });
-  if (!response.ok) throw new Error("Erreur lors de la réorganisation des questions");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la réorganisation des questions");
   return response.json();
 }
 

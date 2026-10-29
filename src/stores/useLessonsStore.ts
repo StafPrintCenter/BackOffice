@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { APIAdminLesson, AdminLessonPayload, ModuleTrainingSummary } from "@/data/trainingModules";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
@@ -26,7 +27,7 @@ async function createLesson(moduleId: string, payload: AdminLessonPayload): Prom
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la création de la leçon");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la création de la leçon");
   const json: { data: APIAdminLesson } = await response.json();
   return json.data;
 }
@@ -67,7 +68,7 @@ interface LessonDetailResponse {
 
 async function fetchLessonDetail(lessonId: string): Promise<APIAdminLesson> {
   const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération de la leçon");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération de la leçon");
   const json: LessonDetailResponse = await response.json();
   return json.data.lesson;
 }
@@ -89,7 +90,7 @@ async function updateLesson(lessonId: string, payload: AdminLessonPayload): Prom
     method: "PUT",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });
-  if (!response.ok) throw new Error("Erreur lors de la modification de la leçon");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la modification de la leçon");
   const json: { data: APIAdminLesson } = await response.json();
   return json.data;
 }
@@ -110,7 +111,7 @@ export function useUpdateAdminLesson() {
 
 async function deleteLesson(lessonId: string): Promise<void> {
   const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}`, { method: "DELETE" });
-  if (!response.ok && response.status !== 204) throw new Error("Erreur lors de la suppression de la leçon");
+  if (!response.ok && response.status !== 204) throw await parseApiError(response, "Erreur lors de la suppression de la leçon");
 }
 
 export const deleteAdminLesson = deleteLesson;
@@ -127,7 +128,7 @@ export function useDeleteAdminLesson() {
 
 async function publishLesson(lessonId: string): Promise<APIAdminLesson> {
   const response = await adminFetch(`/api/admin/trainings/lessons/${lessonId}/publish`, { method: "PUT" });
-  if (!response.ok) throw new Error("Erreur lors de la publication de la leçon");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la publication de la leçon");
   const json: { data: APIAdminLesson } = await response.json();
   return json.data;
 }

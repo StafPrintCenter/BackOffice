@@ -1,19 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type {
   APINotificationDetail, APINotificationListItem, APINotificationPreference,
   APINotificationsMeta, DeliveryMode, NotificationCategory, NotificationAction, APICleanupSettings
 } from "@/data/notifications";
 
 async function ensureOk(response: Response, fallback: string): Promise<void> {
-  if (response.ok) return;
-  let message = fallback;
-  try {
-    const json = await response.json();
-    if (typeof json?.message === "string") message = json.message;
-    else if (json?.errors) message = Object.values(json.errors).flat().join(" ") || fallback;
-  } catch { /* corps non-JSON */ }
-  throw new Error(message);
+  if (!response.ok) throw await parseApiError(response, fallback);
 }
 
 export interface NotificationsListParams { page?: number; perPage?: number }

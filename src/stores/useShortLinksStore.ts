@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createResourceStore } from "./createResourceStore";
 import { adminFetch } from "@/lib/api/resolve-url";
+import { parseApiError } from "@/lib/api/error";
 import type { APIAdminShortLinkDetail, AdminShortLinkPayload, ShortLinkStats } from "@/data/shortlinks";
 
 const store = createResourceStore<APIAdminShortLinkDetail, AdminShortLinkPayload>({
@@ -23,7 +24,7 @@ export const useDeleteAdminShortLink = store.useRemove;
 // Endpoint additionnel : /admin/shortlinks/{id}/stats (non couvert par createResourceStore)
 export async function fetchAdminShortLinkStats(id: string): Promise<ShortLinkStats> {
   const response = await adminFetch(`/api/admin/shortlinks/${id}/stats`);
-  if (!response.ok) throw new Error("Erreur lors de la récupération des statistiques du lien");
+  if (!response.ok) throw await parseApiError(response, "Erreur lors de la récupération des statistiques du lien");
   return response.json();
 }
 

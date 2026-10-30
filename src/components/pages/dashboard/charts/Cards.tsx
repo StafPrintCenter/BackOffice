@@ -32,6 +32,21 @@ const tooltipStyle = {
   borderRadius: 8,
 };
 
+function getCategoryTooltipLabel(
+  payload: Array<{ payload?: unknown }>,
+  categoryKey: "name" | "type",
+): string {
+  const row = payload[0]?.payload;
+  if (!row || typeof row !== "object" || !(categoryKey in row)) {
+    return "Sans catégorie";
+  }
+
+  const category = Reflect.get(row, categoryKey);
+  return typeof category === "string" || typeof category === "number"
+    ? String(category)
+    : "Sans catégorie";
+}
+
 export interface BarChartViewProps {
   data: DashboardChartItem[];
   categoryKey?: "name" | "type";
@@ -64,17 +79,26 @@ export function BarChartView({
               type="category"
               dataKey={categoryKey}
               stroke="var(--muted-foreground)"
+              tick={{ fill: "var(--foreground)" }}
               fontSize={fontSize}
               width={categoryAxisWidth}
             />
           </>
         ) : (
           <>
-            <XAxis dataKey={categoryKey} stroke="var(--muted-foreground)" fontSize={fontSize} />
+            <XAxis
+              dataKey={categoryKey}
+              stroke="var(--muted-foreground)"
+              tick={{ fill: "var(--foreground)" }}
+              fontSize={fontSize}
+            />
             <YAxis stroke="var(--muted-foreground)" fontSize={fontSize} />
           </>
         )}
-        <Tooltip contentStyle={tooltipStyle} />
+        <Tooltip
+          contentStyle={tooltipStyle}
+          labelFormatter={(_label, payload) => getCategoryTooltipLabel(payload, categoryKey)}
+        />
         <Legend
           content={<CategoryLegend data={data} categoryKey={categoryKey} />}
           wrapperStyle={{ paddingTop: 8 }}

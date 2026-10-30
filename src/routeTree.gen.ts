@@ -26,6 +26,7 @@ import { Route as AdminArticlesIdRouteImport } from './routes/_admin/articles/$i
 import { Route as AdminCategoriesIndexRouteImport } from './routes/_admin/categories/index'
 import { Route as AdminCategoriesIdRouteImport } from './routes/_admin/categories/$id'
 import { Route as AdminCommunityIndexRouteImport } from './routes/_admin/community/index'
+import { Route as AdminCommunityIdRouteImport } from './routes/_admin/community/$id'
 import { Route as AdminEcosystemIndexRouteImport } from './routes/_admin/ecosystem/index'
 import { Route as AdminEcosystemIdRouteImport } from './routes/_admin/ecosystem/$id'
 import { Route as AdminFaqsIndexRouteImport } from './routes/_admin/faqs/index'
@@ -169,6 +170,11 @@ const AdminCategoriesIdRoute = AdminCategoriesIdRouteImport.update({
 const AdminCommunityIndexRoute = AdminCommunityIndexRouteImport.update({
   id: '/community/',
   path: '/community/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCommunityIdRoute = AdminCommunityIdRouteImport.update({
+  id: '/community/$id',
+  path: '/community/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminEcosystemIndexRoute = AdminEcosystemIndexRouteImport.update({
@@ -513,6 +519,7 @@ export interface FileRoutesByFullPath {
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
+  '/community/$id': typeof AdminCommunityIdRoute
   '/ecosystem/$id': typeof AdminEcosystemIdRoute
   '/faqs/$id': typeof AdminFaqsIdRoute
   '/internships/$id': typeof AdminInternshipsIdRoute
@@ -591,6 +598,7 @@ export interface FileRoutesByTo {
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
+  '/community/$id': typeof AdminCommunityIdRoute
   '/ecosystem/$id': typeof AdminEcosystemIdRoute
   '/faqs/$id': typeof AdminFaqsIdRoute
   '/internships/$id': typeof AdminInternshipsIdRoute
@@ -672,6 +680,7 @@ export interface FileRoutesById {
   '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/_admin/articles/$id': typeof AdminArticlesIdRoute
   '/_admin/categories/$id': typeof AdminCategoriesIdRoute
+  '/_admin/community/$id': typeof AdminCommunityIdRoute
   '/_admin/ecosystem/$id': typeof AdminEcosystemIdRoute
   '/_admin/faqs/$id': typeof AdminFaqsIdRoute
   '/_admin/internships/$id': typeof AdminInternshipsIdRoute
@@ -752,6 +761,7 @@ export interface FileRouteTypes {
     | '/appointments/$id'
     | '/articles/$id'
     | '/categories/$id'
+    | '/community/$id'
     | '/ecosystem/$id'
     | '/faqs/$id'
     | '/internships/$id'
@@ -830,6 +840,7 @@ export interface FileRouteTypes {
     | '/appointments/$id'
     | '/articles/$id'
     | '/categories/$id'
+    | '/community/$id'
     | '/ecosystem/$id'
     | '/faqs/$id'
     | '/internships/$id'
@@ -910,6 +921,7 @@ export interface FileRouteTypes {
     | '/_admin/appointments/$id'
     | '/_admin/articles/$id'
     | '/_admin/categories/$id'
+    | '/_admin/community/$id'
     | '/_admin/ecosystem/$id'
     | '/_admin/faqs/$id'
     | '/_admin/internships/$id'
@@ -1104,6 +1116,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community/'
       preLoaderRoute: typeof AdminCommunityIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/community/$id': {
+      id: '/_admin/community/$id'
+      path: '/community/$id'
+      fullPath: '/community/$id'
+      preLoaderRoute: typeof AdminCommunityIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/ecosystem/': {
@@ -1543,6 +1562,7 @@ interface AdminRouteChildren {
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
   AdminCategoriesIdRoute: typeof AdminCategoriesIdRoute
+  AdminCommunityIdRoute: typeof AdminCommunityIdRoute
   AdminEcosystemIdRoute: typeof AdminEcosystemIdRoute
   AdminFaqsIdRoute: typeof AdminFaqsIdRoute
   AdminInternshipsIdRoute: typeof AdminInternshipsIdRoute
@@ -1618,6 +1638,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,
   AdminCategoriesIdRoute: AdminCategoriesIdRoute,
+  AdminCommunityIdRoute: AdminCommunityIdRoute,
   AdminEcosystemIdRoute: AdminEcosystemIdRoute,
   AdminFaqsIdRoute: AdminFaqsIdRoute,
   AdminInternshipsIdRoute: AdminInternshipsIdRoute,

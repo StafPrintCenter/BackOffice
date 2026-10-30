@@ -25,6 +25,7 @@ import { Route as AdminArticlesIndexRouteImport } from './routes/_admin/articles
 import { Route as AdminArticlesIdRouteImport } from './routes/_admin/articles/$id'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/_admin/categories/index'
 import { Route as AdminCategoriesIdRouteImport } from './routes/_admin/categories/$id'
+import { Route as AdminCommunityIndexRouteImport } from './routes/_admin/community/index'
 import { Route as AdminEcosystemIndexRouteImport } from './routes/_admin/ecosystem/index'
 import { Route as AdminEcosystemIdRouteImport } from './routes/_admin/ecosystem/$id'
 import { Route as AdminFaqsIndexRouteImport } from './routes/_admin/faqs/index'
@@ -163,6 +164,11 @@ const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
 const AdminCategoriesIdRoute = AdminCategoriesIdRouteImport.update({
   id: '/categories/$id',
   path: '/categories/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCommunityIndexRoute = AdminCommunityIndexRouteImport.update({
+  id: '/community/',
+  path: '/community/',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminEcosystemIndexRoute = AdminEcosystemIndexRouteImport.update({
@@ -524,6 +530,7 @@ export interface FileRoutesByFullPath {
   '/appointments/': typeof AdminAppointmentsIndexRoute
   '/articles/': typeof AdminArticlesIndexRoute
   '/categories/': typeof AdminCategoriesIndexRoute
+  '/community/': typeof AdminCommunityIndexRoute
   '/ecosystem/': typeof AdminEcosystemIndexRoute
   '/faqs/': typeof AdminFaqsIndexRoute
   '/internships/': typeof AdminInternshipsIndexRoute
@@ -601,6 +608,7 @@ export interface FileRoutesByTo {
   '/appointments': typeof AdminAppointmentsIndexRoute
   '/articles': typeof AdminArticlesIndexRoute
   '/categories': typeof AdminCategoriesIndexRoute
+  '/community': typeof AdminCommunityIndexRoute
   '/ecosystem': typeof AdminEcosystemIndexRoute
   '/faqs': typeof AdminFaqsIndexRoute
   '/internships': typeof AdminInternshipsIndexRoute
@@ -681,6 +689,7 @@ export interface FileRoutesById {
   '/_admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/_admin/articles/': typeof AdminArticlesIndexRoute
   '/_admin/categories/': typeof AdminCategoriesIndexRoute
+  '/_admin/community/': typeof AdminCommunityIndexRoute
   '/_admin/ecosystem/': typeof AdminEcosystemIndexRoute
   '/_admin/faqs/': typeof AdminFaqsIndexRoute
   '/_admin/internships/': typeof AdminInternshipsIndexRoute
@@ -760,6 +769,7 @@ export interface FileRouteTypes {
     | '/appointments/'
     | '/articles/'
     | '/categories/'
+    | '/community/'
     | '/ecosystem/'
     | '/faqs/'
     | '/internships/'
@@ -837,6 +847,7 @@ export interface FileRouteTypes {
     | '/appointments'
     | '/articles'
     | '/categories'
+    | '/community'
     | '/ecosystem'
     | '/faqs'
     | '/internships'
@@ -916,6 +927,7 @@ export interface FileRouteTypes {
     | '/_admin/appointments/'
     | '/_admin/articles/'
     | '/_admin/categories/'
+    | '/_admin/community/'
     | '/_admin/ecosystem/'
     | '/_admin/faqs/'
     | '/_admin/internships/'
@@ -1085,6 +1097,13 @@ declare module '@tanstack/react-router' {
       path: '/categories/$id'
       fullPath: '/categories/$id'
       preLoaderRoute: typeof AdminCategoriesIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/community/': {
+      id: '/_admin/community/'
+      path: '/community'
+      fullPath: '/community/'
+      preLoaderRoute: typeof AdminCommunityIndexRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/ecosystem/': {
@@ -1541,6 +1560,7 @@ interface AdminRouteChildren {
   AdminAppointmentsIndexRoute: typeof AdminAppointmentsIndexRoute
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
+  AdminCommunityIndexRoute: typeof AdminCommunityIndexRoute
   AdminEcosystemIndexRoute: typeof AdminEcosystemIndexRoute
   AdminFaqsIndexRoute: typeof AdminFaqsIndexRoute
   AdminInternshipsIndexRoute: typeof AdminInternshipsIndexRoute
@@ -1615,6 +1635,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
+  AdminCommunityIndexRoute: AdminCommunityIndexRoute,
   AdminEcosystemIndexRoute: AdminEcosystemIndexRoute,
   AdminFaqsIndexRoute: AdminFaqsIndexRoute,
   AdminInternshipsIndexRoute: AdminInternshipsIndexRoute,

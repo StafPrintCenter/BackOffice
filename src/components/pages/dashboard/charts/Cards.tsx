@@ -34,7 +34,6 @@ const tooltipStyle = {
 
 export interface BarChartViewProps {
   data: DashboardChartItem[];
-  legendLabel?: string;
   categoryKey?: "name" | "type";
   layout?: "horizontal" | "vertical";
   fontSize?: number;
@@ -43,7 +42,6 @@ export interface BarChartViewProps {
 
 export function BarChartView({
   data,
-  legendLabel = "Nombre d'éléments",
   categoryKey = "name",
   layout = "horizontal",
   fontSize = 11,
@@ -77,8 +75,11 @@ export function BarChartView({
           </>
         )}
         <Tooltip contentStyle={tooltipStyle} />
-        <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
-        <Bar dataKey="value" name={legendLabel} radius={isVertical ? [0, 6, 6, 0] : [6, 6, 0, 0]}>
+        <Legend
+          content={<CategoryLegend data={data} categoryKey={categoryKey} />}
+          wrapperStyle={{ paddingTop: 8 }}
+        />
+        <Bar dataKey="value" radius={isVertical ? [0, 6, 6, 0] : [6, 6, 0, 0]}>
           {data.map((_, index) => (
             <Cell key={index} fill={CHART_COLORS[index % CHART_COLORS.length]} />
           ))}
@@ -106,6 +107,31 @@ export function BarChartCard({ title, ...chartProps }: BarChartCardProps) {
 interface PieChartCardProps {
   title: string;
   data: DashboardChartItem[];
+}
+
+interface CategoryLegendProps {
+  data: DashboardChartItem[];
+  categoryKey: "name" | "type";
+}
+
+function CategoryLegend({ data, categoryKey }: CategoryLegendProps) {
+  return (
+    <div className="flex max-h-16 flex-wrap justify-center gap-x-4 gap-y-1 overflow-y-auto px-2 text-xs">
+      {data.map((item, index) => {
+        const label = item[categoryKey] || "Sans catégorie";
+        return (
+          <span key={`${label}-${index}`} className="inline-flex items-center gap-1.5">
+            <span
+              aria-hidden="true"
+              className="h-2.5 w-2.5 shrink-0 rounded-sm"
+              style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}
+            />
+            <span>{label}</span>
+          </span>
+        );
+      })}
+    </div>
+  );
 }
 
 export function PieChartCard({ title, data }: PieChartCardProps) {

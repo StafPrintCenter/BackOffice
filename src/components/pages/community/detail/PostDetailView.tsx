@@ -3,11 +3,11 @@ import { useNavigate } from "@tanstack/react-router";
 import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { APIPost } from "@/data/community";
-import { AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "../PostBadges";
-import { AttachmentList } from "./AttachmentList";
-import { PostSidebar } from "./PostSidebar";
-import { PostFormDialog } from "../PostFormDialog";
-import { DeletePostDialog } from "../DeletePostDialog";
+import { AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "../../../community/PostBadges";
+import { AttachmentList } from "../../../community/detail/AttachmentList";
+import { PostSidebar } from "../../../community/detail/PostSidebar";
+import { PostFormDialog } from "../../../community/PostFormDialog";
+import { DeletePostDialog } from "../../../community/DeletePostDialog";
 
 export function PostDetailView({ post: p }: { post: APIPost }) {
   const navigate = useNavigate();

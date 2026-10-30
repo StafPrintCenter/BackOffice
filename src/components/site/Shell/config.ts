@@ -1,4 +1,4 @@
-import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, MessageSquareDiff, Group, Bell } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, MessageSquareDiff, Group, Bell, UserCircle } from "lucide-react";
 
 export type NavItem = {
   to: string;
@@ -78,3 +78,9 @@ export const navItemClass =
   "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground " +
   "data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground " +
   "data-[active=true]:hover:bg-sidebar-primary data-[active=true]:hover:text-sidebar-primary-foreground";
+
+// Liens du dropdown utilisateur
+export const USER_DROPDOWN_ITEMS = [
+  { to: "/profil", label: "Mon profil", icon: UserCircle },
+  { to: "/notifications", label: "Notifications", icon: Bell },
+] as const;

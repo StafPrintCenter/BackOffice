@@ -15,7 +15,7 @@ export function AdminUserDropdown({ user, onDisconnectClick, defaultRoleName = "
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-accent transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20">
+        <button className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-accent/30 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
           <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
             <UserCircle className="size-4" />
           </div>

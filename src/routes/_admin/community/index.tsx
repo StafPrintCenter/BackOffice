@@ -6,7 +6,12 @@ import { SITE } from "@/data/site";
 import { CommunityFeed, PostFormDialog } from "@/components/community";
 
 export const Route = createFileRoute("/_admin/community/")({
-  head: () => ({ meta: [{ title: `Communauté | ${SITE.name}` }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `Communauté | ${SITE.name}` },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   component: CommunityPage,
 });
 

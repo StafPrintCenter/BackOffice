@@ -1,13 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { UserCircle, Bell, ChevronDown, LogOut } from "lucide-react";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { UserCircle, ChevronDown, LogOut } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { USER_DROPDOWN_ITEMS } from "./config";
 
-export function AdminUserDropdown({ user, onDisconnectClick, }: {
-  user: ReturnType<typeof useAdminAuth>["user"];
+type InstructorDropdownProps = {
+  user: { name?: string | null; email?: string | null } | null;
   onDisconnectClick: () => void;
-}) {
-  const displayName = user?.name && user.name !== "undefined undefined" ? user.name : "Admin";
+  defaultRoleName?: string;
+};
+
+export function InstructorUserDropdown({ user, onDisconnectClick, defaultRoleName = "Instructeur" }: InstructorDropdownProps) {
+  const displayName = user?.name && user.name !== "undefined undefined" ? user.name : defaultRoleName;
 
   return (
     <DropdownMenu>
@@ -33,19 +36,17 @@ export function AdminUserDropdown({ user, onDisconnectClick, }: {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem asChild className="cursor-pointer">
-          <Link to="/profile">
-            <UserCircle className="mr-2 size-4" />
-            <span>Mon profil</span>
-          </Link>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem asChild className="cursor-pointer">
-          <Link to="/notifications">
-            <Bell className="mr-2 size-4" />
-            <span>Notifications</span>
-          </Link>
-        </DropdownMenuItem>
+        {USER_DROPDOWN_ITEMS.map((item) => {
+          const Icon = item.icon;
+          return (
+            <DropdownMenuItem key={item.to} asChild className="cursor-pointer">
+              <Link to={item.to as any}>
+                <Icon className="mr-2 size-4" />
+                <span>{item.label}</span>
+              </Link>
+            </DropdownMenuItem>
+          );
+        })}
 
         <DropdownMenuSeparator />
 

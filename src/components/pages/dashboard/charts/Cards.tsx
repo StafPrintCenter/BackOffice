@@ -1,4 +1,16 @@
-import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import type { DashboardChartItem } from "@/lib/dashboard";
 
 const CHART_COLORS = [
@@ -22,6 +34,7 @@ const tooltipStyle = {
 
 export interface BarChartViewProps {
   data: DashboardChartItem[];
+  legendLabel?: string;
   categoryKey?: "name" | "type";
   layout?: "horizontal" | "vertical";
   fontSize?: number;
@@ -30,12 +43,17 @@ export interface BarChartViewProps {
 
 export function BarChartView({
   data,
+  legendLabel = "Nombre d'éléments",
   categoryKey = "name",
   layout = "horizontal",
   fontSize = 11,
   categoryAxisWidth,
 }: BarChartViewProps) {
   const isVertical = layout === "vertical";
+
+  if (data.length === 0) {
+    return <EmptyChartState />;
+  }
 
   return (
     <ResponsiveContainer>
@@ -59,7 +77,8 @@ export function BarChartView({
           </>
         )}
         <Tooltip contentStyle={tooltipStyle} />
-        <Bar dataKey="value" radius={isVertical ? [0, 6, 6, 0] : [6, 6, 0, 0]}>
+        <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+        <Bar dataKey="value" name={legendLabel} radius={isVertical ? [0, 6, 6, 0] : [6, 6, 0, 0]}>
           {data.map((_, index) => (
             <Cell key={index} fill={CHART_COLORS[index % CHART_COLORS.length]} />
           ))}
@@ -94,18 +113,30 @@ export function PieChartCard({ title, data }: PieChartCardProps) {
     <div className="rounded-2xl border bg-card p-6 shadow-elegant">
       <div className="font-display text-lg font-semibold">{title}</div>
       <div className="mt-4 h-64">
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie data={data} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
-              {data.map((_, index) => (
-                <Cell key={index} fill={CHART_COLORS[index % CHART_COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip contentStyle={tooltipStyle} />
-            <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
-          </PieChart>
-        </ResponsiveContainer>
+        {data.length === 0 ? (
+          <EmptyChartState />
+        ) : (
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie data={data} dataKey="value" nameKey="name" innerRadius={35} outerRadius={70}>
+                {data.map((_, index) => (
+                  <Cell key={index} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip contentStyle={tooltipStyle} />
+              <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+            </PieChart>
+          </ResponsiveContainer>
+        )}
       </div>
+    </div>
+  );
+}
+
+function EmptyChartState() {
+  return (
+    <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+      Aucune donnée à afficher.
     </div>
   );
 }

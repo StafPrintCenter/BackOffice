@@ -28,7 +28,12 @@ export function TrafficCharts({
             <span className="text-xs text-muted-foreground">{activeShortLinks} liens actifs</span>
           </div>
           <div className="mt-4 h-64">
-            <BarChartView data={topLinks} layout="vertical" categoryAxisWidth={100} />
+            <BarChartView
+              data={topLinks}
+              legendLabel="Clics"
+              layout="vertical"
+              categoryAxisWidth={100}
+            />
           </div>
         </div>
         <PieChartCard title="Signalements par statut" data={reportsByStatus} />

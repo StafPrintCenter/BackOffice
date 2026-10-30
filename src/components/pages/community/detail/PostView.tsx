@@ -4,8 +4,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { APIPost } from "@/data/community";
 import { AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "../../../community/PostBadges";
-import { AttachmentList } from "../../../community/detail/AttachmentList";
-import { PostSidebar } from "../../../community/detail/PostSidebar";
+import { AttachmentList, PostSidebar } from "./";
 import { PostFormDialog } from "../../../community/PostFormDialog";
 import { DeletePostDialog } from "../../../community/DeletePostDialog";
 

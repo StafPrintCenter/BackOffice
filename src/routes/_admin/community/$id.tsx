@@ -3,7 +3,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
 import { usePostDetail } from "@/stores/useCommunityStore";
-import { PostDetailView } from "@/components/community/detail";
+import { PostDetailView } from "@/components/pages/community/detail";
 import { useDynamicPageMetadata } from "@/hooks/useDynamicPageMetadata";
 
 export const Route = createFileRoute("/_admin/community/$id")({

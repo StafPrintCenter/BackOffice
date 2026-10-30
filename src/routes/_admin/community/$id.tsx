@@ -4,9 +4,15 @@ import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
 import { usePostDetail } from "@/stores/useCommunityStore";
 import { PostDetailView } from "@/components/community/detail";
+import { useDynamicPageMetadata } from "@/hooks/useDynamicPageMetadata";
 
 export const Route = createFileRoute("/_admin/community/$id")({
-  head: () => ({ meta: [{ title: `Publication | ${SITE.name}` }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: `${SITE.tool} - Détail d'une Publication | ${SITE.name}` },
+      { name: "description", content: "Consultez le détail et le contenu de cette notification de votre espace formateur." },
+    ],
+  }),
   component: PostDetailPage,
 });
 
@@ -14,6 +20,10 @@ function PostDetailPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const { post, isLoading, error } = usePostDetail(id);
+  useDynamicPageMetadata(
+    post ? `${SITE.tool} - ${post.title} | ${SITE.name}` : undefined,
+    post?.body,
+  );
 
   const back = (
     <Button variant="outline" size="sm" onClick={() => navigate({ to: "/community" })}>

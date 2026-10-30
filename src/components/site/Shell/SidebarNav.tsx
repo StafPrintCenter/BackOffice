@@ -3,7 +3,7 @@ import { SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, S
 import { useUnreadCount } from "@/stores/useNotificationsStore";
 import { NAV_GROUPS, navItemClass, NavItem } from "./config";
 
-export function InstructorSidebarNav({
+export function AdminSidebarNav({
   pathname,
   onNavClick,
 }: {

@@ -1,2 +1,2 @@
-export { InstructorSidebarContent } from "./SidebarContent";
-export { InstructorHeader } from "./Header";
+export { AdminSidebarContent } from "./SidebarContent";
+export { AdminHeader } from "./Header";

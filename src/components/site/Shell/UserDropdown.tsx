@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { UserCircle, Bell, ChevronDown, LogOut } from "lucide-react";
-import { useInstructorAuth } from "@/hooks/useInstructorAuth";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-export function InstructorUserDropdown({ user, onDisconnectClick, }: {
-  user: ReturnType<typeof useInstructorAuth>["user"];
+export function AdminUserDropdown({ user, onDisconnectClick, }: {
+  user: ReturnType<typeof useAdminAuth>["user"];
   onDisconnectClick: () => void;
 }) {
-  const displayName = user?.name && user.name !== "undefined undefined" ? user.name : "Formateur";
+  const displayName = user?.name && user.name !== "undefined undefined" ? user.name : "Admin";
 
   return (
     <DropdownMenu>
@@ -34,7 +34,7 @@ export function InstructorUserDropdown({ user, onDisconnectClick, }: {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link to="/profil">
+          <Link to="/profile">
             <UserCircle className="mr-2 size-4" />
             <span>Mon profil</span>
           </Link>

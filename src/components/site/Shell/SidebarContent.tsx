@@ -1,15 +1,15 @@
-import { useInstructorAuth } from "@/hooks/useInstructorAuth";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { Sidebar, useSidebar } from "@/components/ui/sidebar";
-import { InstructorHeaderBrand } from "./HeaderBrand";
-import { InstructorSidebarNav } from "./SidebarNav";
-import { InstructorSidebarFooter } from "./SidebarFooter";
+import { AdminHeaderBrand } from "./HeaderBrand";
+import { AdminSidebarNav } from "./SidebarNav";
+import { AdminSidebarFooter } from "./SidebarFooter";
 
-export function InstructorSidebarContent({
+export function AdminSidebarContent({
   user,
   pathname,
   onDisconnectClick,
 }: {
-  user: ReturnType<typeof useInstructorAuth>["user"];
+  user: ReturnType<typeof useAdminAuth>["user"];
   pathname: string;
   onDisconnectClick: () => void;
 }) {
@@ -18,9 +18,9 @@ export function InstructorSidebarContent({
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
-      <InstructorHeaderBrand onNavClick={handleNavClick} />
-      <InstructorSidebarNav pathname={pathname} onNavClick={handleNavClick} />
-      <InstructorSidebarFooter
+      <AdminHeaderBrand onNavClick={handleNavClick} />
+      <AdminSidebarNav pathname={pathname} onNavClick={handleNavClick} />
+      <AdminSidebarFooter
         user={user}
         pathname={pathname}
         onNavClick={handleNavClick}

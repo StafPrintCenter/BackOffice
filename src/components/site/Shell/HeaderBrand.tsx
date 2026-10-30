@@ -3,7 +3,7 @@ import { SidebarHeader } from "@/components/ui/sidebar";
 import logo from "@/assets/logos.json";
 import { SITE } from "@/data/site";
 
-export function InstructorHeaderBrand({ onNavClick }: { onNavClick: () => void }) {
+export function AdminHeaderBrand({ onNavClick }: { onNavClick: () => void }) {
   return (
     <SidebarHeader className="px-3.5 py-4">
       <Link to="/dashboard" onClick={onNavClick} className="flex items-center gap-3">

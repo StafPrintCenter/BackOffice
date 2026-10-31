@@ -27,18 +27,33 @@ function toQuery(params: Record<string, unknown>): string {
   return qp.toString();
 }
 
-export function useCommunityCategories() {
+export function useCommunityCategories({ includeInactive = false }: { includeInactive?: boolean } = {}) {
   const q = useQuery({
-    queryKey: ["community", "categories"],
+    queryKey: ["community", "categories", includeInactive],
     staleTime: 5 * 60_000,
     queryFn: async () => {
-      const response = await adminFetch(`/api/community/categories/list`);
+      const response = await adminFetch(`/api/community/categories/list?includeInactive=${includeInactive}`);
       await ensureOk(response, "Erreur lors du chargement des catégories.");
       return ((await response.json()) as { data: APICommunityCategory[] }).data;
     },
   });
-  const categories = (q.data ?? []).filter((c) => c.isActive).sort((a, b) => a.sortOrder - b.sortOrder);
+  const categories = [...(q.data ?? [])].sort((a, b) => a.sortOrder - b.sortOrder);
   return { categories, isLoading: q.isLoading };
+}
+
+export function usePostDetail(id: string | undefined) {
+  const q = useQuery({
+    queryKey: ["community", "posts", "detail", id],
+    enabled: !!id,
+    retry: false,
+    queryFn: async () => {
+      const response = await adminFetch(`/api/community/posts/${id}`);
+      if (response.status === 404) return null;
+      await ensureOk(response, "Erreur lors du chargement de la publication.");
+      return ((await response.json()) as { data: APIPost }).data;
+    },
+  });
+  return { post: q.data ?? null, isLoading: q.isLoading, error: q.error as Error | null };
 }
 
 export function usePostsList(params: PostsListParams = {}) {

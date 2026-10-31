@@ -1,4 +1,4 @@
-import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, MessageSquareDiff, Group, Bell, UserCircle } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, MessageSquareDiff, Group, Bell, UserCircle, UsersRoundIcon, } from "lucide-react";
 
 export type NavItem = {
   to: string;
@@ -38,6 +38,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { to: "/messages", label: "Messages", icon: Inbox },
       { to: "/newsletter/subscribers", label: "Newsletter", icon: Mailbox, matchPrefixes: ["/newsletter"] },
       { to: "/announces", label: "Annonces", icon: Flag },
+      { to: "/community", label: "Communauté", icon: UsersRoundIcon },
     ],
   },
   {

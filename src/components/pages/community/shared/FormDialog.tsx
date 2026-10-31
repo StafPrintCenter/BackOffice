@@ -6,11 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import {
-  MAX_ATTACHMENTS, MAX_ATTACHMENT_MB, MAX_TAGS, POST_TYPES, POST_TYPE_LABELS,
-  type APIPost, type PostType,
-} from "@/data/community";
-import { useCommunityCategories, useCreatePost, useUpdatePost } from "@/stores/useCommunityStore";
+import { MAX_ATTACHMENTS, MAX_ATTACHMENT_MB, MAX_TAGS, POST_TYPES, POST_TYPE_LABELS, type APIPost, type PostType } from "@/data/community";
+import { useCommunityCategories, useCreatePost, useUpdatePost, usePostDetail } from "@/stores/useCommunityStore";
 import { useAdminTrainingsList } from "@/stores/useTrainingsStore";
 
 const select = "mt-1 h-9 w-full cursor-pointer rounded-md border border-input bg-background px-3 text-sm";
@@ -30,9 +27,10 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
   const isEdit = mode === "edit";
   const { categories } = useCommunityCategories();
   const { items: trainings } = useAdminTrainingsList({ perPage: 100 });
+  const { post: detail } = usePostDetail(isEdit && open ? post?.id : undefined);
+  const source = detail ?? post;
   const create = useCreatePost();
   const update = useUpdatePost();
-
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -45,15 +43,16 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
   // Initialise à chaque ouverture
   useEffect(() => {
     if (!open) return;
-    setTitle(post?.title ?? "");
-    setBody(post?.body ?? post?.excerpt ?? "");
-    setCategoryId(post?.category.id ?? "");
-    setTrainingId(post?.training?.id ?? "");
-    setType(post?.type ?? "discussion");
-    setTagsRaw(post?.tags.join(", ") ?? "");
+    setTitle(source?.title ?? "");
+    setBody(source?.body ?? "");
+    setCategoryId(source?.category.id ?? "");
+    setTrainingId(source?.training?.id ?? "");
+    setType(source?.type ?? "discussion");
+    setTagsRaw(source?.tags.join(", ") ?? "");
     setFiles([]);
     setError(null);
-  }, [open, post]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, source?.id, source?.body]);
 
   useEffect(() => {
     if (open && !categoryId && categories.length) setCategoryId(categories[0].id);
@@ -101,7 +100,10 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
         <DialogHeader>
           <DialogTitle>{isEdit ? "Modifier la publication" : "Nouvelle publication"}</DialogTitle>
           <DialogDescription>
-            {isEdit ? "La formation et les pièces jointes ne peuvent plus être modifiées." : "Sans formation, la publication va dans la communauté générale."}
+            {isEdit
+              ? "La formation et les pièces jointes ne peuvent plus être modifiées."
+              : "Sans formation, la publication va dans la communauté générale."
+            }
           </DialogDescription>
         </DialogHeader>
 
@@ -116,7 +118,9 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
             <div>
               <Label>Catégorie</Label>
               <select className={select} value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-                {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                {source && !categories.some((c) => c.id === source.category.id) && (
+                  <option value={source.category.id}>{source.category.name} (inactive)</option>
+                )}
               </select>
             </div>
             <div>
@@ -176,7 +180,7 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Annuler</Button>
-          <Button onClick={submit} disabled={pending}>
+          <Button onClick={submit} disabled={pending || (isEdit && !detail)}>
             {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} {isEdit ? "Enregistrer" : "Publier"}
           </Button>
         </DialogFooter>

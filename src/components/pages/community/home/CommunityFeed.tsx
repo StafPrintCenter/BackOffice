@@ -3,16 +3,17 @@ import { Loader2 } from "lucide-react";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useCommunityCategories, usePostsList } from "@/stores/useCommunityStore";
 import { Pager } from "@/components/trainings/sessions/Pager";
-import { EMPTY_POST_FILTERS, PostFilters, type PostFiltersValue } from "./PostFilters";
-import { PostCard } from "./PostCard";
+import { EMPTY_POST_FILTERS, PostFilters, type PostFiltersValue } from "../../../community/PostFilters";
+import { PostCard } from "../../../community/PostCard";
 
 export function CommunityFeed() {
   const [filters, setFilters] = useState<PostFiltersValue>(EMPTY_POST_FILTERS);
   const [page, setPage] = useState(1);
   const debouncedQuery = useDebouncedValue(filters.query, 400);
 
-  const { categories } = useCommunityCategories();
-  const { posts, meta, isLoading, isError } = usePostsList({ ...filters, query: debouncedQuery, page, perPage: 12 });
+  const { includeInactive, ...postFilters } = filters;
+  const { categories } = useCommunityCategories({ includeInactive });
+  const { posts, meta, isLoading, isError } = usePostsList({ ...postFilters, query: debouncedQuery, page, perPage: 12 });
 
   return (
     <>

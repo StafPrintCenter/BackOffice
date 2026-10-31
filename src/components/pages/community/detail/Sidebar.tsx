@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Eye, GraduationCap, MessageCircle, SmilePlus } from "lucide-react";
 import { formatPostDate, initials, type APIPost } from "@/data/community";
-import { AuthorRoleBadge } from "../../../community/PostBadges";
+import { AuthorRoleBadge } from "@/components/pages/community/shared";
 
 const Row = ({ label, children }: { label: string; children: React.ReactNode }) => (
   <div className="flex items-center justify-between gap-3 border-b py-2 text-sm last:border-0">

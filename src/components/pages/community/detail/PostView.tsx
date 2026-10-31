@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import type { APIPost } from "@/data/community";
 import { AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "../../../community/PostBadges";
 import { AttachmentList, PostSidebar } from "./";
-import { PostFormDialog } from "../../../community/PostFormDialog";
-import { DeletePostDialog } from "../../../community/DeletePostDialog";
+import { PostFormDialog, DeletePostDialog } from "@/components/pages/community/shared";
 
 export function PostDetailView({ post: p }: { post: APIPost }) {
   const navigate = useNavigate();

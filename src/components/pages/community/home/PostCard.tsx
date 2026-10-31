@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { GraduationCap, Eye, MessageCircle, Paperclip, Pencil, SmilePlus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatPostDate, initials, type APIPost } from "@/data/community";
-import { AnsweredBadge, AuthorRoleBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "./PostBadges";
+import { AnsweredBadge, AuthorRoleBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "../shared/Badges";
 import { PostFormDialog, DeletePostDialog } from "@/components/pages/community/shared";
 
 export function PostCard({ post: p }: { post: APIPost }) {

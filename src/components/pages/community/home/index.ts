@@ -1,3 +1,3 @@
-export { CommunityFeed } from "./CommunityFeed";
-export { PostFormDialog } from "../../../community/PostFormDialog";
+export { CommunityFeed } from "./Feed";
 export { PostCard } from "../../../community/PostCard";
+export * from "./Filters";

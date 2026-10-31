@@ -8,14 +8,7 @@ import type {
 type Meta = { currentPage: number; lastPage: number; perPage: number; total: number };
 
 async function ensureOk(response: Response, fallback: string): Promise<void> {
-  if (response.ok) return;
-  let message = fallback;
-  try {
-    const json = await response.json();
-    if (json?.errors) message = Object.values(json.errors).flat().join(" ") || fallback;
-    else if (typeof json?.message === "string") message = json.message;
-  } catch { /* corps non-JSON */ }
-  throw new Error(message);
+  if (!response.ok) throw await parseApiError(response, fallback);
 }
 
 function toQuery(params: Record<string, unknown>): string {

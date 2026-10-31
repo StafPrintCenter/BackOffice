@@ -4,7 +4,8 @@ import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
-import { CommunityFeed, PostFormDialog } from "@/components/community";
+import { CommunityFeed } from "@/components/pages/community/home";
+import { PostFormDialog } from "@/components/pages/community/shared";
 
 export const Route = createFileRoute("/_admin/community/")({
   head: () => ({
@@ -33,7 +34,11 @@ function CommunityPage() {
       </div>
 
       <CommunityFeed />
-      <PostFormDialog mode="create" open={createOpen} onOpenChange={setCreateOpen} />
+      <PostFormDialog
+        mode="create"
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+      />
     </>
   );
 }

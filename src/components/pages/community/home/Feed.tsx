@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useCommunityCategories, usePostsList } from "@/stores/useCommunityStore";
 import { Pager } from "@/components/trainings/sessions/Pager";
-import { EMPTY_POST_FILTERS, PostFilters, type PostFiltersValue } from "../../../community/PostFilters";
+import { EMPTY_POST_FILTERS, PostFilters, type PostFiltersValue } from "./Filters";
 import { PostCard } from "../../../community/PostCard";
 
 export function CommunityFeed() {

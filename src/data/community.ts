@@ -12,6 +12,11 @@ export const POST_TYPE_LABELS: Record<PostType, string> = {
   announcement: "Annonce",
 };
 
+export const POST_STATUS_LABELS: Record<PostStatus, string> = {
+  published: "Publiée",
+  hidden: "Masquée",
+};
+
 export const POST_SORT_LABELS: Record<PostSort, string> = {
   recent: "Plus récentes",
   popular: "Populaires",
@@ -36,6 +41,7 @@ export type APICommunityCategory = {
   color: string;
   sortOrder: number;
   isActive: boolean;
+  postsCount: number | null;
 };
 
 export type APIPostAttachment = { name: string; url: string; mime: string; size: number };
@@ -86,6 +92,8 @@ export type PostsListParams = {
   scope?: "general" | "training" | "";
   categoryId?: string;
   type?: PostType | "";
+  authorRole?: AuthorRole | "";
+  status?: PostStatus | "";
   mine?: boolean;
   unanswered?: boolean;
   pinned?: boolean;
@@ -110,6 +118,9 @@ export type UpdatePostPayload = {
   type: PostType;
   tags: string[];
 };
+
+export const formatFileSize = (bytes: number) =>
+  bytes < 1024 ? `${bytes} o` : bytes < 1024 * 1024 ? `${Math.round(bytes / 1024)} Ko` : `${(bytes / 1024 / 1024).toFixed(1)} Mo`
 
 export const formatPostDate = (iso?: string | null) =>
   iso ? new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "-";

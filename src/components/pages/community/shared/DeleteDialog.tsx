@@ -8,9 +8,14 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import type { APIPost } from "@/data/community";
 import { useDeletePost } from "@/stores/useCommunityStore";
 
-interface Props { post: APIPost; open: boolean; onOpenChange: (v: boolean) => void }
+interface Props {
+  post: APIPost;
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  onDeleted?: () => void;
+}
 
-export function DeletePostDialog({ post, open, onOpenChange }: Props) {
+export function DeletePostDialog({ post, open, onOpenChange, onDeleted }: Props) {
   const [reason, setReason] = useState("");
   const del = useDeletePost();
 
@@ -31,7 +36,7 @@ export function DeletePostDialog({ post, open, onOpenChange }: Props) {
             variant="destructive"
             disabled={del.isPending}
             onClick={() => del.mutate({ id: post.id, reason: reason.trim() || undefined }, {
-              onSuccess: () => { toast.success("Publication supprimée"); onOpenChange(false); },
+              onSuccess: () => { toast.success("Publication supprimée"); onOpenChange(false); onDeleted?.(); },
               onError: (e) => toast.error(e.message),
             })}
           >

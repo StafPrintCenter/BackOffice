@@ -1,3 +1,3 @@
 export { CommunityFeed } from "./Feed";
-export { PostCard } from "./PostCard";
+export { PostCard } from "./Card";
 export * from "./Filters";

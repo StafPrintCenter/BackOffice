@@ -5,10 +5,11 @@ import { CommentItem, RepliesThread } from "./";
 interface Props {
   comment: APIComment;
   canInteract: boolean;
+  canMarkBest?: boolean;
   focus?: { targetId: string; replyPage?: number };
 }
 
-export function CommentThread({ comment, canInteract, focus }: Props) {
+export function CommentThread({ comment, canInteract, canMarkBest, focus }: Props) {
   const targetIsReply = focus?.replyPage !== undefined;
   const [open, setOpen] = useState(targetIsReply);
 
@@ -16,6 +17,7 @@ export function CommentThread({ comment, canInteract, focus }: Props) {
     <CommentItem
       comment={comment}
       canInteract={canInteract}
+      canMarkBest={canMarkBest}
       highlighted={!!focus && !targetIsReply && focus.targetId === comment.id}
       onReplied={() => setOpen(true)}
     >

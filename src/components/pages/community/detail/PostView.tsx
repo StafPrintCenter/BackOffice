@@ -9,6 +9,7 @@ import {
   PostFormDialog, DeletePostDialog
 } from "@/components/pages/community/shared";
 import { CommentsSection } from "../comment/Section";
+import { ReactionBar } from "../reactions";
 
 export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
   post: APIPost; focusCommentId?: string; onClearFocus?: () => void;
@@ -55,6 +56,17 @@ export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
                 {p.tags.map((t) => <span key={t} className="rounded-md bg-muted/60 px-2 py-0.5 text-muted-foreground">#{t}</span>)}
               </div>
             )}
+
+            <div className="mt-5 border-t pt-4">
+              <ReactionBar
+                target="posts"
+                targetId={p.id}
+                myReaction={p.myReaction}
+                reactions={p.reactions}
+                reactionsTotal={p.reactionsTotal}
+                canReact={p.permissions.canReact && p.status === "published"}
+              />
+            </div>
           </article>
 
           <AttachmentList attachments={p.attachments ?? []} />

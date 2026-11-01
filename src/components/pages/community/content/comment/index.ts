@@ -4,4 +4,4 @@ export { RepliesThread } from "./RepliesThread";
 export { CommentItem } from "./Item";
 export { CommentForm } from "./Form";
 export { DeleteCommentDialog } from "./DeleteDialog";
-export { BestAnswerButton } from "./BestAnswerButton";
+export { BestAnswerButton } from "./BestAnswer";

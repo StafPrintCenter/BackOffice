@@ -32,6 +32,8 @@ export function CommentsSection({ post, focusCommentId, onClearFocus }: Props) {
       ? "Les commentaires sont fermés sur cette publication."
       : "Vous ne pouvez pas commenter cette publication.";
 
+  const canMarkBest = post.type === "question" && (post.isMine || post.permissions.canModerate) && !closed;
+
   return (
     <section className="rounded-2xl border bg-card p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -80,6 +82,7 @@ export function CommentsSection({ post, focusCommentId, onClearFocus }: Props) {
               <CommentThread
                 comment={located.root}
                 canInteract={!closed}
+                canMarkBest={canMarkBest}
                 focus={{ targetId: focusCommentId as string, replyPage: located.replyPage }}
               />
             )
@@ -93,7 +96,9 @@ export function CommentsSection({ post, focusCommentId, onClearFocus }: Props) {
         <p className="py-6 text-center text-sm text-muted-foreground">Aucun commentaire pour le moment.</p>
       ) : (
         <div className="space-y-5">
-          {comments.map((c) => <CommentThread key={c.id} comment={c} canInteract={!closed} />)}
+          {comments.map((c) => (
+            <CommentThread key={c.id} comment={c} canInteract={!closed} canMarkBest={canMarkBest} />
+          ))}
         </div>
       )}
 

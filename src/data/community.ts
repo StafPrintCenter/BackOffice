@@ -119,6 +119,52 @@ export type UpdatePostPayload = {
   tags: string[];
 };
 
+export type CommentSort = "oldest" | "recent" | "popular";
+
+export const COMMENT_SORT_LABELS: Record<CommentSort, string> = {
+  oldest: "Plus anciens",
+  recent: "Plus récents",
+  popular: "Populaires",
+};
+
+export const MAX_COMMENT_LENGTH = 5000;
+
+export type APIComment = {
+  id: string;
+  postId: string;
+  parentId: string | null;
+  body: string;
+  author: { id: string; name: string; photo: string | null; role: AuthorRole };
+  isPostAuthor: boolean;
+  isBestAnswer: boolean;
+  isMine: boolean;
+  status: PostStatus;
+  replyTo: { commentId: string; authorId: string; authorName: string; authorRole: AuthorRole } | null;
+  repliesCount: number;
+  reactionsTotal: number;
+  reactions: Record<string, number>;
+  myReaction: string | null;
+  createdAt: string;
+  editedAt: string | null;
+  permissions: {
+    canEdit: boolean;
+    canDelete: boolean;
+    canHide: boolean;
+    canReply: boolean;
+    canReact: boolean;
+    canReport: boolean;
+  };
+  hiddenReason: string | null;
+  hiddenAt: string | null;
+};
+
+export type CommentsListParams = {
+  page?: number;
+  perPage?: number;
+  sort?: CommentSort;
+  authorRole?: AuthorRole | "";
+};
+
 export const formatFileSize = (bytes: number) =>
   bytes < 1024 ? `${bytes} o` : bytes < 1024 * 1024 ? `${Math.round(bytes / 1024)} Ko` : `${(bytes / 1024 / 1024).toFixed(1)} Mo`
 

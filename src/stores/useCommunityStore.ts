@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
 import { parseApiError } from "@/lib/api/error";
 import type {
-  APICommunityCategory, APIPost, CreatePostPayload, PostsListParams, UpdatePostPayload,
+  APICommunityCategory, APIPost, CreatePostPayload, PostsListParams, UpdatePostPayload, CommentsListParams, APIComment
 } from "@/data/community";
 
 type Meta = { currentPage: number; lastPage: number; perPage: number; total: number };
@@ -113,6 +113,73 @@ export function useDeletePost() {
     mutationFn: async ({ id, reason }: { id: string; reason?: string }) => {
       const response = await adminFetch(`/api/community/posts/${id}?${toQuery({ reason })}`, { method: "DELETE" });
       await ensureOk(response, "Impossible de supprimer la publication.");
+    },
+    onSuccess: invalidate,
+  });
+}
+
+export function useCommentsList(postId: string, params: CommentsListParams = {}) {
+  const q = useQuery({
+    queryKey: ["community", "comments", postId, params],
+    staleTime: 15_000,
+    queryFn: async () => {
+      const response = await adminFetch(`/api/community/posts/${postId}/comments/list?${toQuery(params)}`);
+      await ensureOk(response, "Erreur lors du chargement des commentaires.");
+      return (await response.json()) as { data: APIComment[]; meta: Meta };
+    },
+  });
+  return { comments: q.data?.data ?? [], meta: q.data?.meta ?? null, isLoading: q.isLoading, isError: q.isError };
+}
+
+export function useReplies(commentId: string, page: number, enabled: boolean) {
+  const q = useQuery({
+    queryKey: ["community", "replies", commentId, page],
+    enabled,
+    staleTime: 15_000,
+    queryFn: async () => {
+      const response = await adminFetch(`/api/community/comments/${commentId}/replies?${toQuery({ page, perPage: 12 })}`);
+      await ensureOk(response, "Erreur lors du chargement des réponses.");
+      return (await response.json()) as { data: APIComment[]; meta: Meta };
+    },
+  });
+  return { replies: q.data?.data ?? [], meta: q.data?.meta ?? null, isLoading: q.isLoading, isError: q.isError };
+}
+
+export function useCreateComment() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async ({ postId, body, parentId }: { postId: string; body: string; parentId?: string }) => {
+      const fd = new FormData();
+      fd.append("body", body);
+      if (parentId) fd.append("parentId", parentId);
+      const response = await adminFetch(`/api/community/posts/${postId}/comments/create`, { method: "POST", body: fd });
+      await ensureOk(response, "Impossible d'envoyer le commentaire.");
+      return ((await response.json()) as { data: APIComment }).data;
+    },
+    onSuccess: invalidate, // liste, réponses, compteurs de la publication
+  });
+}
+
+export function useUpdateComment() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async ({ id, body }: { id: string; body: string }) => {
+      const fd = new FormData();
+      fd.append("body", body);
+      const response = await adminFetch(`/api/community/comments/${id}`, { method: "PUT", body: fd });
+      await ensureOk(response, "Impossible de modifier le commentaire.");
+      return ((await response.json()) as { data: APIComment }).data;
+    },
+    onSuccess: invalidate,
+  });
+}
+
+export function useDeleteComment() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async ({ id, reason }: { id: string; reason?: string }) => {
+      const response = await adminFetch(`/api/community/comments/${id}?${toQuery({ reason })}`, { method: "DELETE" });
+      await ensureOk(response, "Impossible de supprimer le commentaire.");
     },
     onSuccess: invalidate,
   });

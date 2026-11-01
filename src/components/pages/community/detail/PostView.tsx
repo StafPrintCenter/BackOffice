@@ -8,6 +8,7 @@ import {
   AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge,
   PostFormDialog, DeletePostDialog
 } from "@/components/pages/community/shared";
+import { CommentsSection } from "../comment/Section";
 
 export function PostDetailView({ post: p }: { post: APIPost }) {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ export function PostDetailView({ post: p }: { post: APIPost }) {
           </article>
 
           <AttachmentList attachments={p.attachments ?? []} />
+          <CommentsSection post={p} />
         </div>
 
         <PostSidebar post={p} />

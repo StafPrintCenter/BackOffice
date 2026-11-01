@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
 import { parseApiError } from "@/lib/api/error";
 import type {
-  APICommunityCategory, APIPost, CreatePostPayload, PostsListParams, UpdatePostPayload, CommentsListParams, APIComment
+  APICommunityCategory, APIPost, CreatePostPayload, PostsListParams, UpdatePostPayload, CommentsListParams, APIComment, ReactionTarget, ReactionType, ReactionState, APIReactor, ReactorsParams
 } from "@/data/community";
 
 type Meta = { currentPage: number; lastPage: number; perPage: number; total: number };
@@ -250,4 +250,62 @@ export function useLocateComment(postId: string, commentId: string | undefined) 
     queryFn: () => locateComment(postId, commentId as string),
   });
   return { located: q.data ?? null, isLoading: q.isLoading && !!commentId, isError: q.isError };
+}
+
+export function useSetReaction(target: ReactionTarget) {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async ({ id, type }: { id: string; type: ReactionType }) => {
+      const fd = new FormData();
+      fd.append("type", type);
+      const response = await adminFetch(`/api/community/${target}/${id}/reaction`, { method: "PUT", body: fd });
+      await ensureOk(response, "Impossible d'enregistrer la réaction.");
+      return (await response.json()) as ReactionState;
+    },
+    onSuccess: invalidate,
+  });
+}
+
+export function useRemoveReaction(target: ReactionTarget) {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await adminFetch(`/api/community/${target}/${id}/reaction`, { method: "DELETE" });
+      await ensureOk(response, "Impossible de retirer la réaction.");
+      return (await response.json()) as ReactionState;
+    },
+    onSuccess: invalidate,
+  });
+}
+
+export function useReactorsList(target: ReactionTarget, id: string, params: ReactorsParams, enabled: boolean) {
+  const q = useQuery({
+    queryKey: ["community", "reactors", target, id, params],
+    enabled,
+    staleTime: 10_000,
+    queryFn: async () => {
+      const response = await adminFetch(`/api/community/${target}/${id}/reactions/list?${toQuery(params)}`);
+      await ensureOk(response, "Erreur lors du chargement des réactions.");
+      return (await response.json()) as {
+        summary: Partial<Record<ReactionType, number>>;
+        total: number;
+        data: APIReactor[];
+        meta: Meta;
+      };
+    },
+  });
+  return { reactors: q.data?.data ?? [], summary: q.data?.summary ?? {}, total: q.data?.total ?? 0, meta: q.data?.meta ?? null, isLoading: q.isLoading, isError: q.isError };
+}
+
+export function useSetBestAnswer() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async ({ postId, commentId }: { postId: string; commentId: string }) => {
+      const fd = new FormData();
+      fd.append("commentId", commentId);
+      const response = await adminFetch(`/api/community/posts/${postId}/best-answer`, { method: "POST", body: fd });
+      await ensureOk(response, "Impossible de désigner la meilleure réponse.");
+    },
+    onSuccess: invalidate,
+  });
 }

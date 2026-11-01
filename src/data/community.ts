@@ -165,6 +165,36 @@ export type CommentsListParams = {
   authorRole?: AuthorRole | "";
 };
 
+export type ReactionType = "like" | "love" | "celebrate" | "support" | "insightful" | "funny";
+
+export const REACTION_TYPES: ReactionType[] = ["like", "love", "celebrate", "support", "insightful", "funny"];
+
+export const REACTION_META: Record<ReactionType, { emoji: string; label: string }> = {
+  like: { emoji: "👍", label: "J'aime" },
+  love: { emoji: "❤️", label: "J'adore" },
+  celebrate: { emoji: "🎉", label: "Bravo" },
+  support: { emoji: "🤝", label: "Soutien" },
+  insightful: { emoji: "💡", label: "Instructif" },
+  funny: { emoji: "😄", label: "Drôle" },
+};
+
+export type ReactionTarget = "posts" | "comments";
+
+export type ReactionState = {
+  myReaction: ReactionType | null;
+  reactions: Partial<Record<ReactionType, number>>;
+  reactionsTotal: number;
+};
+
+export type APIReactor = {
+  id: string;
+  type: ReactionType;
+  reactedAt: string;
+  user: { id: string; name: string; photo: string | null; role: AuthorRole };
+};
+
+export type ReactorsParams = { page?: number; perPage?: number; type?: ReactionType | ""; role?: AuthorRole | "" };
+
 export const formatFileSize = (bytes: number) =>
   bytes < 1024 ? `${bytes} o` : bytes < 1024 * 1024 ? `${Math.round(bytes / 1024)} Ko` : `${(bytes / 1024 / 1024).toFixed(1)} Mo`
 

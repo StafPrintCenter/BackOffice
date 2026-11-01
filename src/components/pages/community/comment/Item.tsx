@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CornerDownRight, CheckCircle2, EyeOff, Pencil, Reply, SmilePlus, Trash2 } from "lucide-react";
 import { formatPostDate, initials, type APIComment } from "@/data/community";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
@@ -7,22 +7,29 @@ import { DeleteCommentDialog } from "./DeleteDialog";
 
 interface Props {
   comment: APIComment;
-  /** false si la publication est verrouillée, masquée, ou fermée aux commentaires */
   canInteract: boolean;
-  /** Appelé après l'envoi d'une réponse (ex. pour déplier le fil) */
+  highlighted?: boolean;
   onReplied?: () => void;
-  /** Contenu supplémentaire sous le commentaire (le fil de réponses) */
   children?: React.ReactNode;
 }
 
-export function CommentItem({ comment: c, canInteract, onReplied, children }: Props) {
+export function CommentItem({ comment: c, canInteract, highlighted, onReplied, children }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
   const [editing, setEditing] = useState(false);
   const [replying, setReplying] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const isReply = c.parentId !== null;
 
+  useEffect(() => {
+    if (highlighted) ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [highlighted]);
+
   return (
-    <div className="flex gap-3">
+    <div
+      ref={ref}
+      id={highlighted ? `comment-${c.id}` : undefined}
+      className={`flex gap-3 rounded-xl transition ${highlighted ? "bg-primary/5 p-2 ring-2 ring-primary/40" : ""}`}
+    >
       {c.author.photo ? (
         <img src={c.author.photo} alt="" className={`shrink-0 rounded-full object-cover ${isReply ? "h-7 w-7" : "h-9 w-9"}`} />
       ) : (

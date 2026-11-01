@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { SmilePlus } from "lucide-react";
 import { REACTION_META, REACTION_TYPES, type ReactionState, type ReactionTarget, type ReactionType } from "@/data/community";
 import { useRemoveReaction, useSetReaction } from "@/stores/useCommunityStore";
-import { ReactorsDialog } from "./ReactorsDialog";
+import { ReactorsDialog } from "./Dialog";
 
 interface Props {
   target: ReactionTarget;

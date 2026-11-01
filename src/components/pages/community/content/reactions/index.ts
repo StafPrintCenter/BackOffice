@@ -1,3 +1,2 @@
-export { ReactionBar } from "./ReactionBar";
-export { BestAnswerButton } from "../../reactions/BestAnswerButton";
+export { ReactionBar } from "./Bar";
 export { ReactorsDialog } from "./Dialog";

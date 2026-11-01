@@ -3,7 +3,7 @@ import { CornerDownRight, CheckCircle2, EyeOff, Pencil, Reply, SmilePlus, Trash2
 import { formatPostDate, initials, type APIComment } from "@/data/community";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
 import { CommentForm, DeleteCommentDialog } from ".";
-import { ReactionBar, BestAnswerButton } from "../../reactions";
+import { ReactionBar, BestAnswerButton } from "../reactions";
 
 interface Props {
   comment: APIComment;

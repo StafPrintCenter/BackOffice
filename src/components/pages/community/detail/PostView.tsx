@@ -9,7 +9,7 @@ import {
   PostFormDialog, DeletePostDialog
 } from "@/components/pages/community/shared";
 import { CommentsSection } from "../content/comment/Section";
-import { ReactionBar } from "../reactions";
+import { ReactionBar } from "../content/reactions";
 
 export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
   post: APIPost; focusCommentId?: string; onClearFocus?: () => void;

@@ -8,13 +8,14 @@ interface Props {
   commentId: string;
   repliesCount: number;
   canInteract: boolean;
-  /** Dépliage piloté par le parent (ex. après l'envoi d'une réponse) */
   open: boolean;
   onOpenChange: (v: boolean) => void;
+  initialPage?: number;
+  highlightId?: string;
 }
 
-export function RepliesThread({ commentId, repliesCount, canInteract, open, onOpenChange }: Props) {
-  const [page, setPage] = useState(1);
+export function RepliesThread({ commentId, repliesCount, canInteract, open, onOpenChange, initialPage, highlightId }: Props) {
+  const [page, setPage] = useState(initialPage ?? 1);
   const { replies, meta, isLoading, isError } = useReplies(commentId, page, open);
 
   if (repliesCount === 0 && !open) return null;
@@ -39,7 +40,7 @@ export function RepliesThread({ commentId, repliesCount, canInteract, open, onOp
           ) : replies.length === 0 ? (
             <p className="text-xs text-muted-foreground">Aucune réponse.</p>
           ) : (
-            replies.map((r) => <CommentItem key={r.id} comment={r} canInteract={canInteract} />)
+            replies.map((r) => <CommentItem key={r.id} comment={r} canInteract={canInteract} highlighted={r.id === highlightId} />)
           )}
           {meta && <Pager page={meta.currentPage} lastPage={meta.lastPage} onChange={setPage} />}
         </div>

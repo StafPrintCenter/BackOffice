@@ -184,3 +184,70 @@ export function useDeleteComment() {
     onSuccess: invalidate,
   });
 }
+
+async function getJson<T>(path: string, fallback: string): Promise<T> {
+  const response = await adminFetch(path);
+  await ensureOk(response, fallback);
+  return (await response.json()) as T;
+}
+
+export type LocatedComment = {
+  /** Commentaire racine qui contient (ou est) le commentaire ciblé */
+  root: APIComment;
+  /** Présent si la cible est une réponse : page de réponses (12 par page) à afficher */
+  replyPage?: number;
+};
+
+const REPLIES_PER_PAGE = 12;
+
+/** Cherche un commentaire dans une publication : d'abord les racines, puis les réponses. */
+async function locateComment(postId: string, commentId: string): Promise<LocatedComment | null> {
+  type Page = { data: APIComment[]; meta: Meta };
+  const withReplies: APIComment[] = [];
+
+  // 1) Parcours des commentaires racines
+  let page = 1;
+  let lastPage = 1;
+  do {
+    const res = await getJson<Page>(
+      `/api/community/posts/${postId}/comments/list?${toQuery({ page, perPage: 100, sort: "recent" })}`,
+      "Erreur lors de la recherche du commentaire.",
+    );
+    const hit = res.data.find((c) => c.id === commentId);
+    if (hit) return { root: hit };
+    withReplies.push(...res.data.filter((c) => c.repliesCount > 0));
+    lastPage = res.meta.lastPage;
+    page += 1;
+  } while (page <= lastPage);
+
+  // 2) Parcours des réponses, fil par fil
+  for (const root of withReplies) {
+    let rPage = 1;
+    let rLast = 1;
+    let offset = 0;
+    do {
+      const res = await getJson<Page>(
+        `/api/community/comments/${root.id}/replies?${toQuery({ page: rPage, perPage: 100 })}`,
+        "Erreur lors de la recherche du commentaire.",
+      );
+      const idx = res.data.findIndex((c) => c.id === commentId);
+      if (idx !== -1) return { root, replyPage: Math.floor((offset + idx) / REPLIES_PER_PAGE) + 1 };
+      offset += res.data.length;
+      rLast = res.meta.lastPage;
+      rPage += 1;
+    } while (rPage <= rLast);
+  }
+
+  return null;
+}
+
+export function useLocateComment(postId: string, commentId: string | undefined) {
+  const q = useQuery({
+    queryKey: ["community", "locate", postId, commentId],
+    enabled: !!commentId,
+    retry: false,
+    staleTime: 60_000,
+    queryFn: () => locateComment(postId, commentId as string),
+  });
+  return { located: q.data ?? null, isLoading: q.isLoading && !!commentId, isError: q.isError };
+}

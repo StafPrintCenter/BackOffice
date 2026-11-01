@@ -10,7 +10,9 @@ import {
 } from "@/components/pages/community/shared";
 import { CommentsSection } from "../comment/Section";
 
-export function PostDetailView({ post: p }: { post: APIPost }) {
+export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
+  post: APIPost; focusCommentId?: string; onClearFocus?: () => void;
+}) {
   const navigate = useNavigate();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -56,7 +58,7 @@ export function PostDetailView({ post: p }: { post: APIPost }) {
           </article>
 
           <AttachmentList attachments={p.attachments ?? []} />
-          <CommentsSection post={p} />
+          <CommentsSection post={p} focusCommentId={focusCommentId} onClearFocus={onClearFocus} />
         </div>
 
         <PostSidebar post={p} />

@@ -1,26 +1,30 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Flag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { APIPost } from "@/data/community";
 import { AttachmentList, PostSidebar } from "./";
-import {
-  AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge,
-  PostFormDialog, DeletePostDialog
-} from "@/components/pages/community/shared";
+import { AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge, PostFormDialog, DeletePostDialog } from "@/components/pages/community/shared";
 import { CommentsSection } from "../content/comment/Section";
 import { ReactionBar } from "../content/reactions";
+import { PostModerationBar, ReportDialog } from "../content/moderation";
 
 export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
   post: APIPost; focusCommentId?: string; onClearFocus?: () => void;
 }) {
   const navigate = useNavigate();
+  const [reportOpen, setReportOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
   return (
     <>
       <div className="mb-6 flex flex-wrap items-center justify-end gap-2">
+        {p.permissions.canReport && (
+          <Button variant="outline" size="sm" onClick={() => setReportOpen(true)}>
+            <Flag className="mr-1 h-4 w-4" /> Signaler
+          </Button>
+        )}
         {p.permissions.canEdit && (
           <Button variant="outline" size="sm" onClick={() => setEditOpen(true)}><Pencil className="mr-1 h-4 w-4" /> Modifier</Button>
         )}
@@ -39,6 +43,8 @@ export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
               {p.hiddenReason && <p className="mt-0.5 text-xs">Motif : {p.hiddenReason}</p>}
             </div>
           )}
+
+          <div className="mb-6 empty:hidden"><PostModerationBar post={p} /></div>
 
           <article className="rounded-2xl border bg-card p-6">
             <div className="mb-3 flex flex-wrap items-center gap-1.5">
@@ -79,6 +85,9 @@ export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
       {p.permissions.canEdit && <PostFormDialog mode="edit" post={p} open={editOpen} onOpenChange={setEditOpen} />}
       {p.permissions.canDelete && (
         <DeletePostDialog post={p} open={deleteOpen} onOpenChange={setDeleteOpen} onDeleted={() => navigate({ to: "/community" })} />
+      )}
+      {p.permissions.canReport && (
+        <ReportDialog target="posts" targetId={p.id} open={reportOpen} onOpenChange={setReportOpen} />
       )}
     </>
   );

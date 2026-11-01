@@ -1,15 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
 import { parseApiError } from "@/lib/api/error";
-import type {
-  APICommunityCategory, APIPost, CreatePostPayload, PostsListParams, UpdatePostPayload, CommentsListParams, APIComment, ReactionTarget, ReactionType, ReactionState, APIReactor, ReactorsParams
-} from "@/data/community";
+import type { APICommunityCategory, APIPost, CreatePostPayload, PostsListParams, UpdatePostPayload, CommentsListParams, APIComment, ReactionTarget, ReactionType, ReactionState, APIReactor, ReactorsParams, ReportResult, ReportReason, PostModerationAction, CommentModerationAction } from "@/data/community";
 
 type Meta = { currentPage: number; lastPage: number; perPage: number; total: number };
 
 async function ensureOk(response: Response, fallback: string): Promise<void> {
   if (!response.ok) throw await parseApiError(response, fallback);
 }
+
 
 function toQuery(params: Record<string, unknown>): string {
   const qp = new URLSearchParams();
@@ -305,6 +304,51 @@ export function useSetBestAnswer() {
       fd.append("commentId", commentId);
       const response = await adminFetch(`/api/community/posts/${postId}/best-answer`, { method: "POST", body: fd });
       await ensureOk(response, "Impossible de désigner la meilleure réponse.");
+    },
+    onSuccess: invalidate,
+  });
+}
+
+export class AlreadyReportedError extends Error { }
+
+export function useReportContent(target: ReactionTarget) {
+  return useMutation({
+    mutationFn: async ({ id, reason, details }: { id: string; reason: ReportReason; details?: string }) => {
+      const fd = new FormData();
+      fd.append("reason", reason);
+      if (details) fd.append("details", details);
+      const response = await adminFetch(`/api/community/${target}/${id}/report`, { method: "POST", body: fd });
+      if (response.status === 409) throw new AlreadyReportedError("Vous avez déjà signalé ce contenu.");
+      await ensureOk(response, "Impossible d'envoyer le signalement.");
+      return (await response.json()) as ReportResult;
+    },
+  });
+}
+
+export function useModeratePost() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async ({ id, action, reason }: { id: string; action: PostModerationAction; reason?: string }) => {
+      const fd = new FormData();
+      fd.append("action", action);
+      if (reason) fd.append("reason", reason);
+      const response = await adminFetch(`/api/community/posts/${id}/moderate`, { method: "POST", body: fd });
+      await ensureOk(response, "Action de modération impossible.");
+      return ((await response.json()) as { data: APIPost }).data;
+    },
+    onSuccess: invalidate,
+  });
+}
+
+export function useModerateComment() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async ({ id, action, reason }: { id: string; action: CommentModerationAction; reason?: string }) => {
+      const fd = new FormData();
+      fd.append("action", action);
+      if (reason) fd.append("reason", reason);
+      const response = await adminFetch(`/api/community/comments/${id}/moderate`, { method: "POST", body: fd });
+      await ensureOk(response, "Action de modération impossible.");
     },
     onSuccess: invalidate,
   });

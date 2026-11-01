@@ -193,6 +193,29 @@ export type APIReactor = {
   user: { id: string; name: string; photo: string | null; role: AuthorRole };
 };
 
+export type ReportReason = "spam" | "harassment" | "inappropriate" | "misinformation" | "off_topic" | "other";
+
+export const REPORT_REASONS: ReportReason[] = ["spam", "harassment", "inappropriate", "misinformation", "off_topic", "other"];
+
+export const REPORT_REASON_LABELS: Record<ReportReason, string> = {
+  spam: "Spam ou publicité",
+  harassment: "Harcèlement",
+  inappropriate: "Contenu inapproprié",
+  misinformation: "Désinformation",
+  off_topic: "Hors sujet",
+  other: "Autre",
+};
+
+export type PostModerationAction = "pin" | "unpin" | "lock" | "unlock" | "hide" | "unhide";
+export type CommentModerationAction = "hide" | "unhide";
+
+export type ReportResult = {
+  id: string;
+  level: "admin" | "instructor";
+  status: string;
+  message: string
+};
+
 export type ReactorsParams = { page?: number; perPage?: number; type?: ReactionType | ""; role?: AuthorRole | "" };
 
 export const formatFileSize = (bytes: number) =>

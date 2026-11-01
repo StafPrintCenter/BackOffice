@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { CornerDownRight, CheckCircle2, EyeOff, Pencil, Reply, SmilePlus, Trash2 } from "lucide-react";
+import { CornerDownRight, CheckCircle2, EyeOff, Pencil, Reply, SmilePlus, Trash2, Flag } from "lucide-react";
 import { formatPostDate, initials, type APIComment } from "@/data/community";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
 import { CommentForm, DeleteCommentDialog, BestAnswerButton } from "./";
 import { ReactionBar } from "../reactions";
+import { CommentModeration, ReportDialog } from "../moderation";
 
 interface Props {
   comment: APIComment;
@@ -19,6 +20,7 @@ export function CommentItem({ comment: c, canInteract, highlighted, canMarkBest,
   const [editing, setEditing] = useState(false);
   const [replying, setReplying] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
   const isReply = c.parentId !== null;
 
   useEffect(() => {
@@ -106,6 +108,12 @@ export function CommentItem({ comment: c, canInteract, highlighted, canMarkBest,
               <Trash2 className="h-3 w-3" /> Supprimer
             </button>
           )}
+          <CommentModeration comment={c} />
+          {c.permissions.canReport && (
+            <button type="button" onClick={() => setReportOpen(true)} className="inline-flex cursor-pointer items-center gap-1 hover:text-destructive">
+              <Flag className="h-3 w-3" /> Signaler
+            </button>
+          )}
         </div>
 
         {replying && (
@@ -123,6 +131,7 @@ export function CommentItem({ comment: c, canInteract, highlighted, canMarkBest,
       </div>
 
       <DeleteCommentDialog comment={c} open={deleteOpen} onOpenChange={setDeleteOpen} />
+      <ReportDialog target="comments" targetId={c.id} open={reportOpen} onOpenChange={setReportOpen} />
     </div>
   );
 }

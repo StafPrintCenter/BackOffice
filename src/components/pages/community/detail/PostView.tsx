@@ -8,7 +8,7 @@ import {
   AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge,
   PostFormDialog, DeletePostDialog
 } from "@/components/pages/community/shared";
-import { CommentsSection } from "../comment/Section";
+import { CommentsSection } from "../content/comment/Section";
 import { ReactionBar } from "../reactions";
 
 export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {

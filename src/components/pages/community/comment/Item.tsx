@@ -3,16 +3,18 @@ import { CornerDownRight, CheckCircle2, EyeOff, Pencil, Reply, SmilePlus, Trash2
 import { formatPostDate, initials, type APIComment } from "@/data/community";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
 import { CommentForm, DeleteCommentDialog } from "./";
+import { ReactionBar, BestAnswerButton } from "../reactions";
 
 interface Props {
   comment: APIComment;
   canInteract: boolean;
   highlighted?: boolean;
+  canMarkBest?: boolean;
   onReplied?: () => void;
   children?: React.ReactNode;
 }
 
-export function CommentItem({ comment: c, canInteract, highlighted, onReplied, children }: Props) {
+export function CommentItem({ comment: c, canInteract, highlighted, canMarkBest, onReplied, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [editing, setEditing] = useState(false);
   const [replying, setReplying] = useState(false);
@@ -75,6 +77,20 @@ export function CommentItem({ comment: c, canInteract, highlighted, onReplied, c
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 px-1 text-xs text-muted-foreground">
           <span>{formatPostDate(c.createdAt)}{c.editedAt && " · modifié"}</span>
           {c.reactionsTotal > 0 && <span className="inline-flex items-center gap-1"><SmilePlus className="h-3 w-3" /> {c.reactionsTotal}</span>}
+
+          <ReactionBar
+            compact
+            target="comments"
+            targetId={c.id}
+            myReaction={c.myReaction}
+            reactions={c.reactions}
+            reactionsTotal={c.reactionsTotal}
+            canReact={canInteract && c.permissions.canReact}
+          />
+          {canMarkBest && !c.isBestAnswer && c.status === "published" && (
+            <BestAnswerButton postId={c.postId} commentId={c.id} />
+          )}
+
           {canInteract && c.permissions.canReply && !editing && (
             <button type="button" onClick={() => setReplying((v) => !v)} className="inline-flex cursor-pointer items-center gap-1 hover:text-foreground">
               <Reply className="h-3 w-3" /> Répondre

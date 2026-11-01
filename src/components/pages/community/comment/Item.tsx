@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { CornerDownRight, CheckCircle2, EyeOff, Pencil, Reply, SmilePlus, Trash2 } from "lucide-react";
 import { formatPostDate, initials, type APIComment } from "@/data/community";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
-import { CommentForm } from "./Form";
-import { DeleteCommentDialog } from "./DeleteDialog";
+import { CommentForm, DeleteCommentDialog } from "./";
 
 interface Props {
   comment: APIComment;

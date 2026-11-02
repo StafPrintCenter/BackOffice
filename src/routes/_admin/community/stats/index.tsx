@@ -8,8 +8,10 @@ export const Route = createFileRoute("/_admin/community/stats/")({
   }),
   head: () => (
     {
-      meta: [{ title: `Signalements communauté | ${SITE.name}` },
-      { name: "robots", content: "noindex" }]
+      meta: [
+        { title: `${SITE.tool} - Statistiques de la communauté | ${SITE.name}` },
+        { name: "description", content: "Consultez les statistiques de la communauté." },
+      ]
     }),
   component: StatsPage,
 });

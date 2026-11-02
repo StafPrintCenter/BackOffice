@@ -1,13 +1,10 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { TrendingUp, NotebookPen, LayoutGrid } from "lucide-react";
 import { PageHeader } from "@/components/site";
 import { SITE } from "@/data/site";
-import { ReportDetailDialog, ReportsList } from "@/components/pages/community/reports";
+import { ReportsList } from "@/components/pages/community/reports";
 
 export const Route = createFileRoute("/_admin/community/reports/")({
-  validateSearch: (s: Record<string, unknown>): { report?: string } => ({
-    report: typeof s.report === "string" && s.report ? s.report : undefined,
-  }),
   head: () => (
     {
       meta: [
@@ -19,10 +16,6 @@ export const Route = createFileRoute("/_admin/community/reports/")({
 });
 
 function ReportsPage() {
-  const { report } = Route.useSearch();
-  const navigate = useNavigate({ from: "/community/reports/" });
-  const setReport = (id?: string) => navigate({ search: { report: id }, replace: true });
-
   return (
     <>
       <PageHeader
@@ -45,8 +38,7 @@ function ReportsPage() {
         </Link>
       </div>
 
-      <ReportsList onOpenDetail={setReport} />
-      <ReportDetailDialog reportId={report} onClose={() => setReport(undefined)} />
+      <ReportsList />
     </>
   );
 }

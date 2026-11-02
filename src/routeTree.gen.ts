@@ -58,6 +58,7 @@ import { Route as AdminCommunityCategoriesIndexRouteImport } from './routes/_adm
 import { Route as AdminCommunityPostsIndexRouteImport } from './routes/_admin/community/posts/index'
 import { Route as AdminCommunityPostsIdRouteImport } from './routes/_admin/community/posts/$id'
 import { Route as AdminCommunityReportsIndexRouteImport } from './routes/_admin/community/reports/index'
+import { Route as AdminCommunityReportsIdRouteImport } from './routes/_admin/community/reports/$id'
 import { Route as AdminCommunityStatsIndexRouteImport } from './routes/_admin/community/stats/index'
 import { Route as AdminJobsApplicationsIndexRouteImport } from './routes/_admin/jobs/applications/index'
 import { Route as AdminJobsApplicationsIdRouteImport } from './routes/_admin/jobs/applications/$id'
@@ -343,6 +344,11 @@ const AdminCommunityReportsIndexRoute =
     path: '/community/reports/',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminCommunityReportsIdRoute = AdminCommunityReportsIdRouteImport.update({
+  id: '/community/reports/$id',
+  path: '/community/reports/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCommunityStatsIndexRoute =
   AdminCommunityStatsIndexRouteImport.update({
     id: '/community/stats/',
@@ -573,6 +579,7 @@ export interface FileRoutesByFullPath {
   '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
   '/community/posts/$id': typeof AdminCommunityPostsIdRoute
+  '/community/reports/$id': typeof AdminCommunityReportsIdRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -655,6 +662,7 @@ export interface FileRoutesByTo {
   '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
   '/community/posts/$id': typeof AdminCommunityPostsIdRoute
+  '/community/reports/$id': typeof AdminCommunityReportsIdRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -740,6 +748,7 @@ export interface FileRoutesById {
   '/_admin/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/_admin/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
   '/_admin/community/posts/$id': typeof AdminCommunityPostsIdRoute
+  '/_admin/community/reports/$id': typeof AdminCommunityReportsIdRoute
   '/_admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/_admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/_admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -824,6 +833,7 @@ export interface FileRouteTypes {
     | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
     | '/community/posts/$id'
+    | '/community/reports/$id'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
     | '/members/admins/$id'
@@ -906,6 +916,7 @@ export interface FileRouteTypes {
     | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
     | '/community/posts/$id'
+    | '/community/reports/$id'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
     | '/members/admins/$id'
@@ -990,6 +1001,7 @@ export interface FileRouteTypes {
     | '/_admin/articleFeedback/group/$articleKey'
     | '/_admin/articleFeedback/unique/$id'
     | '/_admin/community/posts/$id'
+    | '/_admin/community/reports/$id'
     | '/_admin/jobs/applications/$id'
     | '/_admin/jobs/offers/$id'
     | '/_admin/members/admins/$id'
@@ -1382,6 +1394,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCommunityReportsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/community/reports/$id': {
+      id: '/_admin/community/reports/$id'
+      path: '/community/reports/$id'
+      fullPath: '/community/reports/$id'
+      preLoaderRoute: typeof AdminCommunityReportsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/community/stats/': {
       id: '/_admin/community/stats/'
       path: '/community/stats'
@@ -1655,6 +1674,7 @@ interface AdminRouteChildren {
   AdminArticleFeedbackGroupArticleKeyRoute: typeof AdminArticleFeedbackGroupArticleKeyRoute
   AdminArticleFeedbackUniqueIdRoute: typeof AdminArticleFeedbackUniqueIdRoute
   AdminCommunityPostsIdRoute: typeof AdminCommunityPostsIdRoute
+  AdminCommunityReportsIdRoute: typeof AdminCommunityReportsIdRoute
   AdminJobsApplicationsIdRoute: typeof AdminJobsApplicationsIdRoute
   AdminJobsOffersIdRoute: typeof AdminJobsOffersIdRoute
   AdminMembersAdminsIdRoute: typeof AdminMembersAdminsIdRoute
@@ -1735,6 +1755,7 @@ const AdminRouteChildren: AdminRouteChildren = {
     AdminArticleFeedbackGroupArticleKeyRoute,
   AdminArticleFeedbackUniqueIdRoute: AdminArticleFeedbackUniqueIdRoute,
   AdminCommunityPostsIdRoute: AdminCommunityPostsIdRoute,
+  AdminCommunityReportsIdRoute: AdminCommunityReportsIdRoute,
   AdminJobsApplicationsIdRoute: AdminJobsApplicationsIdRoute,
   AdminJobsOffersIdRoute: AdminJobsOffersIdRoute,
   AdminMembersAdminsIdRoute: AdminMembersAdminsIdRoute,

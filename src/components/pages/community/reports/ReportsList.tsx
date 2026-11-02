@@ -5,7 +5,7 @@ import { useReportsList } from "@/stores/useCommunityAdminStore";
 import { DEFAULT_REPORT_FILTERS, ReportsFilters, type ReportsFiltersValue } from "./ReportsFilters";
 import { ReportCard } from "./ReportCard";
 
-export function ReportsList({ onOpenDetail }: { onOpenDetail: (id: string) => void }) {
+export function ReportsList() {
   const [filters, setFilters] = useState<ReportsFiltersValue>(DEFAULT_REPORT_FILTERS);
   const [page, setPage] = useState(1);
   const { reports, stats, meta, isLoading, isError } = useReportsList({ ...filters, page, perPage: 12 });
@@ -26,7 +26,7 @@ export function ReportsList({ onOpenDetail }: { onOpenDetail: (id: string) => vo
       ) : reports.length === 0 ? (
         <p className="rounded-xl border border-dashed py-16 text-center text-sm text-muted-foreground">Aucun signalement ne correspond.</p>
       ) : (
-        <div className="max-w-3xl space-y-4">{reports.map((r) => <ReportCard key={r.id} report={r} onOpenDetail={onOpenDetail} />)}</div>
+        <div className="max-w-3xl space-y-4">{reports.map((r) => <ReportCard key={r.id} report={r} />)}</div>
       )}
       {meta && <Pager page={meta.currentPage} lastPage={meta.lastPage} total={meta.total} onChange={setPage} />}
     </>

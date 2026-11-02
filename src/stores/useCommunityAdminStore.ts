@@ -52,7 +52,7 @@ export function useReportDetail(id: string | undefined) {
       return (await response.json()) as APIReport;
     },
   });
-  return { report: q.data ?? null, isLoading: q.isLoading };
+  return { report: q.data ?? null, isLoading: q.isLoading, isError: q.isError };
 }
 
 export function useResolveReport() {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { CircleCheck, Gavel, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
@@ -8,17 +9,15 @@ import { EscalatedBadge, ReportLevelBadge, ReportReasonBadge, ReportStatusBadge,
 import { ReportTarget } from "./ReportTarget";
 import { ResolveReportDialog } from "./ResolveReportDialog";
 
-export function ReportCard({ report: r, onOpenDetail }: { report: APIReport; onOpenDetail: (id: string) => void }) {
+export function ReportCard({ report: r }: { report: APIReport }) {
   const [resolveOpen, setResolveOpen] = useState(false);
 
   return (
     <article className="space-y-3 rounded-2xl border bg-card p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-1.5">
-          <ReportStatusBadge status={r.status} />
-          <ReportReasonBadge reason={r.reason} />
-          <TargetTypeBadge type={r.target.type} />
-          <ReportLevelBadge level={r.level} />
+          <ReportStatusBadge status={r.status} /><ReportReasonBadge reason={r.reason} />
+          <TargetTypeBadge type={r.target.type} /><ReportLevelBadge level={r.level} />
           {r.escalation != null && <EscalatedBadge />}
         </div>
         <span className="text-xs text-muted-foreground">{formatPostDate(r.reportedAt)}</span>
@@ -45,7 +44,9 @@ export function ReportCard({ report: r, onOpenDetail }: { report: APIReport; onO
       )}
 
       <div className="flex flex-wrap gap-2 border-t pt-3">
-        <Button size="sm" variant="outline" onClick={() => onOpenDetail(r.id)}><Info className="mr-1 h-3.5 w-3.5" /> Détails</Button>
+        <Button asChild size="sm" variant="outline">
+          <Link to="/community/reports/$id" params={{ id: r.id }}><Info className="mr-1 h-3.5 w-3.5" /> Détails</Link>
+        </Button>
         {r.status === "pending" && (
           <Button size="sm" onClick={() => setResolveOpen(true)}><Gavel className="mr-1 h-3.5 w-3.5" /> Traiter</Button>
         )}

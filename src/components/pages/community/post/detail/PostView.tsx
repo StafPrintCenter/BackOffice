@@ -88,7 +88,7 @@ export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
           post={p}
           open={deleteOpen}
           onOpenChange={setDeleteOpen}
-          onDeleted={() => navigate({ to: "/community/post" })} />
+          onDeleted={() => navigate({ to: "/community/posts" })} />
       )}
       {p.permissions.canReport && (
         <ReportDialog target="posts" targetId={p.id} open={reportOpen} onOpenChange={setReportOpen} />

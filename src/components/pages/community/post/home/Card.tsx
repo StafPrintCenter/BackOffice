@@ -53,7 +53,7 @@ export function PostCard({ post: p }: { post: APIPost }) {
       </div>
 
       <div>
-        <Link to="/community/post/$id" params={{ id: p.id }} className="font-display text-lg font-semibold leading-snug hover:text-primary hover:underline">
+        <Link to="/community/posts/$id" params={{ id: p.id }} className="font-display text-lg font-semibold leading-snug hover:text-primary hover:underline">
           {p.title}
         </Link>
         <p className="mt-1 line-clamp-3 whitespace-pre-line text-sm text-muted-foreground">{p.excerpt}</p>

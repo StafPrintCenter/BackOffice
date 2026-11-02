@@ -38,7 +38,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { to: "/messages", label: "Messages", icon: Inbox },
       { to: "/newsletter/subscribers", label: "Newsletter", icon: Mailbox, matchPrefixes: ["/newsletter"] },
       { to: "/announces", label: "Annonces", icon: Flag },
-      { to: "/community", label: "Communauté", icon: UsersRoundIcon },
+      { to: "/community/posts", label: "Communauté", icon: UsersRoundIcon, matchPrefixes: ["/community"] },
     ],
   },
   {

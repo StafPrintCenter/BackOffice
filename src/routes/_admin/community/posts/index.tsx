@@ -7,7 +7,7 @@ import { SITE } from "@/data/site";
 import { CommunityFeed } from "@/components/pages/community/post/home";
 import { PostFormDialog } from "@/components/pages/community/shared";
 
-export const Route = createFileRoute("/_admin/community/post/")({
+export const Route = createFileRoute("/_admin/community/posts/")({
   head: () => ({
     meta: [
       { title: `Communauté | ${SITE.name}` },

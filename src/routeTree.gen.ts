@@ -54,8 +54,10 @@ import { Route as AdminArticleFeedbackGroupIndexRouteImport } from './routes/_ad
 import { Route as AdminArticleFeedbackGroupArticleKeyRouteImport } from './routes/_admin/articleFeedback/group/$articleKey'
 import { Route as AdminArticleFeedbackUniqueIndexRouteImport } from './routes/_admin/articleFeedback/unique/index'
 import { Route as AdminArticleFeedbackUniqueIdRouteImport } from './routes/_admin/articleFeedback/unique/$id'
-import { Route as AdminCommunityPostIndexRouteImport } from './routes/_admin/community/post/index'
-import { Route as AdminCommunityPostIdRouteImport } from './routes/_admin/community/post/$id'
+import { Route as AdminCommunityPostsIndexRouteImport } from './routes/_admin/community/posts/index'
+import { Route as AdminCommunityPostsIdRouteImport } from './routes/_admin/community/posts/$id'
+import { Route as AdminCommunityReportsIndexRouteImport } from './routes/_admin/community/reports/index'
+import { Route as AdminCommunityStatsIndexRouteImport } from './routes/_admin/community/stats/index'
 import { Route as AdminJobsApplicationsIndexRouteImport } from './routes/_admin/jobs/applications/index'
 import { Route as AdminJobsApplicationsIdRouteImport } from './routes/_admin/jobs/applications/$id'
 import { Route as AdminJobsOffersIndexRouteImport } from './routes/_admin/jobs/offers/index'
@@ -317,16 +319,29 @@ const AdminArticleFeedbackUniqueIdRoute =
     path: '/articleFeedback/unique/$id',
     getParentRoute: () => AdminRoute,
   } as any)
-const AdminCommunityPostIndexRoute = AdminCommunityPostIndexRouteImport.update({
-  id: '/community/post/',
-  path: '/community/post/',
+const AdminCommunityPostsIndexRoute =
+  AdminCommunityPostsIndexRouteImport.update({
+    id: '/community/posts/',
+    path: '/community/posts/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminCommunityPostsIdRoute = AdminCommunityPostsIdRouteImport.update({
+  id: '/community/posts/$id',
+  path: '/community/posts/$id',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminCommunityPostIdRoute = AdminCommunityPostIdRouteImport.update({
-  id: '/community/post/$id',
-  path: '/community/post/$id',
-  getParentRoute: () => AdminRoute,
-} as any)
+const AdminCommunityReportsIndexRoute =
+  AdminCommunityReportsIndexRouteImport.update({
+    id: '/community/reports/',
+    path: '/community/reports/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminCommunityStatsIndexRoute =
+  AdminCommunityStatsIndexRouteImport.update({
+    id: '/community/stats/',
+    path: '/community/stats/',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminJobsApplicationsIndexRoute =
   AdminJobsApplicationsIndexRouteImport.update({
     id: '/jobs/applications/',
@@ -550,7 +565,7 @@ export interface FileRoutesByFullPath {
   '/waitlist/': typeof AdminWaitlistIndexRoute
   '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
-  '/community/post/$id': typeof AdminCommunityPostIdRoute
+  '/community/posts/$id': typeof AdminCommunityPostsIdRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -567,7 +582,9 @@ export interface FileRoutesByFullPath {
   '/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
   '/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
-  '/community/post/': typeof AdminCommunityPostIndexRoute
+  '/community/posts/': typeof AdminCommunityPostsIndexRoute
+  '/community/reports/': typeof AdminCommunityReportsIndexRoute
+  '/community/stats/': typeof AdminCommunityStatsIndexRoute
   '/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
   '/jobs/offers/': typeof AdminJobsOffersIndexRoute
   '/members/admins/': typeof AdminMembersAdminsIndexRoute
@@ -629,7 +646,7 @@ export interface FileRoutesByTo {
   '/waitlist': typeof AdminWaitlistIndexRoute
   '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
-  '/community/post/$id': typeof AdminCommunityPostIdRoute
+  '/community/posts/$id': typeof AdminCommunityPostsIdRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -646,7 +663,9 @@ export interface FileRoutesByTo {
   '/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
   '/articleFeedback/group': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique': typeof AdminArticleFeedbackUniqueIndexRoute
-  '/community/post': typeof AdminCommunityPostIndexRoute
+  '/community/posts': typeof AdminCommunityPostsIndexRoute
+  '/community/reports': typeof AdminCommunityReportsIndexRoute
+  '/community/stats': typeof AdminCommunityStatsIndexRoute
   '/jobs/applications': typeof AdminJobsApplicationsIndexRoute
   '/jobs/offers': typeof AdminJobsOffersIndexRoute
   '/members/admins': typeof AdminMembersAdminsIndexRoute
@@ -711,7 +730,7 @@ export interface FileRoutesById {
   '/_admin/waitlist/': typeof AdminWaitlistIndexRoute
   '/_admin/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/_admin/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
-  '/_admin/community/post/$id': typeof AdminCommunityPostIdRoute
+  '/_admin/community/posts/$id': typeof AdminCommunityPostsIdRoute
   '/_admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/_admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/_admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -728,7 +747,9 @@ export interface FileRoutesById {
   '/_admin/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
   '/_admin/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/_admin/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
-  '/_admin/community/post/': typeof AdminCommunityPostIndexRoute
+  '/_admin/community/posts/': typeof AdminCommunityPostsIndexRoute
+  '/_admin/community/reports/': typeof AdminCommunityReportsIndexRoute
+  '/_admin/community/stats/': typeof AdminCommunityStatsIndexRoute
   '/_admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
   '/_admin/jobs/offers/': typeof AdminJobsOffersIndexRoute
   '/_admin/members/admins/': typeof AdminMembersAdminsIndexRoute
@@ -792,7 +813,7 @@ export interface FileRouteTypes {
     | '/waitlist/'
     | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
-    | '/community/post/$id'
+    | '/community/posts/$id'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
     | '/members/admins/$id'
@@ -809,7 +830,9 @@ export interface FileRouteTypes {
     | '/trainings/sessions/$id'
     | '/articleFeedback/group/'
     | '/articleFeedback/unique/'
-    | '/community/post/'
+    | '/community/posts/'
+    | '/community/reports/'
+    | '/community/stats/'
     | '/jobs/applications/'
     | '/jobs/offers/'
     | '/members/admins/'
@@ -871,7 +894,7 @@ export interface FileRouteTypes {
     | '/waitlist'
     | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
-    | '/community/post/$id'
+    | '/community/posts/$id'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
     | '/members/admins/$id'
@@ -888,7 +911,9 @@ export interface FileRouteTypes {
     | '/trainings/sessions/$id'
     | '/articleFeedback/group'
     | '/articleFeedback/unique'
-    | '/community/post'
+    | '/community/posts'
+    | '/community/reports'
+    | '/community/stats'
     | '/jobs/applications'
     | '/jobs/offers'
     | '/members/admins'
@@ -952,7 +977,7 @@ export interface FileRouteTypes {
     | '/_admin/waitlist/'
     | '/_admin/articleFeedback/group/$articleKey'
     | '/_admin/articleFeedback/unique/$id'
-    | '/_admin/community/post/$id'
+    | '/_admin/community/posts/$id'
     | '/_admin/jobs/applications/$id'
     | '/_admin/jobs/offers/$id'
     | '/_admin/members/admins/$id'
@@ -969,7 +994,9 @@ export interface FileRouteTypes {
     | '/_admin/trainings/sessions/$id'
     | '/_admin/articleFeedback/group/'
     | '/_admin/articleFeedback/unique/'
-    | '/_admin/community/post/'
+    | '/_admin/community/posts/'
+    | '/_admin/community/reports/'
+    | '/_admin/community/stats/'
     | '/_admin/jobs/applications/'
     | '/_admin/jobs/offers/'
     | '/_admin/members/admins/'
@@ -1314,18 +1341,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminArticleFeedbackUniqueIdRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_admin/community/post/': {
-      id: '/_admin/community/post/'
-      path: '/community/post'
-      fullPath: '/community/post/'
-      preLoaderRoute: typeof AdminCommunityPostIndexRouteImport
+    '/_admin/community/posts/': {
+      id: '/_admin/community/posts/'
+      path: '/community/posts'
+      fullPath: '/community/posts/'
+      preLoaderRoute: typeof AdminCommunityPostsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_admin/community/post/$id': {
-      id: '/_admin/community/post/$id'
-      path: '/community/post/$id'
-      fullPath: '/community/post/$id'
-      preLoaderRoute: typeof AdminCommunityPostIdRouteImport
+    '/_admin/community/posts/$id': {
+      id: '/_admin/community/posts/$id'
+      path: '/community/posts/$id'
+      fullPath: '/community/posts/$id'
+      preLoaderRoute: typeof AdminCommunityPostsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/community/reports/': {
+      id: '/_admin/community/reports/'
+      path: '/community/reports'
+      fullPath: '/community/reports/'
+      preLoaderRoute: typeof AdminCommunityReportsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/community/stats/': {
+      id: '/_admin/community/stats/'
+      path: '/community/stats'
+      fullPath: '/community/stats/'
+      preLoaderRoute: typeof AdminCommunityStatsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/jobs/applications/': {
@@ -1593,7 +1634,7 @@ interface AdminRouteChildren {
   AdminWaitlistIndexRoute: typeof AdminWaitlistIndexRoute
   AdminArticleFeedbackGroupArticleKeyRoute: typeof AdminArticleFeedbackGroupArticleKeyRoute
   AdminArticleFeedbackUniqueIdRoute: typeof AdminArticleFeedbackUniqueIdRoute
-  AdminCommunityPostIdRoute: typeof AdminCommunityPostIdRoute
+  AdminCommunityPostsIdRoute: typeof AdminCommunityPostsIdRoute
   AdminJobsApplicationsIdRoute: typeof AdminJobsApplicationsIdRoute
   AdminJobsOffersIdRoute: typeof AdminJobsOffersIdRoute
   AdminMembersAdminsIdRoute: typeof AdminMembersAdminsIdRoute
@@ -1610,7 +1651,9 @@ interface AdminRouteChildren {
   AdminTrainingsSessionsIdRoute: typeof AdminTrainingsSessionsIdRoute
   AdminArticleFeedbackGroupIndexRoute: typeof AdminArticleFeedbackGroupIndexRoute
   AdminArticleFeedbackUniqueIndexRoute: typeof AdminArticleFeedbackUniqueIndexRoute
-  AdminCommunityPostIndexRoute: typeof AdminCommunityPostIndexRoute
+  AdminCommunityPostsIndexRoute: typeof AdminCommunityPostsIndexRoute
+  AdminCommunityReportsIndexRoute: typeof AdminCommunityReportsIndexRoute
+  AdminCommunityStatsIndexRoute: typeof AdminCommunityStatsIndexRoute
   AdminJobsApplicationsIndexRoute: typeof AdminJobsApplicationsIndexRoute
   AdminJobsOffersIndexRoute: typeof AdminJobsOffersIndexRoute
   AdminMembersAdminsIndexRoute: typeof AdminMembersAdminsIndexRoute
@@ -1670,7 +1713,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminArticleFeedbackGroupArticleKeyRoute:
     AdminArticleFeedbackGroupArticleKeyRoute,
   AdminArticleFeedbackUniqueIdRoute: AdminArticleFeedbackUniqueIdRoute,
-  AdminCommunityPostIdRoute: AdminCommunityPostIdRoute,
+  AdminCommunityPostsIdRoute: AdminCommunityPostsIdRoute,
   AdminJobsApplicationsIdRoute: AdminJobsApplicationsIdRoute,
   AdminJobsOffersIdRoute: AdminJobsOffersIdRoute,
   AdminMembersAdminsIdRoute: AdminMembersAdminsIdRoute,
@@ -1687,7 +1730,9 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminTrainingsSessionsIdRoute: AdminTrainingsSessionsIdRoute,
   AdminArticleFeedbackGroupIndexRoute: AdminArticleFeedbackGroupIndexRoute,
   AdminArticleFeedbackUniqueIndexRoute: AdminArticleFeedbackUniqueIndexRoute,
-  AdminCommunityPostIndexRoute: AdminCommunityPostIndexRoute,
+  AdminCommunityPostsIndexRoute: AdminCommunityPostsIndexRoute,
+  AdminCommunityReportsIndexRoute: AdminCommunityReportsIndexRoute,
+  AdminCommunityStatsIndexRoute: AdminCommunityStatsIndexRoute,
   AdminJobsApplicationsIndexRoute: AdminJobsApplicationsIndexRoute,
   AdminJobsOffersIndexRoute: AdminJobsOffersIndexRoute,
   AdminMembersAdminsIndexRoute: AdminMembersAdminsIndexRoute,

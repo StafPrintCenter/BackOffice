@@ -1,2 +1,2 @@
-export { ReactionBar } from "../../../content/reactions/Bar";
-export { ReactorsDialog } from "../../../content/reactions/Dialog";
+export { ReactionBar } from "./Bar";
+export { ReactorsDialog } from "./Dialog";

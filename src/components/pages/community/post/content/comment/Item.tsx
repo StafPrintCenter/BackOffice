@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { CornerDownRight, CheckCircle2, EyeOff, Pencil, Reply, SmilePlus, Trash2, Flag } from "lucide-react";
 import { formatPostDate, initials, type APIComment } from "@/data/community";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
-import { CommentForm, DeleteCommentDialog, BestAnswerButton } from "./";
-import { ReactionBar } from "../../post/content/reactions";
-import { CommentModeration, ReportDialog } from "../../post/content/moderation";
+import { CommentForm, DeleteCommentDialog, BestAnswerButton } from ".";
+import { ReactionBar } from "../reactions";
+import { CommentModeration, ReportDialog } from "../moderation";
 
 interface Props {
   comment: APIComment;

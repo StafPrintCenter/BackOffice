@@ -9,7 +9,7 @@ import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { sanitizeTrainingPayload } from "@/data/trainings";
 import type { AdminTrainingPayload } from "@/data/trainings";
 import { SITE } from "@/data/site";
-import { toPayload, TrainingDetailHero, TrainingDetailInstructorsSection, TrainingDetailEditForm, TrainingDetailSidebar, TrainingDetailSessionsCard, TrainingDetailObjectivesCard, TrainingDetailProgramCard } from "@/components/trainings/detail";
+import { toPayload, TrainingDetailHero, TrainingDetailInstructorsSection, TrainingDetailEditForm, TrainingDetailSidebar, TrainingDetailSessionsCard, TrainingDetailObjectivesCard, TrainingDetailProgramCard } from "@/components/pages/trainings/detail";
 import { TrainingStudentsSection } from "@/components/pages/trainings/enrollments/TrainingStudentsSection";
 
 export const Route = createFileRoute("/_admin/trainings/catalogs/$id/")({

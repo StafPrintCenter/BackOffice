@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { User } from "lucide-react";
 import { formatSessionDate, type APIReviewRequest } from "@/data/trainingSessions";
-import { ReviewStatusBadge, ReviewActions } from "../../pages/trainings/sessions";
+import { ReviewStatusBadge, ReviewActions } from ".";
 
 export function ReviewRequestCard({ request: r }: { request: APIReviewRequest }) {
   return (

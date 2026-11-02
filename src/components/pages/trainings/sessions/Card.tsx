@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { CalendarClock, Clock, Flag, User, UserRoundPlus, UserRoundMinus } from "lucide-react";
 import { formatDuration, formatSessionRange, type APISession } from "@/data/trainingSessions";
-import { ModalityBadge, SessionStatusBadge } from "./SessionBadges";
+import { ModalityBadge, SessionStatusBadge } from "../../../trainings/sessions/SessionBadges";
 
 interface Props {
   session: APISession;

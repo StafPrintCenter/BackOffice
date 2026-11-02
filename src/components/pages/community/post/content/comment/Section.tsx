@@ -3,7 +3,7 @@ import { Link2Off, Loader2, Lock, MessageCircle, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { AUTHOR_ROLE_LABELS, COMMENT_SORT_LABELS, type APIPost, type AuthorRole, type CommentSort } from "@/data/community";
 import { useCommentsList, useLocateComment } from "@/stores/useCommunityStore";
-import { Pager } from "@/components/trainings/sessions/Pager";
+import { Pager } from "@/components/pages/trainings/sessions/Pager";
 import { CommentForm, CommentThread } from ".";
 
 const select = "h-8 cursor-pointer rounded-md border border-input bg-background px-2 text-xs";

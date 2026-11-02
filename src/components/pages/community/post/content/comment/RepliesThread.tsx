@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useReplies } from "@/stores/useCommunityStore";
-import { Pager } from "@/components/trainings/sessions/Pager";
+import { Pager } from "@/components/pages/trainings/sessions/Pager";
 import { CommentItem } from "./Item";
 
 interface Props {

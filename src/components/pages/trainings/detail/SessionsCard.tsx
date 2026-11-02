@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { CalendarRange } from "lucide-react";
 import { useSessionsList } from "@/stores/useTrainingSessionsStore";
-import { SessionCard } from "@/components/trainings/sessions/SessionCard";
+import { SessionCard } from "@/components/pages/trainings/sessions/Card";
 
 export function TrainingDetailSessionsCard({ trainingId, color }: { trainingId: string; color?: string }) {
   const { sessions, meta, isLoading, isError } = useSessionsList({ perPage: 5 }, trainingId);

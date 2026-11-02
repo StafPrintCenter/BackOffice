@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useCommunityCategories, usePostsList } from "@/stores/useCommunityStore";
-import { Pager } from "@/components/trainings/sessions/Pager";
+import { Pager } from "@/components/pages/trainings/sessions/Pager";
 import {
   EMPTY_POST_FILTERS, PostFilters, type PostFiltersValue,
   PostCard

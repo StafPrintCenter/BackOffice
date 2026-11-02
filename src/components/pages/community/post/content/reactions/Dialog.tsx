@@ -6,7 +6,7 @@ import {
   type AuthorRole, type ReactionTarget, type ReactionType,
 } from "@/data/community";
 import { useReactorsList } from "@/stores/useCommunityStore";
-import { Pager } from "@/components/trainings/sessions/Pager";
+import { Pager } from "@/components/pages/trainings/sessions/Pager";
 
 interface Props { target: ReactionTarget; targetId: string; open: boolean; onOpenChange: (v: boolean) => void }
 

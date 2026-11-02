@@ -54,6 +54,7 @@ import { Route as AdminArticleFeedbackGroupIndexRouteImport } from './routes/_ad
 import { Route as AdminArticleFeedbackGroupArticleKeyRouteImport } from './routes/_admin/articleFeedback/group/$articleKey'
 import { Route as AdminArticleFeedbackUniqueIndexRouteImport } from './routes/_admin/articleFeedback/unique/index'
 import { Route as AdminArticleFeedbackUniqueIdRouteImport } from './routes/_admin/articleFeedback/unique/$id'
+import { Route as AdminCommunityCategoriesIndexRouteImport } from './routes/_admin/community/categories/index'
 import { Route as AdminCommunityPostsIndexRouteImport } from './routes/_admin/community/posts/index'
 import { Route as AdminCommunityPostsIdRouteImport } from './routes/_admin/community/posts/$id'
 import { Route as AdminCommunityReportsIndexRouteImport } from './routes/_admin/community/reports/index'
@@ -319,6 +320,12 @@ const AdminArticleFeedbackUniqueIdRoute =
     path: '/articleFeedback/unique/$id',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminCommunityCategoriesIndexRoute =
+  AdminCommunityCategoriesIndexRouteImport.update({
+    id: '/community/categories/',
+    path: '/community/categories/',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminCommunityPostsIndexRoute =
   AdminCommunityPostsIndexRouteImport.update({
     id: '/community/posts/',
@@ -582,6 +589,7 @@ export interface FileRoutesByFullPath {
   '/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
   '/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
+  '/community/categories/': typeof AdminCommunityCategoriesIndexRoute
   '/community/posts/': typeof AdminCommunityPostsIndexRoute
   '/community/reports/': typeof AdminCommunityReportsIndexRoute
   '/community/stats/': typeof AdminCommunityStatsIndexRoute
@@ -663,6 +671,7 @@ export interface FileRoutesByTo {
   '/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
   '/articleFeedback/group': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique': typeof AdminArticleFeedbackUniqueIndexRoute
+  '/community/categories': typeof AdminCommunityCategoriesIndexRoute
   '/community/posts': typeof AdminCommunityPostsIndexRoute
   '/community/reports': typeof AdminCommunityReportsIndexRoute
   '/community/stats': typeof AdminCommunityStatsIndexRoute
@@ -747,6 +756,7 @@ export interface FileRoutesById {
   '/_admin/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
   '/_admin/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/_admin/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
+  '/_admin/community/categories/': typeof AdminCommunityCategoriesIndexRoute
   '/_admin/community/posts/': typeof AdminCommunityPostsIndexRoute
   '/_admin/community/reports/': typeof AdminCommunityReportsIndexRoute
   '/_admin/community/stats/': typeof AdminCommunityStatsIndexRoute
@@ -830,6 +840,7 @@ export interface FileRouteTypes {
     | '/trainings/sessions/$id'
     | '/articleFeedback/group/'
     | '/articleFeedback/unique/'
+    | '/community/categories/'
     | '/community/posts/'
     | '/community/reports/'
     | '/community/stats/'
@@ -911,6 +922,7 @@ export interface FileRouteTypes {
     | '/trainings/sessions/$id'
     | '/articleFeedback/group'
     | '/articleFeedback/unique'
+    | '/community/categories'
     | '/community/posts'
     | '/community/reports'
     | '/community/stats'
@@ -994,6 +1006,7 @@ export interface FileRouteTypes {
     | '/_admin/trainings/sessions/$id'
     | '/_admin/articleFeedback/group/'
     | '/_admin/articleFeedback/unique/'
+    | '/_admin/community/categories/'
     | '/_admin/community/posts/'
     | '/_admin/community/reports/'
     | '/_admin/community/stats/'
@@ -1341,6 +1354,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminArticleFeedbackUniqueIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/community/categories/': {
+      id: '/_admin/community/categories/'
+      path: '/community/categories'
+      fullPath: '/community/categories/'
+      preLoaderRoute: typeof AdminCommunityCategoriesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/community/posts/': {
       id: '/_admin/community/posts/'
       path: '/community/posts'
@@ -1651,6 +1671,7 @@ interface AdminRouteChildren {
   AdminTrainingsSessionsIdRoute: typeof AdminTrainingsSessionsIdRoute
   AdminArticleFeedbackGroupIndexRoute: typeof AdminArticleFeedbackGroupIndexRoute
   AdminArticleFeedbackUniqueIndexRoute: typeof AdminArticleFeedbackUniqueIndexRoute
+  AdminCommunityCategoriesIndexRoute: typeof AdminCommunityCategoriesIndexRoute
   AdminCommunityPostsIndexRoute: typeof AdminCommunityPostsIndexRoute
   AdminCommunityReportsIndexRoute: typeof AdminCommunityReportsIndexRoute
   AdminCommunityStatsIndexRoute: typeof AdminCommunityStatsIndexRoute
@@ -1730,6 +1751,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminTrainingsSessionsIdRoute: AdminTrainingsSessionsIdRoute,
   AdminArticleFeedbackGroupIndexRoute: AdminArticleFeedbackGroupIndexRoute,
   AdminArticleFeedbackUniqueIndexRoute: AdminArticleFeedbackUniqueIndexRoute,
+  AdminCommunityCategoriesIndexRoute: AdminCommunityCategoriesIndexRoute,
   AdminCommunityPostsIndexRoute: AdminCommunityPostsIndexRoute,
   AdminCommunityReportsIndexRoute: AdminCommunityReportsIndexRoute,
   AdminCommunityStatsIndexRoute: AdminCommunityStatsIndexRoute,

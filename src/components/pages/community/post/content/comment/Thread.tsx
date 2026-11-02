@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { APIComment } from "@/data/community";
-import { CommentItem, RepliesThread } from "../../post/content/comment";
+import { CommentItem, RepliesThread } from ".";
 
 interface Props {
   comment: APIComment;

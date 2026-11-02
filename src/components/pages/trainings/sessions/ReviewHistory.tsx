@@ -1,6 +1,6 @@
 import { Flag } from "lucide-react";
 import { formatSessionDate, type APISessionDetail } from "@/data/trainingSessions";
-import { ReviewStatusBadge, ReviewActions } from "../../pages/trainings/sessions";
+import { ReviewStatusBadge, ReviewActions } from ".";
 
 export function SessionReviewHistory({ session: s }: { session: APISessionDetail }) {
   return (

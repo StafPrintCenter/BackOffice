@@ -6,7 +6,7 @@ import type { APIPost } from "@/data/community";
 import { AttachmentList, PostSidebar } from ".";
 import { AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge, PostFormDialog, DeletePostDialog } from "@/components/pages/community/shared";
 import { CommentsSection } from "../../content/comment/Section";
-import { ReactionBar } from "../../content/reactions";
+import { ReactionBar } from "../content/reactions";
 import { PostModerationBar, ReportDialog } from "../content/moderation";
 
 export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {

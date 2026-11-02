@@ -9,7 +9,6 @@ async function ensureOk(response: Response, fallback: string): Promise<void> {
   if (!response.ok) throw await parseApiError(response, fallback);
 }
 
-
 function toQuery(params: Record<string, unknown>): string {
   const qp = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) {

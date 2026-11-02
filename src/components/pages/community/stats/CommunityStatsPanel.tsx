@@ -22,8 +22,12 @@ export function CommunityStatsPanel() {
     <section className="mb-6 space-y-3">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold">Chiffres clés</h2>
-        <select value={days} onChange={(e) => setDays(Number(e.target.value))} className="h-8 cursor-pointer rounded-md border border-input bg-background px-2 text-xs">
-          {[7, 30, 90, 365].map((d) => <option key={d} value={d}>{d} derniers jours</option>)}
+        <select
+          value={days}
+          onChange={(e) => setDays(Number(e.target.value))}
+          className="h-8 cursor-pointer rounded-md border border-input bg-background px-2 text-xs">
+          {[7, 30, 90, 365].map((d) =>
+            <option key={d} value={d}>{d} derniers jours</option>)}
         </select>
       </div>
 

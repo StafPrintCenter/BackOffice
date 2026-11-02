@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SITE } from "@/data/site";
-import { CommunityStatsPanel } from "@/components/pages/community/reports";
+import { CommunityStatsPanel } from "@/components/pages/community/stats";
 
 export const Route = createFileRoute("/_admin/community/stats/")({
   validateSearch: (s: Record<string, unknown>): { report?: string } => ({

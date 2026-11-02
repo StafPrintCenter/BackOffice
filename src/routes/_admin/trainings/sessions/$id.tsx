@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
 import { formatSessionDate } from "@/data/trainingSessions";
 import { useSessionDetail } from "@/stores/useTrainingSessionsStore";
-import { SessionInfoCard, SessionResponsesCard, SessionReviewHistory, SuspendSessionDialog, ReactivateSessionButton } from "@/components/trainings/sessions";
+import { SessionInfoCard, SessionResponsesCard, SessionReviewHistory, SuspendSessionDialog, ReactivateSessionButton } from "@/components/pages/trainings/sessions";
 
 export const Route = createFileRoute("/_admin/trainings/sessions/$id")({
   head: () => ({ meta: [{ title: `Session | ${SITE.name}` }, { name: "robots", content: "noindex" }] }),

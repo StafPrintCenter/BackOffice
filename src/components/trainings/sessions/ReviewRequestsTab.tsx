@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { REVIEW_STATUS_LABELS, type ReviewStatus } from "@/data/trainingSessions";
 import { useReviewRequests } from "@/stores/useTrainingSessionsStore";
-import { Pager, ReviewRequestCard } from "./";
+import { Pager, ReviewRequestCard } from "../../pages/trainings/sessions";
 
 export function ReviewRequestsTab({ trainingId }: { trainingId?: string }) {
   const [status, setStatus] = useState<ReviewStatus | "">("pending");

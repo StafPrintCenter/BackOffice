@@ -4,7 +4,7 @@ import { formatPostDate, initials, type APIComment } from "@/data/community";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
 import { CommentForm, DeleteCommentDialog, BestAnswerButton } from "./";
 import { ReactionBar } from "../reactions";
-import { CommentModeration, ReportDialog } from "../moderation";
+import { CommentModeration, ReportDialog } from "../../post/content/moderation";
 
 interface Props {
   comment: APIComment;

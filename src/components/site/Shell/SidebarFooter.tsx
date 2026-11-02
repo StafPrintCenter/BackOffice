@@ -20,11 +20,18 @@ export function AdminSidebarFooter({
 
   return (
     <SidebarFooter className="border-t border-sidebar-border p-2 space-y-1">
-      <div className="px-2 pt-1 group-data-[collapsible=icon]:hidden">
-        <SocialLinks
-          className="flex-wrap gap-1"
-          linkClassName="text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-        />
+      {/* SocialLinks */}
+      <div className="px-2 pt-1 group-data-[collapsible=icon]:hidden flex flex-col gap-1.5">
+        <div className="flex items-center justify-center px-1">
+          <SocialLinks
+            className="flex-wrap justify-center gap-0.5"
+            linkClassName="text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent p-1"
+            iconClassName="size-3.5"
+          />
+        </div>
+
+        <div className="flex items-center gap-1 border-t border-sidebar-border/40 pt-1.5">
+        </div>
       </div>
 
       <SidebarMenu>

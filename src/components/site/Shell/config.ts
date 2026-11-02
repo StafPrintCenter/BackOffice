@@ -82,6 +82,6 @@ export const navItemClass =
 
 // Liens du dropdown utilisateur
 export const USER_DROPDOWN_ITEMS = [
-  { to: "/profil", label: "Mon profil", icon: UserCircle },
+  { to: "/profile", label: "Mon profil", icon: UserCircle },
   { to: "/notifications", label: "Notifications", icon: Bell },
 ] as const;

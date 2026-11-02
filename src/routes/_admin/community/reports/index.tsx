@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { UserRoundPlus, GraduationCap, Wallet } from "lucide-react";
+import { TrendingUp, NotebookPen, LayoutGrid } from "lucide-react";
 import { PageHeader } from "@/components/site";
 import { SITE } from "@/data/site";
 import { ReportDetailDialog, ReportsList } from "@/components/pages/community/reports";
@@ -33,15 +33,15 @@ function ReportsPage() {
       {/* Raccourci */}
       <div className="flex items-center gap-6 mb-4">
         <Link to="/community/posts" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <GraduationCap className="h-4 w-4" /> Publications
+          <NotebookPen className="h-4 w-4" /> Publications
         </Link>
 
         <Link to="/community/categories" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Wallet className="h-4 w-4" /> Catégories
+          <LayoutGrid className="h-4 w-4" /> Catégories
         </Link>
 
         <Link to="/community/stats" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <UserRoundPlus className="h-4 w-4" /> Statistiques
+          <TrendingUp className="h-4 w-4" /> Statistiques
         </Link>
       </div>
 

@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Ban, KeyRound, Mail, Phone } from "lucide-react";
 import { formatEnrollmentDate, formatFcfa, type APITrainingStudent } from "@/data/trainingEnrollments";
-import { CertificateStatusBadge, EnrollmentStatusBadge, PaymentStatusBadge } from "./EnrollmentBadges";
-import { AddPaymentDialog } from "@/components/trainings/payments/AddPaymentDialog";
-import { CertificateActions } from "@/components/trainings/certificates/CertificateActions";
+import { CertificateStatusBadge, EnrollmentStatusBadge, PaymentStatusBadge } from "./Badges";
+import { AddPaymentDialog } from "@/components/pages/trainings/payments/AddDialog";
+import { CertificateActions } from "@/components/pages/trainings/certificates/CertificateActions";
 import { ProgressBar } from "./ProgressBar";
 
 const initials = (name: string) =>

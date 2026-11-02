@@ -1,10 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, CheckCircle2, KeyRound, Loader2, Lock, Mail, Phone, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PaymentMethodBadge } from "@/components/trainings/payments/PaymentMethodBadge";
-import { AddPaymentDialog } from "@/components/trainings/payments/AddPaymentDialog";
-import { EnrollmentStatusBadge, PaymentStatusBadge } from "@/components/trainings/enrollments/EnrollmentBadges";
-import { ProgressBar } from "@/components/trainings/enrollments/ProgressBar";
+import { PaymentMethodBadge } from "@/components/pages/trainings/payments/MethodBadge";
+import { AddPaymentDialog } from "@/components/pages/trainings/payments/AddDialog";
+import { EnrollmentStatusBadge, PaymentStatusBadge } from "@/components/pages/trainings/enrollments/Badges";
+import { ProgressBar } from "@/components/pages/trainings/enrollments/ProgressBar";
 import { formatEnrollmentDate, formatFcfa } from "@/data/trainingEnrollments";
 import { formatPaymentDate } from "@/data/trainingPayments";
 import { useTrainingPaymentDetail } from "@/stores/useTrainingPaymentsStore";

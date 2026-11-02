@@ -2,10 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { Award, Calendar, CheckCircle2, Wallet } from "lucide-react";
 import { getTrainingStatusBadgeClass, getTrainingStatusLabel } from "@/data/trainings";
 import { formatEnrollmentDate, formatFcfa, type StudentTrainingEnrollment } from "@/data/trainingEnrollments";
-import { CertificateStatusBadge, EnrollmentStatusBadge, PaymentStatusBadge } from "./EnrollmentBadges";
+import { CertificateStatusBadge, EnrollmentStatusBadge, PaymentStatusBadge } from "./Badges";
 import { ProgressBar } from "./ProgressBar";
-import { AddPaymentDialog } from "@/components/trainings/payments/AddPaymentDialog";
-import { CertificateActions } from "@/components/trainings/certificates/CertificateActions";
+import { AddPaymentDialog } from "@/components/pages/trainings/payments/AddDialog";
+import { CertificateActions } from "@/components/pages/trainings/certificates/CertificateActions";
 
 export function StudentTrainingCard({ enrollment: e }: { enrollment: StudentTrainingEnrollment }) {
   return (

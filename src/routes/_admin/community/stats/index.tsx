@@ -1,4 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { UserRoundPlus, GraduationCap, Wallet } from "lucide-react";
+import { PageHeader } from "@/components/site";
 import { SITE } from "@/data/site";
 import { CommunityStatsPanel } from "@/components/pages/community/stats";
 
@@ -19,10 +21,26 @@ export const Route = createFileRoute("/_admin/community/stats/")({
 function StatsPage() {
   return (
     <>
-      <div className="mb-6">
-        <h1 className="font-display text-2xl font-bold">Signalements de la communauté</h1>
-        <p className="text-sm text-muted-foreground">File de modération et chiffres clés.</p>
+      <PageHeader
+        title="Statistiques de la communauté"
+        description="Vue d'ensemble et chiffres clés."
+      />
+
+      {/* Raccourci */}
+      <div className="flex items-center gap-6 mb-4">
+        <Link to="/community/posts" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <GraduationCap className="h-4 w-4" /> Publications
+        </Link>
+
+        <Link to="/community/categories" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Wallet className="h-4 w-4" /> Catégories
+        </Link>
+
+        <Link to="/community/reports" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <UserRoundPlus className="h-4 w-4" /> Signalement
+        </Link>
       </div>
+
       <CommunityStatsPanel />
     </>
   );

@@ -84,7 +84,7 @@ export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
 
       {p.permissions.canEdit && <PostFormDialog mode="edit" post={p} open={editOpen} onOpenChange={setEditOpen} />}
       {p.permissions.canDelete && (
-        <DeletePostDialog post={p} open={deleteOpen} onOpenChange={setDeleteOpen} onDeleted={() => navigate({ to: "/community" })} />
+        <DeletePostDialog post={p} open={deleteOpen} onOpenChange={setDeleteOpen} onDeleted={() => navigate({ to: "/community/post" })} />
       )}
       {p.permissions.canReport && (
         <ReportDialog target="posts" targetId={p.id} open={reportOpen} onOpenChange={setReportOpen} />

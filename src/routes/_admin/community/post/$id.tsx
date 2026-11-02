@@ -6,7 +6,7 @@ import { usePostDetail } from "@/stores/useCommunityStore";
 import { PostDetailView } from "@/components/pages/community/detail";
 import { useDynamicPageMetadata } from "@/hooks/useDynamicPageMetadata";
 
-export const Route = createFileRoute("/_admin/community/$id")({
+export const Route = createFileRoute("/_admin/community/post/$id")({
   validateSearch: (s: Record<string, unknown>): { comment?: string } => ({
     comment: typeof s.comment === "string" && s.comment ? s.comment : undefined,
   }),
@@ -31,12 +31,12 @@ function PostDetailPage() {
 
   const clearFocus = () =>
     navigate({
-      to: "/community/$id", params: { id }, search: (prev) =>
+      to: "/community/post/$id", params: { id }, search: (prev) =>
         ({ ...prev, comment: undefined }), replace: true
     });
 
   const back = (
-    <Button variant="outline" size="sm" onClick={() => navigate({ to: "/community" })}>
+    <Button variant="outline" size="sm" onClick={() => navigate({ to: "/community/post" })}>
       <ArrowLeft className="mr-1 h-4 w-4" /> Communauté
     </Button>
   );

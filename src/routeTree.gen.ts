@@ -25,8 +25,6 @@ import { Route as AdminArticlesIndexRouteImport } from './routes/_admin/articles
 import { Route as AdminArticlesIdRouteImport } from './routes/_admin/articles/$id'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/_admin/categories/index'
 import { Route as AdminCategoriesIdRouteImport } from './routes/_admin/categories/$id'
-import { Route as AdminCommunityIndexRouteImport } from './routes/_admin/community/index'
-import { Route as AdminCommunityIdRouteImport } from './routes/_admin/community/$id'
 import { Route as AdminEcosystemIndexRouteImport } from './routes/_admin/ecosystem/index'
 import { Route as AdminEcosystemIdRouteImport } from './routes/_admin/ecosystem/$id'
 import { Route as AdminFaqsIndexRouteImport } from './routes/_admin/faqs/index'
@@ -56,6 +54,8 @@ import { Route as AdminArticleFeedbackGroupIndexRouteImport } from './routes/_ad
 import { Route as AdminArticleFeedbackGroupArticleKeyRouteImport } from './routes/_admin/articleFeedback/group/$articleKey'
 import { Route as AdminArticleFeedbackUniqueIndexRouteImport } from './routes/_admin/articleFeedback/unique/index'
 import { Route as AdminArticleFeedbackUniqueIdRouteImport } from './routes/_admin/articleFeedback/unique/$id'
+import { Route as AdminCommunityPostIndexRouteImport } from './routes/_admin/community/post/index'
+import { Route as AdminCommunityPostIdRouteImport } from './routes/_admin/community/post/$id'
 import { Route as AdminJobsApplicationsIndexRouteImport } from './routes/_admin/jobs/applications/index'
 import { Route as AdminJobsApplicationsIdRouteImport } from './routes/_admin/jobs/applications/$id'
 import { Route as AdminJobsOffersIndexRouteImport } from './routes/_admin/jobs/offers/index'
@@ -165,16 +165,6 @@ const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
 const AdminCategoriesIdRoute = AdminCategoriesIdRouteImport.update({
   id: '/categories/$id',
   path: '/categories/$id',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCommunityIndexRoute = AdminCommunityIndexRouteImport.update({
-  id: '/community/',
-  path: '/community/',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminCommunityIdRoute = AdminCommunityIdRouteImport.update({
-  id: '/community/$id',
-  path: '/community/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminEcosystemIndexRoute = AdminEcosystemIndexRouteImport.update({
@@ -327,6 +317,16 @@ const AdminArticleFeedbackUniqueIdRoute =
     path: '/articleFeedback/unique/$id',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminCommunityPostIndexRoute = AdminCommunityPostIndexRouteImport.update({
+  id: '/community/post/',
+  path: '/community/post/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCommunityPostIdRoute = AdminCommunityPostIdRouteImport.update({
+  id: '/community/post/$id',
+  path: '/community/post/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminJobsApplicationsIndexRoute =
   AdminJobsApplicationsIndexRouteImport.update({
     id: '/jobs/applications/',
@@ -519,7 +519,6 @@ export interface FileRoutesByFullPath {
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
-  '/community/$id': typeof AdminCommunityIdRoute
   '/ecosystem/$id': typeof AdminEcosystemIdRoute
   '/faqs/$id': typeof AdminFaqsIdRoute
   '/internships/$id': typeof AdminInternshipsIdRoute
@@ -537,7 +536,6 @@ export interface FileRoutesByFullPath {
   '/appointments/': typeof AdminAppointmentsIndexRoute
   '/articles/': typeof AdminArticlesIndexRoute
   '/categories/': typeof AdminCategoriesIndexRoute
-  '/community/': typeof AdminCommunityIndexRoute
   '/ecosystem/': typeof AdminEcosystemIndexRoute
   '/faqs/': typeof AdminFaqsIndexRoute
   '/internships/': typeof AdminInternshipsIndexRoute
@@ -552,6 +550,7 @@ export interface FileRoutesByFullPath {
   '/waitlist/': typeof AdminWaitlistIndexRoute
   '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
+  '/community/post/$id': typeof AdminCommunityPostIdRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -568,6 +567,7 @@ export interface FileRoutesByFullPath {
   '/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
   '/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
+  '/community/post/': typeof AdminCommunityPostIndexRoute
   '/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
   '/jobs/offers/': typeof AdminJobsOffersIndexRoute
   '/members/admins/': typeof AdminMembersAdminsIndexRoute
@@ -598,7 +598,6 @@ export interface FileRoutesByTo {
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
-  '/community/$id': typeof AdminCommunityIdRoute
   '/ecosystem/$id': typeof AdminEcosystemIdRoute
   '/faqs/$id': typeof AdminFaqsIdRoute
   '/internships/$id': typeof AdminInternshipsIdRoute
@@ -616,7 +615,6 @@ export interface FileRoutesByTo {
   '/appointments': typeof AdminAppointmentsIndexRoute
   '/articles': typeof AdminArticlesIndexRoute
   '/categories': typeof AdminCategoriesIndexRoute
-  '/community': typeof AdminCommunityIndexRoute
   '/ecosystem': typeof AdminEcosystemIndexRoute
   '/faqs': typeof AdminFaqsIndexRoute
   '/internships': typeof AdminInternshipsIndexRoute
@@ -631,6 +629,7 @@ export interface FileRoutesByTo {
   '/waitlist': typeof AdminWaitlistIndexRoute
   '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
+  '/community/post/$id': typeof AdminCommunityPostIdRoute
   '/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -647,6 +646,7 @@ export interface FileRoutesByTo {
   '/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
   '/articleFeedback/group': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique': typeof AdminArticleFeedbackUniqueIndexRoute
+  '/community/post': typeof AdminCommunityPostIndexRoute
   '/jobs/applications': typeof AdminJobsApplicationsIndexRoute
   '/jobs/offers': typeof AdminJobsOffersIndexRoute
   '/members/admins': typeof AdminMembersAdminsIndexRoute
@@ -680,7 +680,6 @@ export interface FileRoutesById {
   '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/_admin/articles/$id': typeof AdminArticlesIdRoute
   '/_admin/categories/$id': typeof AdminCategoriesIdRoute
-  '/_admin/community/$id': typeof AdminCommunityIdRoute
   '/_admin/ecosystem/$id': typeof AdminEcosystemIdRoute
   '/_admin/faqs/$id': typeof AdminFaqsIdRoute
   '/_admin/internships/$id': typeof AdminInternshipsIdRoute
@@ -698,7 +697,6 @@ export interface FileRoutesById {
   '/_admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/_admin/articles/': typeof AdminArticlesIndexRoute
   '/_admin/categories/': typeof AdminCategoriesIndexRoute
-  '/_admin/community/': typeof AdminCommunityIndexRoute
   '/_admin/ecosystem/': typeof AdminEcosystemIndexRoute
   '/_admin/faqs/': typeof AdminFaqsIndexRoute
   '/_admin/internships/': typeof AdminInternshipsIndexRoute
@@ -713,6 +711,7 @@ export interface FileRoutesById {
   '/_admin/waitlist/': typeof AdminWaitlistIndexRoute
   '/_admin/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/_admin/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
+  '/_admin/community/post/$id': typeof AdminCommunityPostIdRoute
   '/_admin/jobs/applications/$id': typeof AdminJobsApplicationsIdRoute
   '/_admin/jobs/offers/$id': typeof AdminJobsOffersIdRoute
   '/_admin/members/admins/$id': typeof AdminMembersAdminsIdRoute
@@ -729,6 +728,7 @@ export interface FileRoutesById {
   '/_admin/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
   '/_admin/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/_admin/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
+  '/_admin/community/post/': typeof AdminCommunityPostIndexRoute
   '/_admin/jobs/applications/': typeof AdminJobsApplicationsIndexRoute
   '/_admin/jobs/offers/': typeof AdminJobsOffersIndexRoute
   '/_admin/members/admins/': typeof AdminMembersAdminsIndexRoute
@@ -761,7 +761,6 @@ export interface FileRouteTypes {
     | '/appointments/$id'
     | '/articles/$id'
     | '/categories/$id'
-    | '/community/$id'
     | '/ecosystem/$id'
     | '/faqs/$id'
     | '/internships/$id'
@@ -779,7 +778,6 @@ export interface FileRouteTypes {
     | '/appointments/'
     | '/articles/'
     | '/categories/'
-    | '/community/'
     | '/ecosystem/'
     | '/faqs/'
     | '/internships/'
@@ -794,6 +792,7 @@ export interface FileRouteTypes {
     | '/waitlist/'
     | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
+    | '/community/post/$id'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
     | '/members/admins/$id'
@@ -810,6 +809,7 @@ export interface FileRouteTypes {
     | '/trainings/sessions/$id'
     | '/articleFeedback/group/'
     | '/articleFeedback/unique/'
+    | '/community/post/'
     | '/jobs/applications/'
     | '/jobs/offers/'
     | '/members/admins/'
@@ -840,7 +840,6 @@ export interface FileRouteTypes {
     | '/appointments/$id'
     | '/articles/$id'
     | '/categories/$id'
-    | '/community/$id'
     | '/ecosystem/$id'
     | '/faqs/$id'
     | '/internships/$id'
@@ -858,7 +857,6 @@ export interface FileRouteTypes {
     | '/appointments'
     | '/articles'
     | '/categories'
-    | '/community'
     | '/ecosystem'
     | '/faqs'
     | '/internships'
@@ -873,6 +871,7 @@ export interface FileRouteTypes {
     | '/waitlist'
     | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
+    | '/community/post/$id'
     | '/jobs/applications/$id'
     | '/jobs/offers/$id'
     | '/members/admins/$id'
@@ -889,6 +888,7 @@ export interface FileRouteTypes {
     | '/trainings/sessions/$id'
     | '/articleFeedback/group'
     | '/articleFeedback/unique'
+    | '/community/post'
     | '/jobs/applications'
     | '/jobs/offers'
     | '/members/admins'
@@ -921,7 +921,6 @@ export interface FileRouteTypes {
     | '/_admin/appointments/$id'
     | '/_admin/articles/$id'
     | '/_admin/categories/$id'
-    | '/_admin/community/$id'
     | '/_admin/ecosystem/$id'
     | '/_admin/faqs/$id'
     | '/_admin/internships/$id'
@@ -939,7 +938,6 @@ export interface FileRouteTypes {
     | '/_admin/appointments/'
     | '/_admin/articles/'
     | '/_admin/categories/'
-    | '/_admin/community/'
     | '/_admin/ecosystem/'
     | '/_admin/faqs/'
     | '/_admin/internships/'
@@ -954,6 +952,7 @@ export interface FileRouteTypes {
     | '/_admin/waitlist/'
     | '/_admin/articleFeedback/group/$articleKey'
     | '/_admin/articleFeedback/unique/$id'
+    | '/_admin/community/post/$id'
     | '/_admin/jobs/applications/$id'
     | '/_admin/jobs/offers/$id'
     | '/_admin/members/admins/$id'
@@ -970,6 +969,7 @@ export interface FileRouteTypes {
     | '/_admin/trainings/sessions/$id'
     | '/_admin/articleFeedback/group/'
     | '/_admin/articleFeedback/unique/'
+    | '/_admin/community/post/'
     | '/_admin/jobs/applications/'
     | '/_admin/jobs/offers/'
     | '/_admin/members/admins/'
@@ -1109,20 +1109,6 @@ declare module '@tanstack/react-router' {
       path: '/categories/$id'
       fullPath: '/categories/$id'
       preLoaderRoute: typeof AdminCategoriesIdRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/community/': {
-      id: '/_admin/community/'
-      path: '/community'
-      fullPath: '/community/'
-      preLoaderRoute: typeof AdminCommunityIndexRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/community/$id': {
-      id: '/_admin/community/$id'
-      path: '/community/$id'
-      fullPath: '/community/$id'
-      preLoaderRoute: typeof AdminCommunityIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/ecosystem/': {
@@ -1326,6 +1312,20 @@ declare module '@tanstack/react-router' {
       path: '/articleFeedback/unique/$id'
       fullPath: '/articleFeedback/unique/$id'
       preLoaderRoute: typeof AdminArticleFeedbackUniqueIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/community/post/': {
+      id: '/_admin/community/post/'
+      path: '/community/post'
+      fullPath: '/community/post/'
+      preLoaderRoute: typeof AdminCommunityPostIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/community/post/$id': {
+      id: '/_admin/community/post/$id'
+      path: '/community/post/$id'
+      fullPath: '/community/post/$id'
+      preLoaderRoute: typeof AdminCommunityPostIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/jobs/applications/': {
@@ -1562,7 +1562,6 @@ interface AdminRouteChildren {
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
   AdminCategoriesIdRoute: typeof AdminCategoriesIdRoute
-  AdminCommunityIdRoute: typeof AdminCommunityIdRoute
   AdminEcosystemIdRoute: typeof AdminEcosystemIdRoute
   AdminFaqsIdRoute: typeof AdminFaqsIdRoute
   AdminInternshipsIdRoute: typeof AdminInternshipsIdRoute
@@ -1580,7 +1579,6 @@ interface AdminRouteChildren {
   AdminAppointmentsIndexRoute: typeof AdminAppointmentsIndexRoute
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
-  AdminCommunityIndexRoute: typeof AdminCommunityIndexRoute
   AdminEcosystemIndexRoute: typeof AdminEcosystemIndexRoute
   AdminFaqsIndexRoute: typeof AdminFaqsIndexRoute
   AdminInternshipsIndexRoute: typeof AdminInternshipsIndexRoute
@@ -1595,6 +1593,7 @@ interface AdminRouteChildren {
   AdminWaitlistIndexRoute: typeof AdminWaitlistIndexRoute
   AdminArticleFeedbackGroupArticleKeyRoute: typeof AdminArticleFeedbackGroupArticleKeyRoute
   AdminArticleFeedbackUniqueIdRoute: typeof AdminArticleFeedbackUniqueIdRoute
+  AdminCommunityPostIdRoute: typeof AdminCommunityPostIdRoute
   AdminJobsApplicationsIdRoute: typeof AdminJobsApplicationsIdRoute
   AdminJobsOffersIdRoute: typeof AdminJobsOffersIdRoute
   AdminMembersAdminsIdRoute: typeof AdminMembersAdminsIdRoute
@@ -1611,6 +1610,7 @@ interface AdminRouteChildren {
   AdminTrainingsSessionsIdRoute: typeof AdminTrainingsSessionsIdRoute
   AdminArticleFeedbackGroupIndexRoute: typeof AdminArticleFeedbackGroupIndexRoute
   AdminArticleFeedbackUniqueIndexRoute: typeof AdminArticleFeedbackUniqueIndexRoute
+  AdminCommunityPostIndexRoute: typeof AdminCommunityPostIndexRoute
   AdminJobsApplicationsIndexRoute: typeof AdminJobsApplicationsIndexRoute
   AdminJobsOffersIndexRoute: typeof AdminJobsOffersIndexRoute
   AdminMembersAdminsIndexRoute: typeof AdminMembersAdminsIndexRoute
@@ -1638,7 +1638,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,
   AdminCategoriesIdRoute: AdminCategoriesIdRoute,
-  AdminCommunityIdRoute: AdminCommunityIdRoute,
   AdminEcosystemIdRoute: AdminEcosystemIdRoute,
   AdminFaqsIdRoute: AdminFaqsIdRoute,
   AdminInternshipsIdRoute: AdminInternshipsIdRoute,
@@ -1656,7 +1655,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
-  AdminCommunityIndexRoute: AdminCommunityIndexRoute,
   AdminEcosystemIndexRoute: AdminEcosystemIndexRoute,
   AdminFaqsIndexRoute: AdminFaqsIndexRoute,
   AdminInternshipsIndexRoute: AdminInternshipsIndexRoute,
@@ -1672,6 +1670,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminArticleFeedbackGroupArticleKeyRoute:
     AdminArticleFeedbackGroupArticleKeyRoute,
   AdminArticleFeedbackUniqueIdRoute: AdminArticleFeedbackUniqueIdRoute,
+  AdminCommunityPostIdRoute: AdminCommunityPostIdRoute,
   AdminJobsApplicationsIdRoute: AdminJobsApplicationsIdRoute,
   AdminJobsOffersIdRoute: AdminJobsOffersIdRoute,
   AdminMembersAdminsIdRoute: AdminMembersAdminsIdRoute,
@@ -1688,6 +1687,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminTrainingsSessionsIdRoute: AdminTrainingsSessionsIdRoute,
   AdminArticleFeedbackGroupIndexRoute: AdminArticleFeedbackGroupIndexRoute,
   AdminArticleFeedbackUniqueIndexRoute: AdminArticleFeedbackUniqueIndexRoute,
+  AdminCommunityPostIndexRoute: AdminCommunityPostIndexRoute,
   AdminJobsApplicationsIndexRoute: AdminJobsApplicationsIndexRoute,
   AdminJobsOffersIndexRoute: AdminJobsOffersIndexRoute,
   AdminMembersAdminsIndexRoute: AdminMembersAdminsIndexRoute,

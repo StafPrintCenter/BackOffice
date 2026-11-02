@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { GraduationCap, Eye, MessageCircle, Paperclip, Pencil, SmilePlus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatPostDate, initials, type APIPost } from "@/data/community";
-import { AnsweredBadge, AuthorRoleBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "../shared/Badges";
+import { AnsweredBadge, AuthorRoleBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "../../shared/Badges";
 import { PostFormDialog, DeletePostDialog } from "@/components/pages/community/shared";
 
 export function PostCard({ post: p }: { post: APIPost }) {
@@ -53,7 +53,7 @@ export function PostCard({ post: p }: { post: APIPost }) {
       </div>
 
       <div>
-        <Link to="/community/$id" params={{ id: p.id }} className="font-display text-lg font-semibold leading-snug hover:text-primary hover:underline">
+        <Link to="/community/post/$id" params={{ id: p.id }} className="font-display text-lg font-semibold leading-snug hover:text-primary hover:underline">
           {p.title}
         </Link>
         <p className="mt-1 line-clamp-3 whitespace-pre-line text-sm text-muted-foreground">{p.excerpt}</p>

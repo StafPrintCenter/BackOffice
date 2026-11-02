@@ -6,7 +6,7 @@ import { Pager } from "@/components/pages/trainings/sessions/Pager";
 import {
   EMPTY_POST_FILTERS, PostFilters, type PostFiltersValue,
   PostCard
-} from "./";
+} from ".";
 
 export function CommunityFeed() {
   const [filters, setFilters] = useState<PostFiltersValue>(EMPTY_POST_FILTERS);

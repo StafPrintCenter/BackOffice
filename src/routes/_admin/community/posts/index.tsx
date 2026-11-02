@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
-import { CommunityFeed } from "@/components/pages/community/post/home";
+import { CommunityFeed } from "@/components/pages/community/posts/home";
 import { PostFormDialog } from "@/components/pages/community/shared";
 
 export const Route = createFileRoute("/_admin/community/posts/")({

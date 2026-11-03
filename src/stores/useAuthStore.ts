@@ -24,7 +24,7 @@ export async function loginAdmin(email: string, password: string): Promise<APIAd
  * Retourne null si aucune session valide n'est active (401).
  */
 export async function fetchAdminMe(): Promise<APIAdminUser | null> {
-  const response = await adminFetch(`/api/admin/auth/me`);
+  const response = await adminFetch(`/api/admin/account/me`);
   if (response.status === 401) return null;
   if (!response.ok) {
     const error = await parseApiError(response, "Erreur lors de la vérification de la session.");
@@ -35,7 +35,7 @@ export async function fetchAdminMe(): Promise<APIAdminUser | null> {
 }
 
 export async function logoutAdmin(): Promise<void> {
-  const response = await adminFetch(`/api/admin/auth/logout`, { method: "POST" });
+  const response = await adminFetch(`/api/admin/account/logout`, { method: "POST" });
   if (!response.ok) {
     throw await parseApiError(response, "Erreur lors de la déconnexion.");
   }

@@ -147,6 +147,12 @@ export function useAdminAuth() {
     [],
   );
 
+  const setUser = useCallback((rawAdmin: unknown) => {
+    sharedUser = toAdminAuthUser(rawAdmin);
+    sharedReady = true;
+    notify();
+  }, []);
+
   return {
     user: sharedUser,
     isAuthenticated: !!sharedUser,
@@ -157,5 +163,6 @@ export function useAdminAuth() {
     acceptInvite,
     forgotPassword,
     resetPassword,
+    setUser,
   };
 }

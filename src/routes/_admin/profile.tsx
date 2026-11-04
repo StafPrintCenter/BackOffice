@@ -331,11 +331,23 @@ function ProfilePage() {
                   </div>
                 </div>
 
+                {/* Adresse e-mail : le bouton Changer est accessible sans passer par "Modifier" */}
                 <div>
                   <Label className="text-xs text-muted-foreground">Adresse email</Label>
-                  <div className="mt-1 flex items-center gap-2 text-sm font-medium">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span>{user?.email}</span>
+                  <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium">
+                    <span className="inline-flex min-w-0 items-center gap-2">
+                      <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <span className="truncate">{user?.email}</span>
+                    </span>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="h-7 px-2.5 text-xs"
+                      onClick={() => setEmailDialogOpen(true)}
+                    >
+                      <Pencil className="mr-1 h-3 w-3" /> Changer
+                    </Button>
                   </div>
                 </div>
 

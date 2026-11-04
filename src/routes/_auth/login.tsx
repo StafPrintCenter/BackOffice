@@ -100,7 +100,7 @@ function LoginPage() {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="pw">Mot de passe</Label>
-          <Link to="/" className="text-xs text-muted-foreground hover:text-foreground">
+          <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground">
             Mot de passe oublié ?
           </Link>
         </div>

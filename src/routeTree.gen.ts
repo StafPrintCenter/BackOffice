@@ -15,8 +15,10 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminProfileRouteImport } from './routes/_admin/profile'
+import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthInviteRouteImport } from './routes/_auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AdminAnnouncesIndexRouteImport } from './routes/_admin/announces/index'
 import { Route as AdminAnnouncesIdRouteImport } from './routes/_admin/announces/$id'
 import { Route as AdminAppointmentsIndexRouteImport } from './routes/_admin/appointments/index'
@@ -121,6 +123,11 @@ const AdminProfileRoute = AdminProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AdminRoute,
 } as any)
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthInviteRoute = AuthInviteRouteImport.update({
   id: '/invite',
   path: '/invite',
@@ -129,6 +136,11 @@ const AuthInviteRoute = AuthInviteRouteImport.update({
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => AuthRoute,
 } as any)
 const AdminAnnouncesIndexRoute = AdminAnnouncesIndexRouteImport.update({
@@ -541,8 +553,10 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AdminDashboardRoute
   '/profile': typeof AdminProfileRoute
+  '/forgot-password': typeof AuthForgotPasswordRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
+  '/reset-password': typeof AuthResetPasswordRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
@@ -624,8 +638,10 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AdminDashboardRoute
   '/profile': typeof AdminProfileRoute
+  '/forgot-password': typeof AuthForgotPasswordRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
+  '/reset-password': typeof AuthResetPasswordRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/articles/$id': typeof AdminArticlesIdRoute
@@ -710,8 +726,10 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_admin/profile': typeof AdminProfileRoute
+  '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/invite': typeof AuthInviteRoute
   '/_auth/login': typeof AuthLoginRoute
+  '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_admin/announces/$id': typeof AdminAnnouncesIdRoute
   '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/_admin/articles/$id': typeof AdminArticlesIdRoute
@@ -795,8 +813,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/dashboard'
     | '/profile'
+    | '/forgot-password'
     | '/invite'
     | '/login'
+    | '/reset-password'
     | '/announces/$id'
     | '/appointments/$id'
     | '/articles/$id'
@@ -878,8 +898,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/dashboard'
     | '/profile'
+    | '/forgot-password'
     | '/invite'
     | '/login'
+    | '/reset-password'
     | '/announces/$id'
     | '/appointments/$id'
     | '/articles/$id'
@@ -963,8 +985,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/_admin/dashboard'
     | '/_admin/profile'
+    | '/_auth/forgot-password'
     | '/_auth/invite'
     | '/_auth/login'
+    | '/_auth/reset-password'
     | '/_admin/announces/$id'
     | '/_admin/appointments/$id'
     | '/_admin/articles/$id'
@@ -1093,6 +1117,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProfileRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_auth/forgot-password': {
+      id: '/_auth/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/invite': {
       id: '/_auth/invite'
       path: '/invite'
@@ -1105,6 +1136,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/reset-password': {
+      id: '/_auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_admin/announces/': {
@@ -1799,13 +1837,17 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AuthRouteChildren {
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthInviteRoute: typeof AuthInviteRoute
   AuthLoginRoute: typeof AuthLoginRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthInviteRoute: AuthInviteRoute,
   AuthLoginRoute: AuthLoginRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

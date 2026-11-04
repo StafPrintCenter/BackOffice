@@ -107,3 +107,35 @@ export function useCurrentAdmin() {
     error,
   };
 }
+
+export async function forgotAdminPassword(email: string): Promise<{ message: string }> {
+  const fd = new FormData();
+  fd.append("email", email);
+
+  const response = await adminFetch(`/api/admin/auth/forgot-password`, { method: "POST", body: fd });
+  if (!response.ok) {
+    const error = await parseApiError(response, "Impossible d'envoyer l'e-mail de réinitialisation.");
+    throw new AdminAuthApiError(error.message);
+  }
+  return (await response.json()) as { message: string };
+}
+
+export async function resetAdminPassword(params: {
+  email: string;
+  token: string;
+  password: string;
+  passwordConfirmation: string;
+}): Promise<{ message: string }> {
+  const fd = new FormData();
+  fd.append("email", params.email);
+  fd.append("token", params.token);
+  fd.append("password", params.password);
+  fd.append("password_confirmation", params.passwordConfirmation);
+
+  const response = await adminFetch(`/api/admin/auth/reset-password`, { method: "POST", body: fd });
+  if (!response.ok) {
+    const error = await parseApiError(response, "Ce lien de réinitialisation est invalide ou a expiré.");
+    throw new AdminAuthApiError(error.message);
+  }
+  return (await response.json()) as { message: string };
+}

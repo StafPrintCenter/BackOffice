@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { loginAdmin, fetchAdminMe, logoutAdmin, verifyAdminInvite, acceptAdminInvite, AdminAuthApiError, } from "@/stores/useAuthStore";
+import { loginAdmin, fetchAdminMe, logoutAdmin, verifyAdminInvite, acceptAdminInvite, forgotAdminPassword, resetAdminPassword, AdminAuthApiError, } from "@/stores/useAuthStore";
 import type { AdminInviteVerifyResponse } from "@/data/auth";
 
 export interface AuthUser {
@@ -132,6 +132,21 @@ export function useAdminAuth() {
     []
   );
 
+  const forgotPassword = useCallback(
+    async (email: string): Promise<{ message: string }> => forgotAdminPassword(email),
+    [],
+  );
+
+  const resetPassword = useCallback(
+    async (params: {
+      email: string;
+      token: string;
+      password: string;
+      passwordConfirmation: string;
+    }): Promise<{ message: string }> => resetAdminPassword(params),
+    [],
+  );
+
   return {
     user: sharedUser,
     isAuthenticated: !!sharedUser,
@@ -140,5 +155,7 @@ export function useAdminAuth() {
     logout,
     verifyInvite,
     acceptInvite,
+    forgotPassword,
+    resetPassword,
   };
 }

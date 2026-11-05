@@ -11,13 +11,13 @@ import type {
   APIAdminEmailChangeRequestResponse,
 } from "@/data/account";
 
-export class AdminAccountApiError extends Error { }
+export class AdminAccountApiError extends Error {}
 
 async function accountRequest<T>(
   path: string,
   method: "POST" | "PUT",
   body: FormData,
-  fallbackMessage: string
+  fallbackMessage: string,
 ): Promise<T> {
   const response = await adminFetch(`/api/admin/account/${path}`, { method, body });
   if (!response.ok) {

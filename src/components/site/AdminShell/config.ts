@@ -1,4 +1,4 @@
-import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, MessageSquareDiff, Group, Bell, UserCircle, UsersRoundIcon, Shield } from "lucide-react";
+import { LayoutDashboard, Wrench, FolderKanban, FileText, MessagesSquare, Tags, BarChart3, HelpCircle, Link2, ClipboardClock, Form, Inbox, ShieldAlert, CalendarClock, GraduationCap, UserRoundPen, UserCheck, UserStar, UserCog, Mailbox, Flag, BriefcaseBusiness, Building2, MessageSquareDiff, Group, Bell, UserCircle, UsersRoundIcon, Shield, MonitorSmartphone } from "lucide-react";
 
 export type NavItem = {
   to: string;
@@ -85,4 +85,5 @@ export const USER_DROPDOWN_ITEMS = [
   { to: "/profile", label: "Mon profil", icon: UserCircle },
   { to: "/notifications", label: "Notifications", icon: Bell },
   { to: "/security", label: "Sécurité du compte", icon: Shield },
+  { to: "/security-sessions", label: "Sessions actives", icon: MonitorSmartphone },
 ] as const;

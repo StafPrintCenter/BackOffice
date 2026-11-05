@@ -5,12 +5,12 @@
 export async function parseApiError(response: Response, fallback: string): Promise<Error> {
   try {
     const json = await response.json();
-    if (typeof json?.message === "string" && json.message.trim()) {
-      return new Error(json.message);
-    }
     if (json?.errors && typeof json.errors === "object") {
       const messages = Object.values(json.errors).flat().filter(Boolean).join(" ");
       if (messages) return new Error(messages);
+    }
+    if (typeof json?.message === "string" && json.message.trim()) {
+      return new Error(json.message);
     }
   } catch {
     // réponse non-JSON (ex: erreur réseau, HTML d'erreur serveur) - on garde le fallback

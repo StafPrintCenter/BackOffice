@@ -16,11 +16,24 @@ interface MfaMethodsListProps {
 
 const formatDateTime = (value: string | null) =>
   value
-    ? new Date(value).toLocaleString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })
+    ? new Date(value).toLocaleString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
     : null;
 
 export function MfaMethodsList({
-  methods, defaultMethod, isSettingDefault, canRemoveEmail, onSetDefault, onDelete, onToggleEmail, onAddTotp,
+  methods,
+  defaultMethod,
+  isSettingDefault,
+  canRemoveEmail,
+  onSetDefault,
+  onDelete,
+  onToggleEmail,
+  onAddTotp,
 }: MfaMethodsListProps) {
   const emailMethod = methods.find((method) => method.type === "email");
   const showEmailHelp = !!emailMethod?.enabled && !canRemoveEmail;
@@ -43,7 +56,10 @@ export function MfaMethodsList({
           const lastUsed = formatDateTime(m.lastUsedAt);
 
           return (
-            <li key={m.id ?? m.type} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4">
+            <li
+              key={m.id ?? m.type}
+              className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4"
+            >
               <div className="flex items-center gap-3">
                 <Icon className="h-5 w-5 text-primary" />
                 <div>
@@ -53,14 +69,20 @@ export function MfaMethodsList({
                     {!m.enabled && <Badge variant="outline">Retirée</Badge>}
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    {m.hint ?? (lastUsed ? `Dernière utilisation : ${lastUsed}` : "Jamais utilisée")}
+                    {m.hint ??
+                      (lastUsed ? `Dernière utilisation : ${lastUsed}` : "Jamais utilisée")}
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 {!isDefault && m.enabled && (
-                  <Button variant="outline" size="sm" disabled={isSettingDefault} onClick={() => onSetDefault(m.type)}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={isSettingDefault}
+                    onClick={() => onSetDefault(m.type)}
+                  >
                     {isSettingDefault && <Loader2 className="mr-1 h-4 w-4 animate-spin" />}
                     Définir par défaut
                   </Button>
@@ -98,7 +120,8 @@ export function MfaMethodsList({
       </ul>
       {showEmailHelp && (
         <p className="mt-4 text-xs text-muted-foreground">
-          Pour retirer le code par e-mail, configurez d'abord une application d'authentification et gardez au moins un code de secours.
+          Pour retirer le code par e-mail, configurez d'abord une application d'authentification et
+          gardez au moins un code de secours.
         </p>
       )}
     </div>

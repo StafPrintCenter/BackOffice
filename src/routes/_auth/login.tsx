@@ -14,18 +14,13 @@ export const Route = createFileRoute("/_auth/login")({
   head: () => ({
     meta: [
       { title: `${SITE.tool} - Connexion | ${SITE.name}` },
-      {
-        name: "description",
-        content: `Connectez-vous à votre ${SITE.tool} ${SITE.name} pour retrouver gérer vos travaux.`,
-      },
+      { name: "description", content: `Connectez-vous à votre ${SITE.tool} ${SITE.name} pour retrouver gérer vos travaux.` },
       { property: "og:title", content: `${SITE.tool} - Connexion | ${SITE.name}` },
       { property: "og:description", content: `Connectez-vous à votre ${SITE.tool} ${SITE.name} pour retrouver gérer vos travaux.` },
-      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
   component: LoginPage,
 });
-
 
 function getInternalRedirect(redirectTo?: string) {
   if (!redirectTo || !redirectTo.startsWith("/")) return null;
@@ -53,15 +48,16 @@ function LoginPage() {
   useAuthShellContent(
     challenge
       ? {
-          title: "Vérification en deux étapes",
-          subtitle: "Confirmez votre identité pour terminer la connexion.",
-        }
+        title: "Vérification en deux étapes",
+        subtitle: "Confirmez votre identité pour terminer la connexion.",
+      }
       : {
-          title: "Connexion admin",
-          subtitle: "Connectez-vous avec vos identifiants administrateur.",
-        },
+        title: "Connexion admin",
+        subtitle: "Connectez-vous avec vos identifiants administrateur.",
+      },
   );
 
+  // Redirection automatique si l'étudiant est déjà connecté
   useEffect(() => {
     if (ready && isAuthenticated) {
       if (destination) router.history.push(destination);
@@ -97,5 +93,11 @@ function LoginPage() {
     );
   }
 
-  return <LoginCredentialsForm defaultEmail={email} loading={loading} onSubmit={handleLogin} />;
+  return (
+    <LoginCredentialsForm
+      defaultEmail={email}
+      loading={loading}
+      onSubmit={handleLogin}
+    />
+  );
 }

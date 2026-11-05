@@ -10,7 +10,7 @@ import type {
   AdminMfaVerifyPayload,
 } from "@/data/auth";
 
-export class AdminAuthApiError extends Error { }
+export class AdminAuthApiError extends Error {}
 
 export async function loginAdmin(email: string, password: string): Promise<APIAdminLoginResult> {
   const formData = new FormData();
@@ -61,9 +61,7 @@ export async function verifyAdminInvite(params: {
   expires: string;
   signature: string;
 }): Promise<AdminInviteVerifyResponse> {
-  const response = await adminFetch(
-    `/api/admin/auth/invite-accept?${buildInviteQuery(params)}`
-  );
+  const response = await adminFetch(`/api/admin/auth/invite-accept?${buildInviteQuery(params)}`);
   if (!response.ok) {
     const error = await parseApiError(response, "Ce lien d'invitation est invalide ou a expiré.");
     throw new AdminAuthApiError(error.message);
@@ -81,13 +79,10 @@ export async function acceptAdminInvite(params: {
   const fd = new FormData();
   fd.append("password", params.password);
 
-  const response = await adminFetch(
-    `/api/admin/auth/invite-accept?${buildInviteQuery(params)}`,
-    {
-      method: "POST",
-      body: fd,
-    }
-  );
+  const response = await adminFetch(`/api/admin/auth/invite-accept?${buildInviteQuery(params)}`, {
+    method: "POST",
+    body: fd,
+  });
   if (!response.ok) {
     const error = await parseApiError(response, "Ce lien d'invitation est invalide ou a expiré.");
     throw new AdminAuthApiError(error.message);
@@ -100,7 +95,11 @@ export async function acceptAdminInvite(params: {
  * Hook pour récupérer l'administrateur actuellement connecté
  */
 export function useCurrentAdmin() {
-  const { data: admin, isLoading, error } = useQuery({
+  const {
+    data: admin,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["current-admin"],
     queryFn: fetchAdminMe,
     staleTime: 1000 * 60 * 5, // Met en cache les données pendant 5 minutes
@@ -119,9 +118,15 @@ export async function forgotAdminPassword(email: string): Promise<{ message: str
   const fd = new FormData();
   fd.append("email", email);
 
-  const response = await adminFetch(`/api/admin/auth/forgot-password`, { method: "POST", body: fd });
+  const response = await adminFetch(`/api/admin/auth/forgot-password`, {
+    method: "POST",
+    body: fd,
+  });
   if (!response.ok) {
-    const error = await parseApiError(response, "Impossible d'envoyer l'e-mail de réinitialisation.");
+    const error = await parseApiError(
+      response,
+      "Impossible d'envoyer l'e-mail de réinitialisation.",
+    );
     throw new AdminAuthApiError(error.message);
   }
   return (await response.json()) as { message: string };
@@ -141,7 +146,10 @@ export async function resetAdminPassword(params: {
 
   const response = await adminFetch(`/api/admin/auth/reset-password`, { method: "POST", body: fd });
   if (!response.ok) {
-    const error = await parseApiError(response, "Ce lien de réinitialisation est invalide ou a expiré.");
+    const error = await parseApiError(
+      response,
+      "Ce lien de réinitialisation est invalide ou a expiré.",
+    );
     throw new AdminAuthApiError(error.message);
   }
   return (await response.json()) as { message: string };
@@ -160,7 +168,10 @@ export class AdminMfaLoginError extends AdminAuthApiError {
   }
 }
 
-async function buildMfaLoginError(response: Response, fallback: string): Promise<AdminMfaLoginError> {
+async function buildMfaLoginError(
+  response: Response,
+  fallback: string,
+): Promise<AdminMfaLoginError> {
   const body = await response.json().catch(() => null);
   return new AdminMfaLoginError(
     body?.message || fallback,

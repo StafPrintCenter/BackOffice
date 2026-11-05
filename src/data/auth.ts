@@ -72,9 +72,7 @@ export interface APIAdminMfaEmailResend {
   retryAfter: number;
 }
 
-export function isAdminMfaChallenge(
-  result: APIAdminLoginResult
-): result is APIAdminMfaChallenge {
+export function isAdminMfaChallenge(result: APIAdminLoginResult): result is APIAdminMfaChallenge {
   return "mfaRequired" in result && result.mfaRequired === true;
 }
 

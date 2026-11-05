@@ -13,7 +13,10 @@ import { ResendEmailCodeButton } from "./ResendEmailCodeButton";
 import { useCountdown } from "./useCountdown";
 
 const RESEND_DELAY_SECONDS = 60;
-const sixDigits = z.string().trim().regex(/^\d{6}$/, "Le code contient 6 chiffres.");
+const sixDigits = z
+  .string()
+  .trim()
+  .regex(/^\d{6}$/, "Le code contient 6 chiffres.");
 const codeSchemas: Record<AdminMfaLoginMethod, z.ZodType<string>> = {
   email: sixDigits,
   totp: sixDigits,
@@ -26,11 +29,7 @@ interface MfaChallengeFormProps {
   onVerified: () => void;
 }
 
-export function MfaChallengeForm({
-  challenge,
-  onBack,
-  onVerified,
-}: MfaChallengeFormProps) {
+export function MfaChallengeForm({ challenge, onBack, onVerified }: MfaChallengeFormProps) {
   const { verifyMfa, sendMfaEmailCode } = useAdminAuth();
   const { remaining, start } = useCountdown();
   const [method, setMethod] = useState<AdminMfaLoginMethod>(challenge.defaultMethod);
@@ -46,7 +45,7 @@ export function MfaChallengeForm({
 
   const available: AdminMfaLoginMethod[] = [
     ...challenge.methods.map((item) => item.type),
-    ...(challenge.recoveryCodesAvailable ? ["recovery"] : []),
+    ...(challenge.recoveryCodesAvailable ? (["recovery"] as const) : []),
   ];
 
   useEffect(() => {
@@ -144,7 +143,9 @@ export function MfaChallengeForm({
           maxLength={isRecovery ? 32 : 6}
           value={code}
           onChange={(event) =>
-            setCode(isRecovery ? event.target.value.toLowerCase() : event.target.value.replace(/\D/g, ""))
+            setCode(
+              isRecovery ? event.target.value.toLowerCase() : event.target.value.replace(/\D/g, ""),
+            )
           }
           disabled={loading || sending}
           autoFocus

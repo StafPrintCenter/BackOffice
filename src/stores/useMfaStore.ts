@@ -12,7 +12,7 @@ import type {
   AdminMfaEmailMethodPayload,
 } from "@/data/mfa";
 
-export class AdminMfaApiError extends Error { }
+export class AdminMfaApiError extends Error {}
 
 const MFA_KEY = ["admin-mfa"] as const;
 const BASE_PATH = "/api/admin/account/security/mfa";
@@ -26,7 +26,7 @@ function buildForm(fields: Record<string, string>): FormData {
 async function mfaRequest<T>(
   path: string,
   fallbackMessage: string,
-  init?: { method: "POST" | "PUT" | "DELETE"; body: FormData }
+  init?: { method: "POST" | "PUT" | "DELETE"; body: FormData },
 ): Promise<T> {
   const response = await adminFetch(`${BASE_PATH}${path}`, init);
   if (!response.ok) {
@@ -48,10 +48,14 @@ export const enableAdminMfa = (payload: AdminMfaPasswordPayload) =>
   });
 
 export const disableAdminMfa = (payload: AdminMfaPasswordPayload) =>
-  mfaRequest<APIAdminMfaStatus>("/disable", "Impossible de désactiver la double authentification.", {
-    method: "POST",
-    body: buildForm({ password: payload.password }),
-  });
+  mfaRequest<APIAdminMfaStatus>(
+    "/disable",
+    "Impossible de désactiver la double authentification.",
+    {
+      method: "POST",
+      body: buildForm({ password: payload.password }),
+    },
+  );
 
 export const setAdminMfaDefault = (payload: AdminMfaDefaultPayload) =>
   mfaRequest<APIAdminMfaStatus>("/default", "Impossible de définir la méthode par défaut.", {
@@ -63,7 +67,7 @@ export const regenerateAdminMfaRecoveryCodes = (payload: AdminMfaPasswordPayload
   mfaRequest<APIAdminMfaRecoveryCodes>(
     "/recovery-codes/regenerate",
     "Impossible de générer de nouveaux codes de secours.",
-    { method: "POST", body: buildForm({ password: payload.password }) }
+    { method: "POST", body: buildForm({ password: payload.password }) },
   );
 
 export const setupAdminMfaTotp = (payload: AdminMfaPasswordPayload) =>
@@ -82,10 +86,14 @@ export const confirmAdminMfaTotp = (payload: AdminMfaTotpConfirmPayload) =>
   });
 
 export const deleteAdminMfaMethod = (payload: AdminMfaDeleteMethodPayload) =>
-  mfaRequest<APIAdminMfaStatus>(`/methods/${payload.id}`, "Impossible de supprimer cette méthode.", {
-    method: "DELETE",
-    body: buildForm({ password: payload.password }),
-  });
+  mfaRequest<APIAdminMfaStatus>(
+    `/methods/${payload.id}`,
+    "Impossible de supprimer cette méthode.",
+    {
+      method: "DELETE",
+      body: buildForm({ password: payload.password }),
+    },
+  );
 
 export const setAdminMfaEmailMethod = (payload: AdminMfaEmailMethodPayload) =>
   mfaRequest<APIAdminMfaStatus>("/email", "Impossible de modifier la méthode e-mail.", {
@@ -114,7 +122,9 @@ export function useAdminMfaStatus() {
 }
 
 /** Les mutations qui renvoient l'état MFA complet le placent directement dans le cache */
-function useStatusMutation<TPayload>(mutationFn: (payload: TPayload) => Promise<APIAdminMfaStatus>) {
+function useStatusMutation<TPayload>(
+  mutationFn: (payload: TPayload) => Promise<APIAdminMfaStatus>,
+) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn,

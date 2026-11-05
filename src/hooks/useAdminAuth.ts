@@ -42,33 +42,55 @@ export interface AuthUser {
   updated_at: string;
 }
 
-function toAdminAuthUser(rawAdmin: any): AuthUser {
-  const admin = rawAdmin?.data ?? rawAdmin?.admin ?? rawAdmin ?? {};
-  const firstName = admin.firstName ?? admin.first_name ?? "";
-  const lastName = admin.lastName ?? admin.last_name ?? "";
-  const fullName = (admin.fullname ?? admin.name ?? `${firstName} ${lastName}`.trim()) || "Administrateur";
+function asRecord(value: unknown): Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+}
+
+function stringValue(value: unknown, fallback = ""): string {
+  return typeof value === "string" ? value : fallback;
+}
+
+function nullableString(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+function booleanValue(value: unknown, fallback: boolean): boolean {
+  return typeof value === "boolean" ? value : fallback;
+}
+
+function toAdminAuthUser(rawAdmin: unknown): AuthUser {
+  const response = asRecord(rawAdmin);
+  const admin = asRecord(response.data ?? response.admin ?? response);
+  const firstName = stringValue(admin.firstName ?? admin.first_name);
+  const lastName = stringValue(admin.lastName ?? admin.last_name);
+  const fullName =
+    stringValue(admin.fullname ?? admin.name) ||
+    `${firstName} ${lastName}`.trim() ||
+    "Administrateur";
 
   return {
-    id: admin.id ?? "",
+    id: stringValue(admin.id),
     // first_name: firstName,
     // last_name: lastName,
     firstName: firstName,
     lastName: lastName,
     name: fullName,
     fullname: fullName,
-    email: admin.email ?? "",
-    photo: admin.photo ?? null,
-    bio: admin.bio ?? null,
-    email_verified_at: admin.email_verified_at ?? null,
-    level: admin.level ?? "admin",
-    invited_by: admin.invitedBy ?? admin.invited_by ?? null,
-    invited_at: admin.invitedAt ?? admin.invited_at ?? null,
-    accepted_at: admin.acceptedAt ?? admin.accepted_at ?? null,
-    is_active: admin.isActive ?? admin.is_active ?? true,
-    blocked_at: admin.blockedAt ?? admin.blocked_at ?? null,
-    blocked_reason: admin.blockedReason ?? admin.blocked_reason ?? null,
-    created_at: admin.createdAt ?? admin.created_at ?? "",
-    updated_at: admin.updatedAt ?? admin.updated_at ?? "",
+    email: stringValue(admin.email),
+    photo: nullableString(admin.photo),
+    bio: nullableString(admin.bio),
+    email_verified_at: nullableString(admin.email_verified_at),
+    level: stringValue(admin.level, "admin"),
+    invited_by: nullableString(admin.invitedBy ?? admin.invited_by),
+    invited_at: nullableString(admin.invitedAt ?? admin.invited_at),
+    accepted_at: nullableString(admin.acceptedAt ?? admin.accepted_at),
+    is_active: booleanValue(admin.isActive ?? admin.is_active, true),
+    blocked_at: nullableString(admin.blockedAt ?? admin.blocked_at),
+    blocked_reason: nullableString(admin.blockedReason ?? admin.blocked_reason),
+    created_at: stringValue(admin.createdAt ?? admin.created_at),
+    updated_at: stringValue(admin.updatedAt ?? admin.updated_at),
   };
 }
 
@@ -95,8 +117,7 @@ async function bootstrap() {
 let bootstrapped = false;
 
 export type AdminLoginOutcome =
-  | { status: "authenticated" }
-  | { status: "mfa"; challenge: APIAdminMfaChallenge };
+  { status: "authenticated" } | { status: "mfa"; challenge: APIAdminMfaChallenge };
 
 async function completeSession() {
   const admin = await fetchAdminMe();
@@ -156,10 +177,14 @@ export function useAdminAuth() {
   }, []);
 
   const verifyInvite = useCallback(
-    async (params: { admin: string; expires: string; signature: string }): Promise<AdminInviteVerifyResponse> => {
+    async (params: {
+      admin: string;
+      expires: string;
+      signature: string;
+    }): Promise<AdminInviteVerifyResponse> => {
       return verifyAdminInvite(params);
     },
-    []
+    [],
   );
 
   const acceptInvite = useCallback(
@@ -171,7 +196,7 @@ export function useAdminAuth() {
     }): Promise<{ message: string }> => {
       return acceptAdminInvite(params);
     },
-    []
+    [],
   );
 
   const forgotPassword = useCallback(

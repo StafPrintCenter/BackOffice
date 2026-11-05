@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
+import { PasswordRequirements } from "@/components/site/PasswordRequirements";
+import { getPasswordPolicyError } from "@/lib/password-policy";
 
 // token et email viennent du lien reçu par e-mail. Optionnels ici pour afficher
 // un état "lien invalide" propre au lieu d'une erreur de routeur.

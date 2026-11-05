@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { PasswordField } from "@/components/site/PasswordField";
+import { PasswordRequirements } from "@/components/site/PasswordRequirements";
+import { getPasswordPolicyError } from "@/lib/password-policy";
 import { useChangeAdminPassword } from "@/stores/useAccountStore";
 
 export function ChangePasswordCard() {

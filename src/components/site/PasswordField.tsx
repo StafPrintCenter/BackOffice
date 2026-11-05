@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,6 +7,7 @@ import { Label } from "@/components/ui/label";
 interface PasswordFieldProps {
   id: string;
   label: string;
+  labelAction?: ReactNode;
   value: string;
   onChange: (value: string) => void;
   autoComplete?: "current-password" | "new-password";
@@ -16,6 +18,7 @@ interface PasswordFieldProps {
 export function PasswordField({
   id,
   label,
+  labelAction,
   value,
   onChange,
   autoComplete = "new-password",
@@ -26,7 +29,10 @@ export function PasswordField({
 
   return (
     <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
+      <div className="flex items-center justify-between gap-2">
+        <Label htmlFor={id}>{label}</Label>
+        {labelAction}
+      </div>
       <div className="relative">
         <Input
           id={id}

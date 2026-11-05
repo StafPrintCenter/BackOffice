@@ -11,13 +11,13 @@ import type {
   APIAdminEmailChangeRequestResponse,
 } from "@/data/account";
 
-export class AdminAccountApiError extends Error {}
+export class AdminAccountApiError extends Error { }
 
 async function accountRequest<T>(
   path: string,
   method: "POST" | "PUT",
   body: FormData,
-  fallbackMessage: string,
+  fallbackMessage: string
 ): Promise<T> {
   const response = await adminFetch(`/api/admin/account/${path}`, { method, body });
   if (!response.ok) {
@@ -27,66 +27,52 @@ async function accountRequest<T>(
   return response.json();
 }
 
-const RESOURCE_KEY = "account";
-
-/** Comme le builder générique, mais gère aussi les File (photo). */
-function buildAccountFormData(payload: Record<string, unknown>): FormData {
-  const fd = new FormData();
-  for (const [key, value] of Object.entries(payload)) {
-    if (value === undefined) continue;
-    if (value instanceof File) {
-      fd.append(key, value);
-    } else if (typeof value === "boolean") {
-      fd.append(key, value ? "1" : "0");
-    } else {
-      fd.append(key, value === null ? "" : String(value));
-    }
-  }
-  return fd;
-}
-
 export async function updateAdminProfile(payload: AdminProfilePayload): Promise<APIAdminProfile> {
-  const response = await adminFetch(`/api/admin/account/profile`, {
-    method: "PUT",
-    body: buildAccountFormData({ ...payload }),
-  });
-  if (!response.ok) {
-    const error = await parseApiError(response, "Erreur lors de la modification du profil.");
-    throw new AdminAccountApiError(error.message);
-  }
-  const json: { data: APIAdminProfile } = await response.json();
+  const fd = new FormData();
+  fd.append("firstName", payload.firstName);
+  fd.append("lastName", payload.lastName);
+  fd.append("bio", payload.bio ?? "");
+  fd.append("removePhoto", payload.removePhoto ? "1" : "0");
+  if (payload.photo) fd.append("photo", payload.photo);
+
+  const json = await accountRequest<{ data: APIAdminProfile }>(
+    "profile",
+    "PUT",
+    fd,
+    "Impossible de modifier le profil.",
+  );
   return json.data;
 }
 
 export async function requestAdminEmailChange(
   payload: AdminEmailChangeRequestPayload,
 ): Promise<APIAdminEmailChangeRequestResponse> {
-  const response = await adminFetch(`/api/admin/account/email/request`, {
-    method: "POST",
-    body: buildAccountFormData({ ...payload }),
-  });
-  if (!response.ok) {
-    const error = await parseApiError(response, "Impossible d'envoyer le code de confirmation.");
-    throw new AdminAccountApiError(error.message);
-  }
-  return response.json();
+  const fd = new FormData();
+  fd.append("newEmail", payload.newEmail);
+  fd.append("password", payload.password);
+
+  return accountRequest<APIAdminEmailChangeRequestResponse>(
+    "email/request",
+    "POST",
+    fd,
+    "Impossible d'envoyer le code de confirmation.",
+  );
 }
 
 export async function confirmAdminEmailChange(
   payload: AdminEmailChangeConfirmPayload,
 ): Promise<APIAdminProfile> {
-  const response = await adminFetch(`/api/admin/account/email/confirm`, {
-    method: "POST",
-    body: buildAccountFormData({ ...payload }),
-  });
-  if (!response.ok) {
-    const error = await parseApiError(response, "Code invalide ou expiré.");
-    throw new AdminAccountApiError(error.message);
-  }
-  const json: { data: APIAdminProfile } = await response.json();
+  const fd = new FormData();
+  fd.append("code", payload.code);
+
+  const json = await accountRequest<{ data: APIAdminProfile }>(
+    "email/confirm",
+    "POST",
+    fd,
+    "Code invalide ou expiré.",
+  );
   return json.data;
 }
-
 
 export async function changeAdminPassword(
   payload: AdminPasswordChangePayload,
@@ -105,19 +91,11 @@ export async function changeAdminPassword(
   );
 }
 
-function useInvalidateAccount() {
-  const qc = useQueryClient();
-  return () => {
-    qc.invalidateQueries({ queryKey: [RESOURCE_KEY] });
-    qc.invalidateQueries({ queryKey: ["current-admin"] }); // utilisé par useCurrentAdmin
-  };
-}
-
 export function useUpdateAdminProfile() {
-  const invalidate = useInvalidateAccount();
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: (payload: AdminProfilePayload) => updateAdminProfile(payload),
-    onSuccess: invalidate,
+    onSuccess: (profile) => qc.setQueryData(["current-admin"], profile),
   });
 }
 
@@ -130,10 +108,10 @@ export function useRequestAdminEmailChange() {
 
 /** Étape 2/2 : l'e-mail change réellement, donc invalidation. */
 export function useConfirmAdminEmailChange() {
-  const invalidate = useInvalidateAccount();
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: (payload: AdminEmailChangeConfirmPayload) => confirmAdminEmailChange(payload),
-    onSuccess: invalidate,
+    onSuccess: (profile) => qc.setQueryData(["current-admin"], profile),
   });
 }
 

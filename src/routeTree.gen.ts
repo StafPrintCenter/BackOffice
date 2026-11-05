@@ -16,6 +16,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminProfileRouteImport } from './routes/_admin/profile'
 import { Route as AdminSecurityRouteImport } from './routes/_admin/security'
+import { Route as AdminSecuritySessionsRouteImport } from './routes/_admin/security-sessions'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthInviteRouteImport } from './routes/_auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
@@ -127,6 +128,11 @@ const AdminProfileRoute = AdminProfileRouteImport.update({
 const AdminSecurityRoute = AdminSecurityRouteImport.update({
   id: '/security',
   path: '/security',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSecuritySessionsRoute = AdminSecuritySessionsRouteImport.update({
+  id: '/security-sessions',
+  path: '/security-sessions',
   getParentRoute: () => AdminRoute,
 } as any)
 const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
@@ -560,6 +566,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AdminDashboardRoute
   '/profile': typeof AdminProfileRoute
   '/security': typeof AdminSecurityRoute
+  '/security-sessions': typeof AdminSecuritySessionsRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
@@ -646,6 +653,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AdminDashboardRoute
   '/profile': typeof AdminProfileRoute
   '/security': typeof AdminSecurityRoute
+  '/security-sessions': typeof AdminSecuritySessionsRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
@@ -735,6 +743,7 @@ export interface FileRoutesById {
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_admin/profile': typeof AdminProfileRoute
   '/_admin/security': typeof AdminSecurityRoute
+  '/_admin/security-sessions': typeof AdminSecuritySessionsRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/invite': typeof AuthInviteRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -823,6 +832,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/security'
+    | '/security-sessions'
     | '/forgot-password'
     | '/invite'
     | '/login'
@@ -909,6 +919,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/profile'
     | '/security'
+    | '/security-sessions'
     | '/forgot-password'
     | '/invite'
     | '/login'
@@ -997,6 +1008,7 @@ export interface FileRouteTypes {
     | '/_admin/dashboard'
     | '/_admin/profile'
     | '/_admin/security'
+    | '/_admin/security-sessions'
     | '/_auth/forgot-password'
     | '/_auth/invite'
     | '/_auth/login'
@@ -1134,6 +1146,13 @@ declare module '@tanstack/react-router' {
       path: '/security'
       fullPath: '/security'
       preLoaderRoute: typeof AdminSecurityRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/security-sessions': {
+      id: '/_admin/security-sessions'
+      path: '/security-sessions'
+      fullPath: '/security-sessions'
+      preLoaderRoute: typeof AdminSecuritySessionsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_auth/forgot-password': {
@@ -1696,6 +1715,7 @@ interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminProfileRoute: typeof AdminProfileRoute
   AdminSecurityRoute: typeof AdminSecurityRoute
+  AdminSecuritySessionsRoute: typeof AdminSecuritySessionsRoute
   AdminAnnouncesIdRoute: typeof AdminAnnouncesIdRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
@@ -1777,6 +1797,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
   AdminProfileRoute: AdminProfileRoute,
   AdminSecurityRoute: AdminSecurityRoute,
+  AdminSecuritySessionsRoute: AdminSecuritySessionsRoute,
   AdminAnnouncesIdRoute: AdminAnnouncesIdRoute,
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,

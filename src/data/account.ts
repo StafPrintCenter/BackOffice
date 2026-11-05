@@ -2,13 +2,12 @@ import type { APIAdminUser } from "@/data/auth";
 
 export type APIAdminProfile = APIAdminUser;
 
-// Écriture : les clés sont celles attendues par l'API (camelCase, cf. tes curl)
 export interface AdminProfilePayload {
   firstName: string;
   lastName: string;
   bio?: string;
-  photo?: File;            // nouvelle photo (omise si inchangée)
-  removePhoto?: boolean;   // true => supprime la photo actuelle
+  photo?: File | null;
+  removePhoto?: boolean;
 }
 
 export interface AdminEmailChangeRequestPayload {
@@ -16,12 +15,24 @@ export interface AdminEmailChangeRequestPayload {
   password: string;
 }
 
+export interface AdminEmailChangeConfirmPayload {
+  code: string;
+}
+
+export interface AdminPasswordChangePayload {
+  currentPassword: string;
+  password: string;
+  passwordConfirmation: string;
+  revokeOtherSessions: boolean;
+}
+
+export interface APIAdminPasswordChangeResponse {
+  message: string;
+  revokedSessions: number;
+}
+
 export interface APIAdminEmailChangeRequestResponse {
   message: string;
   hint: string;
   expiresInMinutes: number;
-}
-
-export interface AdminEmailChangeConfirmPayload {
-  code: string;
 }

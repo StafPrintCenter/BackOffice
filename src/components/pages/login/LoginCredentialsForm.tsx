@@ -43,14 +43,17 @@ export function LoginCredentialsForm({
       </div>
 
       <div>
-        <div className="mb-2 flex justify-end">
-          <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground">
-            Mot de passe oublié ?
-          </Link>
-        </div>
         <PasswordField
           id="password"
           label="Mot de passe"
+          labelAction={
+            <Link
+              to="/forgot-password"
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
+              Mot de passe oublié ?
+            </Link>
+          }
           value={password}
           onChange={setPassword}
           autoComplete="current-password"

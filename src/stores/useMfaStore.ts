@@ -9,6 +9,7 @@ import type {
   AdminMfaDefaultPayload,
   AdminMfaTotpConfirmPayload,
   AdminMfaDeleteMethodPayload,
+  AdminMfaEmailMethodPayload,
 } from "@/data/mfa";
 
 export class AdminMfaApiError extends Error { }
@@ -86,6 +87,15 @@ export const deleteAdminMfaMethod = (payload: AdminMfaDeleteMethodPayload) =>
     body: buildForm({ password: payload.password }),
   });
 
+export const setAdminMfaEmailMethod = (payload: AdminMfaEmailMethodPayload) =>
+  mfaRequest<APIAdminMfaStatus>("/email", "Impossible de modifier la méthode e-mail.", {
+    method: "PUT",
+    body: buildForm({
+      enabled: payload.enabled ? "1" : "0",
+      password: payload.password,
+    }),
+  });
+
 /* ---------- Hooks ---------- */
 
 export function useAdminMfaStatus() {
@@ -117,6 +127,7 @@ export const useDisableAdminMfa = () => useStatusMutation(disableAdminMfa);
 export const useSetAdminMfaDefault = () => useStatusMutation(setAdminMfaDefault);
 export const useConfirmAdminMfaTotp = () => useStatusMutation(confirmAdminMfaTotp);
 export const useDeleteAdminMfaMethod = () => useStatusMutation(deleteAdminMfaMethod);
+export const useSetAdminMfaEmailMethod = () => useStatusMutation(setAdminMfaEmailMethod);
 
 export function useSetupAdminMfaTotp() {
   return useMutation({ mutationFn: setupAdminMfaTotp });

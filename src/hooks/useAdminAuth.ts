@@ -1,6 +1,23 @@
 import { useEffect, useState, useCallback } from "react";
-import { loginAdmin, fetchAdminMe, logoutAdmin, verifyAdminInvite, acceptAdminInvite, forgotAdminPassword, resetAdminPassword, AdminAuthApiError, } from "@/stores/useAuthStore";
-import type { AdminInviteVerifyResponse } from "@/data/auth";
+import {
+  loginAdmin,
+  fetchAdminMe,
+  logoutAdmin,
+  verifyAdminInvite,
+  acceptAdminInvite,
+  forgotAdminPassword,
+  resetAdminPassword,
+  AdminAuthApiError,
+  sendAdminMfaEmailCode,
+  verifyAdminMfa,
+} from "@/stores/useAuthStore";
+import { isAdminMfaChallenge } from "@/data/auth";
+import type {
+  AdminInviteVerifyResponse,
+  AdminMfaVerifyPayload,
+  APIAdminMfaChallenge,
+  APIAdminMfaEmailResend,
+} from "@/data/auth";
 
 export interface AuthUser {
   id: string;
@@ -77,6 +94,20 @@ async function bootstrap() {
 
 let bootstrapped = false;
 
+export type AdminLoginOutcome =
+  | { status: "authenticated" }
+  | { status: "mfa"; challenge: APIAdminMfaChallenge };
+
+async function completeSession() {
+  const admin = await fetchAdminMe();
+  if (!admin) {
+    throw new AdminAuthApiError("La session n'a pas pu être établie.");
+  }
+  sharedUser = toAdminAuthUser(admin);
+  sharedReady = true;
+  notify();
+}
+
 export function useAdminAuth() {
   const [, forceRender] = useState(0);
 
@@ -94,17 +125,28 @@ export function useAdminAuth() {
     };
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
-    await loginAdmin(email, password);
-    const admin = await fetchAdminMe();
-    if (!admin) {
-      throw new AdminAuthApiError(
-        "La session n'a pas pu être établie."
-      );
+  const login = useCallback(async (email: string, password: string): Promise<AdminLoginOutcome> => {
+    const result = await loginAdmin(email, password);
+    if (isAdminMfaChallenge(result)) {
+      return { status: "mfa", challenge: result };
     }
-    sharedUser = toAdminAuthUser(admin);
-    sharedReady = true;
-    notify();
+    await completeSession();
+    return { status: "authenticated" };
+  }, []);
+
+  const verifyMfa = useCallback(async (payload: AdminMfaVerifyPayload): Promise<void> => {
+    await verifyAdminMfa(payload);
+    await completeSession();
+  }, []);
+
+  const sendMfaEmailCode = useCallback(
+    (challengeToken: string): Promise<APIAdminMfaEmailResend> =>
+      sendAdminMfaEmailCode(challengeToken),
+    [],
+  );
+
+  const refresh = useCallback(async () => {
+    await bootstrap();
   }, []);
 
   const logout = useCallback(async () => {
@@ -164,5 +206,8 @@ export function useAdminAuth() {
     forgotPassword,
     resetPassword,
     setUser,
+    verifyMfa,
+    sendMfaEmailCode,
+    refresh,
   };
 }

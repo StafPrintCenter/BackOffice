@@ -1,11 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
 import { parseApiError } from "@/lib/api/error";
-import type { APIAdminUser, APIAdminLoginResponse, AdminInviteVerifyResponse } from "@/data/auth";
+import type {
+  APIAdminUser,
+  AdminInviteVerifyResponse,
+  APIAdminLoginResult,
+  APIAdminMfaChallenge,
+  APIAdminMfaEmailResend,
+  AdminMfaVerifyPayload,
+} from "@/data/auth";
 
 export class AdminAuthApiError extends Error { }
 
-export async function loginAdmin(email: string, password: string): Promise<APIAdminLoginResponse> {
+export async function loginAdmin(email: string, password: string): Promise<APIAdminLoginResult> {
   const formData = new FormData();
   formData.append("email", email);
   formData.append("password", password);
@@ -138,4 +145,59 @@ export async function resetAdminPassword(params: {
     throw new AdminAuthApiError(error.message);
   }
   return (await response.json()) as { message: string };
+}
+
+export class AdminMfaLoginError extends AdminAuthApiError {
+  constructor(
+    message: string,
+    public readonly status: number,
+    public readonly code?: string,
+    public readonly attemptsLeft?: number,
+    public readonly retryAfter?: number,
+  ) {
+    super(message);
+    this.name = "AdminMfaLoginError";
+  }
+}
+
+async function buildMfaLoginError(response: Response, fallback: string): Promise<AdminMfaLoginError> {
+  const body = await response.json().catch(() => null);
+  return new AdminMfaLoginError(
+    body?.message || fallback,
+    response.status,
+    body?.code,
+    body?.attemptsLeft,
+    body?.retryAfter,
+  );
+}
+
+export async function sendAdminMfaEmailCode(
+  challengeToken: string,
+): Promise<APIAdminMfaEmailResend> {
+  const formData = new FormData();
+  formData.append("challengeToken", challengeToken);
+
+  const response = await adminFetch(`/api/admin/auth/mfa/send-email`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!response.ok) {
+    throw await buildMfaLoginError(response, "Impossible d'envoyer le code par e-mail.");
+  }
+  return response.json();
+}
+
+export async function verifyAdminMfa(payload: AdminMfaVerifyPayload): Promise<void> {
+  const formData = new FormData();
+  formData.append("challengeToken", payload.challengeToken);
+  formData.append("method", payload.method);
+  formData.append("code", payload.code);
+
+  const response = await adminFetch(`/api/admin/auth/mfa/verify`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!response.ok) {
+    throw await buildMfaLoginError(response, "Code invalide ou expiré.");
+  }
 }

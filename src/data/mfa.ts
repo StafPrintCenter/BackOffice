@@ -48,3 +48,8 @@ export interface AdminMfaDeleteMethodPayload {
   id: string;
   password: string;
 }
+
+export interface AdminMfaEmailMethodPayload {
+  enabled: boolean;
+  password: string;
+}

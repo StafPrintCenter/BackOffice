@@ -40,6 +40,44 @@ export type APIAdminLoginResponse = {
   token: string;
 };
 
+export type AdminMfaLoginMethod = "email" | "totp" | "recovery";
+
+export interface APIAdminMfaChallengeMethod {
+  type: "email" | "totp";
+  label: string;
+  hint: string | null;
+}
+
+export interface APIAdminMfaChallenge {
+  mfaRequired: true;
+  challengeToken: string;
+  defaultMethod: "email" | "totp";
+  methods: APIAdminMfaChallengeMethod[];
+  recoveryCodesAvailable: boolean;
+  emailCodeSent: boolean;
+  expiresAt: string;
+}
+
+export type APIAdminLoginResult = APIAdminLoginResponse | APIAdminMfaChallenge;
+
+export interface AdminMfaVerifyPayload {
+  challengeToken: string;
+  method: AdminMfaLoginMethod;
+  code: string;
+}
+
+export interface APIAdminMfaEmailResend {
+  emailCodeSent: boolean;
+  hint: string;
+  retryAfter: number;
+}
+
+export function isAdminMfaChallenge(
+  result: APIAdminLoginResult
+): result is APIAdminMfaChallenge {
+  return "mfaRequired" in result && result.mfaRequired === true;
+}
+
 export interface AdminInviteVerifyResponse {
   firstName: string;
   lastName: string;

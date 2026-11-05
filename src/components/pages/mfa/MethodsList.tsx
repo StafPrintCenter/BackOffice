@@ -7,8 +7,10 @@ interface MfaMethodsListProps {
   methods: APIAdminMfaMethod[];
   defaultMethod: AdminMfaMethodType;
   isSettingDefault: boolean;
+  canRemoveEmail: boolean;
   onSetDefault: (type: AdminMfaMethodType) => void;
   onDelete: (method: APIAdminMfaMethod) => void;
+  onToggleEmail: (enabled: boolean) => void;
   onAddTotp?: () => void; // absent si une application est déjà configurée
 }
 
@@ -18,8 +20,11 @@ const formatDateTime = (value: string | null) =>
     : null;
 
 export function MfaMethodsList({
-  methods, defaultMethod, isSettingDefault, onSetDefault, onDelete, onAddTotp,
+  methods, defaultMethod, isSettingDefault, canRemoveEmail, onSetDefault, onDelete, onToggleEmail, onAddTotp,
 }: MfaMethodsListProps) {
+  const emailMethod = methods.find((method) => method.type === "email");
+  const showEmailHelp = !!emailMethod?.enabled && !canRemoveEmail;
+
   return (
     <div className="rounded-2xl border bg-card p-6 shadow-sm">
       <div className="mb-5 flex items-center justify-between border-b pb-4">
@@ -45,6 +50,7 @@ export function MfaMethodsList({
                   <div className="flex items-center gap-2 text-sm font-medium">
                     {m.label}
                     {isDefault && <Badge variant="secondary">Par défaut</Badge>}
+                    {!m.enabled && <Badge variant="outline">Retirée</Badge>}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {m.hint ?? (lastUsed ? `Dernière utilisation : ${lastUsed}` : "Jamais utilisée")}
@@ -59,6 +65,22 @@ export function MfaMethodsList({
                     Définir par défaut
                   </Button>
                 )}
+                {m.type === "email" &&
+                  (m.enabled ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-destructive hover:bg-destructive/10"
+                      disabled={!canRemoveEmail}
+                      onClick={() => onToggleEmail(false)}
+                    >
+                      Retirer
+                    </Button>
+                  ) : (
+                    <Button variant="outline" size="sm" onClick={() => onToggleEmail(true)}>
+                      Réactiver
+                    </Button>
+                  ))}
                 {m.id && (
                   <Button
                     variant="outline"
@@ -74,6 +96,11 @@ export function MfaMethodsList({
           );
         })}
       </ul>
+      {showEmailHelp && (
+        <p className="mt-4 text-xs text-muted-foreground">
+          Pour retirer le code par e-mail, configurez d'abord une application d'authentification et gardez au moins un code de secours.
+        </p>
+      )}
     </div>
   );
 }

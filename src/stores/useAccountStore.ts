@@ -6,10 +6,26 @@ import type {
   AdminProfilePayload,
   AdminEmailChangeRequestPayload,
   AdminEmailChangeConfirmPayload,
+  AdminPasswordChangePayload,
+  APIAdminPasswordChangeResponse,
   APIAdminEmailChangeRequestResponse,
 } from "@/data/account";
 
 export class AdminAccountApiError extends Error { }
+
+async function accountRequest<T>(
+  path: string,
+  method: "POST" | "PUT",
+  body: FormData,
+  fallbackMessage: string
+): Promise<T> {
+  const response = await adminFetch(`/api/instructor/account/${path}`, { method, body });
+  if (!response.ok) {
+    const error = await parseApiError(response, fallbackMessage);
+    throw new AdminAccountApiError(error.message);
+  }
+  return response.json();
+}
 
 const RESOURCE_KEY = "account";
 
@@ -71,6 +87,24 @@ export async function confirmAdminEmailChange(
   return json.data;
 }
 
+
+export async function changeAdminPassword(
+  payload: AdminPasswordChangePayload,
+): Promise<APIAdminPasswordChangeResponse> {
+  const fd = new FormData();
+  fd.append("currentPassword", payload.currentPassword);
+  fd.append("password", payload.password);
+  fd.append("password_confirmation", payload.passwordConfirmation);
+  fd.append("revokeOtherSessions", String(payload.revokeOtherSessions));
+
+  return accountRequest<APIAdminPasswordChangeResponse>(
+    "password",
+    "PUT",
+    fd,
+    "Impossible de modifier le mot de passe.",
+  );
+}
+
 function useInvalidateAccount() {
   const qc = useQueryClient();
   return () => {
@@ -100,5 +134,17 @@ export function useConfirmAdminEmailChange() {
   return useMutation({
     mutationFn: (payload: AdminEmailChangeConfirmPayload) => confirmAdminEmailChange(payload),
     onSuccess: invalidate,
+  });
+}
+
+export function useChangeAdminPassword() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: AdminPasswordChangePayload) => changeAdminPassword(payload),
+    onSuccess: (_response, payload) => {
+      if (payload.revokeOtherSessions) {
+        return qc.invalidateQueries({ queryKey: ["instructor-sessions"] });
+      }
+    },
   });
 }

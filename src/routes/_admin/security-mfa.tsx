@@ -9,6 +9,7 @@ import { MfaRecoveryCodesCard } from "@/components/pages/mfa/RecoveryCodesCard";
 import { MfaPasswordDialog } from "@/components/pages/mfa/PasswordDialog";
 import { RecoveryCodesDialog } from "@/components/pages/mfa/RecoveryCodesDialog";
 import { TotpSetupDialog } from "@/components/pages/mfa/TotpSetupDialog";
+import { ChangePasswordCard } from "@/components/pages/security/ChangePasswordCard";
 import {
   useAdminMfaStatus,
   useEnableAdminMfa,
@@ -25,11 +26,7 @@ export const Route = createFileRoute("/_admin/security-mfa")({
   head: () => ({
     meta: [
       { title: `${SITE.tool} - Double authentification | ${SITE.name}` },
-      {
-        name: "description",
-        content:
-          "Gérez la double authentification et les codes de secours de votre compte administrateur.",
-      },
+      { name: "description", content: "Gérez la double authentification et les codes de secours de votre compte administrateur." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -65,15 +62,13 @@ const ACTION_COPY = {
   },
   deleteMethod: {
     title: "Supprimer cette méthode",
-    description:
-      "L'e-mail redeviendra votre méthode par défaut. Confirmez votre mot de passe pour continuer.",
+    description: "L'e-mail redeviendra votre méthode par défaut. Confirmez votre mot de passe pour continuer.",
     confirmLabel: "Supprimer",
     destructive: true,
   },
   removeEmail: {
     title: "Retirer le code par e-mail",
-    description:
-      "Seuls votre application d'authentification et vos codes de secours serviront à vous connecter. Confirmez votre mot de passe.",
+    description: "Seuls votre application d'authentification et vos codes de secours serviront à vous connecter. Confirmez votre mot de passe.",
     confirmLabel: "Retirer",
     destructive: true,
   },
@@ -93,13 +88,13 @@ function MfaManagePage() {
   const setDefault = useSetAdminMfaDefault();
   const regenerate = useRegenerateAdminMfaRecoveryCodes();
   const deleteMethod = useDeleteAdminMfaMethod();
-  const setEmailMethod = useSetAdminMfaEmailMethod();
 
   const [action, setAction] = useState<PendingAction | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [totpOpen, setTotpOpen] = useState(false);
   const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
   const [codesOpen, setCodesOpen] = useState(false);
+  const setEmailMethod = useSetAdminMfaEmailMethod();
 
   const openAction = (next: PendingAction) => {
     setActionError(null);
@@ -125,23 +120,17 @@ function MfaManagePage() {
         disableMfa.mutate({ password }, feedback("Double authentification désactivée"));
         break;
       case "regenerate":
-        regenerate.mutate(
-          { password },
-          {
-            onSuccess: (res) => {
-              setAction(null);
-              setRecoveryCodes(res.recoveryCodes);
-              setCodesOpen(true);
-            },
-            onError: (e) => setActionError(e.message),
+        regenerate.mutate({ password }, {
+          onSuccess: (res) => {
+            setAction(null);
+            setRecoveryCodes(res.recoveryCodes);
+            setCodesOpen(true);
           },
-        );
+          onError: (e) => setActionError(e.message),
+        });
         break;
       case "deleteMethod":
-        deleteMethod.mutate(
-          { id: action.method.id as string, password },
-          feedback("Méthode supprimée"),
-        );
+        deleteMethod.mutate({ id: action.method.id as string, password }, feedback("Méthode supprimée"));
         break;
       case "removeEmail":
         setEmailMethod.mutate({ enabled: false, password }, feedback("Code par e-mail retiré"));
@@ -153,53 +142,46 @@ function MfaManagePage() {
   };
 
   const handleSetDefault = (method: "email" | "totp") => {
-    setDefault.mutate(
-      { method },
-      {
-        onSuccess: () => toast.success("Méthode par défaut mise à jour"),
-        onError: (e) => toast.error(e.message),
-      },
-    );
+    setDefault.mutate({ method }, {
+      onSuccess: () => toast.success("Méthode par défaut mise à jour"),
+      onError: (e) => toast.error(e.message),
+    });
   };
 
   const isActionPending =
-    enableMfa.isPending ||
-    disableMfa.isPending ||
-    regenerate.isPending ||
-    deleteMethod.isPending ||
-    setEmailMethod.isPending;
+    enableMfa.isPending || disableMfa.isPending || regenerate.isPending || deleteMethod.isPending || setEmailMethod.isPending;
   const copy = action ? ACTION_COPY[action.kind] : null;
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-24 text-muted-foreground">
-        <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement...
+      <div className="max-w-3xl space-y-6">
+        <div className="flex items-center justify-center py-24 text-muted-foreground">
+          <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Chargement...
+        </div>
+        <ChangePasswordCard />
       </div>
     );
   }
 
   if (isError || !status) {
     return (
-      <div className="rounded-2xl border p-8 text-center text-muted-foreground">
-        Impossible de charger les paramètres de sécurité.
-        <div className="mt-4">
-          <Button variant="outline" size="sm" onClick={() => refetch()}>
-            Réessayer
-          </Button>
+      <div className="max-w-3xl space-y-6">
+        <div className="rounded-2xl border p-8 text-center text-muted-foreground">
+          Impossible de charger les paramètres de sécurité.
+          <div className="mt-4"><Button variant="outline" size="sm" onClick={() => refetch()}>Réessayer</Button></div>
         </div>
+        <ChangePasswordCard />
       </div>
     );
   }
 
-  const hasTotp = status.methods.some((method) => method.type === "totp" && method.enabled);
+  const hasTotp = status.methods.some((m) => m.type === "totp");
 
   return (
     <>
       <div className="mb-6">
         <h1 className="font-display text-2xl font-bold">Sécurité du compte</h1>
-        <p className="text-sm text-muted-foreground">
-          Gérez la double authentification et vos codes de secours.
-        </p>
+        <p className="text-sm text-muted-foreground">Gérez la double authentification et vos codes de secours.</p>
       </div>
 
       <div className="max-w-3xl space-y-6">
@@ -219,9 +201,7 @@ function MfaManagePage() {
               onDelete={(method) => openAction({ kind: "deleteMethod", method })}
               onAddTotp={hasTotp ? undefined : () => setTotpOpen(true)}
               canRemoveEmail={hasTotp && status.recoveryCodesRemaining > 0}
-              onToggleEmail={(enabled) =>
-                openAction({ kind: enabled ? "restoreEmail" : "removeEmail" })
-              }
+              onToggleEmail={(enabled) => openAction({ kind: enabled ? "restoreEmail" : "removeEmail" })}
             />
             <MfaRecoveryCodesCard
               remaining={status.recoveryCodesRemaining}
@@ -230,6 +210,8 @@ function MfaManagePage() {
             />
           </>
         )}
+
+        <ChangePasswordCard />
       </div>
 
       {copy && (

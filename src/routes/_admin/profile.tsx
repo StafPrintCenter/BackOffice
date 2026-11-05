@@ -1,20 +1,10 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import {
-  Calendar,
-  CheckCircle2,
-  Clock,
-  LogOut,
-  Mail,
-  Pencil,
-  Shield,
-  ShieldAlert,
-  User as UserIcon,
-  XCircle,
-} from "lucide-react";
+import { Calendar, CheckCircle2, Clock, LogOut, Mail, Pencil, Shield, ShieldAlert, User as UserIcon, XCircle } from "lucide-react";
 import { ConfirmDisconnect, PageHeader } from "@/components/site";
 import { EmailChangeDialog } from "@/components/pages/profile/EmailChangeDialog";
+import { ChangePasswordCard } from "@/components/pages/security/ChangePasswordCard";
 import { ProfileEditDialog } from "@/components/pages/profile/ProfileEditDialog";
 import { Button } from "@/components/ui/button";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
@@ -59,10 +49,10 @@ function ProfilePage() {
     return Number.isNaN(date.getTime())
       ? "Non renseigné"
       : date.toLocaleDateString("fr-FR", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        });
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
   };
 
   const handleLogout = async () => {
@@ -159,6 +149,7 @@ function ProfilePage() {
         </div>
 
         <div className="space-y-6 lg:col-span-1">
+          <ChangePasswordCard />
           <section className="rounded-2xl border bg-card p-6 shadow-sm">
             <div className="mb-4 flex items-center gap-2 border-b pb-3">
               <Shield className="h-4 w-4 text-primary" />
@@ -238,7 +229,7 @@ function ProfileField({ label, value }: { label: string; value?: string | null }
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
-      <div className="mt-1 break-words text-sm font-medium">{value?.trim() || "Non renseigné"}</div>
+      <div className="mt-1 wrap-break-word text-sm font-medium">{value?.trim() || "Non renseigné"}</div>
     </div>
   );
 }

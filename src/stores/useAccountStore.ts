@@ -19,7 +19,7 @@ async function accountRequest<T>(
   body: FormData,
   fallbackMessage: string
 ): Promise<T> {
-  const response = await adminFetch(`/api/instructor/account/${path}`, { method, body });
+  const response = await adminFetch(`/api/admin/account/${path}`, { method, body });
   if (!response.ok) {
     const error = await parseApiError(response, fallbackMessage);
     throw new AdminAccountApiError(error.message);
@@ -143,7 +143,7 @@ export function useChangeAdminPassword() {
     mutationFn: (payload: AdminPasswordChangePayload) => changeAdminPassword(payload),
     onSuccess: (_response, payload) => {
       if (payload.revokeOtherSessions) {
-        return qc.invalidateQueries({ queryKey: ["instructor-sessions"] });
+        return qc.invalidateQueries({ queryKey: ["admin-sessions"] });
       }
     },
   });

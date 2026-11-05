@@ -21,6 +21,12 @@ export function ChangePasswordCard() {
     event.preventDefault();
     setError("");
 
+    const passwordError = getPasswordPolicyError(password);
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
+
     if (password !== passwordConfirmation) {
       setError("La confirmation du mot de passe ne correspond pas.");
       return;
@@ -74,6 +80,7 @@ export function ChangePasswordCard() {
           onChange={setPassword}
           disabled={changePassword.isPending}
         />
+        <PasswordRequirements value={password} />
         <PasswordField
           id="password-confirmation"
           label="Confirmer le nouveau mot de passe"

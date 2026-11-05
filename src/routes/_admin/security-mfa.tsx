@@ -21,7 +21,7 @@ import {
 import type { APIAdminMfaMethod } from "@/data/mfa";
 import { SITE } from "@/data/site";
 
-export const Route = createFileRoute("/_admin/security")({
+export const Route = createFileRoute("/_admin/security-mfa")({
   head: () => ({
     meta: [
       { title: `${SITE.tool} - Double authentification | ${SITE.name}` },

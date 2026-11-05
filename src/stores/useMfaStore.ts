@@ -13,23 +13,21 @@ import type {
 
 export class AdminMfaApiError extends Error { }
 
-const RESOURCE_KEY = "mfa";
-const STATUS_KEY = [RESOURCE_KEY, "status"] as const;
-const BASE = "/api/admin/account/security/mfa";
+const MFA_KEY = ["admin-mfa"] as const;
+const BASE_PATH = "/api/admin/account/security/mfa";
 
-/** Payload -> FormData (booléens en "1"/"0", undefined ignoré). */
-function buildMfaFormData(payload: Record<string, unknown>): FormData {
+function buildForm(fields: Record<string, string>): FormData {
   const fd = new FormData();
-  for (const [key, value] of Object.entries(payload)) {
-    if (value === undefined) continue;
-    if (typeof value === "boolean") fd.append(key, value ? "1" : "0");
-    else fd.append(key, value === null ? "" : String(value));
-  }
+  for (const [key, value] of Object.entries(fields)) fd.append(key, value);
   return fd;
 }
 
-async function mfaRequest<T>(path: string, init: RequestInit | undefined, fallbackMessage: string): Promise<T> {
-  const response = await adminFetch(`${BASE}${path}`, init);
+async function mfaRequest<T>(
+  path: string,
+  fallbackMessage: string,
+  init?: { method: "POST" | "PUT" | "DELETE"; body: FormData }
+): Promise<T> {
+  const response = await adminFetch(`${BASE_PATH}${path}`, init);
   if (!response.ok) {
     const error = await parseApiError(response, fallbackMessage);
     throw new AdminMfaApiError(error.message);
@@ -37,69 +35,65 @@ async function mfaRequest<T>(path: string, init: RequestInit | undefined, fallba
   return response.json();
 }
 
-// ---------------------------------------------------------------------------
-// Fonctions
-// ---------------------------------------------------------------------------
+/* ---------- Fonctions ---------- */
+
 export const fetchAdminMfaStatus = () =>
-  mfaRequest<APIAdminMfaStatus>("", undefined, "Erreur lors de la récupération de la double authentification.");
+  mfaRequest<APIAdminMfaStatus>("", "Impossible de charger les paramètres de sécurité.");
 
 export const enableAdminMfa = (payload: AdminMfaPasswordPayload) =>
-  mfaRequest<APIAdminMfaStatus>(
-    "/enable",
-    { method: "POST", body: buildMfaFormData({ ...payload }) },
-    "Impossible d'activer la double authentification.",
-  );
+  mfaRequest<APIAdminMfaStatus>("/enable", "Impossible d'activer la double authentification.", {
+    method: "POST",
+    body: buildForm({ password: payload.password }),
+  });
 
 export const disableAdminMfa = (payload: AdminMfaPasswordPayload) =>
-  mfaRequest<APIAdminMfaStatus>(
-    "/disable",
-    { method: "POST", body: buildMfaFormData({ ...payload }) },
-    "Impossible de désactiver la double authentification.",
-  );
+  mfaRequest<APIAdminMfaStatus>("/disable", "Impossible de désactiver la double authentification.", {
+    method: "POST",
+    body: buildForm({ password: payload.password }),
+  });
 
-export const setAdminMfaDefaultMethod = (payload: AdminMfaDefaultPayload) =>
-  mfaRequest<APIAdminMfaStatus>(
-    "/default",
-    { method: "PUT", body: buildMfaFormData({ ...payload }) },
-    "Impossible de définir la méthode par défaut.",
-  );
+export const setAdminMfaDefault = (payload: AdminMfaDefaultPayload) =>
+  mfaRequest<APIAdminMfaStatus>("/default", "Impossible de définir la méthode par défaut.", {
+    method: "PUT",
+    body: buildForm({ method: payload.method }),
+  });
 
 export const regenerateAdminMfaRecoveryCodes = (payload: AdminMfaPasswordPayload) =>
   mfaRequest<APIAdminMfaRecoveryCodes>(
     "/recovery-codes/regenerate",
-    { method: "POST", body: buildMfaFormData({ ...payload }) },
-    "Impossible de générer les codes de secours.",
+    "Impossible de générer de nouveaux codes de secours.",
+    { method: "POST", body: buildForm({ password: payload.password }) }
   );
 
 export const setupAdminMfaTotp = (payload: AdminMfaPasswordPayload) =>
-  mfaRequest<APIAdminMfaTotpSetup>(
-    "/totp/setup",
-    { method: "POST", body: buildMfaFormData({ ...payload }) },
-    "Impossible de démarrer la configuration de l'application d'authentification.",
-  );
+  mfaRequest<APIAdminMfaTotpSetup>("/totp/setup", "Impossible de démarrer la configuration.", {
+    method: "POST",
+    body: buildForm({ password: payload.password }),
+  });
 
 export const confirmAdminMfaTotp = (payload: AdminMfaTotpConfirmPayload) =>
-  mfaRequest<APIAdminMfaStatus>(
-    "/totp/confirm",
-    { method: "POST", body: buildMfaFormData({ ...payload }) },
-    "Code invalide ou expiré.",
-  );
+  mfaRequest<APIAdminMfaStatus>("/totp/confirm", "Code invalide ou expiré.", {
+    method: "POST",
+    body: buildForm({
+      code: payload.code,
+      makeDefault: payload.makeDefault ? "1" : "0",
+    }),
+  });
 
-export const deleteAdminMfaMethod = ({ id, password }: AdminMfaDeleteMethodPayload) =>
-  mfaRequest<APIAdminMfaStatus>(
-    `/methods/${id}`,
-    { method: "DELETE", body: buildMfaFormData({ password }) },
-    "Impossible de supprimer cette méthode.",
-  );
+export const deleteAdminMfaMethod = (payload: AdminMfaDeleteMethodPayload) =>
+  mfaRequest<APIAdminMfaStatus>(`/methods/${payload.id}`, "Impossible de supprimer cette méthode.", {
+    method: "DELETE",
+    body: buildForm({ password: payload.password }),
+  });
 
-// ---------------------------------------------------------------------------
-// Hooks
-// ---------------------------------------------------------------------------
+/* ---------- Hooks ---------- */
+
 export function useAdminMfaStatus() {
   const query = useQuery({
-    queryKey: STATUS_KEY,
+    queryKey: MFA_KEY,
     queryFn: fetchAdminMfaStatus,
     staleTime: 1000 * 30,
+    retry: false,
   });
   return {
     status: query.data ?? null,
@@ -109,50 +103,30 @@ export function useAdminMfaStatus() {
   };
 }
 
-/** Met le statut à jour immédiatement avec la réponse, puis invalide le cache. */
-function useSyncMfaStatus() {
-  const qc = useQueryClient();
-  return (status: APIAdminMfaStatus) => {
-    qc.setQueryData(STATUS_KEY, status);
-    qc.invalidateQueries({ queryKey: [RESOURCE_KEY] });
-  };
-}
-
-export function useEnableAdminMfa() {
-  const sync = useSyncMfaStatus();
-  return useMutation({ mutationFn: (p: AdminMfaPasswordPayload) => enableAdminMfa(p), onSuccess: sync });
-}
-
-export function useDisableAdminMfa() {
-  const sync = useSyncMfaStatus();
-  return useMutation({ mutationFn: (p: AdminMfaPasswordPayload) => disableAdminMfa(p), onSuccess: sync });
-}
-
-export function useSetAdminMfaDefaultMethod() {
-  const sync = useSyncMfaStatus();
-  return useMutation({ mutationFn: (p: AdminMfaDefaultPayload) => setAdminMfaDefaultMethod(p), onSuccess: sync });
-}
-
-export function useConfirmAdminMfaTotp() {
-  const sync = useSyncMfaStatus();
-  return useMutation({ mutationFn: (p: AdminMfaTotpConfirmPayload) => confirmAdminMfaTotp(p), onSuccess: sync });
-}
-
-export function useDeleteAdminMfaMethod() {
-  const sync = useSyncMfaStatus();
-  return useMutation({ mutationFn: (p: AdminMfaDeleteMethodPayload) => deleteAdminMfaMethod(p), onSuccess: sync });
-}
-
-/** Les codes ne sont PAS mis en cache (affichés une seule fois) : on invalide seulement le compteur. */
-export function useRegenerateAdminMfaRecoveryCodes() {
+/** Les mutations qui renvoient l'état MFA complet le placent directement dans le cache */
+function useStatusMutation<TPayload>(mutationFn: (payload: TPayload) => Promise<APIAdminMfaStatus>) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (p: AdminMfaPasswordPayload) => regenerateAdminMfaRecoveryCodes(p),
-    onSuccess: () => qc.invalidateQueries({ queryKey: [RESOURCE_KEY] }),
+    mutationFn,
+    onSuccess: (status) => qc.setQueryData(MFA_KEY, status),
   });
 }
 
-/** Étape 1/2 du TOTP : rien ne change côté statut tant que le code n'est pas confirmé, donc pas d'invalidation. */
+export const useEnableAdminMfa = () => useStatusMutation(enableAdminMfa);
+export const useDisableAdminMfa = () => useStatusMutation(disableAdminMfa);
+export const useSetAdminMfaDefault = () => useStatusMutation(setAdminMfaDefault);
+export const useConfirmAdminMfaTotp = () => useStatusMutation(confirmAdminMfaTotp);
+export const useDeleteAdminMfaMethod = () => useStatusMutation(deleteAdminMfaMethod);
+
 export function useSetupAdminMfaTotp() {
-  return useMutation({ mutationFn: (p: AdminMfaPasswordPayload) => setupAdminMfaTotp(p) });
+  return useMutation({ mutationFn: setupAdminMfaTotp });
+}
+
+/** La régénération ne renvoie que les codes : on invalide l'état pour rafraîchir le compteur */
+export function useRegenerateAdminMfaRecoveryCodes() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: regenerateAdminMfaRecoveryCodes,
+    onSuccess: () => qc.invalidateQueries({ queryKey: MFA_KEY }),
+  });
 }

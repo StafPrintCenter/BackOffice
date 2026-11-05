@@ -1,9 +1,8 @@
-export type MfaMethodType = "email" | "totp";
+export type AdminMfaMethodType = "email" | "totp";
 
-// ---------- Lecture (camelCase, tel que renvoyé par l'API) ----------
 export interface APIAdminMfaMethod {
-  id: string | null;
-  type: MfaMethodType;
+  id: string | null; // null pour la méthode e-mail
+  type: AdminMfaMethodType;
   label: string;
   hint: string | null;
   enabled: boolean;
@@ -14,7 +13,7 @@ export interface APIAdminMfaMethod {
 export interface APIAdminMfaStatus {
   enabled: boolean;
   enforced: boolean;
-  defaultMethod: MfaMethodType;
+  defaultMethod: AdminMfaMethodType;
   methods: APIAdminMfaMethod[];
   recoveryCodesRemaining: number;
   recoveryCodesGeneratedAt: string | null;
@@ -32,13 +31,12 @@ export interface APIAdminMfaTotpSetup {
   account: string;
 }
 
-// ---------- Écriture (clés = celles attendues par l'API, cf. curl) ----------
 export interface AdminMfaPasswordPayload {
   password: string;
 }
 
 export interface AdminMfaDefaultPayload {
-  method: MfaMethodType;
+  method: AdminMfaMethodType;
 }
 
 export interface AdminMfaTotpConfirmPayload {

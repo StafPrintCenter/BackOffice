@@ -14,8 +14,8 @@ import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
-import { Route as AdminMfaManageRouteImport } from './routes/_admin/mfa-manage'
 import { Route as AdminProfileRouteImport } from './routes/_admin/profile'
+import { Route as AdminSecurityRouteImport } from './routes/_admin/security'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthInviteRouteImport } from './routes/_auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
@@ -119,14 +119,14 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminMfaManageRoute = AdminMfaManageRouteImport.update({
-  id: '/mfa-manage',
-  path: '/mfa-manage',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminProfileRoute = AdminProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSecurityRoute = AdminSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
   getParentRoute: () => AdminRoute,
 } as any)
 const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
@@ -558,8 +558,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AdminDashboardRoute
-  '/mfa-manage': typeof AdminMfaManageRoute
   '/profile': typeof AdminProfileRoute
+  '/security': typeof AdminSecurityRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
@@ -644,8 +644,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AdminDashboardRoute
-  '/mfa-manage': typeof AdminMfaManageRoute
   '/profile': typeof AdminProfileRoute
+  '/security': typeof AdminSecurityRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
@@ -733,8 +733,8 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
-  '/_admin/mfa-manage': typeof AdminMfaManageRoute
   '/_admin/profile': typeof AdminProfileRoute
+  '/_admin/security': typeof AdminSecurityRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/invite': typeof AuthInviteRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -821,8 +821,8 @@ export interface FileRouteTypes {
     | '/'
     | '/sitemap.xml'
     | '/dashboard'
-    | '/mfa-manage'
     | '/profile'
+    | '/security'
     | '/forgot-password'
     | '/invite'
     | '/login'
@@ -907,8 +907,8 @@ export interface FileRouteTypes {
     | '/'
     | '/sitemap.xml'
     | '/dashboard'
-    | '/mfa-manage'
     | '/profile'
+    | '/security'
     | '/forgot-password'
     | '/invite'
     | '/login'
@@ -995,8 +995,8 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/sitemap.xml'
     | '/_admin/dashboard'
-    | '/_admin/mfa-manage'
     | '/_admin/profile'
+    | '/_admin/security'
     | '/_auth/forgot-password'
     | '/_auth/invite'
     | '/_auth/login'
@@ -1122,18 +1122,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_admin/mfa-manage': {
-      id: '/_admin/mfa-manage'
-      path: '/mfa-manage'
-      fullPath: '/mfa-manage'
-      preLoaderRoute: typeof AdminMfaManageRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/_admin/profile': {
       id: '/_admin/profile'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AdminProfileRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/security': {
+      id: '/_admin/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof AdminSecurityRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_auth/forgot-password': {
@@ -1694,8 +1694,8 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
-  AdminMfaManageRoute: typeof AdminMfaManageRoute
   AdminProfileRoute: typeof AdminProfileRoute
+  AdminSecurityRoute: typeof AdminSecurityRoute
   AdminAnnouncesIdRoute: typeof AdminAnnouncesIdRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
@@ -1775,8 +1775,8 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
-  AdminMfaManageRoute: AdminMfaManageRoute,
   AdminProfileRoute: AdminProfileRoute,
+  AdminSecurityRoute: AdminSecurityRoute,
   AdminAnnouncesIdRoute: AdminAnnouncesIdRoute,
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,

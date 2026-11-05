@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
 import { parseApiError } from "@/lib/api/error";
-import type { APIAdminUser } from "@/data/auth";
 import type {
+  APIAdminProfile,
   AdminProfilePayload,
   AdminEmailChangeRequestPayload,
   AdminEmailChangeConfirmPayload,
@@ -29,7 +29,7 @@ async function accountRequest<T>(
 
 export async function updateAdminProfile(
   payload: AdminProfilePayload
-): Promise<APIAdminUser> {
+): Promise<APIAdminProfile> {
   const fd = new FormData();
   fd.append("firstName", payload.firstName);
   fd.append("lastName", payload.lastName);
@@ -37,7 +37,7 @@ export async function updateAdminProfile(
   fd.append("removePhoto", payload.removePhoto ? "1" : "0");
   if (payload.photo) fd.append("photo", payload.photo);
 
-  const json = await accountRequest<{ data: APIAdminUser }>(
+  const json = await accountRequest<{ data: APIAdminProfile }>(
     "profile", "PUT", fd, "Impossible de modifier le profil."
   );
   return json.data;
@@ -57,11 +57,11 @@ export async function requestAdminEmailChange(
 
 export async function confirmAdminEmailChange(
   payload: AdminEmailChangeConfirmPayload
-): Promise<APIAdminUser> {
+): Promise<APIAdminProfile> {
   const fd = new FormData();
   fd.append("code", payload.code);
 
-  const json = await accountRequest<{ data: APIAdminUser }>(
+  const json = await accountRequest<{ data: APIAdminProfile }>(
     "email/confirm", "POST", fd, "Code invalide ou expiré."
   );
   return json.data;

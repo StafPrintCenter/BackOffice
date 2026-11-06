@@ -5,7 +5,9 @@ import type {
   APIAdminPasskeyRegisterResponse,
   AdminPasskeyOptionsPayload,
   AdminPasskeyRegisterPayload,
+  AdminPasskeyDeletePayload,
 } from "@/data/passkeys";
+import type { APIAdminMfaStatus } from "@/data/mfa";
 
 export const fetchAdminPasskeyOptions = (payload: AdminPasskeyOptionsPayload) =>
   mfaRequest<APIAdminPasskeyCreationOptions>(
@@ -38,5 +40,20 @@ export function useRegisterAdminPasskey() {
   return useMutation({
     mutationFn: registerAdminPasskey,
     onSuccess: ({ recoveryCodes: _recoveryCodes, ...status }) => qc.setQueryData(MFA_KEY, status),
+  });
+}
+
+export const deleteAdminPasskey = (payload: AdminPasskeyDeletePayload) =>
+  mfaRequest<APIAdminMfaStatus>(
+    `/passkeys/${payload.id}`,
+    "Impossible de supprimer cette clé d'accès.",
+    { method: "DELETE", body: buildForm({ password: payload.password }) }
+  );
+
+export function useDeleteAdminPasskey() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: deleteAdminPasskey,
+    onSuccess: (status) => qc.setQueryData(MFA_KEY, status),
   });
 }

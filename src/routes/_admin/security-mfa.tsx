@@ -9,17 +9,19 @@ import { MfaRecoveryCodesCard } from "@/components/pages/mfa/RecoveryCodesCard";
 import { MfaPasswordDialog } from "@/components/pages/mfa/PasswordDialog";
 import { RecoveryCodesDialog } from "@/components/pages/mfa/RecoveryCodesDialog";
 import { TotpSetupDialog } from "@/components/pages/mfa/TotpSetupDialog";
+import { PasskeySetupDialog } from "@/components/pages/mfa/PasskeySetupDialog";
 import { ChangePasswordCard } from "@/components/pages/security/ChangePasswordCard";
 import {
   useAdminMfaStatus,
   useEnableAdminMfa,
   useDisableAdminMfa,
   useSetAdminMfaDefault,
+  useSetAdminMfaEmailMethod,
   useRegenerateAdminMfaRecoveryCodes,
   useDeleteAdminMfaMethod,
-  useSetAdminMfaEmailMethod,
 } from "@/stores/useMfaStore";
-import type { APIAdminMfaMethod } from "@/data/mfa";
+import { isWebAuthnSupported } from "@/lib/webauthn";
+import type { APIAdminMfaMethod, AdminMfaMethodType } from "@/data/mfa";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/security-mfa")({
@@ -80,25 +82,44 @@ const ACTION_COPY = {
   },
 } as const;
 
+/** Même textes que ACTION_COPY, sauf pour la suppression d'une clé d'accès */
+function getActionCopy(action: PendingAction) {
+  if (action.kind === "deleteMethod" && action.method.type === "passkey") {
+    return {
+      ...ACTION_COPY.deleteMethod,
+      description: `La clé d'accès « ${action.method.label} » ne pourra plus servir à vous connecter. Confirmez votre mot de passe.`,
+    };
+  }
+  return ACTION_COPY[action.kind];
+}
+
 function MfaManagePage() {
   const { status, isLoading, isError, refetch } = useAdminMfaStatus();
 
   const enableMfa = useEnableAdminMfa();
   const disableMfa = useDisableAdminMfa();
   const setDefault = useSetAdminMfaDefault();
+  const setEmailMethod = useSetAdminMfaEmailMethod();
   const regenerate = useRegenerateAdminMfaRecoveryCodes();
   const deleteMethod = useDeleteAdminMfaMethod();
 
   const [action, setAction] = useState<PendingAction | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [totpOpen, setTotpOpen] = useState(false);
+  const [passkeyOpen, setPasskeyOpen] = useState(false);
   const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
   const [codesOpen, setCodesOpen] = useState(false);
-  const setEmailMethod = useSetAdminMfaEmailMethod();
+
+  const canUsePasskey = isWebAuthnSupported();
 
   const openAction = (next: PendingAction) => {
     setActionError(null);
     setAction(next);
+  };
+
+  const showRecoveryCodes = (codes: string[]) => {
+    setRecoveryCodes(codes);
+    setCodesOpen(true);
   };
 
   const feedback = (successMessage: string, after?: () => void) => ({
@@ -123,8 +144,7 @@ function MfaManagePage() {
         regenerate.mutate({ password }, {
           onSuccess: (res) => {
             setAction(null);
-            setRecoveryCodes(res.recoveryCodes);
-            setCodesOpen(true);
+            showRecoveryCodes(res.recoveryCodes);
           },
           onError: (e) => setActionError(e.message),
         });
@@ -141,16 +161,25 @@ function MfaManagePage() {
     }
   };
 
-  const handleSetDefault = (method: "email" | "totp") => {
+  const handleSetDefault = (method: AdminMfaMethodType) => {
     setDefault.mutate({ method }, {
       onSuccess: () => toast.success("Méthode par défaut mise à jour"),
       onError: (e) => toast.error(e.message),
     });
   };
 
+  // Les codes de secours ne sont renvoyés qu'à la première configuration MFA
+  const handlePasskeyRegistered = (codes?: string[]) => {
+    if (codes && codes.length > 0) showRecoveryCodes(codes);
+  };
+
   const isActionPending =
-    enableMfa.isPending || disableMfa.isPending || regenerate.isPending || deleteMethod.isPending || setEmailMethod.isPending;
-  const copy = action ? ACTION_COPY[action.kind] : null;
+    enableMfa.isPending ||
+    disableMfa.isPending ||
+    regenerate.isPending ||
+    deleteMethod.isPending ||
+    setEmailMethod.isPending;
+  const copy = action ? getActionCopy(action) : null;
 
   if (isLoading) {
     return (
@@ -189,6 +218,7 @@ function MfaManagePage() {
           status={status}
           onEnable={() => openAction({ kind: "enable" })}
           onDisable={() => openAction({ kind: "disable" })}
+          onAddPasskey={canUsePasskey ? () => setPasskeyOpen(true) : undefined}
         />
 
         {status.enabled && (
@@ -197,11 +227,12 @@ function MfaManagePage() {
               methods={status.methods}
               defaultMethod={status.defaultMethod}
               isSettingDefault={setDefault.isPending}
+              canRemoveEmail={hasTotp && status.recoveryCodesRemaining > 0}
               onSetDefault={handleSetDefault}
               onDelete={(method) => openAction({ kind: "deleteMethod", method })}
-              onAddTotp={hasTotp ? undefined : () => setTotpOpen(true)}
-              canRemoveEmail={hasTotp && status.recoveryCodesRemaining > 0}
               onToggleEmail={(enabled) => openAction({ kind: enabled ? "restoreEmail" : "removeEmail" })}
+              onAddTotp={hasTotp ? undefined : () => setTotpOpen(true)}
+              onAddPasskey={canUsePasskey ? () => setPasskeyOpen(true) : undefined}
             />
             <MfaRecoveryCodesCard
               remaining={status.recoveryCodesRemaining}
@@ -229,6 +260,7 @@ function MfaManagePage() {
       )}
 
       <TotpSetupDialog open={totpOpen} onOpenChange={setTotpOpen} />
+      <PasskeySetupDialog open={passkeyOpen} onOpenChange={setPasskeyOpen} onRegistered={handlePasskeyRegistered} />
       <RecoveryCodesDialog open={codesOpen} onOpenChange={setCodesOpen} codes={recoveryCodes} />
     </>
   );

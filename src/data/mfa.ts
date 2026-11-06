@@ -53,3 +53,15 @@ export interface AdminMfaEmailMethodPayload {
   enabled: boolean;
   password: string;
 }
+
+export interface APIAdminMfaMethod {
+  id: string | null;
+  type: AdminMfaMethodType;
+  label: string;
+  hint: string | null;
+  enabled: boolean;
+  confirmedAt: string | null;
+  lastUsedAt: string | null;
+  transports?: string[]; // passkey
+  backedUp?: boolean; // passkey
+}

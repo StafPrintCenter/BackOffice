@@ -87,7 +87,7 @@ export const confirmAdminMfaTotp = (payload: AdminMfaTotpConfirmPayload) =>
 
 export const deleteAdminMfaMethod = (payload: AdminMfaDeleteMethodPayload) =>
   mfaRequest<APIAdminMfaStatus>(
-    `/methods/${payload.id}`,
+    `/totp/${payload.id}`,
     "Impossible de supprimer cette méthode.",
     {
       method: "DELETE",

@@ -12,18 +12,18 @@ import type {
   AdminMfaEmailMethodPayload,
 } from "@/data/mfa";
 
-export class AdminMfaApiError extends Error {}
+export class AdminMfaApiError extends Error { }
 
-const MFA_KEY = ["admin-mfa"] as const;
+export const MFA_KEY = ["admin-mfa"] as const;
 const BASE_PATH = "/api/admin/account/security/mfa";
 
-function buildForm(fields: Record<string, string>): FormData {
+export function buildForm(fields: Record<string, string>): FormData {
   const fd = new FormData();
   for (const [key, value] of Object.entries(fields)) fd.append(key, value);
   return fd;
 }
 
-async function mfaRequest<T>(
+export async function mfaRequest<T>(
   path: string,
   fallbackMessage: string,
   init?: { method: "POST" | "PUT" | "DELETE"; body: FormData },

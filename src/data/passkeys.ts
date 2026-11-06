@@ -40,3 +40,8 @@ export interface AdminPasskeyRegisterPayload {
 export interface APIAdminPasskeyRegisterResponse extends APIAdminMfaStatus {
   recoveryCodes?: string[]; // présents à la première configuration MFA
 }
+
+export interface AdminPasskeyDeletePayload {
+  id: string;
+  password: string;
+}

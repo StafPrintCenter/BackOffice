@@ -1,4 +1,4 @@
-export type AdminMfaMethodType = "email" | "totp";
+export type AdminMfaMethodType = "email" | "totp" | "passkey";
 
 export interface APIAdminMfaMethod {
   id: string | null; // null pour la méthode e-mail

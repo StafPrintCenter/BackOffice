@@ -8,7 +8,7 @@ interface PasskeyLoginPanelProps {
 
 export function PasskeyLoginPanel({ loading, onStart }: PasskeyLoginPanelProps) {
   return (
-    <Button type="button" variant="accent" className="w-full" disabled={loading} onClick={onStart}>
+    <Button type="button" variant="secondary" className="w-full" disabled={loading} onClick={onStart}>
       {loading ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />

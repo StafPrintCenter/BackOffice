@@ -42,7 +42,12 @@ export function PasskeySetupDialog({ open, onOpenChange, onRegistered }: Passkey
     e.preventDefault();
     setError("");
     optionsMutation.mutate({ password }, {
-      onSuccess: (data) => { setOptions(data); setPassword(""); setStep("create"); },
+      onSuccess: (data) => {
+        setOptions(data);
+        setName(defaultPasskeyName(data));
+        setPassword("");
+        setStep("create");
+      },
       onError: (err) => setError(err.message),
     });
   };
@@ -88,6 +93,9 @@ export function PasskeySetupDialog({ open, onOpenChange, onRegistered }: Passkey
     }
   };
 
+  const defaultPasskeyName = (opts: APIAdminPasskeyCreationOptions) =>
+    `SPC accès ${(opts.excludeCredentials?.length ?? 0) + 1}`;
+
   return (
     <Dialog open={open} onOpenChange={(v) => !pending && onOpenChange(v)}>
       <DialogContent className="max-w-md">
@@ -124,7 +132,8 @@ export function PasskeySetupDialog({ open, onOpenChange, onRegistered }: Passkey
               <Label htmlFor="passkey-name">Nom de la clé (optionnel)</Label>
               <Input
                 id="passkey-name" className="bg-card" placeholder="Ex. : Mon téléphone"
-                value={name} onChange={(e) => setName(e.target.value)} disabled={pending}
+                value={name} onChange={(e) => setName(e.target.value)}
+                onFocus={(e) => e.target.select()} disabled={pending}
               />
             </div>
 

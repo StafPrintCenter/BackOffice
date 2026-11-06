@@ -9,6 +9,7 @@ const AUTH_METHOD_LABELS: Record<string, string> = {
   password: "Mot de passe",
   email: "Code reçu par e-mail",
   totp: "Application d'authentification",
+  passkey: "Clé d'accès (passkey)",
   recovery: "Code de secours",
 };
 

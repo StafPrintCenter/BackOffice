@@ -1,4 +1,4 @@
-import { ShieldCheck, ShieldOff } from "lucide-react";
+import { ShieldCheck, ShieldOff, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { APIAdminMfaStatus } from "@/data/mfa";
 
@@ -6,9 +6,10 @@ interface MfaStatusCardProps {
   status: APIAdminMfaStatus;
   onEnable: () => void;
   onDisable: () => void;
+  onAddPasskey?: () => void; // proposé uniquement si la MFA est désactivée et WebAuthn supporté
 }
 
-export function MfaStatusCard({ status, onEnable, onDisable }: MfaStatusCardProps) {
+export function MfaStatusCard({ status, onEnable, onDisable, onAddPasskey }: MfaStatusCardProps) {
   const Icon = status.enabled ? ShieldCheck : ShieldOff;
 
   return (
@@ -42,7 +43,14 @@ export function MfaStatusCard({ status, onEnable, onDisable }: MfaStatusCardProp
             Désactiver
           </Button>
         ) : (
-          <Button size="sm" onClick={onEnable}>Activer</Button>
+          <div className="flex flex-wrap gap-2">
+            <Button size="sm" onClick={onEnable}>Activer</Button>
+            {onAddPasskey && (
+              <Button size="sm" variant="outline" onClick={onAddPasskey}>
+                <KeyRound className="mr-1 h-4 w-4" /> Activer avec une clé d'accès
+              </Button>
+            )}
+          </div>
         )}
       </div>
 

@@ -20,6 +20,7 @@ import {
   useRegenerateAdminMfaRecoveryCodes,
   useDeleteAdminMfaMethod,
 } from "@/stores/useMfaStore";
+import { useDeleteAdminPasskey } from "@/stores/usePasskeysStore"
 import { isWebAuthnSupported } from "@/lib/webauthn";
 import type { APIAdminMfaMethod, AdminMfaMethodType } from "@/data/mfa";
 import { SITE } from "@/data/site";
@@ -41,7 +42,8 @@ type PendingAction =
   | { kind: "regenerate" }
   | { kind: "removeEmail" }
   | { kind: "restoreEmail" }
-  | { kind: "deleteMethod"; method: APIAdminMfaMethod };
+  | { kind: "deleteMethod"; method: APIAdminMfaMethod }
+  | { kind: "deletePasskey"; method: APIAdminMfaMethod };
 
 const ACTION_COPY = {
   enable: {
@@ -84,13 +86,17 @@ const ACTION_COPY = {
 
 /** Même textes que ACTION_COPY, sauf pour la suppression d'une clé d'accès */
 function getActionCopy(action: PendingAction) {
-  if (action.kind === "deleteMethod" && action.method.type === "passkey") {
-    return {
-      ...ACTION_COPY.deleteMethod,
-      description: `La clé d'accès « ${action.method.label} » ne pourra plus servir à vous connecter. Confirmez votre mot de passe.`,
-    };
+  switch (action.kind) {
+    case "deletePasskey":
+      return {
+        title: "Supprimer cette clé d'accès",
+        description: `La clé d'accès « ${action.method.label} » ne pourra plus servir à vous connecter. Confirmez votre mot de passe.`,
+        confirmLabel: "Supprimer",
+        destructive: true,
+      };
+    default:
+      return ACTION_COPY[action.kind];
   }
-  return ACTION_COPY[action.kind];
 }
 
 function MfaManagePage() {
@@ -102,6 +108,7 @@ function MfaManagePage() {
   const setEmailMethod = useSetAdminMfaEmailMethod();
   const regenerate = useRegenerateAdminMfaRecoveryCodes();
   const deleteMethod = useDeleteAdminMfaMethod();
+  const deletePasskey = useDeleteAdminPasskey();
 
   const [action, setAction] = useState<PendingAction | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
@@ -152,6 +159,9 @@ function MfaManagePage() {
       case "deleteMethod":
         deleteMethod.mutate({ id: action.method.id as string, password }, feedback("Méthode supprimée"));
         break;
+      case "deletePasskey":
+        deletePasskey.mutate({ id: action.method.id as string, password }, feedback("Clé d'accès supprimée"));
+        break;
       case "removeEmail":
         setEmailMethod.mutate({ enabled: false, password }, feedback("Code par e-mail retiré"));
         break;
@@ -178,6 +188,7 @@ function MfaManagePage() {
     disableMfa.isPending ||
     regenerate.isPending ||
     deleteMethod.isPending ||
+    deletePasskey.isPending ||
     setEmailMethod.isPending;
   const copy = action ? getActionCopy(action) : null;
 
@@ -229,7 +240,9 @@ function MfaManagePage() {
               isSettingDefault={setDefault.isPending}
               canRemoveEmail={hasTotp && status.recoveryCodesRemaining > 0}
               onSetDefault={handleSetDefault}
-              onDelete={(method) => openAction({ kind: "deleteMethod", method })}
+              onDelete={(method) =>
+                openAction({ kind: method.type === "passkey" ? "deletePasskey" : "deleteMethod", method })
+              }
               onToggleEmail={(enabled) => openAction({ kind: enabled ? "restoreEmail" : "removeEmail" })}
               onAddTotp={hasTotp ? undefined : () => setTotpOpen(true)}
               onAddPasskey={canUsePasskey ? () => setPasskeyOpen(true) : undefined}

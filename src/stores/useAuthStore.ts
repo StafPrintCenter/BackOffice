@@ -5,12 +5,12 @@ import type {
   APIAdminUser,
   AdminInviteVerifyResponse,
   APIAdminLoginResult,
-  APIAdminMfaChallenge,
   APIAdminMfaEmailResend,
   AdminMfaVerifyPayload,
 } from "@/data/auth";
+import type { APIAdminPasskeyRequestOptions } from "@/data/passkeys";
 
-export class AdminAuthApiError extends Error {}
+export class AdminAuthApiError extends Error { }
 
 export async function loginAdmin(email: string, password: string): Promise<APIAdminLoginResult> {
   const formData = new FormData();
@@ -211,4 +211,17 @@ export async function verifyAdminMfa(payload: AdminMfaVerifyPayload): Promise<vo
   if (!response.ok) {
     throw await buildMfaLoginError(response, "Code invalide ou expiré.");
   }
+}
+
+export async function fetchAdminPasskeyLoginOptions(
+  challengeToken: string
+): Promise<APIAdminPasskeyRequestOptions> {
+  const fd = new FormData();
+  fd.append("challengeToken", challengeToken);
+
+  const response = await instructorFetch(`/api/instructor/auth/mfa/passkey/options`, { method: "POST", body: fd });
+  if (!response.ok) throw await buildMfaLoginError(response, "Impossible de démarrer la vérification par clé d'accès.");
+
+  const body = await response.json();
+  return (body.publicKey ?? body) as APIAdminPasskeyRequestOptions;
 }

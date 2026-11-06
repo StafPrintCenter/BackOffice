@@ -40,10 +40,10 @@ export type APIAdminLoginResponse = {
   token: string;
 };
 
-export type AdminMfaLoginMethod = "email" | "totp" | "recovery";
+export type AdminMfaLoginMethod = "email" | "totp" | "recovery" | "passkey";
 
 export interface APIAdminMfaChallengeMethod {
-  type: "email" | "totp";
+  type: "email" | "totp" | "passkey";
   label: string;
   hint: string | null;
 }
@@ -51,7 +51,7 @@ export interface APIAdminMfaChallengeMethod {
 export interface APIAdminMfaChallenge {
   mfaRequired: true;
   challengeToken: string;
-  defaultMethod: "email" | "totp";
+  defaultMethod: "email" | "totp" | "passkey";
   methods: APIAdminMfaChallengeMethod[];
   recoveryCodesAvailable: boolean;
   emailCodeSent: boolean;

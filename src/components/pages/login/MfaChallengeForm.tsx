@@ -219,7 +219,7 @@ export function MfaChallengeForm({ challenge, onBack, onVerified }: MfaChallenge
       <button
         type="button"
         onClick={onBack}
-        className="w-full text-center text-xs text-muted-foreground hover:text-foreground"
+        className="w-full text-center text-xs text-muted-foreground hover:text-foreground cursor-pointer"
       >
         Retour à la connexion
       </button>

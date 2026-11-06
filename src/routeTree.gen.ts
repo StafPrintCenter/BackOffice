@@ -15,8 +15,6 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as AdminProfileRouteImport } from './routes/_admin/profile'
-import { Route as AdminSecurityMfaRouteImport } from './routes/_admin/security/mfa.tsx'
-import { Route as AdminSecuritySessionsRouteImport } from './routes/_admin/security/sessions.tsx'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthInviteRouteImport } from './routes/_auth/invite'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
@@ -44,6 +42,8 @@ import { Route as AdminProjectsIndexRouteImport } from './routes/_admin/projects
 import { Route as AdminProjectsIdRouteImport } from './routes/_admin/projects/$id'
 import { Route as AdminReportsIndexRouteImport } from './routes/_admin/reports/index'
 import { Route as AdminReportsIdRouteImport } from './routes/_admin/reports/$id'
+import { Route as AdminSecurityMfaRouteImport } from './routes/_admin/security/mfa'
+import { Route as AdminSecuritySessionsRouteImport } from './routes/_admin/security/sessions'
 import { Route as AdminServicesIndexRouteImport } from './routes/_admin/services/index'
 import { Route as AdminServicesIdRouteImport } from './routes/_admin/services/$id'
 import { Route as AdminShortlinksIndexRouteImport } from './routes/_admin/shortlinks/index'
@@ -123,16 +123,6 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
 const AdminProfileRoute = AdminProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSecurityMfaRoute = AdminSecurityMfaRouteImport.update({
-  id: '/security-mfa',
-  path: '/security-mfa',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSecuritySessionsRoute = AdminSecuritySessionsRouteImport.update({
-  id: '/security-sessions',
-  path: '/security-sessions',
   getParentRoute: () => AdminRoute,
 } as any)
 const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
@@ -269,6 +259,16 @@ const AdminReportsIndexRoute = AdminReportsIndexRouteImport.update({
 const AdminReportsIdRoute = AdminReportsIdRouteImport.update({
   id: '/reports/$id',
   path: '/reports/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSecurityMfaRoute = AdminSecurityMfaRouteImport.update({
+  id: '/security/mfa',
+  path: '/security/mfa',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSecuritySessionsRoute = AdminSecuritySessionsRouteImport.update({
+  id: '/security/sessions',
+  path: '/security/sessions',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminServicesIndexRoute = AdminServicesIndexRouteImport.update({
@@ -565,8 +565,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AdminDashboardRoute
   '/profile': typeof AdminProfileRoute
-  '/security-mfa': typeof AdminSecurityMfaRoute
-  '/security-sessions': typeof AdminSecuritySessionsRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
@@ -583,6 +581,8 @@ export interface FileRoutesByFullPath {
   '/notifications/preferences': typeof AdminNotificationsPreferencesRoute
   '/projects/$id': typeof AdminProjectsIdRoute
   '/reports/$id': typeof AdminReportsIdRoute
+  '/security/mfa': typeof AdminSecurityMfaRoute
+  '/security/sessions': typeof AdminSecuritySessionsRoute
   '/services/$id': typeof AdminServicesIdRoute
   '/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/stats/$id': typeof AdminStatsIdRoute
@@ -652,8 +652,6 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AdminDashboardRoute
   '/profile': typeof AdminProfileRoute
-  '/security-mfa': typeof AdminSecurityMfaRoute
-  '/security-sessions': typeof AdminSecuritySessionsRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/invite': typeof AuthInviteRoute
   '/login': typeof AuthLoginRoute
@@ -670,6 +668,8 @@ export interface FileRoutesByTo {
   '/notifications/preferences': typeof AdminNotificationsPreferencesRoute
   '/projects/$id': typeof AdminProjectsIdRoute
   '/reports/$id': typeof AdminReportsIdRoute
+  '/security/mfa': typeof AdminSecurityMfaRoute
+  '/security/sessions': typeof AdminSecuritySessionsRoute
   '/services/$id': typeof AdminServicesIdRoute
   '/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/stats/$id': typeof AdminStatsIdRoute
@@ -742,8 +742,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_admin/profile': typeof AdminProfileRoute
-  '/_admin/security-mfa': typeof AdminSecurityMfaRoute
-  '/_admin/security-sessions': typeof AdminSecuritySessionsRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/invite': typeof AuthInviteRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -760,6 +758,8 @@ export interface FileRoutesById {
   '/_admin/notifications/preferences': typeof AdminNotificationsPreferencesRoute
   '/_admin/projects/$id': typeof AdminProjectsIdRoute
   '/_admin/reports/$id': typeof AdminReportsIdRoute
+  '/_admin/security/mfa': typeof AdminSecurityMfaRoute
+  '/_admin/security/sessions': typeof AdminSecuritySessionsRoute
   '/_admin/services/$id': typeof AdminServicesIdRoute
   '/_admin/shortlinks/$id': typeof AdminShortlinksIdRoute
   '/_admin/stats/$id': typeof AdminStatsIdRoute
@@ -827,267 +827,267 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-  | '/'
-  | '/sitemap.xml'
-  | '/dashboard'
-  | '/profile'
-  | '/security-mfa'
-  | '/security-sessions'
-  | '/forgot-password'
-  | '/invite'
-  | '/login'
-  | '/reset-password'
-  | '/announces/$id'
-  | '/appointments/$id'
-  | '/articles/$id'
-  | '/categories/$id'
-  | '/ecosystem/$id'
-  | '/faqs/$id'
-  | '/internships/$id'
-  | '/messages/$id'
-  | '/notifications/$id'
-  | '/notifications/preferences'
-  | '/projects/$id'
-  | '/reports/$id'
-  | '/services/$id'
-  | '/shortlinks/$id'
-  | '/stats/$id'
-  | '/testimonials/$id'
-  | '/waitlist/$id'
-  | '/announces/'
-  | '/appointments/'
-  | '/articles/'
-  | '/categories/'
-  | '/ecosystem/'
-  | '/faqs/'
-  | '/internships/'
-  | '/messages/'
-  | '/notifications/'
-  | '/projects/'
-  | '/reports/'
-  | '/services/'
-  | '/shortlinks/'
-  | '/stats/'
-  | '/testimonials/'
-  | '/waitlist/'
-  | '/articleFeedback/group/$articleKey'
-  | '/articleFeedback/unique/$id'
-  | '/community/posts/$id'
-  | '/community/reports/$id'
-  | '/jobs/applications/$id'
-  | '/jobs/offers/$id'
-  | '/members/admins/$id'
-  | '/members/instructors/$id'
-  | '/members/students/$id'
-  | '/members/users/$id'
-  | '/newsletter/campaigns/$id'
-  | '/newsletter/subscribers/$id'
-  | '/reviews/forms/$id'
-  | '/reviews/invites/$id'
-  | '/reviews/responses/$id'
-  | '/trainings/payments/$id'
-  | '/trainings/registrations/$id'
-  | '/trainings/sessions/$id'
-  | '/articleFeedback/group/'
-  | '/articleFeedback/unique/'
-  | '/community/categories/'
-  | '/community/posts/'
-  | '/community/reports/'
-  | '/community/stats/'
-  | '/jobs/applications/'
-  | '/jobs/offers/'
-  | '/members/admins/'
-  | '/members/instructors/'
-  | '/members/students/'
-  | '/members/users/'
-  | '/newsletter/campaigns/'
-  | '/newsletter/subscribers/'
-  | '/reviews/forms/'
-  | '/reviews/invites/'
-  | '/reviews/responses/'
-  | '/trainings/catalogs/'
-  | '/trainings/payments/'
-  | '/trainings/registrations/'
-  | '/trainings/reviews/'
-  | '/trainings/sessions/'
-  | '/trainings/catalogs/$id/manage'
-  | '/trainings/catalogs/$id/'
+    | '/'
+    | '/sitemap.xml'
+    | '/dashboard'
+    | '/profile'
+    | '/forgot-password'
+    | '/invite'
+    | '/login'
+    | '/reset-password'
+    | '/announces/$id'
+    | '/appointments/$id'
+    | '/articles/$id'
+    | '/categories/$id'
+    | '/ecosystem/$id'
+    | '/faqs/$id'
+    | '/internships/$id'
+    | '/messages/$id'
+    | '/notifications/$id'
+    | '/notifications/preferences'
+    | '/projects/$id'
+    | '/reports/$id'
+    | '/security/mfa'
+    | '/security/sessions'
+    | '/services/$id'
+    | '/shortlinks/$id'
+    | '/stats/$id'
+    | '/testimonials/$id'
+    | '/waitlist/$id'
+    | '/announces/'
+    | '/appointments/'
+    | '/articles/'
+    | '/categories/'
+    | '/ecosystem/'
+    | '/faqs/'
+    | '/internships/'
+    | '/messages/'
+    | '/notifications/'
+    | '/projects/'
+    | '/reports/'
+    | '/services/'
+    | '/shortlinks/'
+    | '/stats/'
+    | '/testimonials/'
+    | '/waitlist/'
+    | '/articleFeedback/group/$articleKey'
+    | '/articleFeedback/unique/$id'
+    | '/community/posts/$id'
+    | '/community/reports/$id'
+    | '/jobs/applications/$id'
+    | '/jobs/offers/$id'
+    | '/members/admins/$id'
+    | '/members/instructors/$id'
+    | '/members/students/$id'
+    | '/members/users/$id'
+    | '/newsletter/campaigns/$id'
+    | '/newsletter/subscribers/$id'
+    | '/reviews/forms/$id'
+    | '/reviews/invites/$id'
+    | '/reviews/responses/$id'
+    | '/trainings/payments/$id'
+    | '/trainings/registrations/$id'
+    | '/trainings/sessions/$id'
+    | '/articleFeedback/group/'
+    | '/articleFeedback/unique/'
+    | '/community/categories/'
+    | '/community/posts/'
+    | '/community/reports/'
+    | '/community/stats/'
+    | '/jobs/applications/'
+    | '/jobs/offers/'
+    | '/members/admins/'
+    | '/members/instructors/'
+    | '/members/students/'
+    | '/members/users/'
+    | '/newsletter/campaigns/'
+    | '/newsletter/subscribers/'
+    | '/reviews/forms/'
+    | '/reviews/invites/'
+    | '/reviews/responses/'
+    | '/trainings/catalogs/'
+    | '/trainings/payments/'
+    | '/trainings/registrations/'
+    | '/trainings/reviews/'
+    | '/trainings/sessions/'
+    | '/trainings/catalogs/$id/manage'
+    | '/trainings/catalogs/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
-  | '/'
-  | '/sitemap.xml'
-  | '/dashboard'
-  | '/profile'
-  | '/security-mfa'
-  | '/security-sessions'
-  | '/forgot-password'
-  | '/invite'
-  | '/login'
-  | '/reset-password'
-  | '/announces/$id'
-  | '/appointments/$id'
-  | '/articles/$id'
-  | '/categories/$id'
-  | '/ecosystem/$id'
-  | '/faqs/$id'
-  | '/internships/$id'
-  | '/messages/$id'
-  | '/notifications/$id'
-  | '/notifications/preferences'
-  | '/projects/$id'
-  | '/reports/$id'
-  | '/services/$id'
-  | '/shortlinks/$id'
-  | '/stats/$id'
-  | '/testimonials/$id'
-  | '/waitlist/$id'
-  | '/announces'
-  | '/appointments'
-  | '/articles'
-  | '/categories'
-  | '/ecosystem'
-  | '/faqs'
-  | '/internships'
-  | '/messages'
-  | '/notifications'
-  | '/projects'
-  | '/reports'
-  | '/services'
-  | '/shortlinks'
-  | '/stats'
-  | '/testimonials'
-  | '/waitlist'
-  | '/articleFeedback/group/$articleKey'
-  | '/articleFeedback/unique/$id'
-  | '/community/posts/$id'
-  | '/community/reports/$id'
-  | '/jobs/applications/$id'
-  | '/jobs/offers/$id'
-  | '/members/admins/$id'
-  | '/members/instructors/$id'
-  | '/members/students/$id'
-  | '/members/users/$id'
-  | '/newsletter/campaigns/$id'
-  | '/newsletter/subscribers/$id'
-  | '/reviews/forms/$id'
-  | '/reviews/invites/$id'
-  | '/reviews/responses/$id'
-  | '/trainings/payments/$id'
-  | '/trainings/registrations/$id'
-  | '/trainings/sessions/$id'
-  | '/articleFeedback/group'
-  | '/articleFeedback/unique'
-  | '/community/categories'
-  | '/community/posts'
-  | '/community/reports'
-  | '/community/stats'
-  | '/jobs/applications'
-  | '/jobs/offers'
-  | '/members/admins'
-  | '/members/instructors'
-  | '/members/students'
-  | '/members/users'
-  | '/newsletter/campaigns'
-  | '/newsletter/subscribers'
-  | '/reviews/forms'
-  | '/reviews/invites'
-  | '/reviews/responses'
-  | '/trainings/catalogs'
-  | '/trainings/payments'
-  | '/trainings/registrations'
-  | '/trainings/reviews'
-  | '/trainings/sessions'
-  | '/trainings/catalogs/$id/manage'
-  | '/trainings/catalogs/$id'
+    | '/'
+    | '/sitemap.xml'
+    | '/dashboard'
+    | '/profile'
+    | '/forgot-password'
+    | '/invite'
+    | '/login'
+    | '/reset-password'
+    | '/announces/$id'
+    | '/appointments/$id'
+    | '/articles/$id'
+    | '/categories/$id'
+    | '/ecosystem/$id'
+    | '/faqs/$id'
+    | '/internships/$id'
+    | '/messages/$id'
+    | '/notifications/$id'
+    | '/notifications/preferences'
+    | '/projects/$id'
+    | '/reports/$id'
+    | '/security/mfa'
+    | '/security/sessions'
+    | '/services/$id'
+    | '/shortlinks/$id'
+    | '/stats/$id'
+    | '/testimonials/$id'
+    | '/waitlist/$id'
+    | '/announces'
+    | '/appointments'
+    | '/articles'
+    | '/categories'
+    | '/ecosystem'
+    | '/faqs'
+    | '/internships'
+    | '/messages'
+    | '/notifications'
+    | '/projects'
+    | '/reports'
+    | '/services'
+    | '/shortlinks'
+    | '/stats'
+    | '/testimonials'
+    | '/waitlist'
+    | '/articleFeedback/group/$articleKey'
+    | '/articleFeedback/unique/$id'
+    | '/community/posts/$id'
+    | '/community/reports/$id'
+    | '/jobs/applications/$id'
+    | '/jobs/offers/$id'
+    | '/members/admins/$id'
+    | '/members/instructors/$id'
+    | '/members/students/$id'
+    | '/members/users/$id'
+    | '/newsletter/campaigns/$id'
+    | '/newsletter/subscribers/$id'
+    | '/reviews/forms/$id'
+    | '/reviews/invites/$id'
+    | '/reviews/responses/$id'
+    | '/trainings/payments/$id'
+    | '/trainings/registrations/$id'
+    | '/trainings/sessions/$id'
+    | '/articleFeedback/group'
+    | '/articleFeedback/unique'
+    | '/community/categories'
+    | '/community/posts'
+    | '/community/reports'
+    | '/community/stats'
+    | '/jobs/applications'
+    | '/jobs/offers'
+    | '/members/admins'
+    | '/members/instructors'
+    | '/members/students'
+    | '/members/users'
+    | '/newsletter/campaigns'
+    | '/newsletter/subscribers'
+    | '/reviews/forms'
+    | '/reviews/invites'
+    | '/reviews/responses'
+    | '/trainings/catalogs'
+    | '/trainings/payments'
+    | '/trainings/registrations'
+    | '/trainings/reviews'
+    | '/trainings/sessions'
+    | '/trainings/catalogs/$id/manage'
+    | '/trainings/catalogs/$id'
   id:
-  | '__root__'
-  | '/'
-  | '/_admin'
-  | '/_auth'
-  | '/sitemap.xml'
-  | '/_admin/dashboard'
-  | '/_admin/profile'
-  | '/_admin/security-mfa'
-  | '/_admin/security-sessions'
-  | '/_auth/forgot-password'
-  | '/_auth/invite'
-  | '/_auth/login'
-  | '/_auth/reset-password'
-  | '/_admin/announces/$id'
-  | '/_admin/appointments/$id'
-  | '/_admin/articles/$id'
-  | '/_admin/categories/$id'
-  | '/_admin/ecosystem/$id'
-  | '/_admin/faqs/$id'
-  | '/_admin/internships/$id'
-  | '/_admin/messages/$id'
-  | '/_admin/notifications/$id'
-  | '/_admin/notifications/preferences'
-  | '/_admin/projects/$id'
-  | '/_admin/reports/$id'
-  | '/_admin/services/$id'
-  | '/_admin/shortlinks/$id'
-  | '/_admin/stats/$id'
-  | '/_admin/testimonials/$id'
-  | '/_admin/waitlist/$id'
-  | '/_admin/announces/'
-  | '/_admin/appointments/'
-  | '/_admin/articles/'
-  | '/_admin/categories/'
-  | '/_admin/ecosystem/'
-  | '/_admin/faqs/'
-  | '/_admin/internships/'
-  | '/_admin/messages/'
-  | '/_admin/notifications/'
-  | '/_admin/projects/'
-  | '/_admin/reports/'
-  | '/_admin/services/'
-  | '/_admin/shortlinks/'
-  | '/_admin/stats/'
-  | '/_admin/testimonials/'
-  | '/_admin/waitlist/'
-  | '/_admin/articleFeedback/group/$articleKey'
-  | '/_admin/articleFeedback/unique/$id'
-  | '/_admin/community/posts/$id'
-  | '/_admin/community/reports/$id'
-  | '/_admin/jobs/applications/$id'
-  | '/_admin/jobs/offers/$id'
-  | '/_admin/members/admins/$id'
-  | '/_admin/members/instructors/$id'
-  | '/_admin/members/students/$id'
-  | '/_admin/members/users/$id'
-  | '/_admin/newsletter/campaigns/$id'
-  | '/_admin/newsletter/subscribers/$id'
-  | '/_admin/reviews/forms/$id'
-  | '/_admin/reviews/invites/$id'
-  | '/_admin/reviews/responses/$id'
-  | '/_admin/trainings/payments/$id'
-  | '/_admin/trainings/registrations/$id'
-  | '/_admin/trainings/sessions/$id'
-  | '/_admin/articleFeedback/group/'
-  | '/_admin/articleFeedback/unique/'
-  | '/_admin/community/categories/'
-  | '/_admin/community/posts/'
-  | '/_admin/community/reports/'
-  | '/_admin/community/stats/'
-  | '/_admin/jobs/applications/'
-  | '/_admin/jobs/offers/'
-  | '/_admin/members/admins/'
-  | '/_admin/members/instructors/'
-  | '/_admin/members/students/'
-  | '/_admin/members/users/'
-  | '/_admin/newsletter/campaigns/'
-  | '/_admin/newsletter/subscribers/'
-  | '/_admin/reviews/forms/'
-  | '/_admin/reviews/invites/'
-  | '/_admin/reviews/responses/'
-  | '/_admin/trainings/catalogs/'
-  | '/_admin/trainings/payments/'
-  | '/_admin/trainings/registrations/'
-  | '/_admin/trainings/reviews/'
-  | '/_admin/trainings/sessions/'
-  | '/_admin/trainings/catalogs/$id/manage'
-  | '/_admin/trainings/catalogs/$id/'
+    | '__root__'
+    | '/'
+    | '/_admin'
+    | '/_auth'
+    | '/sitemap.xml'
+    | '/_admin/dashboard'
+    | '/_admin/profile'
+    | '/_auth/forgot-password'
+    | '/_auth/invite'
+    | '/_auth/login'
+    | '/_auth/reset-password'
+    | '/_admin/announces/$id'
+    | '/_admin/appointments/$id'
+    | '/_admin/articles/$id'
+    | '/_admin/categories/$id'
+    | '/_admin/ecosystem/$id'
+    | '/_admin/faqs/$id'
+    | '/_admin/internships/$id'
+    | '/_admin/messages/$id'
+    | '/_admin/notifications/$id'
+    | '/_admin/notifications/preferences'
+    | '/_admin/projects/$id'
+    | '/_admin/reports/$id'
+    | '/_admin/security/mfa'
+    | '/_admin/security/sessions'
+    | '/_admin/services/$id'
+    | '/_admin/shortlinks/$id'
+    | '/_admin/stats/$id'
+    | '/_admin/testimonials/$id'
+    | '/_admin/waitlist/$id'
+    | '/_admin/announces/'
+    | '/_admin/appointments/'
+    | '/_admin/articles/'
+    | '/_admin/categories/'
+    | '/_admin/ecosystem/'
+    | '/_admin/faqs/'
+    | '/_admin/internships/'
+    | '/_admin/messages/'
+    | '/_admin/notifications/'
+    | '/_admin/projects/'
+    | '/_admin/reports/'
+    | '/_admin/services/'
+    | '/_admin/shortlinks/'
+    | '/_admin/stats/'
+    | '/_admin/testimonials/'
+    | '/_admin/waitlist/'
+    | '/_admin/articleFeedback/group/$articleKey'
+    | '/_admin/articleFeedback/unique/$id'
+    | '/_admin/community/posts/$id'
+    | '/_admin/community/reports/$id'
+    | '/_admin/jobs/applications/$id'
+    | '/_admin/jobs/offers/$id'
+    | '/_admin/members/admins/$id'
+    | '/_admin/members/instructors/$id'
+    | '/_admin/members/students/$id'
+    | '/_admin/members/users/$id'
+    | '/_admin/newsletter/campaigns/$id'
+    | '/_admin/newsletter/subscribers/$id'
+    | '/_admin/reviews/forms/$id'
+    | '/_admin/reviews/invites/$id'
+    | '/_admin/reviews/responses/$id'
+    | '/_admin/trainings/payments/$id'
+    | '/_admin/trainings/registrations/$id'
+    | '/_admin/trainings/sessions/$id'
+    | '/_admin/articleFeedback/group/'
+    | '/_admin/articleFeedback/unique/'
+    | '/_admin/community/categories/'
+    | '/_admin/community/posts/'
+    | '/_admin/community/reports/'
+    | '/_admin/community/stats/'
+    | '/_admin/jobs/applications/'
+    | '/_admin/jobs/offers/'
+    | '/_admin/members/admins/'
+    | '/_admin/members/instructors/'
+    | '/_admin/members/students/'
+    | '/_admin/members/users/'
+    | '/_admin/newsletter/campaigns/'
+    | '/_admin/newsletter/subscribers/'
+    | '/_admin/reviews/forms/'
+    | '/_admin/reviews/invites/'
+    | '/_admin/reviews/responses/'
+    | '/_admin/trainings/catalogs/'
+    | '/_admin/trainings/payments/'
+    | '/_admin/trainings/registrations/'
+    | '/_admin/trainings/reviews/'
+    | '/_admin/trainings/sessions/'
+    | '/_admin/trainings/catalogs/$id/manage'
+    | '/_admin/trainings/catalogs/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1139,20 +1139,6 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AdminProfileRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/security-mfa': {
-      id: '/_admin/security-mfa'
-      path: '/security-mfa'
-      fullPath: '/security-mfa'
-      preLoaderRoute: typeof AdminSecurityMfaRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/security-sessions': {
-      id: '/_admin/security-sessions'
-      path: '/security-sessions'
-      fullPath: '/security-sessions'
-      preLoaderRoute: typeof AdminSecuritySessionsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_auth/forgot-password': {
@@ -1342,6 +1328,20 @@ declare module '@tanstack/react-router' {
       path: '/reports/$id'
       fullPath: '/reports/$id'
       preLoaderRoute: typeof AdminReportsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/security/mfa': {
+      id: '/_admin/security/mfa'
+      path: '/security/mfa'
+      fullPath: '/security/mfa'
+      preLoaderRoute: typeof AdminSecurityMfaRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/security/sessions': {
+      id: '/_admin/security/sessions'
+      path: '/security/sessions'
+      fullPath: '/security/sessions'
+      preLoaderRoute: typeof AdminSecuritySessionsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/services/': {
@@ -1714,8 +1714,6 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminProfileRoute: typeof AdminProfileRoute
-  AdminSecurityMfaRoute: typeof AdminSecurityMfaRoute
-  AdminSecuritySessionsRoute: typeof AdminSecuritySessionsRoute
   AdminAnnouncesIdRoute: typeof AdminAnnouncesIdRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
@@ -1728,6 +1726,8 @@ interface AdminRouteChildren {
   AdminNotificationsPreferencesRoute: typeof AdminNotificationsPreferencesRoute
   AdminProjectsIdRoute: typeof AdminProjectsIdRoute
   AdminReportsIdRoute: typeof AdminReportsIdRoute
+  AdminSecurityMfaRoute: typeof AdminSecurityMfaRoute
+  AdminSecuritySessionsRoute: typeof AdminSecuritySessionsRoute
   AdminServicesIdRoute: typeof AdminServicesIdRoute
   AdminShortlinksIdRoute: typeof AdminShortlinksIdRoute
   AdminStatsIdRoute: typeof AdminStatsIdRoute
@@ -1796,8 +1796,6 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
   AdminProfileRoute: AdminProfileRoute,
-  AdminSecurityMfaRoute: AdminSecurityMfaRoute,
-  AdminSecuritySessionsRoute: AdminSecuritySessionsRoute,
   AdminAnnouncesIdRoute: AdminAnnouncesIdRoute,
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,
@@ -1810,6 +1808,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminNotificationsPreferencesRoute: AdminNotificationsPreferencesRoute,
   AdminProjectsIdRoute: AdminProjectsIdRoute,
   AdminReportsIdRoute: AdminReportsIdRoute,
+  AdminSecurityMfaRoute: AdminSecurityMfaRoute,
+  AdminSecuritySessionsRoute: AdminSecuritySessionsRoute,
   AdminServicesIdRoute: AdminServicesIdRoute,
   AdminShortlinksIdRoute: AdminShortlinksIdRoute,
   AdminStatsIdRoute: AdminStatsIdRoute,

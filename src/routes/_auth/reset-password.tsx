@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Eye, EyeOff, Loader2, CheckCircle2, XCircle } from "lucide-react";
+import { Eye, EyeOff, Loader2, CheckCircle2, XCircle, ArrowLeft } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useAuthShellContent } from "@/components/site/AuthShell";
 import { Input } from "@/components/ui/input";
@@ -186,6 +186,15 @@ function ResetPasswordPage() {
           "Modifier le mot de passe"
         )}
       </Button>
+
+      <div className="text-center">
+        <Link
+          to="/login"
+          className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-3 w-3" /> Annuler
+        </Link>
+      </div>
     </form>
   );
 }

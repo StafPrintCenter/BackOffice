@@ -4,6 +4,7 @@ const LABELS: Record<AdminMfaLoginMethod, string> = {
   email: "Recevoir un code par e-mail",
   totp: "Utiliser mon application d'authentification",
   recovery: "Utiliser un code de secours",
+  passkey: "Utiliser ma clé d'accès",
 };
 
 interface MfaMethodSwitcherProps {

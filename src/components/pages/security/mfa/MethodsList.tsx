@@ -22,6 +22,25 @@ const formatDateTime = (value: string | null) =>
     ? new Date(value).toLocaleString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })
     : null;
 
+const TRANSPORT_LABELS: Record<string, string> = {
+  internal: "Cet appareil",
+  hybrid: "Téléphone",
+  usb: "Clé USB",
+  nfc: "NFC",
+  ble: "Bluetooth",
+};
+
+function describeMethod(m: APIAdminMfaMethod): string {
+  const lastUsed = formatDateTime(m.lastUsedAt);
+  const usage = lastUsed ? `Dernière utilisation : ${lastUsed}` : "Jamais utilisée";
+
+  if (m.type === "passkey") {
+    const where = (m.transports ?? []).map((t) => TRANSPORT_LABELS[t]).filter(Boolean).join(", ");
+    return ["Clé d'accès", where, m.backedUp ? "Synchronisée" : "", usage].filter(Boolean).join(" · ");
+  }
+  return m.hint ?? usage;
+}
+
 export function MfaMethodsList({
   methods, defaultMethod, isSettingDefault, canRemoveEmail,
   onSetDefault, onDelete, onToggleEmail, onAddTotp, onAddPasskey,
@@ -51,7 +70,6 @@ export function MfaMethodsList({
         {methods.map((m) => {
           const isDefault = m.type === defaultMethod;
           const Icon = METHOD_ICONS[m.type] ?? KeyRound;
-          const lastUsed = formatDateTime(m.lastUsedAt);
 
           return (
             <li key={m.id ?? m.type} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4">
@@ -64,7 +82,7 @@ export function MfaMethodsList({
                     {!m.enabled && <Badge variant="outline">Retirée</Badge>}
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    {m.hint ?? (lastUsed ? `Dernière utilisation : ${lastUsed}` : "Jamais utilisée")}
+                    {describeMethod(m)}
                   </div>
                 </div>
               </div>

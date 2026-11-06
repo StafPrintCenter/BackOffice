@@ -10,6 +10,7 @@ import {
   AdminAuthApiError,
   sendAdminMfaEmailCode,
   verifyAdminMfa,
+  fetchAdminPasskeyLoginOptions,
 } from "@/stores/useAuthStore";
 import { isAdminMfaChallenge } from "@/data/auth";
 import type {
@@ -160,6 +161,11 @@ export function useAdminAuth() {
     await completeSession();
   }, []);
 
+  const getPasskeyLoginOptions = useCallback(
+    (challengeToken: string) => fetchAdminPasskeyLoginOptions(challengeToken),
+    []
+  );
+
   const sendMfaEmailCode = useCallback(
     (challengeToken: string): Promise<APIAdminMfaEmailResend> =>
       sendAdminMfaEmailCode(challengeToken),
@@ -232,6 +238,7 @@ export function useAdminAuth() {
     resetPassword,
     setUser,
     verifyMfa,
+    getPasskeyLoginOptions,
     sendMfaEmailCode,
     refresh,
   };

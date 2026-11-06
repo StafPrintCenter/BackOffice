@@ -219,7 +219,7 @@ export async function fetchAdminPasskeyLoginOptions(
   const fd = new FormData();
   fd.append("challengeToken", challengeToken);
 
-  const response = await instructorFetch(`/api/instructor/auth/mfa/passkey/options`, { method: "POST", body: fd });
+  const response = await adminFetch(`/api/admin/auth/mfa/passkey/options`, { method: "POST", body: fd });
   if (!response.ok) throw await buildMfaLoginError(response, "Impossible de démarrer la vérification par clé d'accès.");
 
   const body = await response.json();

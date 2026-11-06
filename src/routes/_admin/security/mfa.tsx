@@ -3,13 +3,13 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MfaStatusCard } from "@/components/pages/mfa/StatusCard";
-import { MfaMethodsList } from "@/components/pages/mfa/MethodsList";
-import { MfaRecoveryCodesCard } from "@/components/pages/mfa/RecoveryCodesCard";
-import { MfaPasswordDialog } from "@/components/pages/mfa/PasswordDialog";
-import { RecoveryCodesDialog } from "@/components/pages/mfa/RecoveryCodesDialog";
-import { TotpSetupDialog } from "@/components/pages/mfa/TotpSetupDialog";
-import { PasskeySetupDialog } from "@/components/pages/mfa/PasskeySetupDialog";
+import { MfaStatusCard } from "@/components/pages/security/mfa/StatusCard";
+import { MfaMethodsList } from "@/components/pages/security/mfa/MethodsList";
+import { MfaRecoveryCodesCard } from "@/components/pages/security/mfa/RecoveryCodesCard";
+import { MfaPasswordDialog } from "@/components/pages/security/mfa/PasswordDialog";
+import { RecoveryCodesDialog } from "@/components/pages/security/mfa/RecoveryCodesDialog";
+import { TotpSetupDialog } from "@/components/pages/security/mfa/TotpSetupDialog";
+import { PasskeySetupDialog } from "@/components/pages/security/mfa/PasskeySetupDialog";
 import { ChangePasswordCard } from "@/components/pages/security/ChangePasswordCard";
 import {
   useAdminMfaStatus,

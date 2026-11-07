@@ -1,6 +1,7 @@
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { NotificationBell } from "@/components/pages/notifications/shared";
+import { useHealthToasts } from "@/components/pages/health/useHealthToasts";
 import { AdminUserDropdown } from "./UserDropdown";
 
 export function AdminHeader({
@@ -10,6 +11,8 @@ export function AdminHeader({
   user: ReturnType<typeof useAdminAuth>["user"];
   onDisconnectClick: () => void;
 }) {
+  useHealthToasts();
+
   return (
     <header className="flex items-center gap-3 bg-card/80 backdrop-blur border-b px-5 h-14 shrink-0">
       <SidebarTrigger />

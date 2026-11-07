@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_admin/security/sessions")({
   head: () => ({
     meta: [
       { title: `${SITE.tool} - Sessions actives | ${SITE.name}` },
-      { name: "description", content: "Consultez et fermez les sessions ouvertes sur votre compte formateur." },
+      { name: "description", content: "Consultez et fermez les sessions ouvertes sur votre compte administrateur." },
       { name: "robots", content: "noindex" },
     ],
   }),

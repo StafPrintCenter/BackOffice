@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { UserCircle, ChevronDown, LogOut } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ScoreRing } from "@/components/pages/health/ScoreRing";
+import { useAdminProfileHealth } from "@/stores/useProfileHealthStore";
 import { USER_DROPDOWN_ITEMS } from "./config";
 
 type AdminDropdownProps = {
@@ -11,13 +13,23 @@ type AdminDropdownProps = {
 
 export function AdminUserDropdown({ user, onDisconnectClick, defaultRoleName = "Admin" }: AdminDropdownProps) {
   const displayName = user?.name && user.name !== "undefined undefined" ? user.name : defaultRoleName;
+  const { health } = useAdminProfileHealth();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-accent/30 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
-          <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <UserCircle className="size-4" />
+          <div className="relative">
+            <ScoreRing percent={health?.score ?? 0} level={health?.level} size={38} strokeWidth={3}>
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <UserCircle className="size-4" />
+              </div>
+            </ScoreRing>
+            {health && (
+              <span className="absolute -bottom-1 -right-1 rounded-full border bg-card px-1 text-[9px] font-semibold leading-4 text-foreground">
+                {health.score}%
+              </span>
+            )}
           </div>
           <div className="text-left hidden sm:block max-w-37.5">
             <p className="text-xs font-medium text-foreground truncate">{displayName}</p>
@@ -43,6 +55,9 @@ export function AdminUserDropdown({ user, onDisconnectClick, defaultRoleName = "
               <Link to={item.to as any}>
                 <Icon className="mr-2 size-4" />
                 <span>{item.label}</span>
+                {item.to === "/health" && health && (
+                  <span className="ml-auto text-xs font-semibold text-muted-foreground">{health.score}%</span>
+                )}
               </Link>
             </DropdownMenuItem>
           );

@@ -5,6 +5,8 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { SITE } from "@/data/site";
 import { NotFoundComponent, ErrorComponent } from "@/components/errors";
+import { HealthAutoRefresh } from "@/components/pages/health/AutoRefresh";
+import { useSpcPageContext } from "@/lib/spc-intelligence";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => {
@@ -33,6 +35,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
         { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" },
       ],
+      scripts: [
+        // { src: "https://ai.stafprint.com/widget.js", "data-app": "spc-admin", async: true } as { src: string; async: boolean },
+      ],
     };
   },
   shellComponent: RootShell,
@@ -60,6 +65,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <HealthAutoRefresh />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <Toaster richColors position="top-right" closeButton />

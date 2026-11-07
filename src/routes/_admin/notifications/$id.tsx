@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_admin/notifications/$id")({
   head: () => ({
     meta: [
       { title: `${SITE.tool} - Détail d'une notification | ${SITE.name}` },
-      { name: "description", content: "Consultez le détail et le contenu de cette notification de votre espace formateur." },
+      { name: "description", content: "Consultez le détail et le contenu de cette notification de votre espace administrateur." },
     ],
   }),
   component: NotificationDetail,

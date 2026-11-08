@@ -1,6 +1,6 @@
 export { AdminSidebarContent } from "./SidebarContent";
 export { SpaceHeader } from "./Header";
-export { AdminHeaderBrand } from "./HeaderBrand";
+export { SpaceHeaderBrand } from "./HeaderBrand";
 export { AdminSidebarFooter } from "./SidebarFooter";
 export { AdminSidebarNav } from "./SidebarNav";
 export { SpaceUserDropdown } from "./UserDropdown";

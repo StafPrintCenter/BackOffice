@@ -1,6 +1,6 @@
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { Sidebar, useSidebar } from "@/components/ui/sidebar";
-import { AdminHeaderBrand, AdminSidebarNav, AdminSidebarFooter } from "./";
+import { SpaceHeaderBrand, AdminSidebarNav, AdminSidebarFooter } from "./";
 
 export function AdminSidebarContent({
   user,
@@ -16,7 +16,7 @@ export function AdminSidebarContent({
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
-      <AdminHeaderBrand onNavClick={handleNavClick} />
+      <SpaceHeaderBrand onNavClick={handleNavClick} />
       <AdminSidebarNav pathname={pathname} onNavClick={handleNavClick} />
       <AdminSidebarFooter
         user={user}

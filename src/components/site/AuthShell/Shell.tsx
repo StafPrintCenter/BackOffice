@@ -1,9 +1,5 @@
 import type { ReactNode } from "react";
-import { useAuthShellState } from "./AuthShell/Context";
-import { AuthShellFormPanel } from "./AuthShell/FormPanel";
-import { AuthShellHeroPanel } from "./AuthShell/HeroPanel";
-
-export { AuthShellProvider, useAuthShellContent } from "./AuthShell/Context";
+import { useAuthShellState, AuthShellFormPanel, AuthShellHeroPanel } from "./";
 
 /**
  * Le shell visuel admin : colonne hero à gauche (thème "espace administrateur), formulaire à droite. title/subtitle/footer sont lus depuis le contexte ; children = <Outlet/>.

@@ -2,9 +2,9 @@ import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { NotificationBell } from "@/components/pages/notifications/shared";
 import { useHealthToasts } from "@/components/pages/health/useHealthToasts";
-import { AdminUserDropdown } from "./";
+import { SpaceUserDropdown } from "./";
 
-export function AdminHeader({
+export function SpaceHeader({
   user,
   onDisconnectClick,
 }: {
@@ -19,7 +19,7 @@ export function AdminHeader({
       <div className="font-display font-semibold text-sm">Admin</div>
       <div className="ml-auto flex items-center gap-3">
         <NotificationBell />
-        <AdminUserDropdown user={user} onDisconnectClick={onDisconnectClick} />
+        <SpaceUserDropdown user={user} onDisconnectClick={onDisconnectClick} />
       </div>
     </header>
   );

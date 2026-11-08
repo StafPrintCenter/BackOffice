@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuBadge } from "@/components/ui/sidebar";
 import { useUnreadCount } from "@/stores/useNotificationsStore";
-import { NAV_GROUPS, navItemClass, NavItem } from "../AdminShell/config";
+import { NAV_GROUPS, navItemClass, NavItem } from "./config";
 
 export function AdminSidebarNav({
   pathname,

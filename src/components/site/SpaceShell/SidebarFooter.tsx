@@ -5,7 +5,7 @@ import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "
 import { SocialLinks } from "@/components/site/SocialLinks";
 import { navItemClass } from "./config";
 
-export function AdminSidebarFooter({
+export function SpaceSidebarFooter({
   user,
   pathname,
   onNavClick,

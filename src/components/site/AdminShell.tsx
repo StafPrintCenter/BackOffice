@@ -4,7 +4,7 @@ import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
 import { ConfirmDisconnect } from "@/components/site/AdminBits";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { AdminSidebarContent, AdminHeader } from "./AdminShell/index";
+import { AdminSidebarContent, AdminHeader } from "./SpaceShell/index";
 
 export function AdminShell({ children }: { children?: React.ReactNode }) {
   const { user, ready, isAuthenticated, logout } = useAdminAuth();

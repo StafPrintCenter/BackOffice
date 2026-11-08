@@ -6,7 +6,7 @@ import { ConfirmDisconnect } from "@/components/site/AdminBits";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { SpaceSidebarContent, SpaceHeader } from "./";
 
-export function AdminShell({ children }: { children?: React.ReactNode }) {
+export function SpaceShell({ children }: { children?: React.ReactNode }) {
   const { user, ready, isAuthenticated, logout } = useAdminAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });

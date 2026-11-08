@@ -1,8 +1,6 @@
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { Sidebar, useSidebar } from "@/components/ui/sidebar";
-import { AdminHeaderBrand } from "./HeaderBrand";
-import { AdminSidebarNav } from "./SidebarNav";
-import { AdminSidebarFooter } from "./SidebarFooter";
+import { AdminHeaderBrand, AdminSidebarNav, AdminSidebarFooter } from "./";
 
 export function AdminSidebarContent({
   user,

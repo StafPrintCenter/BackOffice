@@ -2,7 +2,7 @@ import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { NotificationBell } from "@/components/pages/notifications/shared";
 import { useHealthToasts } from "@/components/pages/health/useHealthToasts";
-import { AdminUserDropdown } from "./UserDropdown";
+import { AdminUserDropdown } from "./";
 
 export function AdminHeader({
   user,

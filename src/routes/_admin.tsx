@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { createFileRoute, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { LogoLoader } from "@/components/site/Logo/Loader";
-import { AdminShell } from "@/components/site/AdminShell";
+import { SpaceShell } from "@/components/site";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 export const Route = createFileRoute("/_admin")({
@@ -49,8 +49,8 @@ function AdminLayout() {
   }
 
   return (
-    <AdminShell>
+    <SpaceShell>
       <Outlet />
-    </AdminShell>
+    </SpaceShell>
   );
 }

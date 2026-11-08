@@ -3,7 +3,7 @@ import { UserCircle, LogOut } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { SocialLinks } from "@/components/site/SocialLinks";
-import { navItemClass } from "./config";
+import { navItemClass } from "../AdminShell/config";
 
 export function AdminSidebarFooter({
   user,

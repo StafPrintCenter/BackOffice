@@ -3,6 +3,7 @@ import { AlertTriangle, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { resolveHealthTarget } from "./Targets";
+import { MissingFieldsTooltip } from "./MissingFieldsTooltip";
 import type { APIAdminHealthRecommendation } from "@/data/profileHealth";
 
 interface HealthRecommendationCardProps {
@@ -31,6 +32,7 @@ export function HealthRecommendationCard({ rec, busy, onDismiss }: HealthRecomme
             <h4 className="text-sm font-semibold">{rec.title}</h4>
             {rec.urgent && <Badge variant="destructive">Urgent</Badge>}
             <Badge variant="outline">+{rec.points} pts</Badge>
+            {rec.missing && rec.missing.length > 0 && <MissingFieldsTooltip missing={rec.missing} />}
           </div>
           <p className="mt-1 text-sm text-muted-foreground">{rec.message}</p>
 

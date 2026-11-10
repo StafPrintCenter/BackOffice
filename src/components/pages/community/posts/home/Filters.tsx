@@ -1,6 +1,8 @@
 import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   AUTHOR_ROLE_LABELS, POST_SORT_LABELS, POST_STATUS_LABELS, POST_TYPES, POST_TYPE_LABELS,
   type APICommunityCategory, type AuthorRole, type PostSort, type PostStatus, type PostType,
@@ -69,33 +71,45 @@ export function PostFilters({ value, onChange, categories, compact = false }: Pr
           <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input className="pl-9" placeholder="Rechercher une publication…" value={value.query} onChange={(e) => onChange({ ...value, query: e.target.value })} />
         </div>
-        <select className={select} value={value.type} onChange={(e) => onChange({ ...value, type: e.target.value as PostType | "" })}>
+        <select className={`${select} ${compact ? "w-full" : ""}`} value={value.type} onChange={(e) => onChange({ ...value, type: e.target.value as PostType | "" })}>
           <option value="">Tous les types</option>
           {POST_TYPES.map((t) => <option key={t} value={t}>{POST_TYPE_LABELS[t]}</option>)}
         </select>
-        <select className={select} value={value.authorRole} onChange={(e) => onChange({ ...value, authorRole: e.target.value as AuthorRole | "" })}>
+        <select className={`${select} ${compact ? "w-full" : ""}`} value={value.authorRole} onChange={(e) => onChange({ ...value, authorRole: e.target.value as AuthorRole | "" })}>
           <option value="">Tous les auteurs</option>
           {(Object.keys(AUTHOR_ROLE_LABELS) as AuthorRole[]).map((r) => <option key={r} value={r}>{AUTHOR_ROLE_LABELS[r]}</option>)}
         </select>
-        <select className={select} value={value.status} onChange={(e) => onChange({ ...value, status: e.target.value as PostStatus | "" })}>
+        <select className={`${select} ${compact ? "w-full" : ""}`} value={value.status} onChange={(e) => onChange({ ...value, status: e.target.value as PostStatus | "" })}>
           <option value="">Tous les statuts</option>
           {(Object.keys(POST_STATUS_LABELS) as PostStatus[]).map((s) => <option key={s} value={s}>{POST_STATUS_LABELS[s]}</option>)}
         </select>
-        <select className={select} value={value.scope} onChange={(e) => onChange({ ...value, scope: e.target.value as PostFiltersValue["scope"] })}>
+        <select className={`${select} ${compact ? "w-full" : ""}`} value={value.scope} onChange={(e) => onChange({ ...value, scope: e.target.value as PostFiltersValue["scope"] })}>
           <option value="">Toute la communauté</option>
           <option value="general">Générale</option>
           <option value="training">Formations</option>
         </select>
-        <select className={select} value={value.sort} onChange={(e) => onChange({ ...value, sort: e.target.value as PostSort })}>
+        <select className={`${select} ${compact ? "w-full" : ""}`} value={value.sort} onChange={(e) => onChange({ ...value, sort: e.target.value as PostSort })}>
           {(Object.keys(POST_SORT_LABELS) as PostSort[]).map((s) => <option key={s} value={s}>{POST_SORT_LABELS[s]}</option>)}
         </select>
       </div>
 
       <div className={`flex flex-wrap items-center gap-4 text-xs text-muted-foreground ${compact ? "flex-col items-start" : ""}`}>
-        <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={value.mine} onChange={(e) => onChange({ ...value, mine: e.target.checked })} /> Mes publications</label>
-        <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={value.pinned} onChange={(e) => onChange({ ...value, pinned: e.target.checked })} /> Épinglées</label>
-        <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={value.unanswered} onChange={(e) => onChange({ ...value, unanswered: e.target.checked })} /> Questions sans réponse</label>
-        <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={value.includeInactive} onChange={(e) => onChange({ ...value, includeInactive: e.target.checked })} /> Inclure les catégories inactives</label>
+        <div className="flex items-center gap-2">
+          <Switch id="posts-filter-mine" checked={value.mine} onCheckedChange={(mine) => onChange({ ...value, mine })} />
+          <Label htmlFor="posts-filter-mine" className="cursor-pointer text-xs text-muted-foreground">Mes publications</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Switch id="posts-filter-pinned" checked={value.pinned} onCheckedChange={(pinned) => onChange({ ...value, pinned })} />
+          <Label htmlFor="posts-filter-pinned" className="cursor-pointer text-xs text-muted-foreground">Épinglées</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Switch id="posts-filter-unanswered" checked={value.unanswered} onCheckedChange={(unanswered) => onChange({ ...value, unanswered })} />
+          <Label htmlFor="posts-filter-unanswered" className="cursor-pointer text-xs text-muted-foreground">Questions sans réponse</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Switch id="posts-filter-inactive" checked={value.includeInactive} onCheckedChange={(includeInactive) => onChange({ ...value, includeInactive })} />
+          <Label htmlFor="posts-filter-inactive" className="cursor-pointer text-xs text-muted-foreground">Inclure les catégories inactives</Label>
+        </div>
         {active && <Button variant="ghost" size="sm" onClick={() => onChange(EMPTY_POST_FILTERS)}><X className="mr-1 h-3.5 w-3.5" /> Réinitialiser</Button>}
       </div>
     </div>

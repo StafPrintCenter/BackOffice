@@ -3,6 +3,8 @@ import { UserCircle, LogOut } from "lucide-react";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { SocialLinks } from "@/components/site/SocialLinks";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { resolveStorageUrl } from "@/lib/api/file";
 import { navItemClass } from "./config";
 
 export function SpaceSidebarFooter({
@@ -17,6 +19,7 @@ export function SpaceSidebarFooter({
   onDisconnectClick: () => void;
 }) {
   const profileActive = pathname.startsWith("/profile");
+  const photoUrl = resolveStorageUrl(user?.photo);
 
   return (
     <SidebarFooter className="border-t border-sidebar-border p-2 space-y-1">
@@ -38,7 +41,16 @@ export function SpaceSidebarFooter({
         <SidebarMenuItem>
           <SidebarMenuButton asChild isActive={profileActive} tooltip="Profil" className={navItemClass}>
             <Link to="/profile" onClick={onNavClick}>
-              <UserCircle className="size-4 shrink-0" />
+              {photoUrl ? (
+                <Avatar className="size-5 shrink-0">
+                  <AvatarImage src={photoUrl} alt={user?.name ?? "Profil"} />
+                  <AvatarFallback>
+                    <UserCircle className="size-4" />
+                  </AvatarFallback>
+                </Avatar>
+              ) : (
+                <UserCircle className="size-4 shrink-0" />
+              )}
               <div className="flex items-center gap-2.5 min-w-0 flex-1">
                 <div className="min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
                   <p className="text-xs font-medium truncate">

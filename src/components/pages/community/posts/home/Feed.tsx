@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useCommunityCategories, usePostsList } from "@/stores/useCommunityStore";
@@ -8,7 +8,7 @@ import {
   PostCard
 } from ".";
 
-export function CommunityFeed({ onTotalChange }: { onTotalChange?: (total: number | null) => void }) {
+export function CommunityFeed() {
   const [filters, setFilters] = useState<PostFiltersValue>(EMPTY_POST_FILTERS);
   const [page, setPage] = useState(1);
   const debouncedQuery = useDebouncedValue(filters.query, 400);
@@ -17,27 +17,35 @@ export function CommunityFeed({ onTotalChange }: { onTotalChange?: (total: numbe
   const { categories } = useCommunityCategories({ includeInactive });
   const { posts, meta, isLoading, isError } = usePostsList({ ...postFilters, query: debouncedQuery, page, perPage: 12 });
 
-  useEffect(() => {
-    onTotalChange?.(meta?.total ?? null);
-  }, [meta?.total, onTotalChange]);
-
   return (
-    <>
-      <div className="mb-6">
-        <PostFilters value={filters} onChange={(v) => { setFilters(v); setPage(1); }} categories={categories} />
-      </div>
+    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+      <section className="min-w-0 space-y-4">
+        {meta && (
+          <p className="text-xs text-muted-foreground">
+            {meta.total} publication{meta.total > 1 ? "s" : ""}
+          </p>
+        )}
+        {isLoading ? (
+          <div className="flex items-center justify-center gap-2 py-16 text-sm text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Chargement…</div>
+        ) : isError ? (
+          <p className="text-sm text-destructive">Impossible de charger les publications.</p>
+        ) : posts.length === 0 ? (
+          <p className="rounded-xl border border-dashed py-16 text-center text-sm text-muted-foreground">Aucune publication ne correspond.</p>
+        ) : (
+          <div className="space-y-4">{posts.map((p) => <PostCard key={p.id} post={p} />)}</div>
+        )}
 
-      {isLoading ? (
-        <div className="flex items-center justify-center gap-2 py-16 text-sm text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Chargement…</div>
-      ) : isError ? (
-        <p className="text-sm text-destructive">Impossible de charger les publications.</p>
-      ) : posts.length === 0 ? (
-        <p className="rounded-xl border border-dashed py-16 text-center text-sm text-muted-foreground">Aucune publication ne correspond.</p>
-      ) : (
-        <div className="max-w-3xl space-y-4">{posts.map((p) => <PostCard key={p.id} post={p} />)}</div>
-      )}
-
-      {meta && <Pager page={meta.currentPage} lastPage={meta.lastPage} total={meta.total} onChange={setPage} />}
-    </>
+        {meta && <Pager page={meta.currentPage} lastPage={meta.lastPage} total={meta.total} onChange={setPage} />}
+      </section>
+      <aside className="rounded-2xl border bg-card p-5">
+        <h2 className="mb-4 text-sm font-semibold">Filtres</h2>
+        <PostFilters
+          value={filters}
+          onChange={(value) => { setFilters(value); setPage(1); }}
+          categories={categories}
+          compact
+        />
+      </aside>
+    </div>
   );
 }

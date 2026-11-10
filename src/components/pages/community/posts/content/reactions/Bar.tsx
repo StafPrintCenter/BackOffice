@@ -49,18 +49,12 @@ export function ReactionBar({ target, targetId, myReaction, reactions, reactions
           <button
             type="button"
             disabled={pending}
-            onClick={() => (mine ? remove.mutate(targetId, handlers) : setPickerOpen((v) => !v))}
-            onContextMenu={(e) => { e.preventDefault(); setPickerOpen((v) => !v); }}
+            onClick={() => setPickerOpen((v) => !v)}
             className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 transition disabled:opacity-50 ${mine ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-primary hover:text-foreground"}`}
-            title={mine ? "Retirer ma réaction" : "Réagir"}
+            title={mine ? "Modifier ma réaction" : "Réagir"}
           >
             {mine ? <><span>{mine.emoji}</span> {mine.label}</> : <><SmilePlus className="h-3.5 w-3.5" /> Réagir</>}
           </button>
-          {mine && (
-            <button type="button" onClick={() => setPickerOpen((v) => !v)} className="ml-1 cursor-pointer text-[11px] text-muted-foreground hover:text-foreground">
-              changer
-            </button>
-          )}
 
           {pickerOpen && (
             <div className="absolute bottom-full left-0 z-20 mb-2 flex gap-1 rounded-full border bg-card p-1.5 shadow-lg">

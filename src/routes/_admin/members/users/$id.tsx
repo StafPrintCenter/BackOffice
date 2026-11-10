@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, } from "@/components/ui/dialog";
 import { useAdminUserDetail, useAlertAdminUser, useBlockAdminUser, useReactivateAdminUser, } from "@/stores/useUsersStore";
 import { SITE } from "@/data/site";
+import { initials } from "@/components/site/UserAvatar";
 
 export const Route = createFileRoute("/_admin/members/users/$id")({
   head: () => ({
@@ -16,17 +17,6 @@ export const Route = createFileRoute("/_admin/members/users/$id")({
   }),
   component: UserDetail,
 });
-
-function getInitials(name: string): string {
-  if (!name) return "U";
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
 
 function UserDetail() {
   const { id } = Route.useParams();
@@ -168,7 +158,7 @@ function UserDetail() {
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary font-display text-xl font-bold">
-                  {getInitials(user.fullname)}
+                  {initials(user.fullname)}
                 </div>
                 <div>
                   <h1 className="font-display text-2xl font-bold tracking-tight">{user.fullname}</h1>

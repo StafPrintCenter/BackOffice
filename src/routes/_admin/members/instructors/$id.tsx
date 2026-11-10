@@ -15,6 +15,7 @@ import { useAdminTrainingsList } from "@/stores/useTrainingsStore";
 import { TRAINING_INSTRUCTOR_ROLE_LABELS } from "@/data/trainingInstructors";
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";
 import { SITE } from "@/data/site";
+import { initials } from "@/components/site/UserAvatar";
 
 export const Route = createFileRoute("/_admin/members/instructors/$id")({
   head: () => ({
@@ -22,11 +23,6 @@ export const Route = createFileRoute("/_admin/members/instructors/$id")({
   }),
   component: InstructorDetail,
 });
-
-function getInitials(name: string): string {
-  if (!name) return "I";
-  return name.split(" ").map((p) => p[0]).filter(Boolean).slice(0, 2).join("").toUpperCase();
-}
 
 function formatDate(dateStr?: string | null): string {
   if (!dateStr) return "-";
@@ -282,7 +278,7 @@ function InstructorDetail() {
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary font-display text-xl font-bold">
-                  {getInitials(instructor.name)}
+                  {initials(instructor.name)}
                 </div>
                 <div>
                   <h1 className="font-display text-2xl font-bold tracking-tight">{instructor.name}</h1>

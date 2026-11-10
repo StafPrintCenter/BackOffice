@@ -17,6 +17,7 @@ import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useUpdateAdminProfile } from "@/stores/useAccountStore";
 import { FilePreviewModal } from "@/components/site";
 import { resolveStorageUrl } from "@/lib/api/file";
+import { initials } from "@/components/site/UserAvatar";
 
 const schema = z.object({
   firstName: z.string().trim().min(1, "Le prénom est requis").max(80),
@@ -122,7 +123,7 @@ export function ProfileEditDialog({ open, onOpenChange }: ProfileEditDialogProps
   const pending = updateProfile.isPending;
   const savedPhoto = resolveStorageUrl(user?.photo);
   const currentPhoto = removePhoto ? null : (preview ?? savedPhoto);
-  const initials = `${firstName[0] ?? ""}${lastName[0] ?? ""}`.toUpperCase() || "A";
+  const photoInitials = initials(`${firstName} ${lastName}`.trim() || "A");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -149,7 +150,7 @@ export function ProfileEditDialog({ open, onOpenChange }: ProfileEditDialogProps
                   <img src={currentPhoto} alt="" className="h-full w-full object-cover" />
                 </button>
               ) : (
-                initials
+                photoInitials
               )}
             </div>
             <div className="space-y-2">

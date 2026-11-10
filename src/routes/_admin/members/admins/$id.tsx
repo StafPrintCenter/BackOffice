@@ -11,6 +11,7 @@ import { useAdminAdminDetail, useAlertAdminAdmin, useBlockAdminAdmin, useReactiv
 import { useCurrentAdmin } from "@/stores/useAuthStore";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS } from "@/data/admins";
 import { SITE } from "@/data/site";
+import { initials } from "@/components/site/UserAvatar";
 
 export const Route = createFileRoute("/_admin/members/admins/$id")({
   head: () => ({
@@ -18,17 +19,6 @@ export const Route = createFileRoute("/_admin/members/admins/$id")({
   }),
   component: AdminDetail,
 });
-
-function getInitials(name: string): string {
-  if (!name) return "A";
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
 
 function AdminDetail() {
   const { id } = Route.useParams();
@@ -263,7 +253,7 @@ function AdminDetail() {
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary font-display text-xl font-bold">
-                  {getInitials(admin.fullname)}
+                  {initials(admin.fullname)}
                 </div>
                 <div>
                   <h1 className="font-display text-2xl font-bold tracking-tight">{admin.fullname}</h1>

@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAdminNewsletterSubscriberDetail, useDeleteAdminNewsletterSubscriber, useBlockAdminNewsletterSubscriber, useReactivateAdminNewsletterSubscriber, } from "@/stores/useNewsletterSubscribersStore";
 import { SITE } from "@/data/site";
+import { initials } from "@/components/site/UserAvatar";
 
 export const Route = createFileRoute("/_admin/newsletter/subscribers/$id")({
   head: () => ({
@@ -96,13 +97,6 @@ function SubscriberDetail() {
     });
   };
 
-  const getInitials = (firstName?: string | null, lastName?: string | null, email?: string) => {
-    if (firstName || lastName) {
-      return `${firstName?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
-    }
-    return email ? email[0].toUpperCase() : "A";
-  };
-
   const categories = subscriber.categories ?? [];
 
   return (
@@ -156,7 +150,11 @@ function SubscriberDetail() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-6">
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary font-display text-xl font-bold">
-                {getInitials(subscriber.firstName, subscriber.lastName, subscriber.email)}
+                {initials(
+                  `${subscriber.firstName ?? ""} ${subscriber.lastName ?? ""}`.trim() ||
+                    subscriber.email ||
+                    "A",
+                )}
               </div>
               <div>
                 <div className="flex items-center gap-2">

@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { useAdminStudentDetail, useAlertAdminStudent, useBlockAdminStudent, useReactivateAdminStudent, useResendAdminStudentInvite, } from "@/stores/useStudentsStore";
 import { StudentTrainingsSection } from "@/components/pages/trainings/enrollments/StudentTrainingsSection";
 import { SITE } from "@/data/site";
+import { initials } from "@/components/site/UserAvatar";
 
 export const Route = createFileRoute("/_admin/members/students/$id")({
   head: () => ({
@@ -17,17 +18,6 @@ export const Route = createFileRoute("/_admin/members/students/$id")({
   }),
   component: StudentDetail,
 });
-
-function getInitials(name: string): string {
-  if (!name) return "A";
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
 
 function StudentDetail() {
   const { id } = Route.useParams();
@@ -200,7 +190,7 @@ function StudentDetail() {
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary font-display text-xl font-bold">
-                  {getInitials(student.fullname)}
+                  {initials(student.fullname)}
                 </div>
                 <div>
                   <h1 className="font-display text-2xl font-bold tracking-tight">{student.fullname}</h1>

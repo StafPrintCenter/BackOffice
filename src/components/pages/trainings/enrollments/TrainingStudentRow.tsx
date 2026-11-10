@@ -5,9 +5,7 @@ import { CertificateStatusBadge, EnrollmentStatusBadge, PaymentStatusBadge } fro
 import { AddPaymentDialog } from "@/components/pages/trainings/payments/AddDialog";
 import { CertificateActions } from "@/components/pages/trainings/certificates/CertificateActions";
 import { ProgressBar } from "./ProgressBar";
-
-const initials = (name: string) =>
-  name.split(" ").map((p) => p[0]).filter(Boolean).slice(0, 2).join("").toUpperCase() || "A";
+import { initials } from "@/components/site/UserAvatar";
 
 export function TrainingStudentRow({ student: s, color }: { student: APITrainingStudent; color?: string }) {
   return (

@@ -25,7 +25,7 @@ const parseTags = (raw: string) =>
 
 export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
   const isEdit = mode === "edit";
-  const { categories } = useCommunityCategories();
+  const { categories, isLoading: isCategoriesLoading } = useCommunityCategories();
   const { items: trainings } = useAdminTrainingsList({ perPage: 100 });
   const { post: detail } = usePostDetail(isEdit && open ? post?.id : undefined);
   const source = detail ?? post;
@@ -118,9 +118,17 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
             <div>
               <Label>Catégorie</Label>
               <select className={select} value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                {!categoryId && (
+                  <option value="" disabled>
+                    {isCategoriesLoading ? "Chargement…" : "Choisissez une catégorie"}
+                  </option>
+                )}
                 {source && !categories.some((c) => c.id === source.category.id) && (
                   <option value={source.category.id}>{source.category.name} (inactive)</option>
                 )}
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
               </select>
             </div>
             <div>

@@ -31,14 +31,15 @@ interface Props {
   value: PostFiltersValue;
   onChange: (v: PostFiltersValue) => void;
   categories: APICommunityCategory[];
+  compact?: boolean;
 }
 
-export function PostFilters({ value, onChange, categories }: Props) {
+export function PostFilters({ value, onChange, categories, compact = false }: Props) {
   const active = JSON.stringify(value) !== JSON.stringify(EMPTY_POST_FILTERS);
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap gap-2">
+      <div className={`flex flex-wrap gap-2 ${compact ? "max-h-64 overflow-y-auto" : ""}`}>
         <button
           onClick={() => onChange({ ...value, categoryId: "" })}
           className={`cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium transition ${!value.categoryId ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card hover:border-primary"}`}
@@ -63,8 +64,8 @@ export function PostFilters({ value, onChange, categories }: Props) {
         })}
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="relative min-w-52 flex-1">
+      <div className={`flex flex-wrap items-center gap-3 ${compact ? "flex-col items-stretch" : ""}`}>
+        <div className={`relative min-w-52 flex-1 ${compact ? "min-w-0" : ""}`}>
           <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input className="pl-9" placeholder="Rechercher une publication…" value={value.query} onChange={(e) => onChange({ ...value, query: e.target.value })} />
         </div>
@@ -90,7 +91,7 @@ export function PostFilters({ value, onChange, categories }: Props) {
         </select>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+      <div className={`flex flex-wrap items-center gap-4 text-xs text-muted-foreground ${compact ? "flex-col items-start" : ""}`}>
         <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={value.mine} onChange={(e) => onChange({ ...value, mine: e.target.checked })} /> Mes publications</label>
         <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={value.pinned} onChange={(e) => onChange({ ...value, pinned: e.target.checked })} /> Épinglées</label>
         <label className="flex cursor-pointer items-center gap-2"><input type="checkbox" checked={value.unanswered} onChange={(e) => onChange({ ...value, unanswered: e.target.checked })} /> Questions sans réponse</label>

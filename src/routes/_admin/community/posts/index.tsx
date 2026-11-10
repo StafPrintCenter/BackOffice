@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus, Flag, TrendingUp, LayoutGrid, MessagesSquare } from "lucide-react";
+import { Plus, Flag, TrendingUp, LayoutGrid } from "lucide-react";
 import { PageHeader } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
@@ -19,7 +19,6 @@ export const Route = createFileRoute("/_admin/community/posts/")({
 
 function CommunityPage() {
   const [createOpen, setCreateOpen] = useState(false);
-  const [totalPosts, setTotalPosts] = useState<number | null>(null);
 
   return (
     <>
@@ -49,20 +48,8 @@ function CommunityPage() {
         </Link>
       </div>
 
-      <div className="grid items-start gap-6 pt-6 lg:grid-cols-[minmax(0,1fr)_16rem]">
-        <CommunityFeed onTotalChange={setTotalPosts} />
-        <aside className="rounded-2xl border bg-card p-5" aria-live="polite">
-          <div className="flex items-center gap-2 text-sm font-semibold">
-            <MessagesSquare className="h-4 w-4 text-primary" />
-            Publications
-          </div>
-          <p className="mt-2 text-2xl font-bold">{totalPosts ?? "—"}</p>
-          <p className="text-xs text-muted-foreground">
-            {totalPosts === null
-              ? "Chargement du total…"
-              : `publication${totalPosts > 1 ? "s" : ""} correspondant aux filtres`}
-          </p>
-        </aside>
+      <div className="pt-6">
+        <CommunityFeed />
       </div>
       <PostFormDialog
         mode="create"

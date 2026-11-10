@@ -1,6 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { initials } from "@/data/community";
 import { resolveStorageUrl } from "@/lib/api/file";
+
+export const initials = (name: string) =>
+  name
+    .split(" ")
+    .map((p) => p[0])
+    .filter(Boolean).slice(0, 2)
+    .join("")
+    .toUpperCase()
+  || "?";
 
 interface UserAvatarProps {
   name: string;

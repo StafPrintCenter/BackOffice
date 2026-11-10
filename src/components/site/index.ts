@@ -6,3 +6,4 @@ export { SocialLinks } from "./SocialLinks";
 export { SpaceShell } from "./SpaceShell";
 export { RichTextEditor } from "./RichTextEditor";
 export * from "./States";
+export { UserAvatar } from "./UserAvatar";

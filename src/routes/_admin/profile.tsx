@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { SITE } from "@/data/site";
 import { resolveStorageUrl } from "@/lib/api/file";
+import { UserAvatar } from "@/components/site/UserAvatar";
 
 export const Route = createFileRoute("/_admin/profile")({
   head: () => ({
@@ -37,13 +38,6 @@ function ProfilePage() {
     user?.name ||
     `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() ||
     "Administrateur";
-  const initials = fullName
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
   const photoUrl = resolveStorageUrl(user?.photo);
 
   const formatDate = (value?: string | null) => {
@@ -88,10 +82,20 @@ function ProfilePage() {
                     onClick={() => setPhotoPreviewUrl(photoUrl)}
                     aria-label={`Aperçu de la photo de profil de ${fullName}`}
                   >
-                    <img src={photoUrl} alt={fullName} className="h-full w-full object-cover" />
+                    <UserAvatar
+                      name={fullName}
+                      photo={user?.photo}
+                      className="size-full rounded-2xl border-0 bg-primary"
+                      imageClassName="object-cover"
+                      fallbackClassName="rounded-2xl bg-primary font-display text-3xl font-bold text-primary-foreground"
+                    />
                   </button>
                 ) : (
-                  initials
+                  <UserAvatar
+                    name={fullName}
+                    className="size-full rounded-2xl border-0 bg-primary"
+                    fallbackClassName="rounded-2xl bg-primary font-display text-3xl font-bold text-primary-foreground"
+                  />
                 )}
               </div>
               <div className="min-w-0 pb-1">

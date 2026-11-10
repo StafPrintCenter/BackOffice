@@ -15,6 +15,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useUpdateAdminProfile } from "@/stores/useAccountStore";
+import { FilePreviewModal } from "@/components/site";
+import { resolveStorageUrl } from "@/lib/api/file";
 
 const schema = z.object({
   firstName: z.string().trim().min(1, "Le prénom est requis").max(80),
@@ -40,6 +42,10 @@ export function ProfileEditDialog({ open, onOpenChange }: ProfileEditDialogProps
   const [removePhoto, setRemovePhoto] = useState(false);
   const [photoError, setPhotoError] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [photoPreview, setPhotoPreview] = useState<{
+    url: string;
+    mimeType: string;
+  } | null>(null);
 
   useEffect(() => {
     if (!open || !user) return;
@@ -48,6 +54,7 @@ export function ProfileEditDialog({ open, onOpenChange }: ProfileEditDialogProps
     setBio(user.bio ?? "");
     setPhoto(null);
     setRemovePhoto(false);
+    setPhotoPreview(null);
     setPhotoError("");
     setErrors({});
   }, [open, user]);
@@ -113,7 +120,8 @@ export function ProfileEditDialog({ open, onOpenChange }: ProfileEditDialogProps
   };
 
   const pending = updateProfile.isPending;
-  const currentPhoto = removePhoto ? null : (preview ?? user?.photo ?? null);
+  const savedPhoto = resolveStorageUrl(user?.photo);
+  const currentPhoto = removePhoto ? null : (preview ?? savedPhoto);
   const initials = `${firstName[0] ?? ""}${lastName[0] ?? ""}`.toUpperCase() || "A";
 
   return (
@@ -127,7 +135,19 @@ export function ProfileEditDialog({ open, onOpenChange }: ProfileEditDialogProps
           <div className="flex items-center gap-4">
             <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-2xl border bg-muted font-semibold">
               {currentPhoto ? (
-                <img src={currentPhoto} alt="" className="h-full w-full object-cover" />
+                <button
+                  type="button"
+                  className="h-full w-full cursor-zoom-in"
+                  onClick={() =>
+                    setPhotoPreview({
+                      url: currentPhoto,
+                      mimeType: photo?.type ?? "image/*",
+                    })
+                  }
+                  aria-label="Aperçu de la photo de profil"
+                >
+                  <img src={currentPhoto} alt="" className="h-full w-full object-cover" />
+                </button>
               ) : (
                 initials
               )}
@@ -211,6 +231,12 @@ export function ProfileEditDialog({ open, onOpenChange }: ProfileEditDialogProps
           </DialogFooter>
         </form>
       </DialogContent>
+      <FilePreviewModal
+        url={open ? photoPreview?.url ?? null : null}
+        title={`Photo de profil - ${firstName} ${lastName}`.trim()}
+        mimeType={photoPreview?.mimeType}
+        onClose={() => setPhotoPreview(null)}
+      />
     </Dialog>
   );
 }

@@ -1,10 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, LogOut } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/site/UserAvatar";
 import { ScoreRing } from "@/components/pages/health/ScoreRing";
 import { useAdminProfileHealth } from "@/stores/useProfileHealthStore";
-import { resolveStorageUrl } from "@/lib/api/file";
 import { USER_DROPDOWN_ITEMS } from "./config";
 
 type SpaceDropdownProps = {
@@ -15,14 +14,6 @@ type SpaceDropdownProps = {
 
 export function SpaceUserDropdown({ user, onDisconnectClick, defaultRoleName = "Admininsitrateur" }: SpaceDropdownProps) {
   const displayName = user?.name && user.name !== "undefined undefined" ? user.name : defaultRoleName;
-  const initials = displayName
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
-  const photoUrl = resolveStorageUrl(user?.photo);
   const { health } = useAdminProfileHealth();
 
   return (
@@ -31,12 +22,12 @@ export function SpaceUserDropdown({ user, onDisconnectClick, defaultRoleName = "
         <button className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-accent/30 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer">
           <div className="relative">
             <ScoreRing percent={health?.score ?? 0} level={health?.level} size={38} strokeWidth={3}>
-              <Avatar className="size-7 border-2 border-card">
-                {photoUrl && <AvatarImage src={photoUrl} alt={displayName} />}
-                <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                name={displayName}
+                photo={user?.photo}
+                className="size-7 border-2 border-card"
+                fallbackClassName="bg-primary/10 text-xs font-semibold text-primary"
+              />
             </ScoreRing>
             {health && (
               <span className="absolute -bottom-1 -right-1 rounded-full border bg-card px-1 text-[9px] font-semibold leading-4 text-foreground">

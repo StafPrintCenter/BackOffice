@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
-import { usePostDetail } from "@/stores/useCommunityStore";
+import { usePostDetail, usePostsList } from "@/stores/useCommunityStore";
 import { PostDetailView } from "@/components/pages/community/posts/detail";
 import { useDynamicPageMetadata } from "@/hooks/useDynamicPageMetadata";
 
@@ -24,6 +24,7 @@ function PostDetailPage() {
   const { comment } = Route.useSearch();
   const navigate = useNavigate();
   const { post, isLoading, error } = usePostDetail(id);
+  const { meta: postsMeta } = usePostsList({ perPage: 1 });
   useDynamicPageMetadata(
     post ? `${SITE.tool} - ${post.title} | ${SITE.name}` : undefined,
     post?.body,
@@ -57,7 +58,12 @@ function PostDetailPage() {
   return (
     <>
       <div className="-mb-4">{back}</div>
-      <PostDetailView post={post} focusCommentId={comment} onClearFocus={clearFocus} />
+      <PostDetailView
+        post={post}
+        totalPosts={postsMeta?.total ?? null}
+        focusCommentId={comment}
+        onClearFocus={clearFocus}
+      />
     </>
   );
 }

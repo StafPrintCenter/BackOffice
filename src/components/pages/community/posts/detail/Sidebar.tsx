@@ -11,7 +11,7 @@ const Row = ({ label, children }: { label: string; children: React.ReactNode }) 
   </div>
 );
 
-export function PostSidebar({ post: p }: { post: APIPost }) {
+export function PostSidebar({ post: p, totalPosts }: { post: APIPost; totalPosts?: number | null }) {
   const authorLink =
     p.author.role === "instructor" ? { to: "/members/instructors/$id" as const }
       : p.author.role === "student" ? { to: "/members/students/$id" as const }
@@ -45,6 +45,7 @@ export function PostSidebar({ post: p }: { post: APIPost }) {
           <span style={{ color: p.category.color }}>{p.category.name}</span>
         </Row>
         <Row label="Portée">{p.scope === "training" ? "Formation" : "Générale"}</Row>
+        {totalPosts !== undefined && <Row label="Publications">{totalPosts ?? "…"}</Row>}
         {p.training && (
           <Row label="Formation">
             <Link to="/trainings/catalogs/$id" params={{ id: p.training.id }} className="inline-flex items-center gap-1 text-primary hover:underline">

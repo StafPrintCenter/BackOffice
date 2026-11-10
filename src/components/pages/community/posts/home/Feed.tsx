@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useCommunityCategories, usePostsList } from "@/stores/useCommunityStore";
@@ -8,7 +8,7 @@ import {
   PostCard
 } from ".";
 
-export function CommunityFeed() {
+export function CommunityFeed({ onTotalChange }: { onTotalChange?: (total: number | null) => void }) {
   const [filters, setFilters] = useState<PostFiltersValue>(EMPTY_POST_FILTERS);
   const [page, setPage] = useState(1);
   const debouncedQuery = useDebouncedValue(filters.query, 400);
@@ -16,6 +16,10 @@ export function CommunityFeed() {
   const { includeInactive, ...postFilters } = filters;
   const { categories } = useCommunityCategories({ includeInactive });
   const { posts, meta, isLoading, isError } = usePostsList({ ...postFilters, query: debouncedQuery, page, perPage: 12 });
+
+  useEffect(() => {
+    onTotalChange?.(meta?.total ?? null);
+  }, [meta?.total, onTotalChange]);
 
   return (
     <>

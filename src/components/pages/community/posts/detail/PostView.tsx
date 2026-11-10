@@ -9,8 +9,8 @@ import { CommentsSection } from "../content/comments/Section";
 import { ReactionBar } from "../content/reactions";
 import { PostModerationBar, ReportDialog } from "../content/moderation";
 
-export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
-  post: APIPost; focusCommentId?: string; onClearFocus?: () => void;
+export function PostDetailView({ post: p, totalPosts, focusCommentId, onClearFocus }: {
+  post: APIPost; totalPosts?: number | null; focusCommentId?: string; onClearFocus?: () => void;
 }) {
   const navigate = useNavigate();
   const [reportOpen, setReportOpen] = useState(false);
@@ -79,7 +79,7 @@ export function PostDetailView({ post: p, focusCommentId, onClearFocus }: {
           <CommentsSection post={p} focusCommentId={focusCommentId} onClearFocus={onClearFocus} />
         </div>
 
-        <PostSidebar post={p} />
+        <PostSidebar post={p} totalPosts={totalPosts} />
       </div>
 
       {p.permissions.canEdit && <PostFormDialog mode="edit" post={p} open={editOpen} onOpenChange={setEditOpen} />}

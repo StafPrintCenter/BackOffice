@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { Eye, GraduationCap, MessageCircle, SmilePlus } from "lucide-react";
-import { formatPostDate, initials, type APIPost } from "@/data/community";
+import { formatPostDate, type APIPost } from "@/data/community";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
+import { UserAvatar } from "@/components/site";
 
 const Row = ({ label, children }: { label: string; children: React.ReactNode }) => (
   <div className="flex items-center justify-between gap-3 border-b py-2 text-sm last:border-0">
@@ -21,11 +22,13 @@ export function PostSidebar({ post: p }: { post: APIPost }) {
       <div className="rounded-2xl border bg-card p-5">
         <h2 className="mb-3 text-sm font-semibold">Auteur</h2>
         <div className="flex items-center gap-3">
-          {p.author.photo ? (
-            <img src={p.author.photo} alt="" className="h-11 w-11 rounded-full object-cover" />
-          ) : (
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{initials(p.author.name)}</span>
-          )}
+          <UserAvatar
+            name={p.author.name}
+            photo={p.author.photo}
+            className="size-11 shrink-0"
+            imageClassName="object-cover"
+            fallbackClassName="bg-primary/10 text-xs font-bold text-primary"
+          />
           <div className="min-w-0">
             {authorLink ? (
               <Link {...authorLink} params={{ id: p.author.id }} className="block truncate font-medium text-primary hover:underline">{p.author.name}</Link>

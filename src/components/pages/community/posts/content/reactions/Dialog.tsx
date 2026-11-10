@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
-  AUTHOR_ROLE_LABELS, REACTION_META, REACTION_TYPES, formatPostDate, initials,
+  AUTHOR_ROLE_LABELS, REACTION_META, REACTION_TYPES, formatPostDate,
   type AuthorRole, type ReactionTarget, type ReactionType,
 } from "@/data/community";
 import { useReactorsList } from "@/stores/useCommunityStore";
 import { Pager } from "@/components/pages/trainings/sessions/Pager";
+import { UserAvatar } from "@/components/site";
 
 interface Props { target: ReactionTarget; targetId: string; open: boolean; onOpenChange: (v: boolean) => void }
 
@@ -52,11 +53,13 @@ export function ReactorsDialog({ target, targetId, open, onOpenChange }: Props) 
           <ul className="space-y-2">
             {reactors.map((r) => (
               <li key={r.id} className="flex items-center gap-3 rounded-lg border p-2.5">
-                {r.user.photo ? (
-                  <img src={r.user.photo} alt="" className="h-8 w-8 rounded-full object-cover" />
-                ) : (
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">{initials(r.user.name)}</span>
-                )}
+                <UserAvatar
+                  name={r.user.name}
+                  photo={r.user.photo}
+                  className="size-8 shrink-0"
+                  imageClassName="object-cover"
+                  fallbackClassName="bg-primary/10 text-[10px] font-bold text-primary"
+                />
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-medium">{r.user.name}</div>
                   <div className="text-[11px] text-muted-foreground">{AUTHOR_ROLE_LABELS[r.user.role]} · {formatPostDate(r.reactedAt)}</div>

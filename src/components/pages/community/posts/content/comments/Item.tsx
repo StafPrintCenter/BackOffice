@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { CornerDownRight, CheckCircle2, EyeOff, Pencil, Reply, SmilePlus, Trash2, Flag } from "lucide-react";
-import { formatPostDate, initials, type APIComment } from "@/data/community";
+import { formatPostDate, type APIComment } from "@/data/community";
 import { AuthorRoleBadge } from "@/components/pages/community/shared";
+import { UserAvatar } from "@/components/site";
 import { CommentForm, DeleteCommentDialog, BestAnswerButton } from ".";
 import { ReactionBar } from "../reactions";
 import { CommentModeration, ReportDialog } from "../moderation";
@@ -33,13 +34,13 @@ export function CommentItem({ comment: c, canInteract, highlighted, canMarkBest,
       id={highlighted ? `comment-${c.id}` : undefined}
       className={`flex gap-3 rounded-xl transition ${highlighted ? "bg-primary/5 p-2 ring-2 ring-primary/40" : ""}`}
     >
-      {c.author.photo ? (
-        <img src={c.author.photo} alt="" className={`shrink-0 rounded-full object-cover ${isReply ? "h-7 w-7" : "h-9 w-9"}`} />
-      ) : (
-        <span className={`flex shrink-0 items-center justify-center rounded-full bg-primary/10 font-bold text-primary ${isReply ? "h-7 w-7 text-[10px]" : "h-9 w-9 text-xs"}`}>
-          {initials(c.author.name)}
-        </span>
-      )}
+      <UserAvatar
+        name={c.author.name}
+        photo={c.author.photo}
+        className={`shrink-0 ${isReply ? "size-7" : "size-9"}`}
+        imageClassName="object-cover"
+        fallbackClassName={`bg-primary/10 font-bold text-primary ${isReply ? "text-[10px]" : "text-xs"}`}
+      />
 
       <div className="min-w-0 flex-1 space-y-1.5">
         <div className={`rounded-xl px-3.5 py-2.5 ${c.isBestAnswer ? "border border-emerald-500/30 bg-emerald-500/5" : "bg-muted/40"} ${c.status === "hidden" ? "opacity-70" : ""}`}>

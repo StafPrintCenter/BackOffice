@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { GraduationCap, Eye, MessageCircle, Paperclip, Pencil, SmilePlus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { formatPostDate, initials, type APIPost } from "@/data/community";
+import { formatPostDate, type APIPost } from "@/data/community";
 import { AnsweredBadge, AuthorRoleBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "../../shared/Badges";
 import { PostFormDialog, DeletePostDialog } from "@/components/pages/community/shared";
+import { UserAvatar } from "@/components/site";
 
 export function PostCard({ post: p }: { post: APIPost }) {
   const [editOpen, setEditOpen] = useState(false);
@@ -13,13 +14,13 @@ export function PostCard({ post: p }: { post: APIPost }) {
   return (
     <article className={`space-y-3 rounded-2xl border bg-card p-5 ${p.status === "hidden" ? "opacity-70" : ""}`}>
       <div className="flex items-start gap-3">
-        {p.author.photo ? (
-          <img src={p.author.photo} alt="" className="h-10 w-10 shrink-0 rounded-full object-cover" />
-        ) : (
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
-            {initials(p.author.name)}
-          </span>
-        )}
+        <UserAvatar
+          name={p.author.name}
+          photo={p.author.photo}
+          className="size-10 shrink-0"
+          imageClassName="object-cover"
+          fallbackClassName="bg-primary/10 text-xs font-bold text-primary"
+        />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm font-medium">{p.author.name}{p.isMine && <span className="text-muted-foreground"> (vous)</span>}</span>

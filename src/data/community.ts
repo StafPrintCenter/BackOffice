@@ -223,6 +223,3 @@ export const formatFileSize = (bytes: number) =>
 
 export const formatPostDate = (iso?: string | null) =>
   iso ? new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "-";
-
-export const initials = (name: string) =>
-  name.split(" ").map((p) => p[0]).filter(Boolean).slice(0, 2).join("").toUpperCase() || "?";

@@ -127,7 +127,7 @@ export const COMMENT_SORT_LABELS: Record<CommentSort, string> = {
   popular: "Populaires",
 };
 
-export const MAX_COMMENT_LENGTH = 5000;
+export const MAX_COMMENT_LENGTH = 300;
 
 export type APIComment = {
   id: string;

@@ -110,8 +110,8 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
         <div className="space-y-4">
           <div>
             <Label>Titre</Label>
-            <Input value={title} maxLength={200} onChange={(e) => setTitle(e.target.value)} />
-            <p className="mt-1 text-right text-[11px] text-muted-foreground">{title.length}/200</p>
+            <Input value={title} maxLength={80} onChange={(e) => setTitle(e.target.value)} />
+            <p className="mt-1 text-right text-[11px] text-muted-foreground">{title.length}/80</p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -151,8 +151,8 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
 
           <div>
             <Label>Contenu</Label>
-            <Textarea rows={8} maxLength={10000} value={body} onChange={(e) => setBody(e.target.value)} />
-            <p className="mt-1 text-right text-[11px] text-muted-foreground">{body.length}/10000</p>
+            <Textarea rows={8} maxLength={1000} value={body} onChange={(e) => setBody(e.target.value)} />
+            <p className="mt-1 text-right text-[11px] text-muted-foreground">{body.length}/1000</p>
           </div>
 
           <div>

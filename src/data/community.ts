@@ -30,8 +30,8 @@ export const AUTHOR_ROLE_LABELS: Record<AuthorRole, string> = {
 };
 
 export const MAX_TAGS = 5;
-export const MAX_ATTACHMENTS = 4;
-export const MAX_ATTACHMENT_MB = 5;
+export const MAX_ATTACHMENTS = 2;
+export const MAX_ATTACHMENT_MB = 1;
 
 export type APICommunityCategory = {
   id: string;

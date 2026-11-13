@@ -1,9 +1,7 @@
 import { useId, type CSSProperties } from "react";
 import { DC_CENTER, DC_MONOGRAM_TRANSFORM, DC_TEXT, MC_CENTERLINE, MC_NIB, MC_PEN, MC_SP } from "../Paths";
-import { buildLogoLoaderCss } from "./animation";
+import { buildLogoLoaderCss, LogoLoaderProps, NIB_WIPE, PEN_WIPE, VIEW } from "./";
 import { LOGO_LOADER_DEFAULT_TEXT } from "./constants";
-import { NIB_WIPE, PEN_WIPE, VIEW } from "./geometry";
-import type { LogoLoaderProps } from "./config";
 
 export function LogoLoader({
   variant = "mc",

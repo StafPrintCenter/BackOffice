@@ -1,4 +1,4 @@
-export * from "./CreateModal";
-export * from "./TargetPagesInput";
-export * from "./ActionForm";
-export * from "./TableColumns";
+export { AnnouncementCreateModal } from "./CreateModal";
+export { AnnouncementTargetPagesInput } from "./TargetPagesInput";
+export { AnnouncementActionForm } from "./ActionForm";
+export { announcementTableColumns } from "./TableColumns";

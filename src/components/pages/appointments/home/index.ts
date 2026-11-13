@@ -1,1 +1,1 @@
-export * from "./TableColumns";
+export { appointmentColumns } from "./TableColumns";

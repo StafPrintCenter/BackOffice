@@ -1,6 +1,6 @@
-export * from "./Header";
-export * from "./ContentCard";
-export * from "./AnalyticsCard";
-export * from "./ConfigSidebarCard";
-export * from "./PublicationSidebarCard";
-export * from "./ActionSidebarCard";
+export { AnnouncementDetailHeader } from "./Header";
+export { AnnouncementContentCard } from "./ContentCard";
+export { AnnouncementAnalyticsCard } from "./AnalyticsCard";
+export { AnnouncementConfigSidebarCard } from "./ConfigSidebarCard";
+export { AnnouncementPublicationSidebarCard } from "./PublicationSidebarCard";
+export { AnnouncementActionSidebarCard } from "./ActionSidebarCard";

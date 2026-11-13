@@ -1,4 +1,4 @@
-export * from "./Header";
-export * from "./MainCard";
-export * from "./SidebarCards";
-export * from "./States";
+export { FeedbackUniqueDetailHeader } from "./Header";
+export { FeedbackUniqueMainCard } from "./MainCard";
+export { FeedbackUniqueSidebarVote, FeedbackUniqueSidebarTimestamp } from "./SidebarCards";
+export { FeedbackUniqueLoadingState, FeedbackUniqueNotFoundState } from "./States";

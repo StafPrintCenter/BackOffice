@@ -1,2 +1,2 @@
-export * from "./Shortcut";
-export * from "./TableColumns";
+export { FeedbackUniqueShortcut } from "./Shortcut";
+export { getFeedbackUniqueColumns } from "./TableColumns";

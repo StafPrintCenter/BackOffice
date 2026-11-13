@@ -1,2 +1,2 @@
-export * from "./Shortcut";
-export * from "./TableColumns";
+export { FeedbackGroupShortcut } from "./Shortcut";
+export { getFeedbackGroupColumns } from "./TableColumns";

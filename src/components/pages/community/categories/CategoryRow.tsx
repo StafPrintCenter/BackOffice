@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { ConfirmDelete } from "@/components/site/AdminBits";
+import { ConfirmDelete } from "@/components/site";
 import type { APICommunityCategory } from "@/data/community";
 import { useDeleteCommunityCategory, useUpdateCommunityCategory } from "@/stores/useCommunityAdminStore";
 import { CategoryFormDialog } from "./CategoryFormDialog";

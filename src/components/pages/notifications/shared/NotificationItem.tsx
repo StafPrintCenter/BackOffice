@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Check, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { ConfirmDelete } from "@/components/site/AdminBits";
+import { ConfirmDelete } from "@/components/site";
 import { CATEGORY_META, formatNotificationDate, type APINotificationListItem } from "@/data/notifications";
 import { useDeleteNotification, useMarkAsRead } from "@/stores/useNotificationsStore";
 

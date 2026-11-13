@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useAdminEcosystemSiteDetail, useUpdateAdminEcosystemSite, useDeleteAdminEcosystemSite, fetchAdminEcosystemSiteById } from "@/stores/useEcosystemSitesStore";
 import type { AdminEcosystemSitePayload } from "@/data/ecosystemSites";
 import { SITE } from "@/data/site";
-import { Header, ContentCard, LogoVariantsCard, MetadataSidebarCard, HistorySidebarCard } from "@/components/pages/ecosystem/detail";
+import { ESDetailHeader, ESDetailContentCard, ESDetailLogoVariantsCard, ESDetailMetadataCard, ESDetailHistoryCard } from "@/components/pages/ecosystem/detail";
 
 export const Route = createFileRoute("/_admin/ecosystem/$id")({
   loader: async ({ params }) => {
@@ -103,7 +103,7 @@ function EcosystemSiteDetail() {
 
   return (
     <div className="space-y-6">
-      <Header
+      <ESDetailHeader
         name={site.name}
         id={site.id}
         isEditing={isEditing}
@@ -117,23 +117,23 @@ function EcosystemSiteDetail() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <ContentCard
+          <ESDetailContentCard
             isEditing={isEditing}
             site={site}
             form={form}
             onChangeForm={setForm}
           />
-          <LogoVariantsCard logoVariants={site.logoVariants} />
+          <ESDetailLogoVariantsCard logoVariants={site.logoVariants} />
         </div>
 
         <div className="space-y-6 lg:col-span-1">
-          <MetadataSidebarCard
+          <ESDetailMetadataCard
             isEditing={isEditing}
             site={site}
             form={form}
             onChangeForm={setForm}
           />
-          <HistorySidebarCard createdAt={site.createdAt} updatedAt={site.updatedAt} />
+          <ESDetailHistoryCard createdAt={site.createdAt} updatedAt={site.updatedAt} />
         </div>
       </div>
 

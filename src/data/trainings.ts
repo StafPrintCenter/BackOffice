@@ -130,7 +130,7 @@ export const TRAINING_STATUS_BADGES: Record<TrainingStatus, { label: string; cla
   },
   archived: {
     label: "Archivée",
-    className: "bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20",
+    className: "bg-destructive/10 text-destructive dark:text-destructive border-destructive/20",
   },
 };
 

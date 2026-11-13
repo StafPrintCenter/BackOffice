@@ -1,4 +1,4 @@
-export * from "./Header";
-export * from "./ContentCard";
-export * from "./BadgePreviewCard";
-export * from "./MetadataCard";
+export { CategoryDetailHeader } from "./Header";
+export { CategoryContentCard } from "./ContentCard";
+export { CategoryBadgePreviewCard } from "./BadgePreviewCard";
+export { CategoryMetadataCard } from "./MetadataCard";

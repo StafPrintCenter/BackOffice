@@ -1,4 +1,4 @@
-export * from "./KpiGrid";
-export * from "./ChartsGrid";
-export * from "./RecentLists";
-export * from "./RecentActivity";
+export { DashboardKpiGrid } from "./KpiGrid";
+export { DashboardChartsGrid } from "./ChartsGrid";
+export { DashboardRecentLists } from "./RecentLists";
+export { DashboardRecentActivity } from "./RecentActivity";

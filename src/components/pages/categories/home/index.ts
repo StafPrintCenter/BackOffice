@@ -1,2 +1,2 @@
-export * from "./TableColumns";
-export * from "./CreateModal";
+export { categoryTableColumns } from "./TableColumns";
+export { CategoryCreateModal } from "./CreateModal";

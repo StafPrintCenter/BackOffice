@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable, UserAvatar } from "@/components/site";
 import { useAdminStudentsList } from "@/stores/useStudentsStore";
 import type { APIAdminStudentListItem } from "@/data/students";
 import { SITE } from "@/data/site";
@@ -29,9 +29,12 @@ function AdminStudents() {
             key: "fullname",
             label: "Apprenant",
             render: (r) => (
-              <div>
-                <div className="font-medium">{r.fullname}</div>
-                <div className="text-xs text-muted-foreground">{r.email}</div>
+              <div className="flex items-center gap-3">
+                <UserAvatar name={r.fullname} photo={r.photo} className="size-10 shrink-0" imageClassName="object-cover" />
+                <div>
+                  <div className="font-medium">{r.fullname}</div>
+                  <div className="text-xs text-muted-foreground">{r.email}</div>
+                </div>
               </div>
             ),
           },

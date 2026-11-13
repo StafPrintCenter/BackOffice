@@ -11,7 +11,7 @@ import { useAdminAdminDetail, useAlertAdminAdmin, useBlockAdminAdmin, useReactiv
 import { useCurrentAdmin } from "@/stores/useAuthStore";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS } from "@/data/admins";
 import { SITE } from "@/data/site";
-import { initials } from "@/components/site/UserAvatar";
+import { UserAvatar } from "@/components/site";
 
 export const Route = createFileRoute("/_admin/members/admins/$id")({
   head: () => ({
@@ -252,9 +252,13 @@ function AdminDetail() {
           <div className="border-b bg-muted/40 p-6 sm:p-8">
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary font-display text-xl font-bold">
-                  {initials(admin.fullname)}
-                </div>
+                <UserAvatar
+                  name={admin.fullname}
+                  photo={admin.photo}
+                  className="size-16 shrink-0"
+                  imageClassName="object-cover"
+                  fallbackClassName="bg-primary/10 font-display text-xl font-bold text-primary"
+                />
                 <div>
                   <h1 className="font-display text-2xl font-bold tracking-tight">{admin.fullname}</h1>
                   <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">

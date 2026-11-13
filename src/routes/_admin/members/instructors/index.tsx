@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { PageHeader, DataTable } from "@/components/site";
+import { PageHeader, DataTable, UserAvatar } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -92,9 +92,12 @@ function AdminInstructors() {
             key: "name",
             label: "Instructeur",
             render: (r) => (
-              <div>
-                <div className="font-medium">{r.name}</div>
-                <div className="text-xs text-muted-foreground">{r.email}</div>
+              <div className="flex items-center gap-3">
+                <UserAvatar name={r.name} photo={r.photo} className="size-10 shrink-0" imageClassName="object-cover" />
+                <div>
+                  <div className="font-medium">{r.name}</div>
+                  <div className="text-xs text-muted-foreground">{r.email}</div>
+                </div>
               </div>
             ),
           },

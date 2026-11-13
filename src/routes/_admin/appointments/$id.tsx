@@ -6,12 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAdminAppointmentDetail, useUpdateAdminAppointmentStatus, fetchAdminAppointmentById } from "@/stores/useAppointmentsStore";
 import { type AppointmentStatus } from "@/data/appointments";
 import { SITE } from "@/data/site";
-import {
-  AppointmentDetailHeader,
-  AppointmentDetailContent,
-  AppointmentHandlingInfo,
-  AppointmentSidebar,
-} from "@/components/pages/appointments/detail";
+import { AppointmentDetailHeader, AppointmentDetailContent, AppointmentHandlingInfo, AppointmentSidebar } from "@/components/pages/appointments/detail";
 
 export const Route = createFileRoute("/_admin/appointments/$id")({
   loader: async ({ params }) => {

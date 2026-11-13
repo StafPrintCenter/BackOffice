@@ -5,14 +5,14 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ECOSYSTEM_SITE_CATEGORY_LABELS, ECOSYSTEM_SITE_STATUS_LABELS, getEcosystemSiteStatusBadge, type APIAdminEcosystemSite, type AdminEcosystemSitePayload, type EcosystemSiteCategory, type EcosystemSiteStatus } from "@/data/ecosystemSites";
 
-interface MetadataSidebarCardProps {
+interface MetadataCardProps {
   isEditing: boolean;
   site: APIAdminEcosystemSite;
   form: AdminEcosystemSitePayload;
   onChangeForm: (form: AdminEcosystemSitePayload) => void;
 }
 
-export function MetadataSidebarCard({ isEditing, site, form, onChangeForm }: MetadataSidebarCardProps) {
+export function ESDetailMetadataCard({ isEditing, site, form, onChangeForm }: MetadataCardProps) {
   if (isEditing) {
     return (
       <Card>

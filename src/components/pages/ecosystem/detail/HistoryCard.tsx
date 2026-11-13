@@ -1,12 +1,12 @@
 import { Calendar } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface HistorySidebarCardProps {
+interface HistoryCardProps {
   createdAt: string;
   updatedAt: string;
 }
 
-export function HistorySidebarCard({ createdAt, updatedAt }: HistorySidebarCardProps) {
+export function ESDetailHistoryCard({ createdAt, updatedAt }: HistoryCardProps) {
   return (
     <Card>
       <CardHeader className="pb-3">

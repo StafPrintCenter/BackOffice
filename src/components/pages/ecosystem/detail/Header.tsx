@@ -13,7 +13,7 @@ interface HeaderProps {
   onDelete: () => void;
 }
 
-export function Header({ name, id, isEditing, isPending, onBack, onCancel, onSave, onStartEdit, onDelete }: HeaderProps) {
+export function ESDetailHeader({ name, id, isEditing, isPending, onBack, onCancel, onSave, onStartEdit, onDelete }: HeaderProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b pb-4">
       <div className="flex items-center gap-3">

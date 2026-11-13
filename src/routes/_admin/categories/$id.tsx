@@ -4,20 +4,10 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import {
-  useAdminCategoryDetail,
-  useUpdateAdminCategory,
-  useDeleteAdminCategory,
-  fetchAdminCategoryById,
-} from "@/stores/useCategoriesStore";
+import { useAdminCategoryDetail, useUpdateAdminCategory, useDeleteAdminCategory, fetchAdminCategoryById } from "@/stores/useCategoriesStore";
 import type { AdminCategoryPayload } from "@/data/categories";
 import { SITE } from "@/data/site";
-import {
-  CategoryDetailHeader,
-  CategoryContentCard,
-  CategoryBadgePreviewCard,
-  CategoryMetadataCard,
-} from "@/components/pages/categories/detail";
+import { CategoryDetailHeader, CategoryContentCard, CategoryBadgePreviewCard, CategoryMetadataCard } from "@/components/pages/categories/detail";
 
 export const Route = createFileRoute("/_admin/categories/$id")({
   loader: async ({ params }) => {

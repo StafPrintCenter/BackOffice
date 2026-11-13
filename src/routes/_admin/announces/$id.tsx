@@ -4,23 +4,10 @@ import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import {
-  useAdminAnnouncementDetail,
-  useUpdateAdminAnnouncement,
-  useDeleteAdminAnnouncement,
-  useAdminAnnouncementAnalytics,
-  fetchAdminAnnouncementById,
-} from "@/stores/useAnnouncementsStore";
+import { useAdminAnnouncementDetail, useUpdateAdminAnnouncement, useDeleteAdminAnnouncement, useAdminAnnouncementAnalytics, fetchAdminAnnouncementById } from "@/stores/useAnnouncementsStore";
 import { SITE } from "@/data/site";
 import type { EditForm } from "@/data/announcements";
-import {
-  AnnouncementDetailHeader,
-  AnnouncementContentCard,
-  AnnouncementAnalyticsCard,
-  AnnouncementConfigSidebarCard,
-  AnnouncementPublicationSidebarCard,
-  AnnouncementActionSidebarCard,
-} from "@/components/pages/announces/detail";
+import { AnnouncementDetailHeader, AnnouncementContentCard, AnnouncementAnalyticsCard, AnnouncementConfigSidebarCard, AnnouncementPublicationSidebarCard, AnnouncementActionSidebarCard } from "@/components/pages/announces/detail";
 
 export const Route = createFileRoute("/_admin/announces/$id")({
   loader: async ({ params }) => {

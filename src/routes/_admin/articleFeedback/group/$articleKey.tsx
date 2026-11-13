@@ -1,19 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import {
-  useAdminArticleFeedbackGroupDetail,
-  fetchAdminArticleFeedbackGroupDetail,
-} from "@/stores/useArticleFeedbackStore";
+import { useAdminArticleFeedbackGroupDetail, fetchAdminArticleFeedbackGroupDetail } from "@/stores/useArticleFeedbackStore";
 import { SITE } from "@/data/site";
-import {
-  FeedbackGroupDetailHeader,
-  FeedbackGroupSatisfactionCard,
-  FeedbackGroupItemsList,
-  FeedbackGroupDocCard,
-  FeedbackGroupStatsCard,
-  FeedbackGroupTimestampCard,
-  FeedbackGroupLoadingState,
-  FeedbackGroupNotFoundState,
-} from "@/components/pages/articleFeedback/group/detail";
+import { FeedbackGroupDetailHeader, FeedbackGroupSatisfactionCard, FeedbackGroupItemsList, FeedbackGroupDocCard, FeedbackGroupStatsCard, FeedbackGroupTimestampCard, FeedbackGroupLoadingState, FeedbackGroupNotFoundState } from "@/components/pages/articleFeedback/group/detail";
 
 export const Route = createFileRoute("/_admin/articleFeedback/group/$articleKey")({
   loader: async ({ params }) => {

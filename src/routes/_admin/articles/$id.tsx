@@ -4,21 +4,10 @@ import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import {
-  useAdminArticleDetail,
-  useUpdateAdminArticle,
-  useDeleteAdminArticle,
-  useAdminCategoriesList,
-  fetchAdminArticleById,
-} from "@/stores";
+import { useAdminArticleDetail, useUpdateAdminArticle, useDeleteAdminArticle, useAdminCategoriesList, fetchAdminArticleById } from "@/stores";
 import type { AdminArticlePayload } from "@/data/articles";
 import { SITE } from "@/data/site";
-import {
-  ArticleDetailHeader,
-  ArticleContentCard,
-  ArticleCoverSidebarCard,
-  ArticleSettingsSidebarCard,
-} from "@/components/pages/articles/detail";
+import { ArticleDetailHeader, ArticleContentCard, ArticleCoverSidebarCard, ArticleSettingsSidebarCard } from "@/components/pages/articles/detail";
 
 export const Route = createFileRoute("/_admin/articles/$id")({
   loader: async ({ params }) => {

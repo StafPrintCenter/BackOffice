@@ -12,7 +12,7 @@ interface ContentCardProps {
   onChangeForm: (form: AdminEcosystemSitePayload) => void;
 }
 
-export function ContentCard({ isEditing, site, form, onChangeForm }: ContentCardProps) {
+export function ESDetailContentCard({ isEditing, site, form, onChangeForm }: ContentCardProps) {
   if (isEditing) {
     return (
       <Card>

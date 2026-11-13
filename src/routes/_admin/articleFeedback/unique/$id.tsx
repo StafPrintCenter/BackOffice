@@ -2,20 +2,9 @@ import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { ConfirmDelete } from "@/components/site";
-import {
-  useAdminArticleFeedbackDetail,
-  useDeleteAdminArticleFeedback,
-  fetchAdminArticleFeedbackById,
-} from "@/stores/useArticleFeedbackStore";
+import { useAdminArticleFeedbackDetail, useDeleteAdminArticleFeedback, fetchAdminArticleFeedbackById } from "@/stores/useArticleFeedbackStore";
 import { SITE } from "@/data/site";
-import {
-  FeedbackUniqueDetailHeader,
-  FeedbackUniqueMainCard,
-  FeedbackUniqueSidebarVote,
-  FeedbackUniqueSidebarTimestamp,
-  FeedbackUniqueLoadingState,
-  FeedbackUniqueNotFoundState,
-} from "@/components/pages/articleFeedback/unique/detail";
+import { FeedbackUniqueDetailHeader, FeedbackUniqueMainCard, FeedbackUniqueSidebarVote, FeedbackUniqueSidebarTimestamp, FeedbackUniqueLoadingState, FeedbackUniqueNotFoundState } from "@/components/pages/articleFeedback/unique/detail";
 
 export const Route = createFileRoute("/_admin/articleFeedback/unique/$id")({
   loader: async ({ params }) => {

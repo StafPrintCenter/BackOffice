@@ -6,7 +6,7 @@ interface LogoVariantsCardProps {
   logoVariants: EcosystemSiteLogoVariants;
 }
 
-export function LogoVariantsCard({ logoVariants }: LogoVariantsCardProps) {
+export function ESDetailLogoVariantsCard({ logoVariants }: LogoVariantsCardProps) {
   return (
     <Card>
       <CardHeader className="pb-3">

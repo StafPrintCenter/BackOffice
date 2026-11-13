@@ -4,21 +4,10 @@ import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import {
-  useAdminEcosystemSiteDetail,
-  useUpdateAdminEcosystemSite,
-  useDeleteAdminEcosystemSite,
-  fetchAdminEcosystemSiteById
-} from "@/stores/useEcosystemSitesStore";
+import { useAdminEcosystemSiteDetail, useUpdateAdminEcosystemSite, useDeleteAdminEcosystemSite, fetchAdminEcosystemSiteById } from "@/stores/useEcosystemSitesStore";
 import type { AdminEcosystemSitePayload } from "@/data/ecosystemSites";
 import { SITE } from "@/data/site";
-import {
-  Header,
-  ContentCard,
-  LogoVariantsCard,
-  MetadataSidebarCard,
-  HistorySidebarCard,
-} from "@/components/pages/ecosystem/detail";
+import { Header, ContentCard, LogoVariantsCard, MetadataSidebarCard, HistorySidebarCard } from "@/components/pages/ecosystem/detail";
 
 export const Route = createFileRoute("/_admin/ecosystem/$id")({
   loader: async ({ params }) => {

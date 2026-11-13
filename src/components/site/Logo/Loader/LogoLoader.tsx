@@ -1,6 +1,6 @@
 import { useId, type CSSProperties } from "react";
 import { DC_CENTER, DC_MONOGRAM_TRANSFORM, DC_TEXT, MC_CENTERLINE, MC_NIB, MC_PEN, MC_SP } from "../Paths";
-import { buildLogoLoaderCss, LogoLoaderProps, NIB_WIPE, PEN_WIPE, VIEW, LOGO_LOADER_DEFAULT_TEXT } from "./";
+import { LOGO_LOADER_DEFAULT_TEXT, buildLogoLoaderCss, NIB_WIPE, PEN_WIPE, VIEW, type LogoLoaderProps } from "./";
 
 export function LogoLoader({
   variant = "mc",

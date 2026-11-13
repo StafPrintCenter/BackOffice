@@ -1,4 +1,4 @@
-import type { LogoLoaderVariant } from "./types";
+import type { LogoLoaderVariant } from "./config";
 
 type Span = [number, number];
 const CYCLE = 6;

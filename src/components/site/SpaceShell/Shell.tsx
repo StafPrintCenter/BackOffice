@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { toast } from "sonner";
-import { ConfirmDisconnect } from "@/components/site/AdminBits";
+import { ConfirmDisconnect } from "@/components/site";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { SpaceSidebarContent, SpaceHeader } from "./";
 

@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { ConfirmDelete } from "@/components/site/AdminBits";
+import { ConfirmDelete } from "@/components/site";
 import { type NotificationCategory } from "@/data/notifications";
 import { useMarkAllAsRead, useNotificationsList, useBulkDeleteNotifications } from "@/stores/useNotificationsStore";
 import { DeleteAllDialog } from "@/components/pages/notifications/shared";

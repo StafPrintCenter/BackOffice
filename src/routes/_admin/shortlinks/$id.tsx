@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, MousePointerClick, Globe, MonitorSmartphone, Copy, Check } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
-import { ConfirmDelete } from "@/components/site/AdminBits";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, BookOpen, Loader2, Pencil, Save, Trash2, X } from "lucide-react";
-import { ConfirmDelete } from "@/components/site/AdminBits";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { useAdminTrainingDetail, useUpdateAdminTraining, useDeleteAdminTraining } from "@/stores/useTrainingsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";

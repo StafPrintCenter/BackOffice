@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_META } from "@/data/notifications";
 import { useNotificationDetail, useDeleteNotification } from "@/stores/useNotificationsStore";
-import { ConfirmDelete } from "@/components/site/AdminBits";
+import { ConfirmDelete } from "@/components/site";
 import { NotificationDetailCard, NotificationTechnicalDetails } from "@/components/pages/notifications/detail";
 import { SITE } from "@/data/site";
 import { useDynamicPageMetadata } from "@/hooks/useDynamicPageMetadata";

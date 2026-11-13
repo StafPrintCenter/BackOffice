@@ -1,5 +1,5 @@
 export { AuthShell } from "./AuthShell";
-export { ConfirmDelete, ConfirmDisconnect, PageHeader, StatCard } from "./AdminBits";
+export { ConfirmDelete, ConfirmDisconnect, PageHeader, StatCard } from "./SpaceBits";
 export { DataTable } from "./DataTable";
 export { FilePreviewModal } from "./FilePreviewModal";
 export { SocialLinks } from "./SocialLinks";

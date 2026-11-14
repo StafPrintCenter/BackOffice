@@ -2,19 +2,19 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { ConfirmDelete, FilePreviewModal } from "@/components/site";
+import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { ResourceContentCard, ResourceDetailHeader, ResourceSettingsSidebarCard } from "@/components/pages/resources/detail";
 import { adminResourcePayloadSchema, type AdminResourcePayload, type APIAdminResource } from "@/data/resources";
 import { SITE } from "@/data/site";
 import {
+  fetchAdminResourceFileLink,
   fetchAdminResourceById,
   useAdminResourceDetail,
   useDeleteAdminResource,
   useSetAdminResourceVisibility,
   useUpdateAdminResource,
 } from "@/stores/useResourcesStore";
-import { resolveStorageUrl } from "@/lib/api/file";
 import type { ResourceFormValues } from "@/components/pages/resources/home/FormFields";
 
 export const Route = createFileRoute("/_admin/ressources/$id")({
@@ -70,14 +70,6 @@ function toPayload(form: ResourceFormValues): AdminResourcePayload {
   };
 }
 
-function getMimeType(fileName?: string | null): string | undefined {
-  const extension = fileName?.split(".").pop()?.toLowerCase();
-  if (extension === "pdf") return "application/pdf";
-  if (extension === "png") return "image/png";
-  if (extension === "jpg" || extension === "jpeg") return "image/jpeg";
-  return undefined;
-}
-
 function ResourceDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
@@ -89,7 +81,7 @@ function ResourceDetail() {
   const [form, setForm] = useState<ResourceFormValues | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [toDelete, setToDelete] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(false);
+  const [isResolvingFile, setIsResolvingFile] = useState(false);
 
   useEffect(() => {
     if (resource && !isEditing) setForm(toForm(resource));
@@ -150,7 +142,29 @@ function ResourceDetail() {
     );
   };
 
-  const fileUrl = resolveStorageUrl(resource.downloadUrl);
+  const resolveFileLink = async () => {
+    if (!resource.downloadUrl || isResolvingFile) return null;
+    setIsResolvingFile(true);
+    try {
+      return await fetchAdminResourceFileLink(resource.downloadUrl);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Impossible de générer le lien du fichier");
+      return null;
+    } finally {
+      setIsResolvingFile(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    const file = await resolveFileLink();
+    if (!file) return;
+    const link = document.createElement("a");
+    link.href = file.url;
+    link.download = file.fileName || resource.downloadFileName || resource.title;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
 
   return (
     <>
@@ -180,18 +194,12 @@ function ResourceDetail() {
         <div className="lg:col-span-1">
           <ResourceSettingsSidebarCard
             resource={resource}
-            fileUrl={fileUrl}
-            onPreview={() => setPreviewOpen(true)}
+            downloadAvailable={Boolean(resource.downloadUrl)}
+            isResolvingFile={isResolvingFile}
+            onDownload={handleDownload}
           />
         </div>
       </div>
-
-      <FilePreviewModal
-        url={previewOpen ? fileUrl : null}
-        title={resource.downloadFileName || resource.title}
-        mimeType={getMimeType(resource.downloadFileName)}
-        onClose={() => setPreviewOpen(false)}
-      />
 
       <ConfirmDelete
         open={toDelete}

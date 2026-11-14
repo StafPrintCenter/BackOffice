@@ -1,15 +1,17 @@
-import { Download, Eye, FileText } from "lucide-react";
+import { Download, FileText, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { APIAdminResource } from "@/data/resources";
 
 export function ResourceSettingsSidebarCard({
   resource,
-  fileUrl,
-  onPreview,
+  downloadAvailable,
+  isResolvingFile,
+  onDownload,
 }: {
   resource: APIAdminResource;
-  fileUrl: string | null;
-  onPreview: () => void;
+  downloadAvailable: boolean;
+  isResolvingFile: boolean;
+  onDownload: () => void;
 }) {
   return (
     <aside className="space-y-6">
@@ -21,17 +23,25 @@ export function ResourceSettingsSidebarCard({
           </span>
           <p className="min-w-0 break-all text-sm font-medium">{resource.downloadFileName || "Fichier de la ressource"}</p>
         </div>
-        {fileUrl && (
-          <div className="mt-3 flex gap-2">
-            <Button type="button" variant="outline" className="flex-1" onClick={onPreview}>
-              <Eye className="mr-1.5 h-4 w-4" /> Aperçu
-            </Button>
-            <Button asChild variant="outline" size="icon" aria-label="Télécharger le fichier">
-              <a href={fileUrl} download={resource.downloadFileName || undefined}><Download className="h-4 w-4" /></a>
+        {downloadAvailable && (
+          <div className="mt-3">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={onDownload}
+              disabled={isResolvingFile}
+            >
+              {isResolvingFile ? (
+                <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="mr-1.5 h-4 w-4" />
+              )}
+              {isResolvingFile ? "Génération du lien..." : "Télécharger"}
             </Button>
           </div>
         )}
-        {!fileUrl && <p className="mt-3 text-xs text-muted-foreground">Aucun lien de fichier disponible.</p>}
+        {!downloadAvailable && <p className="mt-3 text-xs text-muted-foreground">Aucun lien de fichier disponible.</p>}
       </section>
 
       <section className="rounded-2xl border bg-card p-5 shadow-sm">

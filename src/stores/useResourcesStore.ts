@@ -18,6 +18,33 @@ export const useAdminResourcesList = store.useList;
 export const useAdminResourceDetail = store.useDetail;
 export const useDeleteAdminResource = store.useRemove;
 
+export async function fetchAdminResourceFileLink(downloadUrl: string): Promise<{
+  url: string;
+  fileName?: string;
+}> {
+  const endpoint = new URL(downloadUrl, window.location.origin);
+  const apiPrefix = "/api/v1/";
+  if (!endpoint.pathname.startsWith(apiPrefix)) {
+    throw new Error("L’URL de téléchargement de la ressource est invalide.");
+  }
+
+  const path = `/api/${endpoint.pathname.slice(apiPrefix.length)}${endpoint.search}`;
+  const response = await adminFetch(path);
+  if (!response.ok) {
+    throw await parseApiError(response, "Impossible de générer le lien du fichier");
+  }
+
+  const json: { data?: { url?: unknown; file_name?: unknown } } = await response.json();
+  if (typeof json.data?.url !== "string" || !json.data.url) {
+    throw new Error("L’API n’a pas retourné de lien de fichier valide.");
+  }
+
+  return {
+    url: json.data.url,
+    fileName: typeof json.data.file_name === "string" ? json.data.file_name : undefined,
+  };
+}
+
 function buildResourceFormData(payload: AdminResourcePayload): FormData {
   const formData = new FormData();
   for (const [key, value] of Object.entries(payload)) {

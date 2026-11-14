@@ -15,6 +15,7 @@ export * from "./useNewsletterCampaignsStore";
 export * from "./useNewsletterSubscribersStore";
 export * from "./useProjectsStore";
 export * from "./useReportsStore";
+export * from "./useResourcesStore";
 export * from "./useReviewFormsStore";
 export * from "./useReviewInvitationsStore";
 export * from "./useReviewQuestionsStore";

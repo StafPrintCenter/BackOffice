@@ -43,6 +43,8 @@ import { Route as AdminProjectsIndexRouteImport } from './routes/_admin/projects
 import { Route as AdminProjectsIdRouteImport } from './routes/_admin/projects/$id'
 import { Route as AdminReportsIndexRouteImport } from './routes/_admin/reports/index'
 import { Route as AdminReportsIdRouteImport } from './routes/_admin/reports/$id'
+import { Route as AdminRessourcesIndexRouteImport } from './routes/_admin/ressources/index'
+import { Route as AdminRessourcesIdRouteImport } from './routes/_admin/ressources/$id'
 import { Route as AdminSecurityMfaRouteImport } from './routes/_admin/security/mfa'
 import { Route as AdminSecuritySessionsRouteImport } from './routes/_admin/security/sessions'
 import { Route as AdminServicesIndexRouteImport } from './routes/_admin/services/index'
@@ -265,6 +267,16 @@ const AdminReportsIndexRoute = AdminReportsIndexRouteImport.update({
 const AdminReportsIdRoute = AdminReportsIdRouteImport.update({
   id: '/reports/$id',
   path: '/reports/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRessourcesIndexRoute = AdminRessourcesIndexRouteImport.update({
+  id: '/ressources/',
+  path: '/ressources/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRessourcesIdRoute = AdminRessourcesIdRouteImport.update({
+  id: '/ressources/$id',
+  path: '/ressources/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSecurityMfaRoute = AdminSecurityMfaRouteImport.update({
@@ -588,6 +600,7 @@ export interface FileRoutesByFullPath {
   '/notifications/preferences': typeof AdminNotificationsPreferencesRoute
   '/projects/$id': typeof AdminProjectsIdRoute
   '/reports/$id': typeof AdminReportsIdRoute
+  '/ressources/$id': typeof AdminRessourcesIdRoute
   '/security/mfa': typeof AdminSecurityMfaRoute
   '/security/sessions': typeof AdminSecuritySessionsRoute
   '/services/$id': typeof AdminServicesIdRoute
@@ -606,6 +619,7 @@ export interface FileRoutesByFullPath {
   '/notifications/': typeof AdminNotificationsIndexRoute
   '/projects/': typeof AdminProjectsIndexRoute
   '/reports/': typeof AdminReportsIndexRoute
+  '/ressources/': typeof AdminRessourcesIndexRoute
   '/services/': typeof AdminServicesIndexRoute
   '/shortlinks/': typeof AdminShortlinksIndexRoute
   '/stats/': typeof AdminStatsIndexRoute
@@ -676,6 +690,7 @@ export interface FileRoutesByTo {
   '/notifications/preferences': typeof AdminNotificationsPreferencesRoute
   '/projects/$id': typeof AdminProjectsIdRoute
   '/reports/$id': typeof AdminReportsIdRoute
+  '/ressources/$id': typeof AdminRessourcesIdRoute
   '/security/mfa': typeof AdminSecurityMfaRoute
   '/security/sessions': typeof AdminSecuritySessionsRoute
   '/services/$id': typeof AdminServicesIdRoute
@@ -694,6 +709,7 @@ export interface FileRoutesByTo {
   '/notifications': typeof AdminNotificationsIndexRoute
   '/projects': typeof AdminProjectsIndexRoute
   '/reports': typeof AdminReportsIndexRoute
+  '/ressources': typeof AdminRessourcesIndexRoute
   '/services': typeof AdminServicesIndexRoute
   '/shortlinks': typeof AdminShortlinksIndexRoute
   '/stats': typeof AdminStatsIndexRoute
@@ -767,6 +783,7 @@ export interface FileRoutesById {
   '/_admin/notifications/preferences': typeof AdminNotificationsPreferencesRoute
   '/_admin/projects/$id': typeof AdminProjectsIdRoute
   '/_admin/reports/$id': typeof AdminReportsIdRoute
+  '/_admin/ressources/$id': typeof AdminRessourcesIdRoute
   '/_admin/security/mfa': typeof AdminSecurityMfaRoute
   '/_admin/security/sessions': typeof AdminSecuritySessionsRoute
   '/_admin/services/$id': typeof AdminServicesIdRoute
@@ -785,6 +802,7 @@ export interface FileRoutesById {
   '/_admin/notifications/': typeof AdminNotificationsIndexRoute
   '/_admin/projects/': typeof AdminProjectsIndexRoute
   '/_admin/reports/': typeof AdminReportsIndexRoute
+  '/_admin/ressources/': typeof AdminRessourcesIndexRoute
   '/_admin/services/': typeof AdminServicesIndexRoute
   '/_admin/shortlinks/': typeof AdminShortlinksIndexRoute
   '/_admin/stats/': typeof AdminStatsIndexRoute
@@ -857,6 +875,7 @@ export interface FileRouteTypes {
     | '/notifications/preferences'
     | '/projects/$id'
     | '/reports/$id'
+    | '/ressources/$id'
     | '/security/mfa'
     | '/security/sessions'
     | '/services/$id'
@@ -875,6 +894,7 @@ export interface FileRouteTypes {
     | '/notifications/'
     | '/projects/'
     | '/reports/'
+    | '/ressources/'
     | '/services/'
     | '/shortlinks/'
     | '/stats/'
@@ -945,6 +965,7 @@ export interface FileRouteTypes {
     | '/notifications/preferences'
     | '/projects/$id'
     | '/reports/$id'
+    | '/ressources/$id'
     | '/security/mfa'
     | '/security/sessions'
     | '/services/$id'
@@ -963,6 +984,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/projects'
     | '/reports'
+    | '/ressources'
     | '/services'
     | '/shortlinks'
     | '/stats'
@@ -1035,6 +1057,7 @@ export interface FileRouteTypes {
     | '/_admin/notifications/preferences'
     | '/_admin/projects/$id'
     | '/_admin/reports/$id'
+    | '/_admin/ressources/$id'
     | '/_admin/security/mfa'
     | '/_admin/security/sessions'
     | '/_admin/services/$id'
@@ -1053,6 +1076,7 @@ export interface FileRouteTypes {
     | '/_admin/notifications/'
     | '/_admin/projects/'
     | '/_admin/reports/'
+    | '/_admin/ressources/'
     | '/_admin/services/'
     | '/_admin/shortlinks/'
     | '/_admin/stats/'
@@ -1347,6 +1371,20 @@ declare module '@tanstack/react-router' {
       path: '/reports/$id'
       fullPath: '/reports/$id'
       preLoaderRoute: typeof AdminReportsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/ressources/': {
+      id: '/_admin/ressources/'
+      path: '/ressources'
+      fullPath: '/ressources/'
+      preLoaderRoute: typeof AdminRessourcesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/ressources/$id': {
+      id: '/_admin/ressources/$id'
+      path: '/ressources/$id'
+      fullPath: '/ressources/$id'
+      preLoaderRoute: typeof AdminRessourcesIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/security/mfa': {
@@ -1746,6 +1784,7 @@ interface AdminRouteChildren {
   AdminNotificationsPreferencesRoute: typeof AdminNotificationsPreferencesRoute
   AdminProjectsIdRoute: typeof AdminProjectsIdRoute
   AdminReportsIdRoute: typeof AdminReportsIdRoute
+  AdminRessourcesIdRoute: typeof AdminRessourcesIdRoute
   AdminSecurityMfaRoute: typeof AdminSecurityMfaRoute
   AdminSecuritySessionsRoute: typeof AdminSecuritySessionsRoute
   AdminServicesIdRoute: typeof AdminServicesIdRoute
@@ -1764,6 +1803,7 @@ interface AdminRouteChildren {
   AdminNotificationsIndexRoute: typeof AdminNotificationsIndexRoute
   AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
   AdminReportsIndexRoute: typeof AdminReportsIndexRoute
+  AdminRessourcesIndexRoute: typeof AdminRessourcesIndexRoute
   AdminServicesIndexRoute: typeof AdminServicesIndexRoute
   AdminShortlinksIndexRoute: typeof AdminShortlinksIndexRoute
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
@@ -1829,6 +1869,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminNotificationsPreferencesRoute: AdminNotificationsPreferencesRoute,
   AdminProjectsIdRoute: AdminProjectsIdRoute,
   AdminReportsIdRoute: AdminReportsIdRoute,
+  AdminRessourcesIdRoute: AdminRessourcesIdRoute,
   AdminSecurityMfaRoute: AdminSecurityMfaRoute,
   AdminSecuritySessionsRoute: AdminSecuritySessionsRoute,
   AdminServicesIdRoute: AdminServicesIdRoute,
@@ -1847,6 +1888,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminNotificationsIndexRoute: AdminNotificationsIndexRoute,
   AdminProjectsIndexRoute: AdminProjectsIndexRoute,
   AdminReportsIndexRoute: AdminReportsIndexRoute,
+  AdminRessourcesIndexRoute: AdminRessourcesIndexRoute,
   AdminServicesIndexRoute: AdminServicesIndexRoute,
   AdminShortlinksIndexRoute: AdminShortlinksIndexRoute,
   AdminStatsIndexRoute: AdminStatsIndexRoute,

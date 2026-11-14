@@ -101,7 +101,7 @@ export function ResourceFormFields({
             {error("price")}
           </div>
           <div>
-            <Label htmlFor="resource-original-price">Ancien prix</Label>
+            <Label htmlFor="resource-original-price">Prix original</Label>
             <Input id="resource-original-price" type="number" min="0" step="1" value={form.originalPrice} onChange={(e) => set("originalPrice", e.target.value)} disabled={disabled} />
             {error("originalPrice")}
           </div>

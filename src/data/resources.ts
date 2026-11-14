@@ -67,6 +67,6 @@ export const adminResourcePayloadSchema = z.object({
   outcomes: z.array(z.string().trim().min(1)).min(1, "Ajoutez au moins un résultat"),
   audience: z.string().trim().min(1, "Le public cible est requis").max(300),
   requirements: z.array(z.string().trim().min(1)).min(1, "Ajoutez au moins un prérequis"),
-  license: z.string().trim().min(1, "La licence est requise").max(10000),
+  license: z.string().trim().min(1, "La licence est requise").max(300),
   file: z.instanceof(File).optional(),
 });

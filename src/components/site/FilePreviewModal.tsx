@@ -17,9 +17,12 @@ export function FilePreviewModal({ url, title, onClose, mimeType }: FilePreviewM
     typeof window !== "undefined" &&
     (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
-  const extension = url.split(/[?#]/, 1)[0].split(".").pop()?.toLowerCase() || "";
+  const extension =
+    url.split(/[?#]/, 1)[0].split(".").pop()?.toLowerCase() ||
+    title.split(/[?#]/, 1)[0].split(".").pop()?.toLowerCase() ||
+    "";
 
-  const isPdf = extension === "pdf";
+  const isPdf = mimeType === "application/pdf" || extension === "pdf";
   const isImage =
     mimeType?.startsWith("image/") || ["jpg", "jpeg", "png", "webp", "gif"].includes(extension);
   const isDocx = ["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(extension);

@@ -16,16 +16,10 @@ export function FilePreviewModal({ url, title, onClose, mimeType }: FilePreviewM
   const isLocalhost =
     typeof window !== "undefined" &&
     (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
-  const isLocalFile =
-    typeof window !== "undefined" &&
-    new URL(absoluteUrl, window.location.origin).origin === window.location.origin;
 
-  const extension =
-    url.split(/[?#]/, 1)[0].split(".").pop()?.toLowerCase() ||
-    title.split(/[?#]/, 1)[0].split(".").pop()?.toLowerCase() ||
-    "";
+  const extension = url.split(/[?#]/, 1)[0].split(".").pop()?.toLowerCase() || "";
 
-  const isPdf = mimeType === "application/pdf" || extension === "pdf";
+  const isPdf = extension === "pdf";
   const isImage =
     mimeType?.startsWith("image/") || ["jpg", "jpeg", "png", "webp", "gif"].includes(extension);
   const isDocx = ["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(extension);
@@ -88,7 +82,7 @@ export function FilePreviewModal({ url, title, onClose, mimeType }: FilePreviewM
                 alt={title}
                 className="max-w-full max-h-full object-contain rounded-lg"
               />
-            ) : isDocx && isLocalhost && isLocalFile ? (
+            ) : isDocx && isLocalhost ? (
               <div className="flex flex-col items-center justify-center text-center p-8 space-y-4 max-w-md">
                 <div className="p-3 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20">
                   <FileSpreadsheet size={32} />

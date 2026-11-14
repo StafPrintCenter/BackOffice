@@ -54,14 +54,14 @@ export interface AdminResourcePayload {
 
 export const adminResourcePayloadSchema = z.object({
   slug: z.string().trim().max(200).optional(),
-  title: z.string().trim().min(1, "Le titre est requis").max(255),
+  title: z.string().trim().min(1, "Le titre est requis").max(120),
   category: z.enum(RESOURCE_CATEGORIES),
   price: z.number().int().min(0, "Le prix doit être positif ou nul"),
   originalPrice: z.number().int().min(0).nullable(),
   status: z.string().trim().max(100).optional(),
-  short: z.string().trim().min(1, "La description courte est requise").max(1000),
-  description: z.string().trim().min(1, "La description est requise").max(20000),
-  format: z.string().trim().min(1, "Le format est requis").max(255),
+  short: z.string().trim().min(1, "La description courte est requise").max(300),
+  description: z.string().trim().min(1, "La description est requise").max(1000),
+  format: z.string().trim().min(1, "Le format est requis").max(80),
   meta: z.string().trim().min(1, "Les métadonnées sont requises").max(255),
   includes: z.array(z.string().trim().min(1)).min(1, "Ajoutez au moins un élément inclus"),
   outcomes: z.array(z.string().trim().min(1)).min(1, "Ajoutez au moins un résultat"),

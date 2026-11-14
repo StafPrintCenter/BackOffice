@@ -1,4 +1,6 @@
 import type { ChangeEvent } from "react";
+import { Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,10 +18,10 @@ export interface ResourceFormValues {
   description: string;
   format: string;
   meta: string;
-  includes: string;
-  outcomes: string;
+  includes: string[];
+  outcomes: string[];
   audience: string;
-  requirements: string;
+  requirements: string[];
   license: string;
   file: File | null;
 }
@@ -35,10 +37,10 @@ export const EMPTY_RESOURCE_FORM: ResourceFormValues = {
   description: "",
   format: "",
   meta: "",
-  includes: "",
-  outcomes: "",
+  includes: [""],
+  outcomes: [""],
   audience: "",
-  requirements: "",
+  requirements: [""],
   license: "",
   file: null,
 };
@@ -133,26 +135,35 @@ export function ResourceFormFields({
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="resource-includes">Contenu inclus (un élément par ligne)</Label>
-          <Textarea id="resource-includes" value={form.includes} rows={4} onChange={(e) => set("includes", e.target.value)} disabled={disabled} />
-          {error("includes")}
-        </div>
-        <div>
-          <Label htmlFor="resource-outcomes">Résultats (un par ligne)</Label>
-          <Textarea id="resource-outcomes" value={form.outcomes} rows={4} onChange={(e) => set("outcomes", e.target.value)} disabled={disabled} />
-          {error("outcomes")}
-        </div>
+        <ResourceListField
+          id="resource-includes"
+          label="Contenu inclus"
+          values={form.includes}
+          onChange={(values) => set("includes", values)}
+          error={errors.includes}
+          disabled={disabled}
+        />
+        <ResourceListField
+          id="resource-outcomes"
+          label="Résultats"
+          values={form.outcomes}
+          onChange={(values) => set("outcomes", values)}
+          error={errors.outcomes}
+          disabled={disabled}
+        />
         <div>
           <Label htmlFor="resource-audience">Public cible</Label>
           <Textarea id="resource-audience" value={form.audience} maxLength={5000} rows={3} onChange={(e) => set("audience", e.target.value)} disabled={disabled} />
           {error("audience")}
         </div>
-        <div>
-          <Label htmlFor="resource-requirements">Prérequis (un par ligne)</Label>
-          <Textarea id="resource-requirements" value={form.requirements} rows={3} onChange={(e) => set("requirements", e.target.value)} disabled={disabled} />
-          {error("requirements")}
-        </div>
+        <ResourceListField
+          id="resource-requirements"
+          label="Prérequis"
+          values={form.requirements}
+          onChange={(values) => set("requirements", values)}
+          error={errors.requirements}
+          disabled={disabled}
+        />
       </div>
 
       <div>
@@ -168,6 +179,62 @@ export function ResourceFormFields({
         {form.file && <p className="mt-1 text-xs text-muted-foreground">Nouveau fichier : {form.file.name}</p>}
         {error("file")}
       </div>
+    </div>
+  );
+}
+
+function ResourceListField({
+  id,
+  label,
+  values,
+  onChange,
+  error: fieldError,
+  disabled,
+}: {
+  id: string;
+  label: string;
+  values: string[];
+  onChange: (values: string[]) => void;
+  error?: string;
+  disabled: boolean;
+}) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <div className="mt-2 space-y-2">
+        {values.map((value, index) => (
+          <div key={`${id}-${index}`} className="flex gap-2">
+            <Input
+              id={`${id}-${index}`}
+              value={value}
+              onChange={(event) =>
+                onChange(values.map((item, itemIndex) => itemIndex === index ? event.target.value : item))
+              }
+              disabled={disabled}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => onChange(values.filter((_, itemIndex) => itemIndex !== index))}
+              disabled={disabled}
+              aria-label={`Supprimer ${label.toLowerCase()} ${index + 1}`}
+            >
+              <Trash2 className="h-3 w-3" />
+            </Button>
+          </div>
+        ))}
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => onChange([...values, ""])}
+          disabled={disabled}
+        >
+          <Plus className="mr-1 h-3 w-3" /> Ajouter
+        </Button>
+      </div>
+      {fieldError && <p className="mt-1 text-xs text-destructive">{fieldError}</p>}
     </div>
   );
 }

@@ -66,8 +66,8 @@ function Text({ label, value }: { label: string; value: string }) {
   );
 }
 
-function List({ label, value }: { label: string; value: string }) {
-  const items = value.split("\n").map((item) => item.trim()).filter(Boolean);
+function List({ label, value }: { label: string; value: string[] }) {
+  const items = value.map((item) => item.trim()).filter(Boolean);
   return (
     <div>
       <p className="text-xs font-medium text-muted-foreground">{label}</p>

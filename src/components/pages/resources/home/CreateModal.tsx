@@ -24,10 +24,10 @@ function toPayload(form: ResourceFormValues): AdminResourcePayload {
     description: form.description,
     format: form.format,
     meta: form.meta,
-    includes: form.includes.split("\n").map((item) => item.trim()).filter(Boolean),
-    outcomes: form.outcomes.split("\n").map((item) => item.trim()).filter(Boolean),
+    includes: form.includes.map((item) => item.trim()).filter(Boolean),
+    outcomes: form.outcomes.map((item) => item.trim()).filter(Boolean),
     audience: form.audience,
-    requirements: form.requirements.split("\n").map((item) => item.trim()).filter(Boolean),
+    requirements: form.requirements.map((item) => item.trim()).filter(Boolean),
     license: form.license,
     file: form.file ?? undefined,
   };
@@ -49,12 +49,16 @@ export function ResourceCreateModal({ open, onOpenChange }: ResourceCreateModalP
   const submit = () => {
     const payload = toPayload(form);
     const parsed = adminResourcePayloadSchema.safeParse(payload);
+    const nextErrors: Record<string, string> = {};
     if (!parsed.success) {
-      const nextErrors: Record<string, string> = {};
       parsed.error.issues.forEach((issue) => {
         nextErrors[String(issue.path[0])] = issue.message;
       });
-      if (!form.file) nextErrors.file = "Le fichier est requis.";
+    }
+    if (!form.file) {
+      nextErrors.file = "Le fichier est requis.";
+    }
+    if (!parsed.success || Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
       return;
     }

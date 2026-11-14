@@ -40,6 +40,7 @@ export function ResourceSettingsSidebarCard({
           <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Catégorie</dt><dd className="font-medium">{resource.category}</dd></div>
           <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Prix</dt><dd className="font-medium">{resource.price.toLocaleString("fr-FR")} FCFA</dd></div>
           <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Ancien prix</dt><dd className="font-medium">{resource.originalPrice == null ? "-" : `${resource.originalPrice.toLocaleString("fr-FR")} FCFA`}</dd></div>
+          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Remise</dt><dd className="font-medium">{resource.discountPercentage.toLocaleString("fr-FR")} %</dd></div>
           <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Format</dt><dd className="text-right font-medium">{resource.format || "-"}</dd></div>
           <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Indication</dt><dd className="text-right font-medium">{resource.meta || "-"}</dd></div>
           <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Statut</dt><dd className="text-right font-medium">{resource.status || "-"}</dd></div>

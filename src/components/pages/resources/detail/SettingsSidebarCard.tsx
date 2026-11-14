@@ -47,16 +47,47 @@ export function ResourceSettingsSidebarCard({
       <section className="rounded-2xl border bg-card p-5 shadow-sm">
         <h2 className="font-semibold">Paramètres</h2>
         <dl className="mt-4 space-y-3 text-sm">
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Catégorie</dt><dd className="font-medium">{resource.category}</dd></div>
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Prix</dt><dd className="font-medium">{resource.price.toLocaleString("fr-FR")} FCFA</dd></div>
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Ancien prix</dt><dd className="font-medium">{resource.originalPrice == null ? "-" : `${resource.originalPrice.toLocaleString("fr-FR")} FCFA`}</dd></div>
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Remise</dt><dd className="font-medium">{resource.discountPercentage.toLocaleString("fr-FR")} %</dd></div>
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Format</dt><dd className="text-right font-medium">{resource.format || "-"}</dd></div>
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Indication</dt><dd className="text-right font-medium">{resource.meta || "-"}</dd></div>
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Statut</dt><dd className="text-right font-medium">{resource.status || "-"}</dd></div>
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Visibilité</dt><dd className="font-medium">{resource.isActive ? "Visible" : "Masquée"}</dd></div>
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Consultations</dt><dd className="font-medium">{resource.viewsCount}</dd></div>
-          <div className="flex justify-between gap-3"><dt className="text-muted-foreground">Téléchargements</dt><dd className="font-medium">{resource.downloadsCount}</dd></div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Catégorie</dt>
+            <dd className="font-medium">{resource.category}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Prix</dt>
+            <dd className="font-medium">{resource.price.toLocaleString("fr-FR")} FCFA</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Prix original</dt>
+            <dd className="font-medium">
+              {resource.originalPrice == null ? "-" : `${resource.originalPrice.toLocaleString("fr-FR")} FCFA`}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Remise</dt>
+            <dd className="font-medium">{resource.discountPercentage.toLocaleString("fr-FR")} %</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Format</dt>
+            <dd className="text-right font-medium">{resource.format || "-"}</dd></div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Indication</dt>
+            <dd className="text-right font-medium">{resource.meta || "-"}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Statut</dt>
+            <dd className="text-right font-medium">{resource.status || "-"}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Visibilité</dt>
+            <dd className="font-medium">{resource.isActive ? "Visible" : "Masquée"}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Consultations</dt>
+            <dd className="font-medium">{resource.viewsCount}</dd>
+          </div>
+          <div className="flex justify-between gap-3">
+            <dt className="text-muted-foreground">Téléchargements</dt>
+            <dd className="font-medium">{resource.downloadsCount}</dd>
+          </div>
         </dl>
       </section>
     </aside>

@@ -1,4 +1,4 @@
-import { FileText } from "lucide-react";
+import { Image as ImageIcon } from "lucide-react";
 import type { Column } from "@/components/site/DataTable";
 import type { APIAdminResourceListItem } from "@/data/resources";
 
@@ -11,11 +11,22 @@ export function getResourceTableColumns(): Column<APIAdminResourceListItem>[] {
     {
       key: "file",
       label: "",
-      render: () => (
-        <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-          <FileText className="h-5 w-5 text-muted-foreground" />
-        </span>
-      ),
+      render: (resource) => {
+        const cover = resource.cover;
+        return (
+          <span className="relative flex h-10 w-14 items-center justify-center overflow-hidden rounded bg-muted">
+            <ImageIcon className="h-5 w-5 text-muted-foreground" />
+            {cover && (
+              <img
+                src={cover}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+                onError={(event) => event.currentTarget.remove()}
+              />
+            )}
+          </span>
+        );
+      },
     },
     {
       key: "title",

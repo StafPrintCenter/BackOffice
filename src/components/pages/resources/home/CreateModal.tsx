@@ -15,6 +15,7 @@ interface ResourceCreateModalProps {
 function toPayload(form: ResourceFormValues): AdminResourcePayload {
   return {
     slug: form.slug.trim() || undefined,
+    cover: form.cover.trim() || null,
     title: form.title,
     category: form.category,
     price: Number(form.price),

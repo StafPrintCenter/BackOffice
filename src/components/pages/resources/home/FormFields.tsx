@@ -9,6 +9,7 @@ import { RESOURCE_CATEGORIES, type ResourceCategory } from "@/data/resources";
 
 export interface ResourceFormValues {
   slug: string;
+  cover: string;
   title: string;
   category: ResourceCategory;
   price: string;
@@ -28,6 +29,7 @@ export interface ResourceFormValues {
 
 export const EMPTY_RESOURCE_FORM: ResourceFormValues = {
   slug: "",
+  cover: "",
   title: "",
   category: "Gabarit",
   price: "0",
@@ -83,6 +85,27 @@ export function ResourceFormFields({
           <Label htmlFor="resource-slug">Slug (facultatif, généré automatiquement sinon)</Label>
           <Input id="resource-slug" value={form.slug} maxLength={200} onChange={(e) => set("slug", e.target.value)} disabled={disabled} />
           {error("slug")}
+        </div>
+        <div className="sm:col-span-2">
+          <Label htmlFor="resource-cover">URL de la couverture (facultative)</Label>
+          <Input
+            id="resource-cover"
+            type="url"
+            value={form.cover}
+            maxLength={2048}
+            placeholder="https://..."
+            onChange={(e) => set("cover", e.target.value)}
+            disabled={disabled}
+          />
+          {error("cover")}
+          {form.cover.trim() && (
+            <img
+              src={form.cover}
+              alt="Aperçu de la couverture"
+              className="mt-2 aspect-video max-h-48 rounded-lg border object-cover"
+              onError={(event) => event.currentTarget.remove()}
+            />
+          )}
         </div>
         <div>
           <Label>Catégorie</Label>

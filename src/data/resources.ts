@@ -11,6 +11,7 @@ export interface APIAdminResourceListItem {
   price: number;
   originalPrice: number | null;
   discountPercentage: number;
+  cover: string | null;
   status: string | null;
   short: string;
   format: string;
@@ -35,6 +36,7 @@ export interface APIAdminResource extends APIAdminResourceListItem {
 
 export interface AdminResourcePayload {
   slug?: string;
+  cover: string | null;
   title: string;
   category: ResourceCategory;
   price: number;
@@ -54,6 +56,7 @@ export interface AdminResourcePayload {
 
 export const adminResourcePayloadSchema = z.object({
   slug: z.string().trim().max(200).optional(),
+  cover: z.string().trim().url("URL de couverture invalide").max(2048).nullable(),
   title: z.string().trim().min(1, "Le titre est requis").max(120),
   category: z.enum(RESOURCE_CATEGORIES),
   price: z.number().int().min(0, "Le prix doit être positif ou nul"),

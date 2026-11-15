@@ -16,6 +16,17 @@ export function ResourceSettingsSidebarCard({
   return (
     <aside className="space-y-6">
       <section className="rounded-2xl border bg-card p-5 shadow-sm">
+        {resource.cover && (
+          <div className="mb-5">
+            <h2 className="font-semibold">Couverture</h2>
+            <img
+              src={resource.cover}
+              alt={`Couverture de ${resource.title}`}
+              className="mt-3 aspect-video w-full rounded-xl border bg-muted/20 object-cover"
+              onError={(event) => event.currentTarget.remove()}
+            />
+          </div>
+        )}
         <h2 className="font-semibold">Fichier associé</h2>
         <div className="mt-4 flex items-center gap-3 rounded-xl border bg-muted/20 p-3">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted">

@@ -31,6 +31,7 @@ export const Route = createFileRoute("/_admin/ressources/$id")({
 function toForm(resource: APIAdminResource): ResourceFormValues {
   return {
     slug: resource.slug ?? "",
+    cover: resource.cover ?? "",
     title: resource.title ?? "",
     category: resource.category,
     price: String(resource.price ?? 0),
@@ -52,6 +53,7 @@ function toForm(resource: APIAdminResource): ResourceFormValues {
 function toPayload(form: ResourceFormValues): AdminResourcePayload {
   return {
     slug: form.slug.trim() || undefined,
+    cover: form.cover.trim() || null,
     title: form.title,
     category: form.category,
     price: Number(form.price),

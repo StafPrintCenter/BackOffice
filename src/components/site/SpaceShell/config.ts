@@ -46,7 +46,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Interactions",
     items: [
       { to: "/appointments", label: "Rendez-vous", icon: CalendarClock },
-      { to: "/reports", label: "Signalements", icon: ShieldAlert },
+      { to: "/reports/site", label: "Signalements", icon: ShieldAlert, matchPrefixes: ["/reports"] },
       { to: "/reviews/forms", label: "Formulaires d'avis", icon: Form, matchPrefixes: ["/reviews"] },
       { to: "/waitlist", label: "Liste d'attente", icon: ClipboardClock },
       { to: "/articleFeedback/unique", label: "Feedback d'articles", icon: MessageSquareDiff, matchPrefixes: ["/articleFeedback"] },

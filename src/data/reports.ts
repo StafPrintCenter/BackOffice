@@ -32,6 +32,28 @@ export interface AdminReportStatusPayload {
   status: ReportStatus;
 }
 
+export type APIAdminEthicalReport = {
+  id: string;
+  trackingCode: string;
+  category: string;
+  concerned: string;
+  occurrencePeriod: string;
+  description: string;
+  evidence: string | null;
+  anonymous: boolean;
+  contact: string | null;
+  goodFaith: boolean;
+  status: ReportStatus;
+  resolvedBy: string | null;
+  resolvedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export interface AdminEthicalReportStatusPayload {
+  status: ReportStatus;
+}
+
 /* --- MAPPINGS & CONSTANTES D'AFFICHAGE --- */
 export const REPORT_STATUS_BADGES: Record<ReportStatus, string> = {
   pending: "bg-red-100 text-red-700 border-red-200",

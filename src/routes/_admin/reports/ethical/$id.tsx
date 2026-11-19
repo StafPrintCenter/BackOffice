@@ -176,7 +176,7 @@ function EthicalReportDetail() {
                 </div>
                 <div>
                   <h3 className="mb-2 text-sm font-semibold">Éléments de preuve</h3>
-                  <div className="whitespace-pre-wrap break-words rounded-xl border bg-muted/40 p-4 text-sm leading-relaxed">
+                  <div className="whitespace-pre-wrap wrap-break-word rounded-xl border bg-muted/40 p-4 text-sm leading-relaxed">
                     {report.evidence || "Aucun élément de preuve fourni."}
                   </div>
                 </div>

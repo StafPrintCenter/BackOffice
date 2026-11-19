@@ -6,7 +6,7 @@ import type { APIAdminReport, AdminReportStatusPayload } from "@/data/reports";
 
 const store = createResourceStore<APIAdminReport, AdminReportStatusPayload>({
   resourceKey: "reports",
-  basePath: "reports",
+  basePath: "reports/site",
 });
 
 export const fetchAdminReports = store.fetchList;

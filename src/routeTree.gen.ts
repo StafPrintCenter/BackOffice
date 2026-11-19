@@ -81,6 +81,8 @@ import { Route as AdminNewsletterCampaignsIndexRouteImport } from './routes/_adm
 import { Route as AdminNewsletterCampaignsIdRouteImport } from './routes/_admin/newsletter/campaigns/$id'
 import { Route as AdminNewsletterSubscribersIndexRouteImport } from './routes/_admin/newsletter/subscribers/index'
 import { Route as AdminNewsletterSubscribersIdRouteImport } from './routes/_admin/newsletter/subscribers/$id'
+import { Route as AdminReportsEthicalIndexRouteImport } from './routes/_admin/reports/ethical/index'
+import { Route as AdminReportsEthicalIdRouteImport } from './routes/_admin/reports/ethical/$id'
 import { Route as AdminReportsSiteIndexRouteImport } from './routes/_admin/reports/site/index'
 import { Route as AdminReportsSiteIdRouteImport } from './routes/_admin/reports/site/$id'
 import { Route as AdminReviewsFormsIndexRouteImport } from './routes/_admin/reviews/forms/index'
@@ -475,6 +477,17 @@ const AdminNewsletterSubscribersIdRoute =
     path: '/newsletter/subscribers/$id',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminReportsEthicalIndexRoute =
+  AdminReportsEthicalIndexRouteImport.update({
+    id: '/reports/ethical/',
+    path: '/reports/ethical/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminReportsEthicalIdRoute = AdminReportsEthicalIdRouteImport.update({
+  id: '/reports/ethical/$id',
+  path: '/reports/ethical/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminReportsSiteIndexRoute = AdminReportsSiteIndexRouteImport.update({
   id: '/reports/site/',
   path: '/reports/site/',
@@ -635,6 +648,7 @@ export interface FileRoutesByFullPath {
   '/members/users/$id': typeof AdminMembersUsersIdRoute
   '/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
+  '/reports/ethical/$id': typeof AdminReportsEthicalIdRoute
   '/reports/site/$id': typeof AdminReportsSiteIdRoute
   '/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
@@ -656,6 +670,7 @@ export interface FileRoutesByFullPath {
   '/members/users/': typeof AdminMembersUsersIndexRoute
   '/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
   '/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
+  '/reports/ethical/': typeof AdminReportsEthicalIndexRoute
   '/reports/site/': typeof AdminReportsSiteIndexRoute
   '/reviews/forms/': typeof AdminReviewsFormsIndexRoute
   '/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
@@ -725,6 +740,7 @@ export interface FileRoutesByTo {
   '/members/users/$id': typeof AdminMembersUsersIdRoute
   '/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
+  '/reports/ethical/$id': typeof AdminReportsEthicalIdRoute
   '/reports/site/$id': typeof AdminReportsSiteIdRoute
   '/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
@@ -746,6 +762,7 @@ export interface FileRoutesByTo {
   '/members/users': typeof AdminMembersUsersIndexRoute
   '/newsletter/campaigns': typeof AdminNewsletterCampaignsIndexRoute
   '/newsletter/subscribers': typeof AdminNewsletterSubscribersIndexRoute
+  '/reports/ethical': typeof AdminReportsEthicalIndexRoute
   '/reports/site': typeof AdminReportsSiteIndexRoute
   '/reviews/forms': typeof AdminReviewsFormsIndexRoute
   '/reviews/invites': typeof AdminReviewsInvitesIndexRoute
@@ -818,6 +835,7 @@ export interface FileRoutesById {
   '/_admin/members/users/$id': typeof AdminMembersUsersIdRoute
   '/_admin/newsletter/campaigns/$id': typeof AdminNewsletterCampaignsIdRoute
   '/_admin/newsletter/subscribers/$id': typeof AdminNewsletterSubscribersIdRoute
+  '/_admin/reports/ethical/$id': typeof AdminReportsEthicalIdRoute
   '/_admin/reports/site/$id': typeof AdminReportsSiteIdRoute
   '/_admin/reviews/forms/$id': typeof AdminReviewsFormsIdRoute
   '/_admin/reviews/invites/$id': typeof AdminReviewsInvitesIdRoute
@@ -839,6 +857,7 @@ export interface FileRoutesById {
   '/_admin/members/users/': typeof AdminMembersUsersIndexRoute
   '/_admin/newsletter/campaigns/': typeof AdminNewsletterCampaignsIndexRoute
   '/_admin/newsletter/subscribers/': typeof AdminNewsletterSubscribersIndexRoute
+  '/_admin/reports/ethical/': typeof AdminReportsEthicalIndexRoute
   '/_admin/reports/site/': typeof AdminReportsSiteIndexRoute
   '/_admin/reviews/forms/': typeof AdminReviewsFormsIndexRoute
   '/_admin/reviews/invites/': typeof AdminReviewsInvitesIndexRoute
@@ -910,6 +929,7 @@ export interface FileRouteTypes {
     | '/members/users/$id'
     | '/newsletter/campaigns/$id'
     | '/newsletter/subscribers/$id'
+    | '/reports/ethical/$id'
     | '/reports/site/$id'
     | '/reviews/forms/$id'
     | '/reviews/invites/$id'
@@ -931,6 +951,7 @@ export interface FileRouteTypes {
     | '/members/users/'
     | '/newsletter/campaigns/'
     | '/newsletter/subscribers/'
+    | '/reports/ethical/'
     | '/reports/site/'
     | '/reviews/forms/'
     | '/reviews/invites/'
@@ -1000,6 +1021,7 @@ export interface FileRouteTypes {
     | '/members/users/$id'
     | '/newsletter/campaigns/$id'
     | '/newsletter/subscribers/$id'
+    | '/reports/ethical/$id'
     | '/reports/site/$id'
     | '/reviews/forms/$id'
     | '/reviews/invites/$id'
@@ -1021,6 +1043,7 @@ export interface FileRouteTypes {
     | '/members/users'
     | '/newsletter/campaigns'
     | '/newsletter/subscribers'
+    | '/reports/ethical'
     | '/reports/site'
     | '/reviews/forms'
     | '/reviews/invites'
@@ -1092,6 +1115,7 @@ export interface FileRouteTypes {
     | '/_admin/members/users/$id'
     | '/_admin/newsletter/campaigns/$id'
     | '/_admin/newsletter/subscribers/$id'
+    | '/_admin/reports/ethical/$id'
     | '/_admin/reports/site/$id'
     | '/_admin/reviews/forms/$id'
     | '/_admin/reviews/invites/$id'
@@ -1113,6 +1137,7 @@ export interface FileRouteTypes {
     | '/_admin/members/users/'
     | '/_admin/newsletter/campaigns/'
     | '/_admin/newsletter/subscribers/'
+    | '/_admin/reports/ethical/'
     | '/_admin/reports/site/'
     | '/_admin/reviews/forms/'
     | '/_admin/reviews/invites/'
@@ -1639,6 +1664,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminNewsletterSubscribersIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_admin/reports/ethical/': {
+      id: '/_admin/reports/ethical/'
+      path: '/reports/ethical'
+      fullPath: '/reports/ethical/'
+      preLoaderRoute: typeof AdminReportsEthicalIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/reports/ethical/$id': {
+      id: '/_admin/reports/ethical/$id'
+      path: '/reports/ethical/$id'
+      fullPath: '/reports/ethical/$id'
+      preLoaderRoute: typeof AdminReportsEthicalIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/_admin/reports/site/': {
       id: '/_admin/reports/site/'
       path: '/reports/site'
@@ -1819,6 +1858,7 @@ interface AdminRouteChildren {
   AdminMembersUsersIdRoute: typeof AdminMembersUsersIdRoute
   AdminNewsletterCampaignsIdRoute: typeof AdminNewsletterCampaignsIdRoute
   AdminNewsletterSubscribersIdRoute: typeof AdminNewsletterSubscribersIdRoute
+  AdminReportsEthicalIdRoute: typeof AdminReportsEthicalIdRoute
   AdminReportsSiteIdRoute: typeof AdminReportsSiteIdRoute
   AdminReviewsFormsIdRoute: typeof AdminReviewsFormsIdRoute
   AdminReviewsInvitesIdRoute: typeof AdminReviewsInvitesIdRoute
@@ -1840,6 +1880,7 @@ interface AdminRouteChildren {
   AdminMembersUsersIndexRoute: typeof AdminMembersUsersIndexRoute
   AdminNewsletterCampaignsIndexRoute: typeof AdminNewsletterCampaignsIndexRoute
   AdminNewsletterSubscribersIndexRoute: typeof AdminNewsletterSubscribersIndexRoute
+  AdminReportsEthicalIndexRoute: typeof AdminReportsEthicalIndexRoute
   AdminReportsSiteIndexRoute: typeof AdminReportsSiteIndexRoute
   AdminReviewsFormsIndexRoute: typeof AdminReviewsFormsIndexRoute
   AdminReviewsInvitesIndexRoute: typeof AdminReviewsInvitesIndexRoute
@@ -1905,6 +1946,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminMembersUsersIdRoute: AdminMembersUsersIdRoute,
   AdminNewsletterCampaignsIdRoute: AdminNewsletterCampaignsIdRoute,
   AdminNewsletterSubscribersIdRoute: AdminNewsletterSubscribersIdRoute,
+  AdminReportsEthicalIdRoute: AdminReportsEthicalIdRoute,
   AdminReportsSiteIdRoute: AdminReportsSiteIdRoute,
   AdminReviewsFormsIdRoute: AdminReviewsFormsIdRoute,
   AdminReviewsInvitesIdRoute: AdminReviewsInvitesIdRoute,
@@ -1926,6 +1968,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminMembersUsersIndexRoute: AdminMembersUsersIndexRoute,
   AdminNewsletterCampaignsIndexRoute: AdminNewsletterCampaignsIndexRoute,
   AdminNewsletterSubscribersIndexRoute: AdminNewsletterSubscribersIndexRoute,
+  AdminReportsEthicalIndexRoute: AdminReportsEthicalIndexRoute,
   AdminReportsSiteIndexRoute: AdminReportsSiteIndexRoute,
   AdminReviewsFormsIndexRoute: AdminReviewsFormsIndexRoute,
   AdminReviewsInvitesIndexRoute: AdminReviewsInvitesIndexRoute,

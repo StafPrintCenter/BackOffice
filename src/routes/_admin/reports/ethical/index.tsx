@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_admin/reports/ethical/")({
 
 function AdminEthicalReports() {
   const navigate = useNavigate();
-  const { items, isLoading } = useAdminEthicalReportsList({ perPage: 100 });
+  const { items, isLoading, isError } = useAdminEthicalReportsList({ perPage: 100 });
 
   return (
     <>
@@ -28,63 +28,67 @@ function AdminEthicalReports() {
         title="Signalements éthiques"
         description="Signalements reçus via le dispositif d’alerte éthique."
       />
-      <DataTable<APIAdminEthicalReport>
-        data={items}
-        isLoading={isLoading}
-        searchKeys={["trackingCode", "category", "concerned", "occurrencePeriod", "contact"]}
-        onView={(report) =>
-          navigate({ to: "/reports/ethical/$id", params: { id: report.id } })
-        }
-        columns={[
-          {
-            key: "trackingCode",
-            label: "Référence",
-            render: (report) => (
-              <span className="font-mono text-xs font-medium text-primary">
-                {report.trackingCode}
-              </span>
-            ),
-          },
-          {
-            key: "category",
-            label: "Catégorie",
-            render: (report) => <span className="text-xs font-medium">{report.category}</span>,
-          },
-          {
-            key: "concerned",
-            label: "Personne concernée",
-            render: (report) => <span className="text-xs">{report.concerned || "-"}</span>,
-          },
-          {
-            key: "anonymous",
-            label: "Anonyme",
-            render: (report) => <span className="text-xs">{report.anonymous ? "Oui" : "Non"}</span>,
-          },
-          {
-            key: "createdAt",
-            label: "Reçu le",
-            render: (report) => (
-              <span className="text-xs text-muted-foreground">
-                {new Date(report.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
-                  dateStyle: "short",
-                  timeStyle: "short",
-                })}
-              </span>
-            ),
-          },
-          {
-            key: "status",
-            label: "Statut",
-            render: (report) => (
-              <span
-                className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${REPORT_STATUS_BADGES[report.status]}`}
-              >
-                {REPORT_STATUS_LABELS[report.status]}
-              </span>
-            ),
-          },
-        ]}
-      />
+      {isError ? (
+        <p className="text-destructive">Erreur lors du chargement des signalements éthiques.</p>
+      ) : (
+        <DataTable<APIAdminEthicalReport>
+          data={items}
+          isLoading={isLoading}
+          searchKeys={["trackingCode", "category", "concerned", "occurrencePeriod", "contact"]}
+          onView={(report) =>
+            navigate({ to: "/reports/ethical/$id", params: { id: report.id } })
+          }
+          columns={[
+            {
+              key: "trackingCode",
+              label: "Référence",
+              render: (report) => (
+                <span className="font-mono text-xs font-medium text-primary">
+                  {report.trackingCode}
+                </span>
+              ),
+            },
+            {
+              key: "category",
+              label: "Catégorie",
+              render: (report) => <span className="text-xs font-medium">{report.category}</span>,
+            },
+            {
+              key: "concerned",
+              label: "Personne concernée",
+              render: (report) => <span className="text-xs">{report.concerned || "-"}</span>,
+            },
+            {
+              key: "anonymous",
+              label: "Anonyme",
+              render: (report) => <span className="text-xs">{report.anonymous ? "Oui" : "Non"}</span>,
+            },
+            {
+              key: "createdAt",
+              label: "Reçu le",
+              render: (report) => (
+                <span className="text-xs text-muted-foreground">
+                  {new Date(report.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
+                    dateStyle: "short",
+                    timeStyle: "short",
+                  })}
+                </span>
+              ),
+            },
+            {
+              key: "status",
+              label: "Statut",
+              render: (report) => (
+                <span
+                  className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${REPORT_STATUS_BADGES[report.status]}`}
+                >
+                  {REPORT_STATUS_LABELS[report.status]}
+                </span>
+              ),
+            },
+          ]}
+        />
+      )}
     </>
   );
 }

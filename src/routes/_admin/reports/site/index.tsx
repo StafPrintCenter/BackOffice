@@ -1,6 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { PageHeader, DataTable } from "@/components/site";
 import { useAdminReportsList } from "@/stores/useReportsStore";
+import { Scale } from "lucide-react";
 import { REPORT_STATUS_BADGES, REPORT_STATUS_LABELS, getReportReasonLabel, getReportableTypeLabel, type APIAdminReport, } from "@/data/reports";
 import { SITE } from "@/data/site";
 
@@ -20,6 +21,13 @@ function AdminReports() {
   return (
     <>
       <PageHeader title="Signalements" description="Contenus signalés par les visiteurs." />
+
+      <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-3">
+        <Link to="/articleFeedback/group" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+          <Scale className="h-4 w-4" />
+          Signalements ethiques
+        </Link>
+      </div>
       <DataTable<APIAdminReport>
         data={items}
         isLoading={isLoading}

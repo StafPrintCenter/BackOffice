@@ -60,7 +60,7 @@ function ReportDetail() {
   return (
     <>
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reports" })}>
+        <Button variant="outline" size="sm" onClick={() => navigate({ to: "/reports/site" })}>
           <ArrowLeft className="h-4 w-4 mr-1" /> Retour
         </Button>
       </div>

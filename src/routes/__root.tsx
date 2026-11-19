@@ -4,6 +4,7 @@ import { type ReactNode } from "react";
 import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { SITE } from "@/data/site";
+import logo from "@/assets/logos.json";
 import { NotFoundComponent, ErrorComponent } from "@/components/errors";
 import { HealthAutoRefresh } from "@/components/pages/health/AutoRefresh";
 import { useSpcPageContext } from "@/lib/spc-intelligence";
@@ -17,16 +18,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       meta: [
         { charSet: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=5" },
+        { name: "robots", content: "noindex, nofollow" },
         { title: PAGE_TITLE },
         { name: "description", content: PAGE_DESC },
-        { name: "author", content: SITE.manager },
-        { name: "robots", content: "noindex, nofollow" },
-        { property: "og:type", content: "website" },
-        { property: "og:site_name", content: SITE.name },
+        { name: "author", content: SITE.name },
+
+        /* Open Graph / Facebook / WhatsApp */
         { property: "og:title", content: PAGE_TITLE },
         { property: "og:description", content: PAGE_DESC },
+        { property: "og:type", content: "website" },
+        { property: "og:site_name", content: SITE.name },
+        { property: "og:image", content: `${logo.meta}` },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { property: "og:image:alt", content: `${SITE.name} - ${SITE.activity}` },
+        { property: "og:locale", content: "fr_BJ" },
+
+        /* Twitter / X */
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:image", content: `${logo.meta}` },
+        { name: "twitter:title", content: PAGE_TITLE },
+        { name: "twitter:description", content: PAGE_DESC },
         { name: "twitter:site", content: "@StafPrintCenter" },
+
+        /* Google */
+        // { name: "google-site-verification", content: "OdKxHpVkBSxk0mj4vD4OTmZPdVi5pWzyCu4QPIMHy9A" },
       ],
       links: [
         { rel: "stylesheet", href: appCss },

@@ -10,7 +10,7 @@ import { useAdminReportDetail, useUpdateAdminReportStatus } from "@/stores/useRe
 import { REPORT_STATUS_BADGES, REPORT_STATUS_LABELS, getReportReasonLabel, getReportableTypeLabel, type ReportStatus, } from "@/data/reports";
 import { SITE } from "@/data/site";
 
-export const Route = createFileRoute("/_admin/reports/$id")({
+export const Route = createFileRoute("/_admin/reports/site/$id")({
   head: () => ({
     meta: [
       { title: `Signalements | ${SITE.name}` },

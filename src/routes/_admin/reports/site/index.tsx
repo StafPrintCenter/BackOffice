@@ -23,7 +23,7 @@ function AdminReports() {
       <PageHeader title="Signalements" description="Contenus signalés par les visiteurs." />
 
       <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <Link to="/reports/site" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
+        <Link to="/reports/ethical" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
           <Scale className="h-4 w-4" />
           Signalements ethiques
         </Link>

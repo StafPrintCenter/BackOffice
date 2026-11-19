@@ -22,7 +22,7 @@ async function updateReportStatus(
   const fd = new FormData();
   fd.append("status", payload.status);
 
-  const response = await adminFetch(`/api/admin/reports/${id}/status`, {
+  const response = await adminFetch(`/api/admin/reports/site/${id}/status`, {
     method: "PUT",
     body: fd,
   });

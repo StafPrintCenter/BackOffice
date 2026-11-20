@@ -74,6 +74,7 @@ export function useCreatePost() {
       fd.append("body", p.body);
       fd.append("categoryId", p.categoryId);
       fd.append("type", p.type);
+      p.options?.forEach((option) => fd.append("options[]", option));
       if (p.trainingId) fd.append("trainingId", p.trainingId);
       if (p.tags.length) fd.append("tags", p.tags.join(","));
       p.attachments.forEach((f) => fd.append("attachments[]", f));
@@ -95,6 +96,7 @@ export function useUpdatePost() {
       fd.append("body", payload.body);
       fd.append("categoryId", payload.categoryId);
       fd.append("type", payload.type);
+      payload.options?.forEach((option) => fd.append("options[]", option));
       if (payload.tags.length) fd.append("tags", payload.tags.join(","));
 
       const response = await adminFetch(`/api/community/posts/${id}`, { method: "PUT", body: fd });
@@ -111,6 +113,20 @@ export function useDeletePost() {
     mutationFn: async ({ id, reason }: { id: string; reason?: string }) => {
       const response = await adminFetch(`/api/community/posts/${id}?${toQuery({ reason })}`, { method: "DELETE" });
       await ensureOk(response, "Impossible de supprimer la publication.");
+    },
+    onSuccess: invalidate,
+  });
+}
+
+export function useVotePoll() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async ({ postId, optionId }: { postId: string; optionId: string }) => {
+      const fd = new FormData();
+      fd.append("optionId", optionId);
+      const response = await adminFetch(`/api/community/posts/${postId}/vote`, { method: "POST", body: fd });
+      await ensureOk(response, "Impossible d'enregistrer votre vote.");
+      return ((await response.json()) as { data: APIPost }).data;
     },
     onSuccess: invalidate,
   });

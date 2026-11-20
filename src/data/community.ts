@@ -1,15 +1,16 @@
-export type PostType = "discussion" | "question" | "resource" | "announcement";
+export type PostType = "discussion" | "question" | "resource" | "announcement" | "poll";
 export type PostStatus = "published" | "hidden";
 export type AuthorRole = "admin" | "instructor" | "student";
 export type PostSort = "recent" | "popular" | "active";
 
-export const POST_TYPES: PostType[] = ["discussion", "question", "resource", "announcement"];
+export const POST_TYPES: PostType[] = ["discussion", "question", "resource", "announcement", "poll"];
 
 export const POST_TYPE_LABELS: Record<PostType, string> = {
   discussion: "Discussion",
   question: "Question",
   resource: "Ressource",
   announcement: "Annonce",
+  poll: "Sondage",
 };
 
 export const POST_STATUS_LABELS: Record<PostStatus, string> = {
@@ -45,6 +46,15 @@ export type APICommunityCategory = {
 };
 
 export type APIPostAttachment = { name: string; url: string; mime: string; size: number };
+
+export type APIPollOption = { id: string; label: string; votesCount: number };
+
+export type APIPostPoll = {
+  optionsCount: number;
+  totalVotes: number;
+  options?: APIPollOption[];
+  myVote?: string | null;
+};
 
 export type APIPost = {
   id: string;
@@ -84,6 +94,7 @@ export type APIPost = {
   /** Présents sur le détail et la création, pas forcément sur la liste */
   body?: string;
   attachments?: APIPostAttachment[];
+  poll?: APIPostPoll;
 };
 
 export type PostsListParams = {
@@ -107,6 +118,7 @@ export type CreatePostPayload = {
   categoryId: string;
   trainingId?: string;
   type: PostType;
+  options?: string[];
   tags: string[];
   attachments: File[];
 };
@@ -116,6 +128,7 @@ export type UpdatePostPayload = {
   body: string;
   categoryId: string;
   type: PostType;
+  options?: string[];
   tags: string[];
 };
 

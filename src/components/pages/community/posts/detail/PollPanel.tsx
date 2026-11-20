@@ -41,8 +41,16 @@ export function PollPanel({ post }: { post: APIPost }) {
       >
         {poll.options.map((option) => {
           const percentage = poll.totalVotes > 0 ? Math.round((option.votesCount / poll.totalVotes) * 100) : 0;
+          const isOwnVote = poll.myVote === option.id || (vote.isSuccess && selectedOption === option.id);
           return (
-            <label key={option.id} className="flex cursor-pointer items-start gap-3 rounded-lg border p-3 has-disabled:cursor-defaul">
+            <label
+              key={option.id}
+              className={`flex cursor-pointer items-start gap-3 rounded-lg p-3 transition-colors has-[:disabled]:cursor-default ${
+                isOwnVote
+                  ? "border border-primary bg-primary/10"
+                  : "border border-border"
+              }`}
+            >
               <RadioGroupItem value={option.id} disabled={!canVote || vote.isPending} className="mt-0.5" />
               <span className="min-w-0 flex-1">
                 <span className="flex justify-between gap-3 text-sm">

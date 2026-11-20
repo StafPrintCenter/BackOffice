@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { GraduationCap, Eye, MessageCircle, Paperclip, Pencil, SmilePlus, Trash2 } from "lucide-react";
+import { GraduationCap, Eye, MessageCircle, Paperclip, Pencil, SmilePlus, Trash2, Vote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatPostDate, type APIPost } from "@/data/community";
 import { AnsweredBadge, AuthorRoleBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge } from "../../shared/Badges";
@@ -59,6 +59,13 @@ export function PostCard({ post: p }: { post: APIPost }) {
         </Link>
         <p className="mt-1 line-clamp-3 whitespace-pre-line text-sm text-muted-foreground">{p.excerpt}</p>
       </div>
+
+      {p.type === "poll" && p.poll && (
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Vote className="h-3.5 w-3.5" />
+          {p.poll.optionsCount} options · {p.poll.totalVotes} vote{p.poll.totalVotes === 1 ? "" : "s"}
+        </div>
+      )}
 
       {p.status === "hidden" && p.hiddenReason && (
         <p className="rounded-md bg-rose-500/5 px-2 py-1 text-xs text-rose-600">Masquée : {p.hiddenReason}</p>

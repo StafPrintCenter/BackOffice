@@ -8,7 +8,7 @@ import { AnsweredBadge, HiddenBadge, LockedBadge, PinnedBadge, PostTypeBadge, Po
 import { CommentsSection } from "../content/comments/Section";
 import { ReactionBar } from "../content/reactions";
 import { PostModerationBar, ReportDialog } from "../content/moderation";
-import { PollPanel } from "../poll/PollPanel";
+import { PollPanel } from "./PollPanel";
 
 export function PostDetailView({ post: p, totalPosts, focusCommentId, onClearFocus }: {
   post: APIPost; totalPosts?: number | null; focusCommentId?: string; onClearFocus?: () => void;

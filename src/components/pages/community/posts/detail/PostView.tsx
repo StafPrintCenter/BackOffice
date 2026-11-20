@@ -58,7 +58,7 @@ export function PostDetailView({ post: p, totalPosts, focusCommentId, onClearFoc
             <h1 className="font-display text-2xl font-bold leading-tight">{p.title}</h1>
             <div className="mt-4 whitespace-pre-line text-sm leading-relaxed">{p.body ?? p.excerpt}</div>
 
-            {p.type === "poll" && <PollPanel post={p} />}
+            {p.type === "poll" && <PollPanel key={p.id} post={p} />}
 
             {p.tags.length > 0 && (
               <div className="mt-5 flex flex-wrap gap-1.5 border-t pt-4 text-xs">

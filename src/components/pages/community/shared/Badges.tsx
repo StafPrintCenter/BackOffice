@@ -1,14 +1,15 @@
-import { Megaphone, Pin, Lock, EyeOff, HelpCircle, FileText, MessageCircle, CheckCircle2 } from "lucide-react";
+import { Megaphone, Pin, Lock, EyeOff, HelpCircle, FileText, MessageCircle, CheckCircle2, Vote } from "lucide-react";
 import { AUTHOR_ROLE_LABELS, POST_TYPE_LABELS, type AuthorRole, type PostType } from "@/data/community";
 
 const base = "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-semibold";
 
-const TYPE_ICON = { discussion: MessageCircle, question: HelpCircle, resource: FileText, announcement: Megaphone };
+const TYPE_ICON = { discussion: MessageCircle, question: HelpCircle, resource: FileText, announcement: Megaphone, poll: Vote };
 const TYPE_CLASS: Record<PostType, string> = {
   discussion: "border-border bg-muted/50 text-muted-foreground",
   question: "border-blue-500/20 bg-blue-500/10 text-blue-600",
   resource: "border-teal-500/20 bg-teal-500/10 text-teal-600",
   announcement: "border-violet-500/20 bg-violet-500/10 text-violet-600",
+  poll: "border-amber-500/20 bg-amber-500/10 text-amber-600",
 };
 
 export const PostTypeBadge = ({ type }: { type: PostType }) => {

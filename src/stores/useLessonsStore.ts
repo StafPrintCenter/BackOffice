@@ -19,11 +19,11 @@ function buildFormData(payload: Record<string, unknown>): FormData {
 }
 
 /* ---- Création ----
-   ⚠️ URL supposée déplacée vers /admin/trainings/modules/{moduleId}/lessons/create
+   ⚠️ URL supposée déplacée vers /admin/trainings/{moduleId}/lessons/create
    par cohérence avec le nouveau préfixe des modules - non confirmée. */
 
 async function createLesson(moduleId: string, payload: AdminLessonPayload): Promise<APIAdminLesson> {
-  const response = await adminFetch(`/api/admin/trainings/modules/${moduleId}/lessons/create`, {
+  const response = await adminFetch(`/api/admin/trainings/${moduleId}/lessons/create`, {
     method: "POST",
     body: buildFormData(payload as unknown as Record<string, unknown>),
   });

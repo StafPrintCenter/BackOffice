@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Loader2, Paperclip, X } from "lucide-react";
+import { Loader2, Paperclip, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,6 +36,7 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
   const [categoryId, setCategoryId] = useState("");
   const [trainingId, setTrainingId] = useState("");
   const [type, setType] = useState<PostType>("discussion");
+  const [options, setOptions] = useState<string[]>(["", ""]);
   const [tagsRaw, setTagsRaw] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -48,6 +49,7 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
     setCategoryId(source?.category.id ?? "");
     setTrainingId(source?.training?.id ?? "");
     setType(source?.type ?? "discussion");
+    setOptions(source?.poll?.options?.map((option) => option.label) ?? ["", ""]);
     setTagsRaw(source?.tags.join(", ") ?? "");
     setFiles([]);
     setError(null);
@@ -71,28 +73,37 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
 
   const submit = () => {
     const tags = parseTags(tagsRaw);
+    const pollOptions = options.map((option) => option.trim());
     if (title.trim().length < 3) return setError("Le titre doit contenir au moins 3 caractères.");
     if (body.trim().length < 3) return setError("Le contenu doit contenir au moins 3 caractères.");
     if (!categoryId) return setError("Choisissez une catégorie.");
     if (tags.length > MAX_TAGS) return setError(`${MAX_TAGS} étiquettes maximum.`);
+    if (type === "poll") {
+      if (pollOptions.length < 2 || pollOptions.length > 10) return setError("Un sondage doit contenir entre 2 et 10 options.");
+      if (pollOptions.some((option) => !option)) return setError("Chaque option du sondage doit être renseignée.");
+      if (pollOptions.some((option) => option.length > 100)) return setError("Chaque option doit contenir au maximum 100 caractères.");
+      if (new Set(pollOptions.map((option) => option.toLocaleLowerCase())).size !== pollOptions.length) return setError("Les options du sondage doivent être différentes.");
+    }
     setError(null);
 
     const done = { onError: (e: Error) => setError(e.message) };
+    const pollPayload = type === "poll" ? { options: pollOptions } : {};
 
     if (isEdit && post) {
       update.mutate(
-        { id: post.id, payload: { title: title.trim(), body: body.trim(), categoryId, type, tags } },
+        { id: post.id, payload: { title: title.trim(), body: body.trim(), categoryId, type, tags, ...pollPayload } },
         { ...done, onSuccess: () => { toast.success("Publication modifiée"); onOpenChange(false); } },
       );
     } else {
       create.mutate(
-        { title: title.trim(), body: body.trim(), categoryId, type, tags, trainingId: trainingId || undefined, attachments: files },
+        { title: title.trim(), body: body.trim(), categoryId, type, tags, ...pollPayload, trainingId: trainingId || undefined, attachments: files },
         { ...done, onSuccess: () => { toast.success("Publication créée"); onOpenChange(false); } },
       );
     }
   };
 
   const pending = create.isPending || update.isPending;
+  const pollOptionsLocked = isEdit && type === "poll" && (source?.poll?.totalVotes ?? 0) > 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -133,11 +144,51 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
             </div>
             <div>
               <Label>Type</Label>
-              <select className={select} value={type} onChange={(e) => setType(e.target.value as PostType)}>
+              <select className={select} value={type} disabled={pollOptionsLocked} onChange={(e) => setType(e.target.value as PostType)}>
                 {POST_TYPES.map((t) => <option key={t} value={t}>{POST_TYPE_LABELS[t]}</option>)}
               </select>
             </div>
           </div>
+
+          {type === "poll" && (
+            <div className="space-y-2">
+              <div>
+                <Label>Options du sondage (2 à 10)</Label>
+                {pollOptionsLocked && <p className="mt-1 text-xs text-muted-foreground">Les options ne peuvent plus être modifiées après le premier vote.</p>}
+              </div>
+              {options.map((option, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <Input
+                    value={option}
+                    maxLength={100}
+                    disabled={pollOptionsLocked}
+                    aria-label={`Option ${index + 1}`}
+                    placeholder={`Option ${index + 1}`}
+                    onChange={(e) => setOptions(options.map((value, i) => i === index ? e.target.value : value))}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    title="Supprimer l’option"
+                    disabled={pollOptionsLocked || options.length <= 2}
+                    onClick={() => setOptions(options.filter((_, i) => i !== index))}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={pollOptionsLocked || options.length >= 10}
+                onClick={() => setOptions([...options, ""])}
+              >
+                <Plus className="h-4 w-4" /> Ajouter une option
+              </Button>
+            </div>
+          )}
 
           {!isEdit && (
             <div>

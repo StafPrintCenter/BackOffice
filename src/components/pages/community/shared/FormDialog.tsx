@@ -87,7 +87,7 @@ export function PostFormDialog({ mode, post, open, onOpenChange }: Props) {
     setError(null);
 
     const done = { onError: (e: Error) => setError(e.message) };
-    const pollPayload = type === "poll" ? { options: pollOptions } : {};
+    const pollPayload = type === "poll" && !pollOptionsLocked ? { options: pollOptions } : {};
 
     if (isEdit && post) {
       update.mutate(

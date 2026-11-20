@@ -45,11 +45,10 @@ export function PollPanel({ post }: { post: APIPost }) {
           return (
             <label
               key={option.id}
-              className={`flex cursor-pointer items-start gap-3 rounded-lg p-3 transition-colors has-[:disabled]:cursor-default ${
-                isOwnVote
+              className={`flex cursor-pointer items-start gap-3 rounded-lg p-3 transition-colors has-disabled:cursor-defaultt ${isOwnVote
                   ? "border border-primary bg-primary/10"
                   : "border border-border"
-              }`}
+                }`}
             >
               <RadioGroupItem value={option.id} disabled={!canVote || vote.isPending} className="mt-0.5" />
               <span className="min-w-0 flex-1">

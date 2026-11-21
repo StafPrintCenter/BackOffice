@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAdminNewsletterSubscriberDetail, useDeleteAdminNewsletterSubscriber, useBlockAdminNewsletterSubscriber, useReactivateAdminNewsletterSubscriber, } from "@/stores/useNewsletterSubscribersStore";
 import { SITE } from "@/data/site";
+import { getNewsletterSubscriberSourceLabel } from "@/data/newsletterSubscriber";
 import { initials } from "@/components/site/UserAvatar";
 
 export const Route = createFileRoute("/_admin/newsletter/subscribers/$id")({
@@ -171,6 +172,10 @@ function SubscriberDetail() {
                   <Mail className="h-3.5 w-3.5" />
                   {subscriber.email}
                 </a>
+                <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <User className="h-3.5 w-3.5" />
+                  <span>Source : {getNewsletterSubscriberSourceLabel(subscriber.source)}</span>
+                </div>
               </div>
             </div>
 

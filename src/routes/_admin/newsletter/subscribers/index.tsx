@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Megaphone } from "lucide-react";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminNewsletterSubscribersList, useDeleteAdminNewsletterSubscriber } from "@/stores/useNewsletterSubscribersStore";
-import type { APIAdminNewsletterSubscriberListItem } from "@/data/newsletterSubscriber";
+import { getNewsletterSubscriberSourceLabel, type APIAdminNewsletterSubscriberListItem } from "@/data/newsletterSubscriber";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/newsletter/subscribers/")({
@@ -51,6 +51,7 @@ function AdminNewsletterSubscribers() {
         onDelete={(r) => setToDelete(r)}
         columns={[
           { key: "email", label: "Email", render: (r) => <div><div className="font-medium">{r.firstName} {r.lastName}</div><div className="text-xs text-muted-foreground">{r.email}</div></div> },
+          { key: "source", label: "Source", render: (r) => <span className="text-sm">{getNewsletterSubscriberSourceLabel(r.source)}</span> },
           {
             key: "categories", label: "Catégories", render: (r) => (
               <div className="flex flex-wrap gap-1">

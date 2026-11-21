@@ -4,9 +4,29 @@ export interface APIAdminNewsletterCategoryRef {
   slug: string;
 }
 
+export type APIAdminNewsletterSubscriberSource =
+  | "direct"
+  | "admin_conversion"
+  | "instructor_conversion"
+  | "student_conversion";
+
+export function getNewsletterSubscriberSourceLabel(
+  source: APIAdminNewsletterSubscriberSource,
+): string {
+  const labels: Record<APIAdminNewsletterSubscriberSource, string> = {
+    direct: "Inscription directe",
+    admin_conversion: "Conversion depuis l'administration",
+    instructor_conversion: "Conversion depuis l'espace formateur",
+    student_conversion: "Conversion depuis l'espace étudiant",
+  };
+
+  return labels[source];
+}
+
 export type APIAdminNewsletterSubscriberListItem = {
   id: string;
   email: string;
+  source: APIAdminNewsletterSubscriberSource;
   firstName: string;
   lastName: string;
   notes: string | null;

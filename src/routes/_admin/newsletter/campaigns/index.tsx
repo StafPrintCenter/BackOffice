@@ -8,9 +8,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useAdminNewsletterCampaignsList, useCreateAdminNewsletterCampaign, useDeleteAdminNewsletterCampaign } from "@/stores/useNewsletterCampaignsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { type APIAdminNewsletterCampaignListItem, type AdminNewsletterCampaignPayload, NEWSLETTER_CAMPAIGN_STATUS_MAP, NEWSLETTER_CAMPAIGN_STATUS_LABELS, } from "@/data/newsletterCampaigns";
+import { getNewsletterSubscriberSourceLabel, NEWSLETTER_SUBSCRIBER_SOURCES } from "@/data/newsletterSubscriber";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/newsletter/campaigns/")({
@@ -26,9 +28,10 @@ const schema = z.object({
   subject: z.string().trim().min(2, "Le sujet doit contenir au moins 2 caractères").max(150),
   body: z.string().trim().min(10, "Le contenu doit contenir au moins 10 caractères"),
   category_id: z.string().trim().optional(),
+  sources: z.array(z.enum(NEWSLETTER_SUBSCRIBER_SOURCES)).optional(),
 });
 type FormValues = z.infer<typeof schema>;
-const empty: FormValues = { subject: "", body: "", category_id: "" };
+const empty: FormValues = { subject: "", body: "", category_id: "", sources: [] };
 
 function statusBadge(status: string) {
   const colorClass = NEWSLETTER_CAMPAIGN_STATUS_MAP[status] ?? "bg-muted text-muted-foreground border-border";
@@ -63,7 +66,11 @@ function AdminNewsletterCampaigns() {
       setErrors(errs);
       return;
     }
-    createMutation.mutate(parsed.data as AdminNewsletterCampaignPayload, {
+    const payload: AdminNewsletterCampaignPayload = {
+      ...parsed.data,
+      sources: parsed.data.sources?.length ? parsed.data.sources : undefined,
+    };
+    createMutation.mutate(payload, {
       onSuccess: () => { toast.success("Campagne créée en brouillon"); setOpen(false); },
       onError: () => toast.error("Erreur lors de la création"),
     });
@@ -111,6 +118,19 @@ function AdminNewsletterCampaigns() {
               );
             },
           },
+          {
+            key: "sources",
+            label: "Sources",
+            render: (r) => r.sources?.length ? (
+              <div className="flex flex-wrap gap-1">
+                {r.sources.map((source) => (
+                  <span key={source} className="rounded-full bg-muted px-2 py-0.5 text-[10px]">
+                    {getNewsletterSubscriberSourceLabel(source)}
+                  </span>
+                ))}
+              </div>
+            ) : <span className="text-xs text-muted-foreground">Toutes les sources</span>,
+          },
           { key: "status", label: "Statut", render: (r) => statusBadge(r.status) },
           { key: "recipientsCount", label: "Destinataires", render: (r) => <span className="text-xs font-medium">{r.recipientsCount ?? "-"}</span> },
           {
@@ -145,6 +165,26 @@ function AdminNewsletterCampaigns() {
                 {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
             </div>
+            <fieldset className="space-y-2">
+              <legend className="text-sm font-medium">Sources ciblées</legend>
+              <p className="text-xs text-muted-foreground">Aucune sélection signifie que toutes les sources seront ciblées.</p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {NEWSLETTER_SUBSCRIBER_SOURCES.map((source) => (
+                  <label key={source} className="flex items-center gap-2 text-sm">
+                    <Checkbox
+                      checked={form.sources?.includes(source) ?? false}
+                      onCheckedChange={(checked) => setForm((current) => ({
+                        ...current,
+                        sources: checked === true
+                          ? [...(current.sources ?? []), source]
+                          : (current.sources ?? []).filter((item) => item !== source),
+                      }))}
+                    />
+                    {getNewsletterSubscriberSourceLabel(source)}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
             <div>
               <Label className="mb-1.5 block">Contenu du message *</Label>
               <RichTextEditor

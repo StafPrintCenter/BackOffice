@@ -1,9 +1,12 @@
+import type { APIAdminNewsletterSubscriberSource } from "./newsletterSubscriber";
+
 export type NewsletterCampaignStatus = "draft" | "scheduled" | "sent";
 
 export type APIAdminNewsletterCampaignListItem = {
   id: string;
   subject: string;
   category: string | null;
+  sources?: APIAdminNewsletterSubscriberSource[] | null;
   sentBy: string;
   recipientsCount: number | null;
   status: NewsletterCampaignStatus;
@@ -21,6 +24,7 @@ export interface AdminNewsletterCampaignPayload {
   subject: string;
   body: string;
   category_id?: string;
+  sources?: APIAdminNewsletterSubscriberSource[];
 }
 
 export interface AdminNewsletterCampaignSchedulePayload {

@@ -4,11 +4,15 @@ export interface APIAdminNewsletterCategoryRef {
   slug: string;
 }
 
+export const NEWSLETTER_SUBSCRIBER_SOURCES = [
+  "direct",
+  "admin_conversion",
+  "instructor_conversion",
+  "student_conversion",
+] as const;
+
 export type APIAdminNewsletterSubscriberSource =
-  | "direct"
-  | "admin_conversion"
-  | "instructor_conversion"
-  | "student_conversion";
+  (typeof NEWSLETTER_SUBSCRIBER_SOURCES)[number];
 
 export function getNewsletterSubscriberSourceLabel(
   source: APIAdminNewsletterSubscriberSource,

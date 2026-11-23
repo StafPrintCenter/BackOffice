@@ -43,7 +43,11 @@ function AdminArticles() {
         columns={columns}
       />
 
-      <ArticleCreateModal open={createOpen} onOpenChange={setCreateOpen} categories={categories} />
+      <ArticleCreateModal
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+        categories={categories}
+      />
 
       <ConfirmDelete
         open={!!toDelete}

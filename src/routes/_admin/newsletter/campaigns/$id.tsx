@@ -4,12 +4,14 @@ import { toast } from "sonner";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, CalendarClock, Ban, Send, User, Users, Calendar } from "lucide-react";
 import { ConfirmDelete, RichTextEditor } from "@/components/site";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAdminNewsletterCampaignDetail, useUpdateAdminNewsletterCampaign, useDeleteAdminNewsletterCampaign, useScheduleAdminNewsletterCampaign, useCancelScheduleAdminNewsletterCampaign, useSendAdminNewsletterCampaign, } from "@/stores/useNewsletterCampaignsStore";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { type AdminNewsletterCampaignPayload, NEWSLETTER_CAMPAIGN_STATUS_MAP, NEWSLETTER_CAMPAIGN_STATUS_LABELS, } from "@/data/newsletterCampaigns";
+import { getNewsletterSubscriberSourceLabel, NEWSLETTER_SUBSCRIBER_SOURCES } from "@/data/newsletterSubscriber";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/newsletter/campaigns/$id")({
@@ -55,6 +57,7 @@ function CampaignDetail() {
         subject: campaign.subject,
         body: campaign.body,
         category_id: categories.find((c) => c.name.toLowerCase() === campaign.category?.toLowerCase())?.id ?? "",
+        sources: campaign.sources ?? [],
       });
     }
   }, [campaign, form, categories]);
@@ -86,7 +89,18 @@ function CampaignDetail() {
   const isScheduled = campaign.status === "scheduled";
 
   const handleSave = () => {
-    updateMutation.mutate({ id: campaign.id, payload: form }, {
+    if (campaign.sources?.length && !form.sources?.length) {
+      toast.error("Au moins une source doit rester sélectionnée pour modifier le ciblage.");
+      return;
+    }
+
+    updateMutation.mutate({
+      id: campaign.id,
+      payload: {
+        ...form,
+        sources: form.sources?.length ? form.sources : undefined,
+      },
+    }, {
       onSuccess: () => { toast.success("Campagne modifiée"); setIsEditing(false); },
       onError: () => toast.error("Erreur lors de la modification"),
     });
@@ -97,6 +111,7 @@ function CampaignDetail() {
       subject: campaign.subject,
       body: campaign.body,
       category_id: categories.find((c) => c.name.toLowerCase() === campaign.category?.toLowerCase())?.id ?? "",
+      sources: campaign.sources ?? [],
     });
     setIsEditing(false);
   };
@@ -194,6 +209,17 @@ function CampaignDetail() {
               {campaign.category}
             </span>
           )}
+          {campaign.sources?.length ? (
+            campaign.sources.map((source) => (
+              <span key={source} className="inline-flex items-center rounded-full border bg-muted px-2.5 py-0.5 text-muted-foreground">
+                {getNewsletterSubscriberSourceLabel(source)}
+              </span>
+            ))
+          ) : (
+            <span className="inline-flex items-center rounded-full border bg-muted px-2.5 py-0.5 text-muted-foreground">
+              Toutes les sources
+            </span>
+          )}
           <span className="inline-flex items-center gap-1 rounded-full border bg-muted px-2.5 py-0.5 text-muted-foreground">
             <User className="h-3 w-3" /> Par {campaign.sentBy}
           </span>
@@ -221,6 +247,30 @@ function CampaignDetail() {
                 {categories.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
               </select>
             </div>
+            <fieldset className="space-y-2">
+              <legend className="text-sm font-medium">Sources ciblées</legend>
+              <p className="text-xs text-muted-foreground">
+                {campaign.sources?.length
+                  ? "Au moins une source doit rester sélectionnée pour modifier le ciblage."
+                  : "Aucune sélection signifie que toutes les sources seront ciblées."}
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {NEWSLETTER_SUBSCRIBER_SOURCES.map((source) => (
+                  <label key={source} className="flex items-center gap-2 text-sm">
+                    <Checkbox
+                      checked={form.sources?.includes(source) ?? false}
+                      onCheckedChange={(checked) => setForm((current) => current ? ({
+                        ...current,
+                        sources: checked === true
+                          ? [...(current.sources ?? []), source]
+                          : (current.sources ?? []).filter((item) => item !== source),
+                      }) : current)}
+                    />
+                    {getNewsletterSubscriberSourceLabel(source)}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
             <div>
               <Label className="mb-1.5 block">Contenu du message</Label>
               <RichTextEditor

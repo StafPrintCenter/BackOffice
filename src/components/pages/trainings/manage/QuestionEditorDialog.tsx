@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { QUESTION_TYPE_LABELS } from "@/data/quizzes";
 import type { QuizQuestionType } from "@/data/quizzes";
-import type { QuestionDialogState, QuestionFormValues } from "./quiz-form-types";
+import type { QuestionDialogState, QuestionFormValues } from "./QuizFormTypes";
 
 interface QuestionEditorDialogProps {
   dialog: QuestionDialogState;

@@ -1,7 +1,6 @@
 export { ContentCreatorBadge, formatContentDate } from "./ContentCreatorBadge";
 export { EMPTY_LESSON_FORM, LESSON_FORM_KINDS, LessonFormDialog } from "./Lesson/FormDialog";
 export { ModuleLessonsList } from "./ModuleLessonsList";
-export { QuestionEditorDialog } from "./QuestionEditorDialog";
 export { TrainingManageDialogs } from "./TrainingManageDialogs";
 export { TrainingManagePage } from "./TrainingManagePage";
 export { TrainingModuleEditorDialog } from "./TrainingModuleEditorDialog";

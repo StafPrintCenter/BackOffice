@@ -1,12 +1,9 @@
 import type { Dispatch, SetStateAction } from "react";
 import { ConfirmDelete } from "@/components/site";
-import { QuestionEditorDialog } from "../QuestionEditorDialog";
-import { QuizSettingsDialog } from "./SettingsDialog";
-import type {
-  QuestionDialogState,
-  QuestionFormValues,
-  QuizFormValues,
-} from "./FormTypes";
+import {
+  QuestionEditorDialog, QuizSettingsDialog,
+  type QuestionDialogState, type QuestionFormValues, type QuizFormValues
+} from "./";
 import type { QuizQuestion } from "@/data/quizzes";
 
 interface QuizManagerDialogsProps {

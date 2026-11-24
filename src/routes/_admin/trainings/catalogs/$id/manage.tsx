@@ -2,14 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, Plus, BookOpen } from "lucide-react";
-import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
 import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule } from "@/stores/useTrainingModulesStore";
 import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson } from "@/stores/useLessonsStore";
@@ -17,9 +10,12 @@ import { useCreateAdminContentReview } from "@/stores/useContentReviewsStore";
 import {
   EMPTY_LESSON_FORM,
   LESSON_FORM_KINDS,
-  LessonFormDialog,
+  TrainingManageDialogs,
   TrainingModuleList,
+  type ContentReviewDialogState,
+  type LessonDialogState,
   type LessonFormValues,
+  type ModuleDialogState,
 } from "@/components/pages/trainings/manage";
 import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload } from "@/data/trainingModules";
 import { SITE } from "@/data/site";
@@ -62,12 +58,12 @@ function TrainingManageDetail() {
   const [expandedModuleIds, setExpandedModuleIds] = useState<string[]>([]);
   const [expandedLessonIds, setExpandedLessonIds] = useState<string[]>([]);
 
-  const [moduleDialog, setModuleDialog] = useState<{ open: boolean; row?: APIAdminTrainingModule }>({ open: false });
+  const [moduleDialog, setModuleDialog] = useState<ModuleDialogState>({ open: false });
   const [moduleForm, setModuleForm] = useState<AdminTrainingModulePayload>(emptyModuleForm);
   const [moduleErrors, setModuleErrors] = useState<Record<string, string>>({});
   const [moduleToDelete, setModuleToDelete] = useState<APIAdminTrainingModule | null>(null);
 
-  const [lessonDialog, setLessonDialog] = useState<{ open: boolean; moduleId: string; row?: APIAdminLesson }>({
+  const [lessonDialog, setLessonDialog] = useState<LessonDialogState>({
     open: false,
     moduleId: "",
   });
@@ -75,13 +71,7 @@ function TrainingManageDetail() {
   const [lessonErrors, setLessonErrors] = useState<Record<string, string>>({});
   const [lessonToDelete, setLessonToDelete] = useState<{ moduleId: string; lesson: APIAdminLesson } | null>(null);
 
-  const [reviewDialog, setReviewDialog] = useState<{
-    open: boolean;
-    type: "module" | "lesson" | "quiz";
-    id: string;
-    title: string;
-    decision: "approved" | "rejected";
-  } | null>(null);
+  const [reviewDialog, setReviewDialog] = useState<ContentReviewDialogState | null>(null);
   const [reviewComment, setReviewComment] = useState("");
 
   const toggleModule = (moduleId: string) => {
@@ -217,7 +207,7 @@ function TrainingManageDetail() {
 
   const openReview = (type: "module" | "lesson" | "quiz", reviewId: string, title: string, decision: "approved" | "rejected") => {
     setReviewComment("");
-    setReviewDialog({ open: true, type, id: reviewId, title, decision });
+    setReviewDialog({ type, id: reviewId, title, decision });
   };
 
   const submitReview = () => {
@@ -235,6 +225,36 @@ function TrainingManageDetail() {
           setReviewDialog(null);
         },
         onError: () => toast.error("Erreur lors de l'enregistrement de la décision"),
+      }
+    );
+  };
+
+  const confirmDeleteModule = () => {
+    if (!moduleToDelete) return;
+    deleteModuleMutation.mutate(
+      { trainingId: id, moduleId: moduleToDelete.id },
+      {
+        onSuccess: () => {
+          toast.success("Module supprimé");
+          setExpandedModuleIds((prev) => prev.filter((moduleId) => moduleId !== moduleToDelete.id));
+          setModuleToDelete(null);
+        },
+        onError: () => toast.error("Erreur lors de la suppression du module"),
+      }
+    );
+  };
+
+  const confirmDeleteLesson = () => {
+    if (!lessonToDelete) return;
+    deleteLessonMutation.mutate(
+      { moduleId: lessonToDelete.moduleId, lessonId: lessonToDelete.lesson.id },
+      {
+        onSuccess: () => {
+          toast.success("Leçon supprimée");
+          setExpandedLessonIds((prev) => prev.filter((lessonId) => lessonId !== lessonToDelete.lesson.id));
+          setLessonToDelete(null);
+        },
+        onError: () => toast.error("Erreur lors de la suppression de la leçon"),
       }
     );
   };
@@ -310,132 +330,33 @@ function TrainingManageDetail() {
         />
       )}
 
-      {/* Dialog module */}
-      <Dialog open={moduleDialog.open} onOpenChange={(v) => setModuleDialog({ open: v, row: moduleDialog.row })}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>{moduleDialog.row ? "Modifier le module" : "Nouveau module"}</DialogTitle></DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>Titre</Label>
-              <Input value={moduleForm.title} onChange={(e) => setModuleForm({ ...moduleForm, title: e.target.value })} />
-              {moduleErrors.title && <p className="text-xs text-destructive mt-1">{moduleErrors.title}</p>}
-            </div>
-            <div>
-              <Label>Description</Label>
-              <Textarea rows={3} value={moduleForm.description} onChange={(e) => setModuleForm({ ...moduleForm, description: e.target.value })} />
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <Label>Ordre d'affichage</Label>
-                <Input
-                  type="number"
-                  min={0}
-                  value={moduleForm.sort_order ?? 0}
-                  onChange={(e) => setModuleForm({ ...moduleForm, sort_order: Number(e.target.value) })}
-                />
-              </div>
-              {moduleDialog.row && (
-                <div className="flex items-end gap-3">
-                  <Label className="mb-2">Module activé</Label>
-                  <Switch
-                    checked={!!moduleForm.is_enabled}
-                    onCheckedChange={(v) => setModuleForm({ ...moduleForm, is_enabled: v })}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setModuleDialog({ open: false })}>Annuler</Button>
-            <Button onClick={submitModule} disabled={createModuleMutation.isPending || updateModuleMutation.isPending}>
-              {moduleDialog.row ? "Enregistrer" : "Créer"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <LessonFormDialog
-        open={lessonDialog.open}
-        lesson={lessonDialog.row}
-        form={lessonForm}
-        errors={lessonErrors}
-        setForm={setLessonForm}
-        onOpenChange={(open) => setLessonDialog((current) => ({ ...current, open }))}
-        onSubmit={submitLesson}
-        isPending={createLessonMutation.isPending || updateLessonMutation.isPending}
-      />
-
-      {/* Dialog revue */}
-      <Dialog open={!!reviewDialog} onOpenChange={(v) => !v && setReviewDialog(null)}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>
-              {reviewDialog?.decision === "approved" ? "Approuver" : "Rejeter"} "{reviewDialog?.title}"
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <div>
-              <Label>Commentaire (optionnel)</Label>
-              <Textarea
-                rows={3}
-                value={reviewComment}
-                onChange={(e) => setReviewComment(e.target.value)}
-                placeholder="Précisez votre décision..."
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setReviewDialog(null)}>Annuler</Button>
-            <Button
-              variant={reviewDialog?.decision === "rejected" ? "destructive" : "default"}
-              onClick={submitReview}
-              disabled={reviewMutation.isPending}
-            >
-              {reviewMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Confirmer
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <ConfirmDelete
-        open={!!moduleToDelete}
-        onOpenChange={(v) => !v && setModuleToDelete(null)}
-        onConfirm={() => {
-          if (!moduleToDelete) return;
-          deleteModuleMutation.mutate(
-            { trainingId: id, moduleId: moduleToDelete.id },
-            {
-              onSuccess: () => {
-                toast.success("Module supprimé");
-                setExpandedModuleIds((prev) => prev.filter((id) => id !== moduleToDelete.id));
-                setModuleToDelete(null);
-              },
-              onError: () => toast.error("Erreur lors de la suppression du module"),
-            }
-          );
-        }}
-        title={`Supprimer le module "${moduleToDelete?.title}" et toutes ses leçons ?`}
-      />
-
-      <ConfirmDelete
-        open={!!lessonToDelete}
-        onOpenChange={(v) => !v && setLessonToDelete(null)}
-        onConfirm={() => {
-          if (!lessonToDelete) return;
-          deleteLessonMutation.mutate(
-            { moduleId: lessonToDelete.moduleId, lessonId: lessonToDelete.lesson.id },
-            {
-              onSuccess: () => {
-                toast.success("Leçon supprimée");
-                setExpandedLessonIds((prev) => prev.filter((id) => id !== lessonToDelete.lesson.id));
-                setLessonToDelete(null);
-              },
-              onError: () => toast.error("Erreur lors de la suppression de la leçon"),
-            }
-          );
-        }}
-        title={`Supprimer la leçon "${lessonToDelete?.lesson.title}" ?`}
+      <TrainingManageDialogs
+        moduleDialog={moduleDialog}
+        setModuleDialog={setModuleDialog}
+        moduleForm={moduleForm}
+        setModuleForm={setModuleForm}
+        moduleErrors={moduleErrors}
+        modulePending={createModuleMutation.isPending || updateModuleMutation.isPending}
+        onSubmitModule={submitModule}
+        lessonDialog={lessonDialog}
+        setLessonDialog={setLessonDialog}
+        lessonForm={lessonForm}
+        setLessonForm={setLessonForm}
+        lessonErrors={lessonErrors}
+        lessonPending={createLessonMutation.isPending || updateLessonMutation.isPending}
+        onSubmitLesson={submitLesson}
+        reviewDialog={reviewDialog}
+        setReviewDialog={setReviewDialog}
+        reviewComment={reviewComment}
+        setReviewComment={setReviewComment}
+        reviewPending={reviewMutation.isPending}
+        onSubmitReview={submitReview}
+        moduleToDelete={moduleToDelete}
+        onModuleDeleteDialogChange={(open) => !open && setModuleToDelete(null)}
+        onConfirmModuleDelete={confirmDeleteModule}
+        lessonToDelete={lessonToDelete}
+        onLessonDeleteDialogChange={(open) => !open && setLessonToDelete(null)}
+        onConfirmLessonDelete={confirmDeleteLesson}
       />
     </>
   );

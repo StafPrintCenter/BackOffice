@@ -1,10 +1,9 @@
 import { Calendar, CheckCircle2, ChevronDown, CircleChevronUp, ListChecks, Plus, Rocket, ShieldCheck, ShieldOff, Trash2, Pencil, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
 import { getContentStatusBadgeClass, getContentStatusLabel } from "@/data/trainingModules";
 import type { APIAdminLesson, APIAdminTrainingModule } from "@/data/trainingModules";
 import { ContentCreatorBadge, formatContentDate } from "./ContentCreatorBadge";
-import { LessonItem } from "./LessonItem";
+import { ModuleLessonsList } from "./ModuleLessonsList";
 
 type ReviewAction = (
   type: "module" | "lesson" | "quiz",
@@ -29,50 +28,6 @@ interface TrainingModuleListProps {
   setLessonToDelete: (data: { moduleId: string; lesson: APIAdminLesson }) => void;
   openReview: ReviewAction;
   publishLessonPending: boolean;
-}
-
-function ModuleLessonsList({
-  moduleId,
-  expandedLessonIds,
-  toggleLesson,
-  openEditLesson,
-  handlePublishLesson,
-  setLessonToDelete,
-  openReview,
-  publishLessonPending,
-}: Pick<TrainingModuleListProps,
-  "expandedLessonIds" | "toggleLesson" | "openEditLesson" | "handlePublishLesson" |
-  "setLessonToDelete" | "openReview" | "publishLessonPending"> & { moduleId: string }) {
-  const { lessons, isLoading } = useAdminModuleDetail(moduleId);
-
-  if (isLoading) {
-    return <div className="text-sm text-muted-foreground">Chargement des leçons...</div>;
-  }
-
-  if (lessons.length === 0) {
-    return <p className="text-sm text-muted-foreground">Aucune leçon pour ce module.</p>;
-  }
-
-  return (
-    <div className="space-y-2">
-      {[...lessons]
-        .sort((a, b) => a.sortOrder - b.sortOrder)
-        .map((lesson) => (
-          <LessonItem
-            key={lesson.id}
-            moduleId={moduleId}
-            lesson={lesson}
-            isExpanded={expandedLessonIds.includes(lesson.id)}
-            toggleLesson={toggleLesson}
-            openEditLesson={openEditLesson}
-            handlePublishLesson={handlePublishLesson}
-            setLessonToDelete={setLessonToDelete}
-            openReview={openReview}
-            publishLessonPending={publishLessonPending}
-          />
-        ))}
-    </div>
-  );
 }
 
 export function TrainingModuleList({

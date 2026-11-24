@@ -9,7 +9,12 @@ export { QuizManagerDialogs } from "./QuizManagerDialogs";
 export { QuizQuestionsSection } from "./QuizQuestionsSection";
 export { QuizSettingsDialog } from "./QuizSettingsDialog";
 export { TrainingManageDialogs } from "./TrainingManageDialogs";
+export { TrainingManagePage } from "./TrainingManagePage";
 export { TrainingModuleList } from "./TrainingModuleList";
+export { useQuizQuestionManager } from "./useQuizQuestionManager";
+export { useTrainingLessonManager } from "./useTrainingLessonManager";
+export { useTrainingModuleManager } from "./useTrainingModuleManager";
+export { useTrainingReviewManager } from "./useTrainingReviewManager";
 export type {
   ContentReviewDialogState,
   LessonDialogState,

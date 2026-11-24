@@ -15,9 +15,3 @@ export type {
   LessonDialogState,
   ModuleDialogState,
 } from "./TrainingManageDialogs";
-export { EMPTY_QUESTION_FORM, EMPTY_QUIZ_FORM } from "./Quiz/QuizFormTypes";
-export type {
-  QuestionDialogState,
-  QuestionFormValues,
-  QuizFormValues,
-} from "./Quiz/QuizFormTypes";

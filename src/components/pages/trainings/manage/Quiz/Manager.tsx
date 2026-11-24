@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz } from "@/stores/useQuizzesStore";
 import type { AdminQuizPayload } from "@/data/quizzes";
 import { QuizContent } from "./Content";
-import { QuizManagerDialogs } from "./QuizManagerDialogs";
-import { EMPTY_QUIZ_FORM, type QuizFormValues } from "./QuizFormTypes";
+import { QuizManagerDialogs } from "./ManagerDialogs";
+import { EMPTY_QUIZ_FORM, type QuizFormValues } from "./FormTypes";
 import { useQuizQuestionManager } from "../useQuizQuestionManager";
 
 export function QuizManager({

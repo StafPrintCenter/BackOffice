@@ -3,6 +3,7 @@ export { EMPTY_LESSON_FORM, LESSON_FORM_KINDS, LessonFormDialog } from "./Lesson
 export type { LessonFormValues } from "./LessonFormDialog";
 export { LessonChapterFields } from "./LessonChapterFields";
 export { LessonItem } from "./LessonItem";
+export { LessonRichContent } from "./LessonRichContent";
 export { ModuleLessonsList } from "./ModuleLessonsList";
 export { QuestionEditorDialog } from "./QuestionEditorDialog";
 export { QuizContent } from "./QuizContent";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Calendar, CheckCircle2, ChevronDown, CircleChevronUp, Clock, Pencil, Rocket, Trash2, XCircle } from "lucide-react";
-import { QuizManager } from "@/components/pages/trainings/manage/QuizManager";
+import { QuizManager } from "@/components/pages/trainings/manage/Quiz/QuizManager";
 import { Button } from "@/components/ui/button";
 import { useAdminLessonDetail } from "@/stores/useLessonsStore";
 import { getContentStatusBadgeClass, getContentStatusLabel, getLessonKindIcon, LESSON_KIND_LABELS, toYoutubeEmbedUrl } from "@/data/trainingModules";

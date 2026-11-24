@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction } from "react";
-import { Plus, Trash2 } from "lucide-react";
 import { RichTextEditor } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -8,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { LESSON_KIND_LABELS, type APIAdminLesson, type LessonKind } from "@/data/trainingModules";
+import { LessonChapterFields } from "./LessonChapterFields";
 
 export interface LessonFormValues {
   title: string;
@@ -158,46 +158,10 @@ export function LessonFormDialog({
           )}
 
           {showChapters && (
-            <div>
-              <div className="flex items-center justify-between">
-                <Label>Chapitres (optionnel)</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setForm({ ...form, chapters: [...form.chapters, ""] })}
-                >
-                  <Plus className="mr-1 h-3 w-3" /> Ajouter
-                </Button>
-              </div>
-              <div className="mt-2 space-y-2">
-                {form.chapters.map((chapter, index) => (
-                  <div key={index} className="flex gap-2">
-                    <Input
-                      placeholder={`Chapitre ${index + 1}`}
-                      value={chapter}
-                      onChange={(event) => {
-                        const chapters = [...form.chapters];
-                        chapters[index] = event.target.value;
-                        setForm({ ...form, chapters });
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      aria-label={`Supprimer le chapitre ${index + 1}`}
-                      onClick={() => setForm({
-                        ...form,
-                        chapters: form.chapters.filter((_, chapterIndex) => chapterIndex !== index),
-                      })}
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <LessonChapterFields
+              chapters={form.chapters}
+              onChange={(chapters) => setForm({ ...form, chapters })}
+            />
           )}
         </div>
         <DialogFooter>

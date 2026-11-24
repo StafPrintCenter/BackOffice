@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import type { AdminTrainingModulePayload, APIAdminTrainingModule } from "@/data/trainingModules";
-import {
-  useCreateAdminTrainingModule,
-  useDeleteAdminTrainingModule,
-  usePublishAdminTrainingModule,
-  useUpdateAdminTrainingModule,
-} from "@/stores/useTrainingModulesStore";
+import { useCreateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useUpdateAdminTrainingModule } from "@/stores/useTrainingModulesStore";
 import type { ModuleDialogState } from "../Training/ManageDialogs";
 
 const EMPTY_MODULE_FORM: AdminTrainingModulePayload = {

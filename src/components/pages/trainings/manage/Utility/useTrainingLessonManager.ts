@@ -1,15 +1,8 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { LESSON_FORM_KINDS } from "../Lesson/FormDialog";
-import { EMPTY_LESSON_FORM } from "../Lesson/FormDialog";
-import type { LessonFormValues } from "../Lesson/FormDialog";
+import { LESSON_FORM_KINDS, EMPTY_LESSON_FORM, type LessonFormValues } from "../Lesson";
 import type { APIAdminLesson, AdminLessonPayload } from "@/data/trainingModules";
-import {
-  useCreateAdminLesson,
-  useDeleteAdminLesson,
-  usePublishAdminLesson,
-  useUpdateAdminLesson,
-} from "@/stores/useLessonsStore";
+import { useCreateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson, useUpdateAdminLesson } from "@/stores/useLessonsStore";
 import type { LessonDialogState } from "../Training/ManageDialogs";
 
 export function useTrainingLessonManager() {

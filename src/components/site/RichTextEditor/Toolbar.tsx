@@ -1,5 +1,5 @@
-import { BlockFormatControls, FormattingControls, InsertionControls, ToolbarSeparator } from "./";
-import type { InsertionMode, RichTextToolbarState } from "./types";
+import { BlockFormatControls, FormattingControls, InsertionControls, TableControls, ToolbarSeparator } from "./";
+import type { InsertionMode, RichTextToolbarState, TableAction } from "./types";
 
 interface RichTextToolbarProps {
   state: RichTextToolbarState;
@@ -7,6 +7,8 @@ interface RichTextToolbarProps {
   onCommand: (command: string, value?: string) => void;
   onListStyle: (ordered: boolean, style: string) => void;
   onTextColor: (color: string) => void;
+  onToggleCode: () => void;
+  onTableAction: (action: TableAction) => void;
   onInsert: (mode: InsertionMode) => void;
   onClearFormatting: () => void;
 }
@@ -17,6 +19,8 @@ export function RichTextToolbar({
   onCommand,
   onListStyle,
   onTextColor,
+  onToggleCode,
+  onTableAction,
   onInsert,
   onClearFormatting,
 }: RichTextToolbarProps) {
@@ -38,6 +42,13 @@ export function RichTextToolbar({
         onBeforeAction={onBeforeAction}
         onCommand={onCommand}
         onTextColor={onTextColor}
+        onToggleCode={onToggleCode}
+      />
+      <TableControls
+        rows={state.tableRows}
+        columns={state.tableColumns}
+        onBeforeAction={onBeforeAction}
+        onAction={onTableAction}
       />
       <InsertionControls
         onBeforeAction={onBeforeAction}

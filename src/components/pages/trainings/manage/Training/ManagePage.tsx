@@ -5,8 +5,8 @@ import type { APIAdminTrainingModule } from "@/data/trainingModules";
 import type { useTrainingLessonManager } from "../useTrainingLessonManager";
 import type { useTrainingModuleManager } from "../useTrainingModuleManager";
 import type { useTrainingReviewManager } from "../useTrainingReviewManager";
-import { TrainingManageDialogs } from "./TrainingManageDialogs";
-import { TrainingModuleList } from "./TrainingModuleList";
+import { TrainingManageDialogs } from "./ManageDialogs";
+import { TrainingModuleList } from "./ModuleList";
 
 interface TrainingManagePageProps {
   training: APIAdminTrainingDetail | null;

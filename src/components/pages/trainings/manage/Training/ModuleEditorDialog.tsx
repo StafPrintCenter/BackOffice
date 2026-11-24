@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import type { AdminTrainingModulePayload } from "@/data/trainingModules";
-import type { ModuleDialogState } from "./TrainingManageDialogs";
+import type { ModuleDialogState } from "./ManageDialogs";
 
 interface TrainingModuleEditorDialogProps {
   dialog: ModuleDialogState;

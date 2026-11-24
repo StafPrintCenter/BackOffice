@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { LessonFormDialog } from "../Lesson/FormDialog";
 import type { LessonFormValues } from "../Lesson/FormDialog";
-import { TrainingModuleEditorDialog } from "./TrainingModuleEditorDialog";
+import { TrainingModuleEditorDialog } from "./ModuleEditorDialog";
 import type {
   APIAdminLesson,
   APIAdminTrainingModule,

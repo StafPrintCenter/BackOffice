@@ -1,18 +1,14 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Rocket, HelpCircle, CheckCircle2, XCircle } from "lucide-react";
+import { HelpCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ConfirmDelete } from "@/components/site";
 import {
   useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz,
   useCreateAdminQuizQuestion, useUpdateAdminQuizQuestion, useDeleteAdminQuizQuestion,
 } from "@/stores/useQuizzesStore";
-import { QUIZ_MODE_LABELS } from "@/data/quizzes";
 import type { QuizQuestion, AdminQuizPayload, AdminQuizQuestionPayload } from "@/data/quizzes";
-import { getContentStatusBadgeClass, getContentStatusLabel } from "@/data/trainingModules";
-import { QuestionEditorDialog } from "./QuestionEditorDialog";
-import { QuizQuestionsSection } from "./QuizQuestionsSection";
-import { QuizSettingsDialog } from "./QuizSettingsDialog";
+import { QuizContent } from "./QuizContent";
+import { QuizManagerDialogs } from "./QuizManagerDialogs";
 import {
   EMPTY_QUESTION_FORM,
   EMPTY_QUIZ_FORM,
@@ -183,6 +179,28 @@ export function QuizManager({
     }
   };
 
+  const confirmDeleteQuiz = () => {
+    if (!quizId) return;
+    deleteQuizMutation.mutate(
+      { lessonId, quizId },
+      {
+        onSuccess: () => { toast.success("Quiz supprimé"); setQuizToDelete(false); },
+        onError: () => toast.error("Erreur lors de la suppression du quiz"),
+      }
+    );
+  };
+
+  const confirmDeleteQuestion = () => {
+    if (!questionToDelete || !quizId) return;
+    deleteQuestionMutation.mutate(
+      { questionId: questionToDelete.id, quizId },
+      {
+        onSuccess: () => { toast.success("Question supprimée"); setQuestionToDelete(null); },
+        onError: () => toast.error("Erreur lors de la suppression de la question"),
+      }
+    );
+  };
+
   return (
     <div className="rounded-xl border bg-card p-4 space-y-3">
       <div className="flex items-center justify-between">
@@ -201,116 +219,41 @@ export function QuizManager({
       ) : isLoading || !quiz ? (
         <div className="text-xs text-muted-foreground">Chargement du quiz...</div>
       ) : (
-        <div className="space-y-3">
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className={`inline-flex items-center rounded-full border px-2 py-0.5 font-medium ${getContentStatusBadgeClass(quiz.status)}`}>
-              {getContentStatusLabel(quiz.status)}
-            </span>
-            <span className="rounded-full bg-muted px-2 py-0.5">{QUIZ_MODE_LABELS[quiz.mode]}</span>
-            {quiz.timeLimitSec != null && <span className="rounded-full bg-muted px-2 py-0.5">{quiz.timeLimitSec}s</span>}
-            <span className="rounded-full bg-muted px-2 py-0.5">Seuil {quiz.passScore}%</span>
-            <span className="rounded-full bg-muted px-2 py-0.5">{quiz.maxAttempts} tentative{quiz.maxAttempts > 1 ? "s" : ""}</span>
-            <span className="rounded-full bg-muted px-2 py-0.5">{quiz.totalPoints} pts total</span>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <Button type="button" size="sm" variant="ghost" onClick={openEditQuiz}>
-              <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier les réglages
-            </Button>
-
-            {quiz.status === "pending_review" && (
-              <>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  className="text-emerald-600 hover:bg-emerald-500/10"
-                  onClick={() => openReview("quiz", quiz.id, `Quiz de la leçon`, "approved")}
-                >
-                  <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Approuver
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  className="text-destructive hover:bg-destructive/10"
-                  onClick={() => openReview("quiz", quiz.id, `Quiz de la leçon`, "rejected")}
-                >
-                  <XCircle className="h-3.5 w-3.5 mr-1" /> Rejeter
-                </Button>
-              </>
-            )}
-
-            {quiz.status !== "published" && quiz.status !== "pending_review" && (
-              <Button type="button" size="sm" variant="ghost" onClick={handlePublishQuiz} disabled={publishQuizMutation.isPending || quiz.questionsCount === 0}>
-                <Rocket className="h-3.5 w-3.5 mr-1" /> Publier
-              </Button>
-            )}
-
-            <Button type="button" size="sm" variant="ghost" className="text-destructive hover:bg-destructive/10" onClick={() => setQuizToDelete(true)}>
-              <Trash2 className="h-3.5 w-3.5 mr-1" /> Supprimer le quiz
-            </Button>
-          </div>
-
-          <QuizQuestionsSection
-            questions={quiz.questions}
-            onCreate={openCreateQuestion}
-            onEdit={openEditQuestion}
-            onDelete={setQuestionToDelete}
-          />
-        </div>
+        <QuizContent
+          quiz={quiz}
+          publishPending={publishQuizMutation.isPending}
+          onEdit={openEditQuiz}
+          onPublish={handlePublishQuiz}
+          onDelete={() => setQuizToDelete(true)}
+          onReview={(decision) => openReview("quiz", quiz.id, "Quiz de la leçon", decision)}
+          onCreateQuestion={openCreateQuestion}
+          onEditQuestion={openEditQuestion}
+          onDeleteQuestion={setQuestionToDelete}
+        />
       )}
 
-      <QuizSettingsDialog
-        open={quizDialog}
+      <QuizManagerDialogs
+        quizDialog={quizDialog}
         quizId={quizId}
-        form={quizForm}
-        setForm={setQuizForm}
-        error={quizError}
-        isPending={createQuizMutation.isPending || updateQuizMutation.isPending}
-        onOpenChange={setQuizDialog}
-        onSubmit={submitQuiz}
-      />
-      <QuestionEditorDialog
-        dialog={questionDialog}
-        form={questionForm}
-        setForm={setQuestionForm}
-        errors={questionErrors}
-        isPending={createQuestionMutation.isPending || updateQuestionMutation.isPending}
-        onOpenChange={(open) => setQuestionDialog({ open })}
-        onSubmit={submitQuestion}
-      />
-
-      <ConfirmDelete
-        open={quizToDelete}
-        onOpenChange={setQuizToDelete}
-        onConfirm={() => {
-          if (!quizId) return;
-          deleteQuizMutation.mutate(
-            { lessonId, quizId },
-            {
-              onSuccess: () => { toast.success("Quiz supprimé"); setQuizToDelete(false); },
-              onError: () => toast.error("Erreur lors de la suppression du quiz"),
-            }
-          );
-        }}
-        title="Supprimer ce quiz et toutes ses questions ?"
-      />
-
-      <ConfirmDelete
-        open={!!questionToDelete}
-        onOpenChange={(v) => !v && setQuestionToDelete(null)}
-        onConfirm={() => {
-          if (!questionToDelete || !quizId) return;
-          deleteQuestionMutation.mutate(
-            { questionId: questionToDelete.id, quizId },
-            {
-              onSuccess: () => { toast.success("Question supprimée"); setQuestionToDelete(null); },
-              onError: () => toast.error("Erreur lors de la suppression de la question"),
-            }
-          );
-        }}
-        title={`Supprimer la question "${questionToDelete?.prompt}" ?`}
+        quizForm={quizForm}
+        setQuizForm={setQuizForm}
+        quizError={quizError}
+        quizPending={createQuizMutation.isPending || updateQuizMutation.isPending}
+        onQuizDialogChange={setQuizDialog}
+        onQuizSubmit={submitQuiz}
+        questionDialog={questionDialog}
+        questionForm={questionForm}
+        setQuestionForm={setQuestionForm}
+        questionErrors={questionErrors}
+        questionPending={createQuestionMutation.isPending || updateQuestionMutation.isPending}
+        onQuestionDialogChange={(open) => setQuestionDialog({ open })}
+        onQuestionSubmit={submitQuestion}
+        quizToDelete={quizToDelete}
+        onQuizDeleteDialogChange={setQuizToDelete}
+        onQuizDelete={confirmDeleteQuiz}
+        questionToDelete={questionToDelete}
+        onQuestionDeleteDialogChange={(open) => !open && setQuestionToDelete(null)}
+        onQuestionDelete={confirmDeleteQuestion}
       />
     </div>
   );

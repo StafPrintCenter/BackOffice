@@ -6,3 +6,11 @@ export type InsertionPayload =
   | { type: "video"; url: string }
   | { type: "emoji"; value: string }
   | { type: "table"; rows: number; columns: number };
+
+export interface RichTextToolbarState {
+  blockFormat: string;
+  listType: "" | "ul" | "ol";
+  listStyle: string;
+  alignment: string;
+  activeCommands: Record<string, boolean>;
+}

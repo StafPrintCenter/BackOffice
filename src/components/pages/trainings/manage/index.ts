@@ -2,11 +2,6 @@ export { ContentCreatorBadge, formatContentDate } from "./ContentCreatorBadge";
 export { EMPTY_LESSON_FORM, LESSON_FORM_KINDS, LessonFormDialog } from "./Lesson/FormDialog";
 export { ModuleLessonsList } from "./ModuleLessonsList";
 export { QuestionEditorDialog } from "./QuestionEditorDialog";
-export { QuizContent } from "./QuizContent";
-export { QuizManager } from "./QuizManager";
-export { QuizManagerDialogs } from "./QuizManagerDialogs";
-export { QuizQuestionsSection } from "./QuizQuestionsSection";
-export { QuizSettingsDialog } from "./QuizSettingsDialog";
 export { TrainingManageDialogs } from "./TrainingManageDialogs";
 export { TrainingManagePage } from "./TrainingManagePage";
 export { TrainingModuleEditorDialog } from "./TrainingModuleEditorDialog";
@@ -20,9 +15,9 @@ export type {
   LessonDialogState,
   ModuleDialogState,
 } from "./TrainingManageDialogs";
-export { EMPTY_QUESTION_FORM, EMPTY_QUIZ_FORM } from "./QuizFormTypes";
+export { EMPTY_QUESTION_FORM, EMPTY_QUIZ_FORM } from "./Quiz/QuizFormTypes";
 export type {
   QuestionDialogState,
   QuestionFormValues,
   QuizFormValues,
-} from "./QuizFormTypes";
+} from "./Quiz/QuizFormTypes";

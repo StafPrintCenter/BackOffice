@@ -33,12 +33,12 @@ export const EMPTY_LESSON_FORM: LessonFormValues = {
   is_mandatory: false,
 };
 
-export const LESSON_FORM_KINDS = {
+export const LESSON_FORM_KINDS: Record<string, readonly LessonKind[]> = {
   chapters: ["video", "reading"],
   videoUrl: ["video"],
   content: ["reading"],
   brief: ["quiz", "exercise", "assignment", "project"],
-} satisfies Record<string, LessonKind[]>;
+};
 
 interface LessonFormDialogProps {
   open: boolean;

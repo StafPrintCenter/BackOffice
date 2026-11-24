@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, CircleChevronUp, ListChecks, Calendar, ShieldCheck, ShieldOff, CheckCircle2, XCircle, BookOpen } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, BookOpen } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,18 +11,16 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
-import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
+import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule } from "@/stores/useTrainingModulesStore";
 import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson } from "@/stores/useLessonsStore";
 import { useCreateAdminContentReview } from "@/stores/useContentReviewsStore";
-import { LessonItem as LessonItemCard } from "@/components/pages/trainings/manage/LessonItem";
-import { ContentCreatorBadge, formatContentDate } from "@/components/pages/trainings/manage/ContentCreatorBadge";
 import {
   EMPTY_LESSON_FORM,
   LESSON_FORM_KINDS,
   LessonFormDialog,
+  TrainingModuleList,
   type LessonFormValues,
-} from "@/components/pages/trainings/manage/LessonFormDialog";
-import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS } from "@/data/trainingModules";
+} from "@/components/pages/trainings/manage";
 import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload } from "@/data/trainingModules";
 import { SITE } from "@/data/site";
 
@@ -43,60 +41,6 @@ const KINDS_WITH_CHAPTERS = LESSON_FORM_KINDS.chapters;
 const KINDS_WITH_VIDEO_URL = LESSON_FORM_KINDS.videoUrl;
 const KINDS_WITH_CONTENT = LESSON_FORM_KINDS.content;
 const KINDS_WITH_BRIEF = LESSON_FORM_KINDS.brief;
-
-// Composant pour afficher les leçons d'un module ouvert
-function ModuleLessonsList({
-  moduleId,
-  expandedLessonIds,
-  toggleLesson,
-  openCreateLesson,
-  openEditLesson,
-  handlePublishLesson,
-  setLessonToDelete,
-  openReview,
-  publishLessonPending,
-}: {
-  moduleId: string;
-  expandedLessonIds: string[];
-  toggleLesson: (id: string) => void;
-  openCreateLesson: (moduleId: string) => void;
-  openEditLesson: (moduleId: string, l: APIAdminLesson) => void;
-  handlePublishLesson: (l: APIAdminLesson) => void;
-  setLessonToDelete: (data: { moduleId: string; lesson: APIAdminLesson }) => void;
-  openReview: (type: "module" | "lesson" | "quiz", id: string, title: string, decision: "approved" | "rejected") => void;
-  publishLessonPending: boolean;
-}) {
-  const { lessons, isLoading } = useAdminModuleDetail(moduleId);
-
-  if (isLoading) {
-    return <div className="text-sm text-muted-foreground">Chargement des leçons...</div>;
-  }
-
-  if (lessons.length === 0) {
-    return <p className="text-sm text-muted-foreground">Aucune leçon pour ce module.</p>;
-  }
-
-  return (
-    <div className="space-y-2">
-      {[...lessons]
-        .sort((a, b) => a.sortOrder - b.sortOrder)
-        .map((l) => (
-          <LessonItemCard
-            key={l.id}
-            moduleId={moduleId}
-            lesson={l}
-            isExpanded={expandedLessonIds.includes(l.id)}
-            toggleLesson={toggleLesson}
-            openEditLesson={openEditLesson}
-            handlePublishLesson={handlePublishLesson}
-            setLessonToDelete={setLessonToDelete}
-            openReview={openReview}
-            publishLessonPending={publishLessonPending}
-          />
-        ))}
-    </div>
-  );
-}
 
 function TrainingManageDetail() {
   const { id } = Route.useParams();
@@ -347,109 +291,23 @@ function TrainingManageDetail() {
           Aucun module pour le moment. Cliquez sur "Nouveau module" pour commencer.
         </div>
       ) : (
-        <div className="space-y-3">
-          {[...modules].sort((a, b) => a.sortOrder - b.sortOrder).map((m) => {
-            const isExpanded = expandedModuleIds.includes(m.id);
-            return (
-              <div key={m.id} className="rounded-2xl border bg-card overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => toggleModule(m.id)}
-                  className="flex w-full items-center justify-between gap-3 p-4 text-left hover:bg-muted/30 cursor-pointer"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-medium truncate">{m.title}</span>
-                      <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getContentStatusBadgeClass(m.status)}`}>
-                        {getContentStatusLabel(m.status)}
-                      </span>
-                      <span className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${m.isEnabled ? "bg-emerald-500/10 text-emerald-600" : "bg-muted text-muted-foreground"}`}>
-                        {m.isEnabled ? <ShieldCheck className="h-2.5 w-2.5" /> : <ShieldOff className="h-2.5 w-2.5" />}
-                        {m.isEnabled ? "Activé" : "Désactivé"}
-                      </span>
-                    </div>
-                    {m.description && <div className="mt-0.5 text-xs text-muted-foreground truncate">{m.description}</div>}
-                    <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground/70">
-                      <span>{m.lessonsCount} leçon{m.lessonsCount !== 1 ? "s" : ""} · Ordre {m.sortOrder}</span>
-                      <ContentCreatorBadge createdByAdmin={m.createdByAdmin} createdByInstructor={m.createdByInstructor} />
-                      <span className="inline-flex items-center gap-1">
-                        <Calendar className="h-3 w-3" /> {formatContentDate(m.createdAt)}
-                      </span>
-                    </div>
-                  </div>
-                  {isExpanded ? <CircleChevronUp className="h-4 w-4 shrink-0 text-primary" /> : <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />}
-                </button>
-
-                <div className="flex flex-wrap items-center gap-2 border-t px-4 py-2">
-                  <Button type="button" variant="ghost" size="sm" onClick={() => openEditModule(m)}>
-                    <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier
-                  </Button>
-                  {m.status === "pending_review" && (
-                    <>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="text-emerald-600 hover:bg-emerald-500/10"
-                        onClick={() => openReview("module", m.id, m.title, "approved")}
-                      >
-                        <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Approuver
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive hover:bg-destructive/10"
-                        onClick={() => openReview("module", m.id, m.title, "rejected")}
-                      >
-                        <XCircle className="h-3.5 w-3.5 mr-1" /> Rejeter
-                      </Button>
-                    </>
-                  )}
-                  {m.status !== "published" && m.status !== "pending_review" && (
-                    <Button type="button" variant="ghost" size="sm" onClick={() => handlePublishModule(m)} disabled={publishModuleMutation.isPending}>
-                      <Rocket className="h-3.5 w-3.5 mr-1" /> Publier
-                    </Button>
-                  )}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive hover:bg-destructive/10"
-                    onClick={() => setModuleToDelete(m)}
-                  >
-                    <Trash2 className="h-3.5 w-3.5 mr-1" /> Supprimer
-                  </Button>
-                </div>
-
-                {isExpanded && (
-                  <div className="border-t bg-muted/20 p-4 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm font-semibold">
-                        <ListChecks className="h-4 w-4 text-primary" /> Leçons
-                      </div>
-                      <Button type="button" size="sm" variant="outline" onClick={() => openCreateLesson(m.id)}>
-                        <Plus className="h-3.5 w-3.5 mr-1" /> Ajouter une leçon
-                      </Button>
-                    </div>
-
-                    <ModuleLessonsList
-                      moduleId={m.id}
-                      expandedLessonIds={expandedLessonIds}
-                      toggleLesson={toggleLesson}
-                      openCreateLesson={openCreateLesson}
-                      openEditLesson={openEditLesson}
-                      handlePublishLesson={handlePublishLesson}
-                      setLessonToDelete={setLessonToDelete}
-                      openReview={openReview}
-                      publishLessonPending={publishLessonMutation.isPending}
-                    />
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+        <TrainingModuleList
+          modules={modules}
+          expandedModuleIds={expandedModuleIds}
+          expandedLessonIds={expandedLessonIds}
+          toggleModule={toggleModule}
+          toggleLesson={toggleLesson}
+          openEditModule={openEditModule}
+          handlePublishModule={handlePublishModule}
+          publishModulePending={publishModuleMutation.isPending}
+          setModuleToDelete={setModuleToDelete}
+          openCreateLesson={openCreateLesson}
+          openEditLesson={openEditLesson}
+          handlePublishLesson={handlePublishLesson}
+          setLessonToDelete={setLessonToDelete}
+          openReview={openReview}
+          publishLessonPending={publishLessonMutation.isPending}
+        />
       )}
 
       {/* Dialog module */}

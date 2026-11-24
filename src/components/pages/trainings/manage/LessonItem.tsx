@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Calendar, CheckCircle2, ChevronDown, CircleChevronUp, Clock, Pencil, Rocket, Trash2, XCircle } from "lucide-react";
 import { QuizManager } from "@/components/pages/trainings/manage/QuizManager";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { useAdminLessonDetail } from "@/stores/useLessonsStore";
 import { getContentStatusBadgeClass, getContentStatusLabel, getLessonKindIcon, LESSON_KIND_LABELS, toYoutubeEmbedUrl } from "@/data/trainingModules";
 import type { APIAdminLesson } from "@/data/trainingModules";
 import { ContentCreatorBadge, formatContentDate } from "./ContentCreatorBadge";
+import { LessonRichContent } from "./LessonRichContent";
 
 type ReviewAction = (
   type: "module" | "lesson" | "quiz",
@@ -138,32 +138,7 @@ export function LessonItem({
                   Voir la vidéo ({lesson.videoUrl})
                 </a>
               )}
-              {lesson.brief && (
-                <div>
-                  <Label className="text-xs text-muted-foreground">Résumé / consigne</Label>
-                  <div
-                    className="rich-text-content mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap"
-                    dangerouslySetInnerHTML={{ __html: lesson.brief }}
-                  />
-                </div>
-              )}
-              {lesson.content && (
-                <div>
-                  <Label className="text-xs text-muted-foreground">Contenu</Label>
-                  <div
-                    className="rich-text-content mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap"
-                    dangerouslySetInnerHTML={{ __html: lesson.content }}
-                  />
-                </div>
-              )}
-              {lesson.chapters && lesson.chapters.length > 0 && (
-                <div>
-                  <Label className="text-xs text-muted-foreground">Chapitres</Label>
-                  <ul className="mt-1 list-inside list-disc space-y-0.5 text-xs">
-                    {lesson.chapters.map((chapter, index) => <li key={index}>{chapter}</li>)}
-                  </ul>
-                </div>
-              )}
+              <LessonRichContent brief={lesson.brief} content={lesson.content} chapters={lesson.chapters} />
               {(lesson.kind === "quiz" || lesson.kind === "exercise") && (
                 <QuizManager
                   lessonId={lesson.id}

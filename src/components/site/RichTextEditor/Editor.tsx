@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { RichTextInsertionDialog } from "./InsertionDialog";
-import { RichTextToolbar } from "./Toolbar";
 import {
-  clearFormattingInEditor,
-  insertPayloadAtRange,
-} from "./utils";
-import type { InsertionMode, InsertionPayload } from "./types";
+  RichTextInsertionDialog, RichTextToolbar, clearFormattingInEditor, insertPayloadAtRange,
+  type InsertionMode, type InsertionPayload
+} from "./";
 
 interface RichTextEditorProps {
   value: string;

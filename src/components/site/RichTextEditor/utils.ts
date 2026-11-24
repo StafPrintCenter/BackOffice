@@ -186,7 +186,7 @@ export function clearFormattingInEditor(editor: HTMLElement, range: Range): Rang
   const affectedBlocks = affectedElements.filter(
     (element) => !["UL", "OL", "LI"].includes(element.tagName),
   );
-  const normalizedBlocks: HTMLParagraphElement[] = [];
+  const normalizedBlocks: HTMLElement[] = [];
 
   document.execCommand("removeFormat");
 

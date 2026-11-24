@@ -1,7 +1,7 @@
 import { FileText } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RichTextEditor } from "@/components/site/RichTextEditor";
+import { RichTextEditor } from "@/components/site";
 import type { AdminArticlePayload } from "@/data/articles";
 
 interface ArticleContentCardProps {

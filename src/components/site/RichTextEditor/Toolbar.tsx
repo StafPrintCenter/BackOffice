@@ -24,7 +24,7 @@ export function RichTextToolbar({
     <div
       role="toolbar"
       aria-label="Mise en forme du texte"
-      className="sticky top-0 z-30 flex flex-wrap items-center gap-0.5 border-b border-input bg-muted/95 p-1.5 shadow-sm backdrop-blur"
+      className="sticky -top-8 z-30 flex flex-wrap items-center gap-0.5 border-b border-input bg-muted/95 p-1.5 shadow-sm backdrop-blur"
     >
       <BlockFormatControls
         state={state}

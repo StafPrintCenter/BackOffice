@@ -1,7 +1,4 @@
-import { BlockFormatControls } from "./FormatControls";
-import { FormattingControls } from "./FormattingControls";
-import { InsertionControls } from "./InsertionControls";
-import { ToolbarSeparator } from "./ToolbarParts";
+import { BlockFormatControls, FormattingControls, InsertionControls, ToolbarSeparator } from "./";
 import type { InsertionMode, RichTextToolbarState } from "./types";
 
 interface RichTextToolbarProps {

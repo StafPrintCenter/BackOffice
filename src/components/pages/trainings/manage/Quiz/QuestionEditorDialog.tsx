@@ -7,9 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { QUESTION_TYPE_LABELS } from "@/data/quizzes";
-import type { QuizQuestionType } from "@/data/quizzes";
-import type { QuestionDialogState, QuestionFormValues } from "./QuizFormTypes";
+import { QUESTION_TYPE_LABELS, type QuizQuestionType } from "@/data/quizzes";
+import type { QuestionDialogState, QuestionFormValues } from "./FormTypes";
 
 interface QuestionEditorDialogProps {
   dialog: QuestionDialogState;

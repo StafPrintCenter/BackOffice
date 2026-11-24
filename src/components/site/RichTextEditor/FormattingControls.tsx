@@ -1,19 +1,4 @@
-import {
-  AlignCenter,
-  AlignJustify,
-  AlignLeft,
-  AlignRight,
-  Bold,
-  IndentDecrease,
-  IndentIncrease,
-  Italic,
-  Quote,
-  Strikethrough,
-  Subscript,
-  Superscript,
-  Underline,
-  type LucideIcon,
-} from "lucide-react";
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, IndentDecrease, IndentIncrease, Italic, Quote, Strikethrough, Subscript, Superscript, Underline, PaintBucket, type LucideIcon } from "lucide-react";
 import { ToolbarButton, ToolbarSeparator } from "./ToolbarParts";
 import type { RichTextToolbarState } from "./types";
 
@@ -70,7 +55,7 @@ export function FormattingControls({
         title="Couleur du texte"
         className="relative inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-xs font-bold text-muted-foreground hover:bg-accent"
       >
-        A
+        <PaintBucket />
         <input
           type="color"
           aria-label="Couleur du texte"

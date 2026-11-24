@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, CircleChevronUp, Clock, ListChecks, Calendar, ShieldCheck, ShieldOff, Crown, GraduationCap, CheckCircle2, XCircle, BookOpen } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Pencil, Trash2, Rocket, ChevronDown, CircleChevronUp, ListChecks, Calendar, ShieldCheck, ShieldOff, CheckCircle2, XCircle, BookOpen } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,11 +12,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
 import { useTrainingModulesList, useCreateAdminTrainingModule, useUpdateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
-import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson, useAdminLessonDetail } from "@/stores/useLessonsStore";
+import { useCreateAdminLesson, useUpdateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson } from "@/stores/useLessonsStore";
 import { useCreateAdminContentReview } from "@/stores/useContentReviewsStore";
-import { QuizManager } from "@/components/pages/trainings/manage/QuizManager";
-import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS, getLessonKindIcon, toYoutubeEmbedUrl, getContentCreator } from "@/data/trainingModules";
-import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload, LessonKind } from "@/data/trainingModules";
+import { LessonItem as LessonItemCard } from "@/components/pages/trainings/manage/LessonItem";
+import { ContentCreatorBadge, formatContentDate } from "@/components/pages/trainings/manage/ContentCreatorBadge";
+import {
+  EMPTY_LESSON_FORM,
+  LESSON_FORM_KINDS,
+  LessonFormDialog,
+  type LessonFormValues,
+} from "@/components/pages/trainings/manage/LessonFormDialog";
+import { getContentStatusBadgeClass, getContentStatusLabel, LESSON_KIND_LABELS } from "@/data/trainingModules";
+import type { APIAdminTrainingModule, AdminTrainingModulePayload, APIAdminLesson, AdminLessonPayload } from "@/data/trainingModules";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/trainings/catalogs/$id/manage")({
@@ -31,51 +38,11 @@ export const Route = createFileRoute("/_admin/trainings/catalogs/$id/manage")({
 
 const emptyModuleForm: AdminTrainingModulePayload = { title: "", description: "", sort_order: 0, is_enabled: true };
 
-interface LessonFormValues {
-  title: string;
-  kind: LessonKind;
-  sort_order: string;
-  duration_minutes: string;
-  content: string;
-  video_url: string;
-  chapters: string[];
-  brief: string;
-  is_mandatory: boolean;
-}
-
-const emptyLessonForm: LessonFormValues = {
-  title: "", kind: "video", sort_order: "0", duration_minutes: "", content: "",
-  video_url: "", chapters: [""], brief: "", is_mandatory: false,
-};
-
 // Groupes de kinds partageant les mêmes champs conditionnels.
-const KINDS_WITH_CHAPTERS: LessonKind[] = ["video", "reading"];
-const KINDS_WITH_VIDEO_URL: LessonKind[] = ["video"];
-const KINDS_WITH_CONTENT: LessonKind[] = ["reading"];
-const KINDS_WITH_BRIEF: LessonKind[] = ["quiz", "exercise", "assignment", "project"];
-
-function formatDate(dateStr?: string | null): string {
-  if (!dateStr) return "-";
-  return new Date(dateStr).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
-}
-
-function CreatorBadge({ createdByAdmin, createdByInstructor }: { createdByAdmin?: string | null; createdByInstructor?: string | null }) {
-  const creator = getContentCreator(createdByAdmin, createdByInstructor);
-  if (!creator) return null;
-
-  const Icon = creator.role === "admin" ? Crown : GraduationCap;
-  const className =
-    creator.role === "admin"
-      ? "bg-violet-500/10 text-violet-600" : "bg-sky-500/10 text-sky-600";
-
-  return (
-    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 ${className}`}>
-      <Icon className="h-3 w-3" />
-      {creator.label}
-      <span className="opacity-70">({creator.role === "admin" ? "Admin" : "Instructeur"})</span>
-    </span>
-  );
-}
+const KINDS_WITH_CHAPTERS = LESSON_FORM_KINDS.chapters;
+const KINDS_WITH_VIDEO_URL = LESSON_FORM_KINDS.videoUrl;
+const KINDS_WITH_CONTENT = LESSON_FORM_KINDS.content;
+const KINDS_WITH_BRIEF = LESSON_FORM_KINDS.brief;
 
 // Composant pour afficher les leçons d'un module ouvert
 function ModuleLessonsList({
@@ -114,7 +81,7 @@ function ModuleLessonsList({
       {[...lessons]
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .map((l) => (
-          <LessonItem
+          <LessonItemCard
             key={l.id}
             moduleId={moduleId}
             lesson={l}
@@ -127,182 +94,6 @@ function ModuleLessonsList({
             publishLessonPending={publishLessonPending}
           />
         ))}
-    </div>
-  );
-}
-
-// Composant pour le détail d'une leçon dépliée
-function LessonItem({
-  moduleId,
-  lesson: l,
-  isExpanded,
-  toggleLesson,
-  openEditLesson,
-  handlePublishLesson,
-  setLessonToDelete,
-  openReview,
-  publishLessonPending,
-}: {
-  moduleId: string;
-  lesson: APIAdminLesson;
-  isExpanded: boolean;
-  toggleLesson: (id: string) => void;
-  openEditLesson: (moduleId: string, l: APIAdminLesson) => void;
-  handlePublishLesson: (l: APIAdminLesson) => void;
-  setLessonToDelete: (data: { moduleId: string; lesson: APIAdminLesson }) => void;
-  openReview: (type: "module" | "lesson" | "quiz", id: string, title: string, decision: "approved" | "rejected") => void;
-  publishLessonPending: boolean;
-}) {
-  const Icon = getLessonKindIcon(l.kind);
-  const { lesson: detail, isLoading: detailLoading } = useAdminLessonDetail(isExpanded ? l.id : undefined);
-  const embedUrl = l.videoUrl ? toYoutubeEmbedUrl(l.videoUrl) : null;
-  const [sessionQuizId, setSessionQuizId] = useState<string | null>(l.quizId ?? null);
-
-  return (
-    <div className="rounded-lg border bg-card overflow-hidden">
-      <button
-        type="button"
-        onClick={() => toggleLesson(l.id)}
-        className="flex w-full items-center justify-between gap-3 p-3 text-left text-sm hover:bg-muted/30 cursor-pointer"
-      >
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />
-            <span className="font-medium truncate">{l.title}</span>
-            {l.isMandatory && <span className="text-destructive text-xs">*</span>}
-            <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium ${getContentStatusBadgeClass(l.status)}`}>
-              {getContentStatusLabel(l.status)}
-            </span>
-          </div>
-          <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
-            <span>{LESSON_KIND_LABELS[l.kind] ?? l.kind}</span>
-            <span>· Ordre {l.sortOrder}</span>
-            {l.durationMinutes != null && (
-              <span className="inline-flex items-center gap-1">
-                <Clock className="h-3 w-3" /> {l.durationMinutes} min
-              </span>
-            )}
-          </div>
-        </div>
-        {isExpanded ? <CircleChevronUp className="h-4 w-4 shrink-0 text-primary" /> : <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />}
-      </button>
-
-      <div className="flex flex-wrap items-center gap-2 border-t px-3 py-1.5">
-        <Button type="button" variant="ghost" size="sm" onClick={() => openEditLesson(moduleId, l)}>
-          <Pencil className="h-3.5 w-3.5 mr-1" /> Modifier
-        </Button>
-        {l.status === "pending_review" && (
-          <>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="text-emerald-600 hover:bg-emerald-500/10"
-              onClick={() => openReview("lesson", l.id, l.title, "approved")}
-            >
-              <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Approuver
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="text-destructive hover:bg-destructive/10"
-              onClick={() => openReview("lesson", l.id, l.title, "rejected")}
-            >
-              <XCircle className="h-3.5 w-3.5 mr-1" /> Rejeter
-            </Button>
-          </>
-        )}
-        {l.status !== "published" && l.status !== "pending_review" && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => handlePublishLesson(l)}
-            disabled={publishLessonPending}
-          >
-            <Rocket className="h-3.5 w-3.5 mr-1" /> Publier
-          </Button>
-        )}
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="text-destructive hover:bg-destructive/10"
-          onClick={() => setLessonToDelete({ moduleId, lesson: l })}
-        >
-          <Trash2 className="h-3.5 w-3.5 mr-1" /> Supprimer
-        </Button>
-      </div>
-
-      {isExpanded && (
-        <div className="border-t bg-muted/10 p-4 space-y-4 text-sm">
-          {detailLoading ? (
-            <div className="text-muted-foreground">Chargement du détail...</div>
-          ) : (
-            <>
-              {embedUrl && (
-                <div className="aspect-video w-full overflow-hidden rounded-lg border">
-                  <iframe
-                    src={embedUrl}
-                    title={l.title}
-                    className="h-full w-full"
-                    allowFullScreen
-                  />
-                </div>
-              )}
-              {l.videoUrl && !embedUrl && (
-                <a href={l.videoUrl} target="_blank" rel="noreferrer" className="text-primary hover:underline text-xs">
-                  Voir la vidéo ({l.videoUrl})
-                </a>
-              )}
-
-              {l.brief && (
-                <div>
-                  <Label className="text-xs text-muted-foreground">Résumé / consigne</Label>
-                  <p className="mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap">{l.brief}</p>
-                </div>
-              )}
-
-              {l.content && (
-                <div>
-                  <Label className="text-xs text-muted-foreground">Contenu</Label>
-                  <p className="mt-1 rounded-lg bg-muted/40 p-3 text-xs leading-relaxed whitespace-pre-wrap">{l.content}</p>
-                </div>
-              )}
-
-              {l.chapters && l.chapters.length > 0 && (
-                <div>
-                  <Label className="text-xs text-muted-foreground">Chapitres</Label>
-                  <ul className="mt-1 list-inside list-disc text-xs space-y-0.5">
-                    {l.chapters.map((c, i) => (<li key={i}>{c}</li>))}
-                  </ul>
-                </div>
-              )}
-
-              {/* INTÉGRATION DU QUIZ MANAGER ICI */}
-              {(l.kind === "quiz" || l.kind === "exercise") && (
-                <QuizManager
-                  lessonId={l.id}
-                  quizId={sessionQuizId}
-                  onQuizCreated={(newId) => setSessionQuizId(newId)}
-                  openReview={openReview}
-                />
-              )}
-
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t pt-3 text-[11px] text-muted-foreground">
-                {detail && (
-                  <CreatorBadge createdByAdmin={detail.createdByAdmin} createdByInstructor={detail.createdByInstructor} />
-                )}
-                <span className="inline-flex items-center gap-1">
-                  <Calendar className="h-3 w-3" /> Créée le {formatDate(l.createdAt)}
-                </span>
-                <span>Obligatoire : {l.isMandatory ? "Oui" : "Non"}</span>
-              </div>
-            </>
-          )}
-        </div>
-      )}
     </div>
   );
 }
@@ -336,7 +127,7 @@ function TrainingManageDetail() {
     open: false,
     moduleId: "",
   });
-  const [lessonForm, setLessonForm] = useState<LessonFormValues>(emptyLessonForm);
+  const [lessonForm, setLessonForm] = useState<LessonFormValues>(EMPTY_LESSON_FORM);
   const [lessonErrors, setLessonErrors] = useState<Record<string, string>>({});
   const [lessonToDelete, setLessonToDelete] = useState<{ moduleId: string; lesson: APIAdminLesson } | null>(null);
 
@@ -407,7 +198,7 @@ function TrainingManageDetail() {
   };
 
   const openCreateLesson = (moduleId: string) => {
-    setLessonForm({ ...emptyLessonForm, sort_order: "0" });
+    setLessonForm({ ...EMPTY_LESSON_FORM, sort_order: "0" });
     setLessonErrors({});
     setLessonDialog({ open: true, moduleId });
   };
@@ -525,11 +316,6 @@ function TrainingManageDetail() {
     );
   }
 
-  const showChapters = KINDS_WITH_CHAPTERS.includes(lessonForm.kind);
-  const showVideoUrl = KINDS_WITH_VIDEO_URL.includes(lessonForm.kind);
-  const showContent = KINDS_WITH_CONTENT.includes(lessonForm.kind);
-  const showBrief = KINDS_WITH_BRIEF.includes(lessonForm.kind);
-
   return (
     <>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -585,9 +371,9 @@ function TrainingManageDetail() {
                     {m.description && <div className="mt-0.5 text-xs text-muted-foreground truncate">{m.description}</div>}
                     <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground/70">
                       <span>{m.lessonsCount} leçon{m.lessonsCount !== 1 ? "s" : ""} · Ordre {m.sortOrder}</span>
-                      <CreatorBadge createdByAdmin={m.createdByAdmin} createdByInstructor={m.createdByInstructor} />
+                      <ContentCreatorBadge createdByAdmin={m.createdByAdmin} createdByInstructor={m.createdByInstructor} />
                       <span className="inline-flex items-center gap-1">
-                        <Calendar className="h-3 w-3" /> {formatDate(m.createdAt)}
+                        <Calendar className="h-3 w-3" /> {formatContentDate(m.createdAt)}
                       </span>
                     </div>
                   </div>
@@ -710,122 +496,16 @@ function TrainingManageDetail() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog leçon */}
-      <Dialog open={lessonDialog.open} onOpenChange={(v) => setLessonDialog({ ...lessonDialog, open: v })}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{lessonDialog.row ? "Modifier la leçon" : "Nouvelle leçon"}</DialogTitle></DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>Titre</Label>
-              <Input value={lessonForm.title} onChange={(e) => setLessonForm({ ...lessonForm, title: e.target.value })} />
-              {lessonErrors.title && <p className="text-xs text-destructive mt-1">{lessonErrors.title}</p>}
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <Label>Type</Label>
-                <Select value={lessonForm.kind} onValueChange={(v) => setLessonForm({ ...lessonForm, kind: v as LessonKind })}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(LESSON_KIND_LABELS).map(([k, l]) => (<SelectItem key={k} value={k}>{l}</SelectItem>))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Durée (minutes)</Label>
-                <Input
-                  type="number"
-                  min={0}
-                  value={lessonForm.duration_minutes}
-                  onChange={(e) => setLessonForm({ ...lessonForm, duration_minutes: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label>Ordre d'affichage</Label>
-                <Input
-                  type="number"
-                  min={0}
-                  value={lessonForm.sort_order}
-                  onChange={(e) => setLessonForm({ ...lessonForm, sort_order: e.target.value })}
-                />
-              </div>
-              <div className="flex items-end gap-3">
-                <Label className="mb-2">Obligatoire</Label>
-                <Switch
-                  checked={lessonForm.is_mandatory}
-                  onCheckedChange={(v) => setLessonForm({ ...lessonForm, is_mandatory: v })}
-                />
-              </div>
-            </div>
-
-            {showVideoUrl && (
-              <div>
-                <Label>URL de la vidéo</Label>
-                <Input value={lessonForm.video_url} onChange={(e) => setLessonForm({ ...lessonForm, video_url: e.target.value })} placeholder="https://..." />
-              </div>
-            )}
-
-            {showContent && (
-              <div>
-                <Label>Contenu</Label>
-                <Textarea rows={5} value={lessonForm.content} onChange={(e) => setLessonForm({ ...lessonForm, content: e.target.value })} />
-              </div>
-            )}
-
-            {showBrief && (
-              <div>
-                <Label>Résumé / consigne</Label>
-                <Textarea rows={3} value={lessonForm.brief} onChange={(e) => setLessonForm({ ...lessonForm, brief: e.target.value })} />
-              </div>
-            )}
-
-            {showChapters && (
-              <div>
-                <div className="flex items-center justify-between">
-                  <Label>Chapitres (optionnel)</Label>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setLessonForm({ ...lessonForm, chapters: [...lessonForm.chapters, ""] })}
-                  >
-                    <Plus className="h-3 w-3 mr-1" /> Ajouter
-                  </Button>
-                </div>
-                <div className="mt-2 space-y-2">
-                  {lessonForm.chapters.map((c, i) => (
-                    <div key={i} className="flex gap-2">
-                      <Input
-                        placeholder={`Chapitre ${i + 1}`}
-                        value={c}
-                        onChange={(e) => {
-                          const arr = [...lessonForm.chapters];
-                          arr[i] = e.target.value;
-                          setLessonForm({ ...lessonForm, chapters: arr });
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => setLessonForm({ ...lessonForm, chapters: lessonForm.chapters.filter((_, idx) => idx !== i) })}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setLessonDialog({ open: false, moduleId: "" })}>Annuler</Button>
-            <Button onClick={submitLesson} disabled={createLessonMutation.isPending || updateLessonMutation.isPending}>
-              {lessonDialog.row ? "Enregistrer" : "Ajouter"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <LessonFormDialog
+        open={lessonDialog.open}
+        lesson={lessonDialog.row}
+        form={lessonForm}
+        errors={lessonErrors}
+        setForm={setLessonForm}
+        onOpenChange={(open) => setLessonDialog((current) => ({ ...current, open }))}
+        onSubmit={submitLesson}
+        isPending={createLessonMutation.isPending || updateLessonMutation.isPending}
+      />
 
       {/* Dialog revue */}
       <Dialog open={!!reviewDialog} onOpenChange={(v) => !v && setReviewDialog(null)}>

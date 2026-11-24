@@ -13,4 +13,9 @@ export interface RichTextToolbarState {
   listStyle: string;
   alignment: string;
   activeCommands: Record<string, boolean>;
+  hasSelection: boolean;
+  tableRows: number;
+  tableColumns: number;
 }
+
+export type TableAction = "add-row" | "remove-row" | "add-column" | "remove-column";

@@ -32,6 +32,7 @@ export function BlockFormatControls({
         <option value="h5">Titre 5</option>
         <option value="h6">Titre 6</option>
         <option value="blockquote">Citation</option>
+        <option value="pre">Bloc de code</option>
       </select>
 
       <select

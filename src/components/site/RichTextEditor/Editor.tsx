@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   RichTextInsertionDialog, RichTextToolbar, clearFormattingInEditor, insertPayloadAtRange,
-  type InsertionMode, type InsertionPayload
+  type InsertionMode, type InsertionPayload, type RichTextToolbarState
 } from "./";
 
 interface RichTextEditorProps {
@@ -10,6 +10,16 @@ interface RichTextEditorProps {
   placeholder?: string;
   minHeightClassName?: string;
 }
+
+const COMMAND_STATES = ["bold", "italic", "underline", "strikeThrough", "subscript", "superscript"];
+
+const INITIAL_TOOLBAR_STATE: RichTextToolbarState = {
+  blockFormat: "p",
+  listType: "",
+  listStyle: "",
+  alignment: "left",
+  activeCommands: {},
+};
 
 export function RichTextEditor({
   value,
@@ -22,6 +32,40 @@ export function RichTextEditor({
   const lastEmittedHtml = useRef<string | null>(null);
   const [dialogMode, setDialogMode] = useState<InsertionMode | null>(null);
   const [selectedText, setSelectedText] = useState("");
+  const [toolbarState, setToolbarState] = useState(INITIAL_TOOLBAR_STATE);
+
+  const updateToolbarState = useCallback(() => {
+    const editor = editorRef.current;
+    const selection = window.getSelection();
+    const anchorNode = selection?.anchorNode;
+    if (!editor || !anchorNode || !editor.contains(anchorNode)) return;
+
+    const anchorElement = anchorNode instanceof Element ? anchorNode : anchorNode.parentElement;
+    const block = anchorElement?.closest("p, h1, h2, h3, h4, h5, h6, blockquote, li");
+    const list = anchorElement?.closest("ul, ol");
+    const blockFormat = block?.tagName === "BLOCKQUOTE"
+      ? "blockquote"
+      : block && /^H[1-6]$/.test(block.tagName)
+        ? block.tagName.toLowerCase()
+        : "p";
+    const listType: RichTextToolbarState["listType"] =
+      list?.tagName === "UL" ? "ul" : list?.tagName === "OL" ? "ol" : "";
+    const listStyle = list ? window.getComputedStyle(list).listStyleType : "";
+    const alignment = block
+      ? window.getComputedStyle(block).textAlign
+      : "left";
+    const activeCommands = Object.fromEntries(
+      COMMAND_STATES.map((command) => [command, document.queryCommandState(command)]),
+    );
+
+    setToolbarState({
+      blockFormat,
+      listType,
+      listStyle,
+      alignment: alignment === "start" ? "left" : alignment === "end" ? "right" : alignment,
+      activeCommands,
+    });
+  }, []);
 
   useEffect(() => {
     const editor = editorRef.current;
@@ -35,7 +79,13 @@ export function RichTextEditor({
       return;
     }
     editor.innerHTML = value || "";
-  }, [value]);
+    updateToolbarState();
+  }, [value, updateToolbarState]);
+
+  useEffect(() => {
+    document.addEventListener("selectionchange", updateToolbarState);
+    return () => document.removeEventListener("selectionchange", updateToolbarState);
+  }, [updateToolbarState]);
 
   const saveSelection = () => {
     const editor = editorRef.current;
@@ -78,6 +128,7 @@ export function RichTextEditor({
     lastEmittedHtml.current = html;
     onChange(html);
     saveSelection();
+    updateToolbarState();
   };
 
   const activeList = () => {
@@ -138,6 +189,7 @@ export function RichTextEditor({
   return (
     <div className="rounded-lg border border-input">
       <RichTextToolbar
+        state={toolbarState}
         onBeforeAction={saveSelection}
         onCommand={executeCommand}
         onListStyle={applyListStyle}

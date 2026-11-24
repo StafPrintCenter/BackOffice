@@ -19,7 +19,7 @@ import {
   type QuestionDialogState,
   type QuestionFormValues,
   type QuizFormValues,
-} from "./quiz-form-types";
+} from "./QuizFormTypes";
 
 export function QuizManager({
   lessonId,

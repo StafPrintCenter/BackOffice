@@ -2,17 +2,12 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { HelpCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz,
-} from "@/stores/useQuizzesStore";
+import { useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz } from "@/stores/useQuizzesStore";
 import type { AdminQuizPayload } from "@/data/quizzes";
-import { QuizContent } from "./QuizContent";
-import { QuizManagerDialogs } from "./QuizManagerDialogs";
-import {
-  EMPTY_QUIZ_FORM,
-  type QuizFormValues,
-} from "./QuizFormTypes";
-import { useQuizQuestionManager } from "./useQuizQuestionManager";
+import { QuizContent } from "./Content";
+import { QuizManagerDialogs } from "./ManagerDialogs";
+import { EMPTY_QUIZ_FORM, type QuizFormValues } from "./FormTypes";
+import { useQuizQuestionManager } from "../useQuizQuestionManager";
 
 export function QuizManager({
   lessonId,

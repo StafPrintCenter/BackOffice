@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { QUIZ_MODE_LABELS } from "@/data/quizzes";
 import type { QuizMode } from "@/data/quizzes";
-import type { QuizFormValues } from "./quiz-form-types";
+import type { QuizFormValues } from "./QuizFormTypes";
 
 interface QuizSettingsDialogProps {
   open: boolean;

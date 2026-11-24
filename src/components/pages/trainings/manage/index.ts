@@ -1,7 +1,9 @@
 export { ContentCreatorBadge, formatContentDate } from "./ContentCreatorBadge";
 export { EMPTY_LESSON_FORM, LESSON_FORM_KINDS, LessonFormDialog } from "./LessonFormDialog";
 export type { LessonFormValues } from "./LessonFormDialog";
+export { LessonChapterFields } from "./LessonChapterFields";
 export { LessonItem } from "./LessonItem";
+export { ModuleLessonsList } from "./ModuleLessonsList";
 export { QuestionEditorDialog } from "./QuestionEditorDialog";
 export { QuizContent } from "./QuizContent";
 export { QuizManager } from "./QuizManager";
@@ -10,6 +12,7 @@ export { QuizQuestionsSection } from "./QuizQuestionsSection";
 export { QuizSettingsDialog } from "./QuizSettingsDialog";
 export { TrainingManageDialogs } from "./TrainingManageDialogs";
 export { TrainingManagePage } from "./TrainingManagePage";
+export { TrainingModuleEditorDialog } from "./TrainingModuleEditorDialog";
 export { TrainingModuleList } from "./TrainingModuleList";
 export { useQuizQuestionManager } from "./useQuizQuestionManager";
 export { useTrainingLessonManager } from "./useTrainingLessonManager";

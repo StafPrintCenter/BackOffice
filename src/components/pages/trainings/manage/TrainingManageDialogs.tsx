@@ -3,12 +3,11 @@ import { Loader2 } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { LessonFormDialog } from "./LessonFormDialog";
 import type { LessonFormValues } from "./LessonFormDialog";
+import { TrainingModuleEditorDialog } from "./TrainingModuleEditorDialog";
 import type {
   APIAdminLesson,
   APIAdminTrainingModule,
@@ -92,53 +91,15 @@ export function TrainingManageDialogs({
 }: TrainingManageDialogsProps) {
   return (
     <>
-      <Dialog
-        open={moduleDialog.open}
-        onOpenChange={(open) => setModuleDialog((current) => ({ ...current, open }))}
-      >
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>{moduleDialog.row ? "Modifier le module" : "Nouveau module"}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>Titre</Label>
-              <Input value={moduleForm.title} onChange={(event) => setModuleForm({ ...moduleForm, title: event.target.value })} />
-              {moduleErrors.title && <p className="mt-1 text-xs text-destructive">{moduleErrors.title}</p>}
-            </div>
-            <div>
-              <Label>Description</Label>
-              <Textarea rows={3} value={moduleForm.description} onChange={(event) => setModuleForm({ ...moduleForm, description: event.target.value })} />
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <Label>Ordre d'affichage</Label>
-                <Input
-                  type="number"
-                  min={0}
-                  value={moduleForm.sort_order ?? 0}
-                  onChange={(event) => setModuleForm({ ...moduleForm, sort_order: Number(event.target.value) })}
-                />
-              </div>
-              {moduleDialog.row && (
-                <div className="flex items-end gap-3">
-                  <Label className="mb-2">Module activé</Label>
-                  <Switch
-                    checked={!!moduleForm.is_enabled}
-                    onCheckedChange={(enabled) => setModuleForm({ ...moduleForm, is_enabled: enabled })}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setModuleDialog({ open: false })}>Annuler</Button>
-            <Button onClick={onSubmitModule} disabled={modulePending}>
-              {moduleDialog.row ? "Enregistrer" : "Créer"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <TrainingModuleEditorDialog
+        dialog={moduleDialog}
+        setDialog={setModuleDialog}
+        form={moduleForm}
+        setForm={setModuleForm}
+        errors={moduleErrors}
+        isPending={modulePending}
+        onSubmit={onSubmitModule}
+      />
 
       <LessonFormDialog
         open={lessonDialog.open}

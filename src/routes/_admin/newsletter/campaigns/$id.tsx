@@ -285,7 +285,7 @@ function CampaignDetail() {
             <h1 className="font-display text-2xl font-bold md:text-3xl">{campaign.subject}</h1>
 
             <div
-              className="prose prose-sm max-w-none rounded-2xl border bg-card p-6 leading-relaxed text-foreground"
+              className="rich-text-content rounded-2xl border bg-card p-6 leading-relaxed text-foreground"
               dangerouslySetInnerHTML={{ __html: campaign.body }}
             />
           </>

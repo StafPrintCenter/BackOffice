@@ -2,16 +2,16 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Rocket, HelpCircle, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { ConfirmDelete } from "@/components/site";
 import {
   useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz,
   useCreateAdminQuizQuestion, useUpdateAdminQuizQuestion, useDeleteAdminQuizQuestion,
 } from "@/stores/useQuizzesStore";
-import { QUIZ_MODE_LABELS, QUESTION_TYPE_LABELS } from "@/data/quizzes";
+import { QUIZ_MODE_LABELS } from "@/data/quizzes";
 import type { QuizQuestion, AdminQuizPayload, AdminQuizQuestionPayload } from "@/data/quizzes";
 import { getContentStatusBadgeClass, getContentStatusLabel } from "@/data/trainingModules";
 import { QuestionEditorDialog } from "./QuestionEditorDialog";
+import { QuizQuestionsSection } from "./QuizQuestionsSection";
 import { QuizSettingsDialog } from "./QuizSettingsDialog";
 import {
   EMPTY_QUESTION_FORM,
@@ -252,49 +252,12 @@ export function QuizManager({
             </Button>
           </div>
 
-          <div className="border-t pt-3">
-            <div className="mb-2 flex items-center justify-between">
-              <Label className="text-xs text-muted-foreground">Questions ({quiz.questions.length})</Label>
-              <Button type="button" size="sm" variant="outline" onClick={openCreateQuestion}>
-                <Plus className="h-3.5 w-3.5 mr-1" /> Ajouter une question
-              </Button>
-            </div>
-            {quiz.questions.length === 0 ? (
-              <p className="text-xs text-muted-foreground">Aucune question. Le quiz ne peut pas être publié sans question.</p>
-            ) : (
-              <div className="space-y-2">
-                {[...quiz.questions].sort((a, b) => a.sortOrder - b.sortOrder).map((q) => (
-                  <div key={q.id} className="rounded-lg border p-3 text-xs">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
-                        <div className="font-medium">{q.prompt}</div>
-                        <div className="mt-0.5 text-muted-foreground">
-                          {QUESTION_TYPE_LABELS[q.type]} · {q.points} pts
-                        </div>
-                      </div>
-                      <div className="flex shrink-0 gap-1">
-                        <Button type="button" variant="ghost" size="sm" onClick={() => openEditQuestion(q)}>
-                          <Pencil className="h-3 w-3" />
-                        </Button>
-                        <Button type="button" variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => setQuestionToDelete(q)}>
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                    <ul className="mt-2 space-y-1">
-                      {q.choices.map((c) => (
-                        <li key={c.id} className="flex items-center gap-1.5">
-                          {c.isCorrect ? <CheckCircle2 className="h-3 w-3 text-emerald-600 shrink-0" /> : <span className="h-3 w-3 shrink-0" />}
-                          <span className={c.isCorrect ? "text-emerald-700 font-medium" : "text-muted-foreground"}>{c.label}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    {q.explanation && <p className="mt-2 text-muted-foreground italic">{q.explanation}</p>}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <QuizQuestionsSection
+            questions={quiz.questions}
+            onCreate={openCreateQuestion}
+            onEdit={openEditQuestion}
+            onDelete={setQuestionToDelete}
+          />
         </div>
       )}
 

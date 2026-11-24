@@ -2,9 +2,9 @@ import { ArrowLeft, BookOpen, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { APIAdminTrainingDetail } from "@/data/trainings";
 import type { APIAdminTrainingModule } from "@/data/trainingModules";
-import type { useTrainingLessonManager } from "./useTrainingLessonManager";
-import type { useTrainingModuleManager } from "./useTrainingModuleManager";
-import type { useTrainingReviewManager } from "./useTrainingReviewManager";
+import type { useTrainingLessonManager } from "../useTrainingLessonManager";
+import type { useTrainingModuleManager } from "../useTrainingModuleManager";
+import type { useTrainingReviewManager } from "../useTrainingReviewManager";
 import { TrainingManageDialogs } from "./TrainingManageDialogs";
 import { TrainingModuleList } from "./TrainingModuleList";
 

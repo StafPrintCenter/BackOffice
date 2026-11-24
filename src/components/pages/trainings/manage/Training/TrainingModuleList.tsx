@@ -2,8 +2,8 @@ import { Calendar, CheckCircle2, ChevronDown, CircleChevronUp, ListChecks, Plus,
 import { Button } from "@/components/ui/button";
 import { getContentStatusBadgeClass, getContentStatusLabel } from "@/data/trainingModules";
 import type { APIAdminLesson, APIAdminTrainingModule } from "@/data/trainingModules";
-import { ContentCreatorBadge, formatContentDate } from "./ContentCreatorBadge";
-import { ModuleLessonsList } from "./ModuleLessonsList";
+import { ContentCreatorBadge, formatContentDate } from "../ContentCreatorBadge";
+import { ModuleLessonsList } from "../ModuleLessonsList";
 
 type ReviewAction = (
   type: "module" | "lesson" | "quiz",

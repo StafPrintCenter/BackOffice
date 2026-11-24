@@ -10,7 +10,7 @@ import {
   usePublishAdminLesson,
   useUpdateAdminLesson,
 } from "@/stores/useLessonsStore";
-import type { LessonDialogState } from "./TrainingManageDialogs";
+import type { LessonDialogState } from "./Training/TrainingManageDialogs";
 
 export function useTrainingLessonManager() {
   const createMutation = useCreateAdminLesson();

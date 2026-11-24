@@ -1,10 +1,10 @@
 export { ContentCreatorBadge, formatContentDate } from "./ContentCreatorBadge";
 export { EMPTY_LESSON_FORM, LESSON_FORM_KINDS, LessonFormDialog } from "./Lesson/FormDialog";
 export { ModuleLessonsList } from "./ModuleLessonsList";
-export { TrainingManageDialogs } from "./TrainingManageDialogs";
-export { TrainingManagePage } from "./TrainingManagePage";
-export { TrainingModuleEditorDialog } from "./TrainingModuleEditorDialog";
-export { TrainingModuleList } from "./TrainingModuleList";
+export { TrainingManageDialogs } from "./Training/TrainingManageDialogs";
+export { TrainingManagePage } from "./Training/TrainingManagePage";
+export { TrainingModuleEditorDialog } from "./Training/TrainingModuleEditorDialog";
+export { TrainingModuleList } from "./Training/TrainingModuleList";
 export { useQuizQuestionManager } from "./useQuizQuestionManager";
 export { useTrainingLessonManager } from "./useTrainingLessonManager";
 export { useTrainingModuleManager } from "./useTrainingModuleManager";
@@ -13,4 +13,4 @@ export type {
   ContentReviewDialogState,
   LessonDialogState,
   ModuleDialogState,
-} from "./TrainingManageDialogs";
+} from "./Training/TrainingManageDialogs";

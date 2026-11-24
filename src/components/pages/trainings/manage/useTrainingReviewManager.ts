@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useCreateAdminContentReview } from "@/stores/useContentReviewsStore";
-import type { ContentReviewDialogState } from "./TrainingManageDialogs";
+import type { ContentReviewDialogState } from "./Training/TrainingManageDialogs";
 
 export function useTrainingReviewManager() {
   const reviewMutation = useCreateAdminContentReview();

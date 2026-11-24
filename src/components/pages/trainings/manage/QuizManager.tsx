@@ -1,47 +1,25 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Rocket, Loader2, HelpCircle, CheckCircle2, XCircle } from "lucide-react";
+import { Plus, Pencil, Trash2, Rocket, HelpCircle, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { ConfirmDelete } from "@/components/site";
 import {
   useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz,
   useCreateAdminQuizQuestion, useUpdateAdminQuizQuestion, useDeleteAdminQuizQuestion,
 } from "@/stores/useQuizzesStore";
 import { QUIZ_MODE_LABELS, QUESTION_TYPE_LABELS } from "@/data/quizzes";
-import type { QuizMode, QuizQuestionType, QuizQuestion, AdminQuizPayload, AdminQuizQuestionPayload } from "@/data/quizzes";
+import type { QuizQuestion, AdminQuizPayload, AdminQuizQuestionPayload } from "@/data/quizzes";
 import { getContentStatusBadgeClass, getContentStatusLabel } from "@/data/trainingModules";
-
-interface QuizFormValues {
-  mode: QuizMode;
-  time_limit_sec: string;
-  pass_score: string;
-  max_attempts: string;
-  auto_submit_on_timeout: boolean;
-}
-
-const emptyQuizForm: QuizFormValues = {
-  mode: "quiz", time_limit_sec: "", pass_score: "50", max_attempts: "1", auto_submit_on_timeout: true,
-};
-
-interface QuestionFormValues {
-  prompt: string;
-  type: QuizQuestionType;
-  points: string;
-  sort_order: string;
-  explanation: string;
-  choices: { label: string; is_correct: boolean }[];
-}
-
-const emptyQuestionForm: QuestionFormValues = {
-  prompt: "", type: "single", points: "10", sort_order: "0", explanation: "",
-  choices: [{ label: "", is_correct: false }, { label: "", is_correct: false }],
-};
+import { QuestionEditorDialog } from "./QuestionEditorDialog";
+import { QuizSettingsDialog } from "./QuizSettingsDialog";
+import {
+  EMPTY_QUESTION_FORM,
+  EMPTY_QUIZ_FORM,
+  type QuestionDialogState,
+  type QuestionFormValues,
+  type QuizFormValues,
+} from "./quiz-form-types";
 
 export function QuizManager({
   lessonId,
@@ -64,17 +42,17 @@ export function QuizManager({
   const deleteQuestionMutation = useDeleteAdminQuizQuestion();
 
   const [quizDialog, setQuizDialog] = useState(false);
-  const [quizForm, setQuizForm] = useState<QuizFormValues>(emptyQuizForm);
+  const [quizForm, setQuizForm] = useState<QuizFormValues>(EMPTY_QUIZ_FORM);
   const [quizError, setQuizError] = useState("");
   const [quizToDelete, setQuizToDelete] = useState(false);
 
-  const [questionDialog, setQuestionDialog] = useState<{ open: boolean; row?: QuizQuestion }>({ open: false });
-  const [questionForm, setQuestionForm] = useState<QuestionFormValues>(emptyQuestionForm);
+  const [questionDialog, setQuestionDialog] = useState<QuestionDialogState>({ open: false });
+  const [questionForm, setQuestionForm] = useState<QuestionFormValues>(EMPTY_QUESTION_FORM);
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
   const [questionToDelete, setQuestionToDelete] = useState<QuizQuestion | null>(null);
 
   const openCreateQuiz = () => {
-    setQuizForm(emptyQuizForm);
+    setQuizForm(EMPTY_QUIZ_FORM);
     setQuizError("");
     setQuizDialog(true);
   };
@@ -139,7 +117,7 @@ export function QuizManager({
   };
 
   const openCreateQuestion = () => {
-    setQuestionForm({ ...emptyQuestionForm, sort_order: String(quiz?.questions.length ?? 0) });
+    setQuestionForm({ ...EMPTY_QUESTION_FORM, sort_order: String(quiz?.questions.length ?? 0) });
     setQuestionErrors({});
     setQuestionDialog({ open: true });
   };
@@ -320,146 +298,25 @@ export function QuizManager({
         </div>
       )}
 
-      {/* Dialog réglages quiz */}
-      <Dialog open={quizDialog} onOpenChange={setQuizDialog}>
-        <DialogContent className="max-w-md">
-          <DialogHeader><DialogTitle>{quizId ? "Modifier les réglages du quiz" : "Configurer un quiz"}</DialogTitle></DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>Mode</Label>
-              <Select value={quizForm.mode} onValueChange={(v) => setQuizForm({ ...quizForm, mode: v as QuizMode })}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {Object.entries(QUIZ_MODE_LABELS).map(([k, l]) => (<SelectItem key={k} value={k}>{l}</SelectItem>))}
-                </SelectContent>
-              </Select>
-            </div>
-            {quizForm.mode === "quiz" && (
-              <div>
-                <Label>Durée limite (secondes)</Label>
-                <Input type="number" min={1} value={quizForm.time_limit_sec} onChange={(e) => setQuizForm({ ...quizForm, time_limit_sec: e.target.value })} />
-                {quizError && <p className="text-xs text-destructive mt-1">{quizError}</p>}
-              </div>
-            )}
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <Label>Seuil de réussite (%)</Label>
-                <Input type="number" min={0} max={100} value={quizForm.pass_score} onChange={(e) => setQuizForm({ ...quizForm, pass_score: e.target.value })} />
-              </div>
-              <div>
-                <Label>Tentatives max</Label>
-                <Input type="number" min={1} value={quizForm.max_attempts} onChange={(e) => setQuizForm({ ...quizForm, max_attempts: e.target.value })} />
-              </div>
-            </div>
-            {quizForm.mode === "quiz" && (
-              <div className="flex items-center gap-3">
-                <Label>Soumission auto à la fin du temps</Label>
-                <Switch checked={quizForm.auto_submit_on_timeout} onCheckedChange={(v) => setQuizForm({ ...quizForm, auto_submit_on_timeout: v })} />
-              </div>
-            )}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setQuizDialog(false)}>Annuler</Button>
-            <Button onClick={submitQuiz} disabled={createQuizMutation.isPending || updateQuizMutation.isPending}>
-              {(createQuizMutation.isPending || updateQuizMutation.isPending) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {quizId ? "Enregistrer" : "Créer"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Dialog question */}
-      <Dialog open={questionDialog.open} onOpenChange={(v) => setQuestionDialog({ open: v })}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{questionDialog.row ? "Modifier la question" : "Nouvelle question"}</DialogTitle></DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>Énoncé</Label>
-              <Textarea rows={2} value={questionForm.prompt} onChange={(e) => setQuestionForm({ ...questionForm, prompt: e.target.value })} />
-              {questionErrors.prompt && <p className="text-xs text-destructive mt-1">{questionErrors.prompt}</p>}
-            </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div>
-                <Label>Type</Label>
-                <Select value={questionForm.type} onValueChange={(v) => setQuestionForm({ ...questionForm, type: v as QuizQuestionType })}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(QUESTION_TYPE_LABELS).map(([k, l]) => (<SelectItem key={k} value={k}>{l}</SelectItem>))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Points</Label>
-                <Input type="number" min={0} value={questionForm.points} onChange={(e) => setQuestionForm({ ...questionForm, points: e.target.value })} />
-              </div>
-              <div>
-                <Label>Ordre</Label>
-                <Input type="number" min={0} value={questionForm.sort_order} onChange={(e) => setQuestionForm({ ...questionForm, sort_order: e.target.value })} />
-              </div>
-            </div>
-            <div>
-              <Label>Explication (optionnel)</Label>
-              <Textarea rows={2} value={questionForm.explanation} onChange={(e) => setQuestionForm({ ...questionForm, explanation: e.target.value })} />
-            </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <Label>Options de réponse</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setQuestionForm({ ...questionForm, choices: [...questionForm.choices, { label: "", is_correct: false }] })}
-                >
-                  <Plus className="h-3 w-3 mr-1" /> Ajouter
-                </Button>
-              </div>
-              <div className="mt-2 space-y-2">
-                {questionForm.choices.map((c, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <Switch
-                      checked={c.is_correct}
-                      onCheckedChange={(v) => {
-                        const arr = [...questionForm.choices];
-                        // En mode "single", une seule réponse correcte possible.
-                        if (v && questionForm.type === "single") {
-                          arr.forEach((ch, idx) => { arr[idx] = { ...ch, is_correct: idx === i }; });
-                        } else {
-                          arr[i] = { ...arr[i], is_correct: v };
-                        }
-                        setQuestionForm({ ...questionForm, choices: arr });
-                      }}
-                    />
-                    <Input
-                      placeholder={`Option ${i + 1}`}
-                      value={c.label}
-                      onChange={(e) => {
-                        const arr = [...questionForm.choices];
-                        arr[i] = { ...arr[i], label: e.target.value };
-                        setQuestionForm({ ...questionForm, choices: arr });
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => setQuestionForm({ ...questionForm, choices: questionForm.choices.filter((_, idx) => idx !== i) })}
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-              {questionErrors.choices && <p className="text-xs text-destructive mt-1">{questionErrors.choices}</p>}
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setQuestionDialog({ open: false })}>Annuler</Button>
-            <Button onClick={submitQuestion} disabled={createQuestionMutation.isPending || updateQuestionMutation.isPending}>
-              {questionDialog.row ? "Enregistrer" : "Ajouter"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <QuizSettingsDialog
+        open={quizDialog}
+        quizId={quizId}
+        form={quizForm}
+        setForm={setQuizForm}
+        error={quizError}
+        isPending={createQuizMutation.isPending || updateQuizMutation.isPending}
+        onOpenChange={setQuizDialog}
+        onSubmit={submitQuiz}
+      />
+      <QuestionEditorDialog
+        dialog={questionDialog}
+        form={questionForm}
+        setForm={setQuestionForm}
+        errors={questionErrors}
+        isPending={createQuestionMutation.isPending || updateQuestionMutation.isPending}
+        onOpenChange={(open) => setQuestionDialog({ open })}
+        onSubmit={submitQuestion}
+      />
 
       <ConfirmDelete
         open={quizToDelete}

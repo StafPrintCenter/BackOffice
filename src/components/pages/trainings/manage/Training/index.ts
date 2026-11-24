@@ -1,5 +1,4 @@
-export { TrainingManageDialogs } from "./ManageDialogs";
+export { TrainingManageDialogs, type ContentReviewDialogState, type LessonDialogState, type ModuleDialogState } from "./ManageDialogs";
 export { TrainingManagePage } from "./ManagePage";
 export { TrainingModuleEditorDialog } from "./ModuleEditorDialog";
 export { TrainingModuleList } from "./ModuleList";
-export type { ContentReviewDialogState, LessonDialogState, ModuleDialogState } from "./ManageDialogs";

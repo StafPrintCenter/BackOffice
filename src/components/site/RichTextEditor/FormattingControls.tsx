@@ -1,4 +1,4 @@
-import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, IndentDecrease, IndentIncrease, Italic, Quote, Strikethrough, Subscript, Superscript, Underline, PaintBucket, type LucideIcon } from "lucide-react";
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Code, IndentDecrease, IndentIncrease, Italic, Quote, Strikethrough, Subscript, Superscript, Underline, PaintBucket, type LucideIcon } from "lucide-react";
 import { TOOLBAR_BUTTON_CLASS, ToolbarButton, ToolbarSeparator } from "./ToolbarParts";
 import type { RichTextToolbarState } from "./types";
 
@@ -23,6 +23,7 @@ interface FormattingControlsProps {
   onBeforeAction: () => void;
   onCommand: (command: string, value?: string) => void;
   onTextColor: (color: string) => void;
+  onToggleCode: () => void;
 }
 
 export function FormattingControls({
@@ -30,6 +31,7 @@ export function FormattingControls({
   onBeforeAction,
   onCommand,
   onTextColor,
+  onToggleCode,
 }: FormattingControlsProps) {
   return (
     <>
@@ -43,6 +45,14 @@ export function FormattingControls({
           onClick={() => onCommand(command)}
         />
       ))}
+      <ToolbarButton
+        icon={Code}
+        label="Code en ligne (sélectionner un texte)"
+        active={state.activeCommands.code}
+        disabled={!state.hasSelection}
+        onMouseDown={onBeforeAction}
+        onClick={onToggleCode}
+      />
       <ToolbarButton
         icon={Quote}
         label="Citation"

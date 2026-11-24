@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useAdminLessonDetail } from "@/stores/useLessonsStore";
 import { getContentStatusBadgeClass, getContentStatusLabel, getLessonKindIcon, LESSON_KIND_LABELS, toYoutubeEmbedUrl } from "@/data/trainingModules";
 import type { APIAdminLesson } from "@/data/trainingModules";
-import { ContentCreatorBadge, formatContentDate } from "./ContentCreatorBadge";
+import { ContentCreatorBadge, formatContentDate } from "../ContentCreatorBadge";
 import { LessonRichContent } from "./LessonRichContent";
 
 type ReviewAction = (

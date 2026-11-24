@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { LESSON_FORM_KINDS } from "./LessonFormDialog";
-import { EMPTY_LESSON_FORM } from "./LessonFormDialog";
-import type { LessonFormValues } from "./LessonFormDialog";
+import { LESSON_FORM_KINDS } from "./Lesson/LessonFormDialog";
+import { EMPTY_LESSON_FORM } from "./Lesson/LessonFormDialog";
+import type { LessonFormValues } from "./Lesson/LessonFormDialog";
 import type { APIAdminLesson, AdminLessonPayload } from "@/data/trainingModules";
 import {
   useCreateAdminLesson,

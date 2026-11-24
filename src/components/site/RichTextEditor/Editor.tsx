@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import {
-  RichTextInsertionDialog, RichTextToolbar, clearFormattingInEditor, insertPayloadAtRange,
-  type InsertionMode, type InsertionPayload, type RichTextToolbarState
+  RichTextInsertionDialog, RichTextToolbar, clearFormattingInEditor, exitEmptyListItem,
+  insertPayloadAtRange, toggleInlineCode, updateTableAtRange,
+  type InsertionMode, type InsertionPayload, type RichTextToolbarState, type TableAction
 } from "./";
 
 interface RichTextEditorProps {
@@ -19,6 +20,9 @@ const INITIAL_TOOLBAR_STATE: RichTextToolbarState = {
   listStyle: "",
   alignment: "left",
   activeCommands: {},
+  hasSelection: false,
+  tableRows: 0,
+  tableColumns: 0,
 };
 
 export function RichTextEditor({
@@ -41,10 +45,12 @@ export function RichTextEditor({
     if (!editor || !anchorNode || !editor.contains(anchorNode)) return;
 
     const anchorElement = anchorNode instanceof Element ? anchorNode : anchorNode.parentElement;
-    const block = anchorElement?.closest("p, h1, h2, h3, h4, h5, h6, blockquote, li");
+    const block = anchorElement?.closest("p, h1, h2, h3, h4, h5, h6, blockquote, pre, li");
     const list = anchorElement?.closest("ul, ol");
     const blockFormat = block?.tagName === "BLOCKQUOTE"
       ? "blockquote"
+      : block?.tagName === "PRE"
+        ? "pre"
       : block && /^H[1-6]$/.test(block.tagName)
         ? block.tagName.toLowerCase()
         : "p";
@@ -54,9 +60,12 @@ export function RichTextEditor({
     const alignment = block
       ? window.getComputedStyle(block).textAlign
       : "left";
+    const table = anchorElement?.closest("table");
+    const activeTable = table instanceof HTMLTableElement && editor.contains(table) ? table : null;
     const activeCommands = Object.fromEntries(
       COMMAND_STATES.map((command) => [command, document.queryCommandState(command)]),
     );
+    activeCommands.code = Boolean(anchorElement?.closest("code"));
 
     setToolbarState({
       blockFormat,
@@ -64,6 +73,11 @@ export function RichTextEditor({
       listStyle,
       alignment: alignment === "start" ? "left" : alignment === "end" ? "right" : alignment,
       activeCommands,
+      hasSelection: Boolean(selection && !selection.isCollapsed),
+      tableRows: activeTable?.rows.length ?? 0,
+      tableColumns: activeTable
+        ? Math.max(0, ...Array.from(activeTable.rows, (row) => row.cells.length))
+        : 0,
     });
   }, []);
 
@@ -186,6 +200,35 @@ export function RichTextEditor({
     publishChange();
   };
 
+  const applyInlineCode = () => {
+    const editor = editorRef.current;
+    const range = restoreSelection();
+    if (!editor || !range) return;
+    savedRange.current = toggleInlineCode(editor, range);
+    publishChange();
+  };
+
+  const applyTableAction = (action: TableAction) => {
+    const editor = editorRef.current;
+    const range = restoreSelection();
+    if (!editor || !range) return;
+    const nextRange = updateTableAtRange(editor, range, action);
+    if (!nextRange) return;
+    savedRange.current = nextRange;
+    publishChange();
+  };
+
+  const handleEditorKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "Enter") return;
+    const selection = window.getSelection();
+    if (!selection?.rangeCount || !editorRef.current?.contains(selection.anchorNode)) return;
+    const nextRange = exitEmptyListItem(editorRef.current, selection.getRangeAt(0));
+    if (!nextRange) return;
+    event.preventDefault();
+    savedRange.current = nextRange;
+    publishChange();
+  };
+
   return (
     <div className="rounded-lg border border-input">
       <RichTextToolbar
@@ -194,6 +237,8 @@ export function RichTextEditor({
         onCommand={executeCommand}
         onListStyle={applyListStyle}
         onTextColor={(color) => executeCommand("foreColor", color)}
+        onToggleCode={applyInlineCode}
+        onTableAction={applyTableAction}
         onInsert={openInsertionDialog}
         onClearFormatting={clearFormatting}
       />
@@ -204,6 +249,7 @@ export function RichTextEditor({
         aria-multiline="true"
         suppressContentEditableWarning
         onInput={publishChange}
+        onKeyDown={handleEditorKeyDown}
         onKeyUp={saveSelection}
         onMouseUp={saveSelection}
         data-placeholder={placeholder}

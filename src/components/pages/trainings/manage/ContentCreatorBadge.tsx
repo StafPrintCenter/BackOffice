@@ -20,7 +20,9 @@ export function ContentCreatorBadge({
     <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 ${className}`}>
       <Icon className="h-3 w-3" />
       {creator.label}
-      <span className="opacity-70">({creator.role === "admin" ? "Admin" : "Instructeur"})</span>
+      <span className="opacity-70">
+        ({creator.role === "admin" ? "Admin" : "Instructeur"})
+      </span>
     </span>
   );
 }

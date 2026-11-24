@@ -15,12 +15,14 @@ export function ToolbarButton({
   icon: Icon,
   label,
   active = false,
+  disabled = false,
   onMouseDown,
   onClick,
 }: {
   icon: LucideIcon;
   label: string;
   active?: boolean;
+  disabled?: boolean;
   onMouseDown: () => void;
   onClick: () => void;
 }) {
@@ -30,9 +32,10 @@ export function ToolbarButton({
       title={label}
       aria-label={label}
       aria-pressed={active}
+      disabled={disabled}
       onMouseDown={onMouseDown}
       onClick={onClick}
-      className={`${TOOLBAR_BUTTON_CLASS} ${active ? TOOLBAR_BUTTON_ACTIVE_CLASS : ""}`}
+      className={`${TOOLBAR_BUTTON_CLASS} ${active ? TOOLBAR_BUTTON_ACTIVE_CLASS : ""} disabled:pointer-events-none disabled:opacity-40`}
     >
       <Icon className="h-4 w-4" />
     </button>

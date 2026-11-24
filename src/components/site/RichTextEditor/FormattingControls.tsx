@@ -1,4 +1,19 @@
-import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, IndentDecrease, IndentIncrease, Italic, Quote, Strikethrough, Subscript, Superscript, Underline, CaseSensitive, type LucideIcon } from "lucide-react";
+import {
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  IndentDecrease,
+  IndentIncrease,
+  Italic,
+  Quote,
+  Strikethrough,
+  Subscript,
+  Superscript,
+  Underline,
+  type LucideIcon,
+} from "lucide-react";
 import { ToolbarButton, ToolbarSeparator } from "./ToolbarParts";
 import type { RichTextToolbarState } from "./types";
 
@@ -9,7 +24,6 @@ const TEXT_ACTIONS: Array<{ icon: LucideIcon; command: string; label: string }> 
   { icon: Strikethrough, command: "strikeThrough", label: "Barré" },
   { icon: Subscript, command: "subscript", label: "Indice" },
   { icon: Superscript, command: "superscript", label: "Exposant" },
-  { icon: CaseSensitive, command: "color", label: "Couleur du texte" },
 ];
 
 const ALIGN_ACTIONS: Array<{ icon: LucideIcon; command: string; label: string; value: string }> = [
@@ -65,12 +79,6 @@ export function FormattingControls({
           className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
         />
       </label>
-      <ToolbarButton
-        icon={IndentDecrease}
-        label="Diminuer le retrait"
-        onMouseDown={onBeforeAction}
-        onClick={() => onCommand("outdent")}
-      />
 
       <ToolbarSeparator />
       <ToolbarButton

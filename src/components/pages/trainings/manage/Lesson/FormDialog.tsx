@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { LESSON_KIND_LABELS, type APIAdminLesson, type LessonKind } from "@/data/trainingModules";
-import { LessonChapterFields } from "./LessonChapterFields";
+import { LessonChapterFields } from "./ChapterFields";
 
 export interface LessonFormValues {
   title: string;

@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { LessonFormDialog } from "./Lesson/LessonFormDialog";
-import type { LessonFormValues } from "./Lesson/LessonFormDialog";
+import { LessonFormDialog } from "./Lesson/FormDialog";
+import type { LessonFormValues } from "./Lesson/FormDialog";
 import { TrainingModuleEditorDialog } from "./TrainingModuleEditorDialog";
 import type {
   APIAdminLesson,

@@ -6,7 +6,7 @@ import { useAdminLessonDetail } from "@/stores/useLessonsStore";
 import { getContentStatusBadgeClass, getContentStatusLabel, getLessonKindIcon, LESSON_KIND_LABELS, toYoutubeEmbedUrl } from "@/data/trainingModules";
 import type { APIAdminLesson } from "@/data/trainingModules";
 import { ContentCreatorBadge, formatContentDate } from "../ContentCreatorBadge";
-import { LessonRichContent } from "./LessonRichContent";
+import { LessonRichContent } from "./RichContent";
 
 type ReviewAction = (
   type: "module" | "lesson" | "quiz",

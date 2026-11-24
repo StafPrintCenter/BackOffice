@@ -1,9 +1,5 @@
 export { ContentCreatorBadge, formatContentDate } from "./ContentCreatorBadge";
 export { EMPTY_LESSON_FORM, LESSON_FORM_KINDS, LessonFormDialog } from "./Lesson/FormDialog";
-export type { LessonFormValues } from "./Lesson/FormDialog";
-export { LessonChapterFields } from "./Lesson/ChapterFields";
-export { LessonItem } from "./Lesson/Item";
-export { LessonRichContent } from "./Lesson/RichContent";
 export { ModuleLessonsList } from "./ModuleLessonsList";
 export { QuestionEditorDialog } from "./QuestionEditorDialog";
 export { QuizContent } from "./QuizContent";

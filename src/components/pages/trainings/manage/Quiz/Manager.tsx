@@ -7,7 +7,7 @@ import type { AdminQuizPayload } from "@/data/quizzes";
 import { QuizContent } from "./Content";
 import { QuizManagerDialogs } from "./ManagerDialogs";
 import { EMPTY_QUIZ_FORM, type QuizFormValues } from "./FormTypes";
-import { useQuizQuestionManager } from "../useQuizQuestionManager";
+import { useQuizQuestionManager } from "../Utility/useQuizQuestionManager";
 
 export function QuizManager({
   lessonId,

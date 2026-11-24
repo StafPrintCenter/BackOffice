@@ -7,7 +7,7 @@ import {
   usePublishAdminTrainingModule,
   useUpdateAdminTrainingModule,
 } from "@/stores/useTrainingModulesStore";
-import type { ModuleDialogState } from "./Training/ManageDialogs";
+import type { ModuleDialogState } from "../Training/ManageDialogs";
 
 const EMPTY_MODULE_FORM: AdminTrainingModulePayload = {
   title: "",

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { QUIZ_MODE_LABELS } from "@/data/quizzes";
 import type { APIAdminQuizDetail, QuizQuestion } from "@/data/quizzes";
 import { getContentStatusBadgeClass, getContentStatusLabel } from "@/data/trainingModules";
-import { QuizQuestionsSection } from "./QuizQuestionsSection";
+import { QuizQuestionsSection } from "../QuizQuestionsSection";
 
 interface QuizContentProps {
   quiz: APIAdminQuizDetail;

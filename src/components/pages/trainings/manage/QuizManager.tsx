@@ -4,18 +4,15 @@ import { HelpCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz,
-  useCreateAdminQuizQuestion, useUpdateAdminQuizQuestion, useDeleteAdminQuizQuestion,
 } from "@/stores/useQuizzesStore";
-import type { QuizQuestion, AdminQuizPayload, AdminQuizQuestionPayload } from "@/data/quizzes";
+import type { AdminQuizPayload } from "@/data/quizzes";
 import { QuizContent } from "./QuizContent";
 import { QuizManagerDialogs } from "./QuizManagerDialogs";
 import {
-  EMPTY_QUESTION_FORM,
   EMPTY_QUIZ_FORM,
-  type QuestionDialogState,
-  type QuestionFormValues,
   type QuizFormValues,
 } from "./QuizFormTypes";
+import { useQuizQuestionManager } from "./useQuizQuestionManager";
 
 export function QuizManager({
   lessonId,
@@ -29,23 +26,16 @@ export function QuizManager({
   openReview: (type: "module" | "lesson" | "quiz", id: string, title: string, decision: "approved" | "rejected") => void;
 }) {
   const { quiz, isLoading } = useAdminQuizDetail(quizId ?? undefined);
+  const questionManager = useQuizQuestionManager(quizId, quiz?.questions.length ?? 0);
   const createQuizMutation = useCreateAdminQuiz();
   const updateQuizMutation = useUpdateAdminQuiz();
   const deleteQuizMutation = useDeleteAdminQuiz();
   const publishQuizMutation = usePublishAdminQuiz();
-  const createQuestionMutation = useCreateAdminQuizQuestion();
-  const updateQuestionMutation = useUpdateAdminQuizQuestion();
-  const deleteQuestionMutation = useDeleteAdminQuizQuestion();
 
   const [quizDialog, setQuizDialog] = useState(false);
   const [quizForm, setQuizForm] = useState<QuizFormValues>(EMPTY_QUIZ_FORM);
   const [quizError, setQuizError] = useState("");
   const [quizToDelete, setQuizToDelete] = useState(false);
-
-  const [questionDialog, setQuestionDialog] = useState<QuestionDialogState>({ open: false });
-  const [questionForm, setQuestionForm] = useState<QuestionFormValues>(EMPTY_QUESTION_FORM);
-  const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
-  const [questionToDelete, setQuestionToDelete] = useState<QuizQuestion | null>(null);
 
   const openCreateQuiz = () => {
     setQuizForm(EMPTY_QUIZ_FORM);
@@ -112,73 +102,6 @@ export function QuizManager({
     });
   };
 
-  const openCreateQuestion = () => {
-    setQuestionForm({ ...EMPTY_QUESTION_FORM, sort_order: String(quiz?.questions.length ?? 0) });
-    setQuestionErrors({});
-    setQuestionDialog({ open: true });
-  };
-
-  const openEditQuestion = (q: QuizQuestion) => {
-    setQuestionForm({
-      prompt: q.prompt,
-      type: q.type,
-      points: String(q.points),
-      sort_order: String(q.sortOrder),
-      explanation: q.explanation ?? "",
-      choices: q.choices.length > 0
-        ? [...q.choices].sort((a, b) => a.sortOrder - b.sortOrder).map((c) => ({ label: c.label, is_correct: c.isCorrect }))
-        : [{ label: "", is_correct: false }, { label: "", is_correct: false }],
-    });
-    setQuestionErrors({});
-    setQuestionDialog({ open: true, row: q });
-  };
-
-  const submitQuestion = () => {
-    if (!questionForm.prompt.trim()) {
-      setQuestionErrors({ prompt: "L'énoncé est requis" });
-      return;
-    }
-    const cleanChoices = questionForm.choices.filter((c) => c.label.trim());
-    if (cleanChoices.length < 2) {
-      setQuestionErrors({ choices: "Ajoutez au moins deux options" });
-      return;
-    }
-    if (!cleanChoices.some((c) => c.is_correct)) {
-      setQuestionErrors({ choices: "Marquez au moins une réponse correcte" });
-      return;
-    }
-    setQuestionErrors({});
-
-    const payload: AdminQuizQuestionPayload = {
-      prompt: questionForm.prompt.trim(),
-      type: questionForm.type,
-      points: Number(questionForm.points),
-      sort_order: Number(questionForm.sort_order),
-      explanation: questionForm.explanation.trim() || undefined,
-      choices: cleanChoices.map((c) => ({ label: c.label.trim(), is_correct: c.is_correct })),
-    };
-
-    if (!quizId) return;
-
-    if (questionDialog.row) {
-      updateQuestionMutation.mutate(
-        { questionId: questionDialog.row.id, quizId, payload },
-        {
-          onSuccess: () => { toast.success("Question modifiée"); setQuestionDialog({ open: false }); },
-          onError: () => toast.error("Erreur lors de la modification de la question"),
-        }
-      );
-    } else {
-      createQuestionMutation.mutate(
-        { quizId, payload },
-        {
-          onSuccess: () => { toast.success("Question ajoutée"); setQuestionDialog({ open: false }); },
-          onError: () => toast.error("Erreur lors de l'ajout de la question"),
-        }
-      );
-    }
-  };
-
   const confirmDeleteQuiz = () => {
     if (!quizId) return;
     deleteQuizMutation.mutate(
@@ -186,17 +109,6 @@ export function QuizManager({
       {
         onSuccess: () => { toast.success("Quiz supprimé"); setQuizToDelete(false); },
         onError: () => toast.error("Erreur lors de la suppression du quiz"),
-      }
-    );
-  };
-
-  const confirmDeleteQuestion = () => {
-    if (!questionToDelete || !quizId) return;
-    deleteQuestionMutation.mutate(
-      { questionId: questionToDelete.id, quizId },
-      {
-        onSuccess: () => { toast.success("Question supprimée"); setQuestionToDelete(null); },
-        onError: () => toast.error("Erreur lors de la suppression de la question"),
       }
     );
   };
@@ -226,9 +138,9 @@ export function QuizManager({
           onPublish={handlePublishQuiz}
           onDelete={() => setQuizToDelete(true)}
           onReview={(decision) => openReview("quiz", quiz.id, "Quiz de la leçon", decision)}
-          onCreateQuestion={openCreateQuestion}
-          onEditQuestion={openEditQuestion}
-          onDeleteQuestion={setQuestionToDelete}
+          onCreateQuestion={questionManager.openCreate}
+          onEditQuestion={questionManager.openEdit}
+          onDeleteQuestion={questionManager.setQuestionToDelete}
         />
       )}
 
@@ -241,19 +153,19 @@ export function QuizManager({
         quizPending={createQuizMutation.isPending || updateQuizMutation.isPending}
         onQuizDialogChange={setQuizDialog}
         onQuizSubmit={submitQuiz}
-        questionDialog={questionDialog}
-        questionForm={questionForm}
-        setQuestionForm={setQuestionForm}
-        questionErrors={questionErrors}
-        questionPending={createQuestionMutation.isPending || updateQuestionMutation.isPending}
-        onQuestionDialogChange={(open) => setQuestionDialog({ open })}
-        onQuestionSubmit={submitQuestion}
+        questionDialog={questionManager.dialog}
+        questionForm={questionManager.form}
+        setQuestionForm={questionManager.setForm}
+        questionErrors={questionManager.errors}
+        questionPending={questionManager.isSaving}
+        onQuestionDialogChange={questionManager.onDialogChange}
+        onQuestionSubmit={questionManager.submit}
         quizToDelete={quizToDelete}
         onQuizDeleteDialogChange={setQuizToDelete}
         onQuizDelete={confirmDeleteQuiz}
-        questionToDelete={questionToDelete}
-        onQuestionDeleteDialogChange={(open) => !open && setQuestionToDelete(null)}
-        onQuestionDelete={confirmDeleteQuestion}
+        questionToDelete={questionManager.questionToDelete}
+        onQuestionDeleteDialogChange={(open) => !open && questionManager.setQuestionToDelete(null)}
+        onQuestionDelete={questionManager.confirmDelete}
       />
     </div>
   );

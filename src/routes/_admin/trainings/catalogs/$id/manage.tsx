@@ -1,12 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useAdminTrainingDetail } from "@/stores/useTrainingsStore";
 import { useTrainingModulesList } from "@/stores/useTrainingModulesStore";
-import {
-  TrainingManagePage,
-  useTrainingLessonManager,
-  useTrainingModuleManager,
-  useTrainingReviewManager,
-} from "@/components/pages/trainings/manage";
+import { TrainingManagePage, useTrainingLessonManager, useTrainingModuleManager, useTrainingReviewManager } from "@/components/pages/trainings/manage";
 import { SITE } from "@/data/site";
 
 export const Route = createFileRoute("/_admin/trainings/catalogs/$id/manage")({

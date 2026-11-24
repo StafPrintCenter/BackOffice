@@ -10,7 +10,7 @@ import {
   EMPTY_QUESTION_FORM,
   type QuestionDialogState,
   type QuestionFormValues,
-} from "./QuizFormTypes";
+} from "./Quiz/FormTypes";
 
 export function useQuizQuestionManager(quizId: string | null, questionCount: number) {
   const createMutation = useCreateAdminQuizQuestion();

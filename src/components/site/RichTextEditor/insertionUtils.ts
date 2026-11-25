@@ -79,6 +79,8 @@ export function insertPayloadAtRange(
     const link = document.createElement("a");
     link.href = url;
     link.textContent = payload.text.trim() || url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
     node = link;
   }
 

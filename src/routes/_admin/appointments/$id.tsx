@@ -38,11 +38,18 @@ function AppointmentDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState<AppointmentStatus>("pending");
   const [notes, setNotes] = useState("");
+  const [replacementDate, setReplacementDate] = useState("");
+  const [replacementTime, setReplacementTime] = useState("");
+  const replacementRequired = Boolean(
+    a && status === "confirmed" && new Date(a.scheduledAt).getTime() < Date.now()
+  );
 
   useEffect(() => {
     if (a) {
       setStatus(a.status);
       setNotes(a.adminNotes ?? "");
+      setReplacementDate("");
+      setReplacementTime("");
     }
   }, [a]);
 
@@ -50,13 +57,27 @@ function AppointmentDetail() {
     if (a) {
       setStatus(a.status);
       setNotes(a.adminNotes ?? "");
+      setReplacementDate("");
+      setReplacementTime("");
     }
     setIsEditing(false);
   };
 
   const handleSave = () => {
+    if (replacementRequired && (!replacementDate || !replacementTime)) {
+      toast.error("Choisissez une nouvelle date et une nouvelle heure pour confirmer ce rendez-vous.");
+      return;
+    }
+
     updateStatus.mutate(
-      { id, payload: { status, admin_notes: notes } },
+      {
+        id,
+        payload: {
+          status,
+          admin_notes: notes,
+          ...(replacementRequired ? { date: replacementDate, time: replacementTime } : {}),
+        },
+      },
       {
         onSuccess: () => {
           toast.success("Statut et notes mis à jour");
@@ -102,10 +123,15 @@ function AppointmentDetail() {
             isEditing={isEditing}
             status={status}
             notes={notes}
+            replacementRequired={replacementRequired}
+            replacementDate={replacementDate}
+            replacementTime={replacementTime}
             isPending={updateStatus.isPending}
             onEditToggle={setIsEditing}
             onStatusChange={setStatus}
             onNotesChange={setNotes}
+            onReplacementDateChange={setReplacementDate}
+            onReplacementTimeChange={setReplacementTime}
             onSave={handleSave}
             onCancel={handleCancel}
           />

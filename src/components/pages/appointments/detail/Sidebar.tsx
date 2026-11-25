@@ -2,6 +2,7 @@ import { Loader2, Pencil, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { type AppointmentStatus } from "@/data/appointments";
 import { AppointmentBadge } from "../shared/Badge";
@@ -12,10 +13,15 @@ interface AppointmentSidebarProps {
   isEditing: boolean;
   status: AppointmentStatus;
   notes: string;
+  replacementRequired: boolean;
+  replacementDate: string;
+  replacementTime: string;
   isPending: boolean;
   onEditToggle: (editing: boolean) => void;
   onStatusChange: (status: AppointmentStatus) => void;
   onNotesChange: (notes: string) => void;
+  onReplacementDateChange: (date: string) => void;
+  onReplacementTimeChange: (time: string) => void;
   onSave: () => void;
   onCancel: () => void;
 }
@@ -26,10 +32,15 @@ export function AppointmentSidebar({
   isEditing,
   status,
   notes,
+  replacementRequired,
+  replacementDate,
+  replacementTime,
   isPending,
   onEditToggle,
   onStatusChange,
   onNotesChange,
+  onReplacementDateChange,
+  onReplacementTimeChange,
   onSave,
   onCancel,
 }: AppointmentSidebarProps) {
@@ -84,9 +95,42 @@ export function AppointmentSidebar({
             )}
           </div>
 
+          {isEditing && replacementRequired && (
+            <div className="space-y-3 rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950/30">
+              <p className="text-xs text-muted-foreground">
+                Le créneau initial est passé. Choisissez une nouvelle date et une heure pour confirmer le rendez-vous.
+              </p>
+              <div>
+                <Label htmlFor="replacement-date">Nouvelle date</Label>
+                <Input
+                  id="replacement-date"
+                  type="date"
+                  value={replacementDate}
+                  onChange={(e) => onReplacementDateChange(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="replacement-time">Nouvelle heure</Label>
+                <Input
+                  id="replacement-time"
+                  type="time"
+                  value={replacementTime}
+                  onChange={(e) => onReplacementTimeChange(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+          )}
+
           {isEditing && (
             <div className="flex gap-2 pt-2">
-              <Button size="sm" className="flex-1" onClick={onSave} disabled={isPending}>
+              <Button
+                size="sm"
+                className="flex-1"
+                onClick={onSave}
+                disabled={isPending || (replacementRequired && (!replacementDate || !replacementTime))}
+              >
                 {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-1" /> Enregistrer</>}
               </Button>
               <Button size="sm" variant="outline" className="flex-1" onClick={onCancel}>

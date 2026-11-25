@@ -2,3 +2,4 @@ export { TrainingManageDialogs, type ContentReviewDialogState, type LessonDialog
 export { TrainingManagePage } from "./ManagePage";
 export { TrainingModuleEditorDialog } from "./ModuleEditorDialog";
 export { TrainingModuleList } from "./ModuleList";
+export { ModuleLessonsList } from "./ModuleLessonsList";

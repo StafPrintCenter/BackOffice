@@ -8,6 +8,20 @@ import { type AppointmentStatus } from "@/data/appointments";
 import { SITE } from "@/data/site";
 import { AppointmentDetailHeader, AppointmentDetailContent, AppointmentHandlingInfo, AppointmentSidebar } from "@/components/pages/appointments/detail";
 
+const RESCHEDULE_NOTICE_MS = 48 * 60 * 60 * 1000;
+const MINUTE_MS = 60 * 1000;
+
+function getMinimumReplacementAt() {
+  return new Date(Math.ceil((Date.now() + RESCHEDULE_NOTICE_MS) / MINUTE_MS) * MINUTE_MS);
+}
+
+function toDateInputValue(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export const Route = createFileRoute("/_admin/appointments/$id")({
   loader: async ({ params }) => {
     const item = await fetchAdminAppointmentById(params.id);
@@ -43,6 +57,9 @@ function AppointmentDetail() {
   const replacementRequired = Boolean(
     a && status === "confirmed" && new Date(a.scheduledAt).getTime() < Date.now()
   );
+  const minimumReplacementAt = getMinimumReplacementAt();
+  const minimumReplacementDate = toDateInputValue(minimumReplacementAt);
+  const minimumReplacementTime = `${String(minimumReplacementAt.getHours()).padStart(2, "0")}:${String(minimumReplacementAt.getMinutes()).padStart(2, "0")}`;
 
   useEffect(() => {
     if (a) {
@@ -68,6 +85,13 @@ function AppointmentDetail() {
       toast.error("Choisissez une nouvelle date et une nouvelle heure pour confirmer ce rendez-vous.");
       return;
     }
+    if (
+      replacementRequired &&
+      new Date(`${replacementDate}T${replacementTime}:00`).getTime() < getMinimumReplacementAt().getTime()
+    ) {
+      toast.error("La nouvelle date et l'heure doivent être situées au moins 48 heures dans le futur.");
+      return;
+    }
 
     updateStatus.mutate(
       {
@@ -83,7 +107,8 @@ function AppointmentDetail() {
           toast.success("Statut et notes mis à jour");
           setIsEditing(false);
         },
-        onError: () => toast.error("Erreur lors de la mise à jour"),
+        onError: (error) =>
+          toast.error(error instanceof Error ? error.message : "Erreur lors de la mise à jour"),
       }
     );
   };
@@ -126,6 +151,8 @@ function AppointmentDetail() {
             replacementRequired={replacementRequired}
             replacementDate={replacementDate}
             replacementTime={replacementTime}
+            minimumReplacementDate={minimumReplacementDate}
+            minimumReplacementTime={minimumReplacementTime}
             isPending={updateStatus.isPending}
             onEditToggle={setIsEditing}
             onStatusChange={setStatus}

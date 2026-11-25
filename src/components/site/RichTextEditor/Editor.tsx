@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useDialogUnsavedChanges } from "@/components/ui/dialog";
 import { RichTextInsertionDialog } from "./InsertionDialog";
 import { RichTextToolbar } from "./Toolbar";
 import type { InsertionMode } from "./types";
@@ -25,6 +26,17 @@ export function RichTextEditor({
   minHeightClassName = "min-h-[280px]",
 }: RichTextEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
+  const editorId = useId();
+  const initialValue = useRef(value);
+  const registerEditorChanges = useDialogUnsavedChanges();
+  const publishEditorChange = useCallback((html: string) => {
+    onChange(html);
+    registerEditorChanges?.(editorId, html !== initialValue.current);
+  }, [editorId, onChange, registerEditorChanges]);
+  useEffect(() => {
+    registerEditorChanges?.(editorId, value !== initialValue.current);
+    return () => registerEditorChanges?.(editorId, false);
+  }, [editorId, registerEditorChanges, value]);
   const [dialogMode, setDialogMode] = useState<InsertionMode | null>(null);
   const [selectedText, setSelectedText] = useState("");
   const { toolbarState, updateToolbarState } = useRichTextToolbarState(editorRef);
@@ -32,7 +44,7 @@ export function RichTextEditor({
   const { publishChange, undo, redo } = useRichTextHistory(
     editorRef,
     value,
-    onChange,
+    publishEditorChange,
     saveSelection,
     updateToolbarState,
   );

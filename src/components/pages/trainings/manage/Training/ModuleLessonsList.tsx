@@ -1,6 +1,6 @@
 import { useAdminModuleDetail } from "@/stores/useTrainingModulesStore";
 import type { APIAdminLesson } from "@/data/trainingModules";
-import { LessonItem } from "./Lesson/Item";
+import { LessonItem } from "../Lesson/Item";
 
 interface ModuleLessonsListProps {
   moduleId: string;

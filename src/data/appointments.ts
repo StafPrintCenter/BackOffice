@@ -22,6 +22,25 @@ export type APIAdminAppointment = {
   updatedAt: string;
 };
 
+export type APIAppointmentCalendarSlot = {
+  time: string;
+  available: boolean;
+  appointments: APIAdminAppointment[];
+};
+
+export type APIAppointmentCalendarDay = {
+  date: string;
+  bookable: boolean;
+  appointmentCount: number;
+  slots: APIAppointmentCalendarSlot[];
+};
+
+export type APIAppointmentCalendar = {
+  from: string;
+  to: string;
+  days: APIAppointmentCalendarDay[];
+};
+
 export interface AdminAppointmentStatusPayload {
   status: AppointmentStatus;
   admin_notes?: string;

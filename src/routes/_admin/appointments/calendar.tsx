@@ -1,16 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import {
-  addMonths,
-  eachDayOfInterval,
-  endOfMonth,
-  endOfWeek,
-  format,
-  isSameMonth,
-  startOfMonth,
-  startOfWeek,
-} from "date-fns";
-import { fr } from "date-fns/locale";
+import { CalendarDays } from "lucide-react";
+import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, isSameMonth, startOfMonth, startOfWeek } from "date-fns";
 import { PageHeader } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { DayAppointments, MonthView } from "@/components/pages/appointments/calendar";
@@ -63,9 +54,11 @@ function AdminAppointmentsCalendar() {
         title="Calendrier des rendez-vous"
         description="Consultez les rendez-vous par date et accédez à leur suivi."
         actions={
-          <Button variant="outline" onClick={() => navigate({ to: "/appointments/liste" })}>
-            Liste des rendez-vous
-          </Button>
+          <div >
+            <Button variant="outline" onClick={() => navigate({ to: "/appointments/calendar" })}>
+              <CalendarDays className="h-4 w-4" /> Liste des rendez-vous
+            </Button>
+          </div>
         }
       />
 

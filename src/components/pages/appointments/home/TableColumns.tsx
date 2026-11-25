@@ -1,4 +1,4 @@
-import { type Column } from "@/components/site/DataTable"; // Ajustez l'import selon votre type Column
+import { type Column } from "@/components/site/DataTable";
 import { type APIAdminAppointment } from "@/data/appointments";
 import { AppointmentBadge } from "../shared/Badge";
 import { AppointmentModeTag } from "../shared/ModeTag";

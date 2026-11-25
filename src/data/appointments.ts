@@ -25,6 +25,8 @@ export type APIAdminAppointment = {
 export interface AdminAppointmentStatusPayload {
   status: AppointmentStatus;
   admin_notes?: string;
+  date?: string;
+  time?: string;
 }
 
 /* --- CONSTANTES D'AFFICHAGE ET STYLES --- */

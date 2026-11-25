@@ -16,6 +16,8 @@ interface AppointmentSidebarProps {
   replacementRequired: boolean;
   replacementDate: string;
   replacementTime: string;
+  minimumReplacementDate: string;
+  minimumReplacementTime: string;
   isPending: boolean;
   onEditToggle: (editing: boolean) => void;
   onStatusChange: (status: AppointmentStatus) => void;
@@ -35,6 +37,8 @@ export function AppointmentSidebar({
   replacementRequired,
   replacementDate,
   replacementTime,
+  minimumReplacementDate,
+  minimumReplacementTime,
   isPending,
   onEditToggle,
   onStatusChange,
@@ -98,13 +102,14 @@ export function AppointmentSidebar({
           {isEditing && replacementRequired && (
             <div className="space-y-3 rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-900 dark:bg-amber-950/30">
               <p className="text-xs text-muted-foreground">
-                Le créneau initial est passé. Choisissez une nouvelle date et une heure pour confirmer le rendez-vous.
+                Le créneau initial est passé. Choisissez une nouvelle date et une heure au moins 48 heures dans le futur.
               </p>
               <div>
                 <Label htmlFor="replacement-date">Nouvelle date</Label>
                 <Input
                   id="replacement-date"
                   type="date"
+                  min={minimumReplacementDate}
                   value={replacementDate}
                   onChange={(e) => onReplacementDateChange(e.target.value)}
                   required
@@ -115,6 +120,7 @@ export function AppointmentSidebar({
                 <Input
                   id="replacement-time"
                   type="time"
+                  min={replacementDate === minimumReplacementDate ? minimumReplacementTime : undefined}
                   value={replacementTime}
                   onChange={(e) => onReplacementTimeChange(e.target.value)}
                   required

@@ -1,8 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
 import { parseApiError } from "@/lib/api/error";
 import { createResourceStore } from "./createResourceStore";
-import type { APIAdminAppointment, AdminAppointmentStatusPayload } from "@/data/appointments";
+import type {
+  APIAdminAppointment,
+  APIAppointmentCalendar,
+  AdminAppointmentStatusPayload,
+} from "@/data/appointments";
 
 const store = createResourceStore<APIAdminAppointment, AdminAppointmentStatusPayload>({
   resourceKey: "appointments",
@@ -14,6 +18,31 @@ export const fetchAdminAppointmentById = store.fetchById;
 
 export const useAdminAppointmentsList = store.useList;
 export const useAdminAppointmentDetail = store.useDetail;
+
+export function useAdminAppointmentCalendar(from?: string, to?: string) {
+  const query = useQuery({
+    queryKey: ["appointments", "calendar", from, to],
+    enabled: Boolean(from && to),
+    staleTime: 30_000,
+    queryFn: async () => {
+      if (!from || !to) {
+        throw new Error("Une période est nécessaire pour charger le calendrier des rendez-vous.");
+      }
+      const params = new URLSearchParams({ from, to });
+      const response = await adminFetch(`/api/admin/appointments/calendar?${params}`);
+      if (!response.ok) {
+        throw await parseApiError(response, "Erreur lors du chargement du calendrier des rendez-vous");
+      }
+      return (await response.json()) as APIAppointmentCalendar;
+    },
+  });
+
+  return {
+    calendar: query.data ?? null,
+    isLoading: query.isLoading,
+    isError: query.isError,
+  };
+}
 
 async function updateAppointmentStatus(
   id: string,

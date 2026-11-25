@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { RichTextEditor } from "@/components/site";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -139,9 +139,9 @@ export function ArticleCreateModal({ open, onOpenChange, categories }: ArticleCr
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Annuler
-          </Button>
+          <DialogClose asChild>
+            <Button variant="outline">Annuler</Button>
+          </DialogClose>
           <Button onClick={submit} disabled={createMutation.isPending}>
             Créer
           </Button>

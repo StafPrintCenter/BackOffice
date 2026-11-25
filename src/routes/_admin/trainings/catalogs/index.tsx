@@ -122,7 +122,7 @@ function AdminTrainings() {
       <PageHeader title="Formations"
         description="Programmes proposés au public."
         actions={
-          <div className="space-x-2 space-y-2">
+          <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={() => navigate({ to: "/trainings/reviews" })}>
               <ClipboardClock className="h-4 w-4" /> Soumissions en attente
             </Button>

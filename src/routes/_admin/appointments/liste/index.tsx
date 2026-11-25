@@ -29,10 +29,9 @@ function AdminAppointments() {
         title="Rendez-vous"
         description="Prises de rendez-vous depuis le site public."
         actions={
-          <div >
+          <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={() => navigate({ to: "/appointments/calendar" })}>
-              <CalendarDays className="h-4 w-4" />
-              Vue calendrier
+              <CalendarDays className="h-4 w-4" /> Vue calendrier
             </Button>
           </div>
         }

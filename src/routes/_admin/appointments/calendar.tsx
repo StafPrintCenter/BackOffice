@@ -54,7 +54,7 @@ function AdminAppointmentsCalendar() {
         title="Calendrier des rendez-vous"
         description="Consultez les rendez-vous par date et accédez à leur suivi."
         actions={
-          <div >
+          <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={() => navigate({ to: "/appointments/calendar" })}>
               <CalendarDays className="h-4 w-4" /> Liste des rendez-vous
             </Button>

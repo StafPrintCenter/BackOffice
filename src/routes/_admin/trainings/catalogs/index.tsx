@@ -119,26 +119,25 @@ function AdminTrainings() {
 
   return (
     <>
-      <PageHeader title="Formations" description="Programmes proposés au public." />
-
-      {/* Raccourci */}
-      <div className="flex items-center gap-6 mb-4">
-        <Link to="/trainings/reviews" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <ClipboardClock className="h-4 w-4" /> Voir les soumissions en attente
-        </Link>
-
-        <Link to="/trainings/registrations" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
-        </Link>
-
-        <Link to="/trainings/sessions" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Speech className="h-4 w-4" /> Voir sessions
-        </Link>
-
-        <Link to="/trainings/payments" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Wallet className="h-4 w-4" /> Voir les paiements
-        </Link>
-      </div>
+      <PageHeader title="Formations"
+        description="Programmes proposés au public."
+        actions={
+          <div className="space-x-2 space-y-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/reviews" })}>
+              <ClipboardClock className="h-4 w-4" /> Soumissions en attente
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/registrations" })}>
+              <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/sessions" })}>
+              <Speech className="h-4 w-4" /> Voir sessions
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/payments" })}>
+              <Wallet className="h-4 w-4" /> Voir les paiements
+            </Button>
+          </div>
+        }
+      />
 
       <DataTable<APIAdminTrainingListItem>
         data={items}

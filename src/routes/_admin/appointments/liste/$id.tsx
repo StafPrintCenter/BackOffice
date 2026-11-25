@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { useAdminAppointmentDetail, useUpdateAdminAppointmentStatus, fetchAdminAppointmentById } from "@/stores/useAppointmentsStore";
+import {
+  useAdminAppointmentDetail,
+  useAdminAppointmentCalendar,
+  useUpdateAdminAppointmentStatus,
+  fetchAdminAppointmentById,
+} from "@/stores/useAppointmentsStore";
 import { type AppointmentStatus } from "@/data/appointments";
 import { SITE } from "@/data/site";
 import { AppointmentDetailHeader, AppointmentDetailContent, AppointmentHandlingInfo, AppointmentSidebar } from "@/components/pages/appointments/detail";
@@ -22,7 +27,7 @@ function toDateInputValue(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
-export const Route = createFileRoute("/_admin/appointments/$id")({
+export const Route = createFileRoute("/_admin/appointments/liste/$id")({
   loader: async ({ params }) => {
     const item = await fetchAdminAppointmentById(params.id);
     return { item };
@@ -59,7 +64,21 @@ function AppointmentDetail() {
   );
   const minimumReplacementAt = getMinimumReplacementAt();
   const minimumReplacementDate = toDateInputValue(minimumReplacementAt);
-  const minimumReplacementTime = `${String(minimumReplacementAt.getHours()).padStart(2, "0")}:${String(minimumReplacementAt.getMinutes()).padStart(2, "0")}`;
+  const replacementDateFilter = replacementRequired && replacementDate ? replacementDate : undefined;
+  const {
+    calendar: replacementCalendar,
+    isLoading: isLoadingReplacementTimes,
+    isError: replacementTimesError,
+  } = useAdminAppointmentCalendar(replacementDateFilter, replacementDateFilter);
+  const availableReplacementTimes =
+    replacementCalendar?.days
+      .find((day) => day.date === replacementDate)
+      ?.slots.filter(
+        (slot) =>
+          slot.available &&
+          new Date(`${replacementDate}T${slot.time}:00`).getTime() >= minimumReplacementAt.getTime()
+      )
+      .map((slot) => slot.time) ?? [];
 
   useEffect(() => {
     if (a) {
@@ -90,6 +109,10 @@ function AppointmentDetail() {
       new Date(`${replacementDate}T${replacementTime}:00`).getTime() < getMinimumReplacementAt().getTime()
     ) {
       toast.error("La nouvelle date et l'heure doivent être situées au moins 48 heures dans le futur.");
+      return;
+    }
+    if (replacementRequired && !availableReplacementTimes.includes(replacementTime)) {
+      toast.error("Choisissez un créneau disponible parmi les propositions.");
       return;
     }
 
@@ -151,13 +174,18 @@ function AppointmentDetail() {
             replacementRequired={replacementRequired}
             replacementDate={replacementDate}
             replacementTime={replacementTime}
+            availableReplacementTimes={availableReplacementTimes}
+            isLoadingReplacementTimes={isLoadingReplacementTimes}
+            replacementTimesError={replacementTimesError}
             minimumReplacementDate={minimumReplacementDate}
-            minimumReplacementTime={minimumReplacementTime}
             isPending={updateStatus.isPending}
             onEditToggle={setIsEditing}
             onStatusChange={setStatus}
             onNotesChange={setNotes}
-            onReplacementDateChange={setReplacementDate}
+            onReplacementDateChange={(date) => {
+              setReplacementDate(date);
+              setReplacementTime("");
+            }}
             onReplacementTimeChange={setReplacementTime}
             onSave={handleSave}
             onCancel={handleCancel}

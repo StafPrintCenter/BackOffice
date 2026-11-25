@@ -15,6 +15,7 @@ interface RichTextEditorProps {
   ariaLabelledBy?: string;
   placeholder?: string;
   minHeightClassName?: string;
+  disabled?: boolean;
 }
 
 export function RichTextEditor({
@@ -24,6 +25,7 @@ export function RichTextEditor({
   ariaLabelledBy,
   placeholder,
   minHeightClassName = "min-h-[280px]",
+  disabled = false,
 }: RichTextEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const editorId = useId();
@@ -65,27 +67,31 @@ export function RichTextEditor({
   });
 
   return (
-    <div className="rounded-lg border border-input">
-      <RichTextToolbar
-        state={toolbarState}
-        onBeforeAction={saveSelection}
-        onCommand={actions.executeCommand}
-        onListStyle={actions.applyListStyle}
-        onTextColor={(color) => actions.executeCommand("foreColor", color)}
-        onToggleCode={actions.applyInlineCode}
-        onTableAction={actions.applyTableAction}
-        onInsert={actions.openInsertionDialog}
-        onClearFormatting={actions.clearFormatting}
-      />
+    <div className={`rounded-lg border border-input ${disabled ? "opacity-50" : ""}`}>
+      <div inert={disabled}>
+        <RichTextToolbar
+          state={toolbarState}
+          onBeforeAction={saveSelection}
+          onCommand={actions.executeCommand}
+          onListStyle={actions.applyListStyle}
+          onTextColor={(color) => actions.executeCommand("foreColor", color)}
+          onToggleCode={actions.applyInlineCode}
+          onTableAction={actions.applyTableAction}
+          onInsert={actions.openInsertionDialog}
+          onClearFormatting={actions.clearFormatting}
+        />
+      </div>
       <div
         ref={editorRef}
         id={id}
-        contentEditable
+        contentEditable={!disabled}
         role="textbox"
         aria-multiline="true"
         aria-labelledby={ariaLabelledBy}
+        aria-disabled={disabled}
+        tabIndex={disabled ? -1 : 0}
         suppressContentEditableWarning
-        onInput={publishChange}
+        onInput={disabled ? undefined : publishChange}
         onKeyDown={actions.handleEditorKeyDown}
         onKeyUp={saveSelection}
         onMouseUp={saveSelection}

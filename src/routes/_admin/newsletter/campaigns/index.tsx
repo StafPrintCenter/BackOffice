@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { Users } from "lucide-react";
 import { PageHeader, ConfirmDelete, DataTable, RichTextEditor } from "@/components/site";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -197,7 +197,9 @@ function AdminNewsletterCampaigns() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button>
+            <DialogClose asChild>
+              <Button variant="outline">Annuler</Button>
+            </DialogClose>
             <Button onClick={submit} disabled={createMutation.isPending}>Créer en brouillon</Button>
           </DialogFooter>
         </DialogContent>

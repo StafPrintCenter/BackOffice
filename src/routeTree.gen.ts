@@ -24,6 +24,7 @@ import { Route as AdminAnnouncesIndexRouteImport } from './routes/_admin/announc
 import { Route as AdminAnnouncesIdRouteImport } from './routes/_admin/announces/$id'
 import { Route as AdminAppointmentsIndexRouteImport } from './routes/_admin/appointments/index'
 import { Route as AdminAppointmentsIdRouteImport } from './routes/_admin/appointments/$id'
+import { Route as AdminAppointmentsCalendarRouteImport } from './routes/_admin/appointments/calendar'
 import { Route as AdminArticlesIndexRouteImport } from './routes/_admin/articles/index'
 import { Route as AdminArticlesIdRouteImport } from './routes/_admin/articles/$id'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/_admin/categories/index'
@@ -175,6 +176,12 @@ const AdminAppointmentsIdRoute = AdminAppointmentsIdRouteImport.update({
   path: '/appointments/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAppointmentsCalendarRoute =
+  AdminAppointmentsCalendarRouteImport.update({
+    id: '/appointments/calendar',
+    path: '/appointments/calendar',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminArticlesIndexRoute = AdminArticlesIndexRouteImport.update({
   id: '/articles/',
   path: '/articles/',
@@ -603,6 +610,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof AuthResetPasswordRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
+  '/appointments/calendar': typeof AdminAppointmentsCalendarRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
   '/ecosystem/$id': typeof AdminEcosystemIdRoute
@@ -695,6 +703,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof AuthResetPasswordRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
   '/appointments/$id': typeof AdminAppointmentsIdRoute
+  '/appointments/calendar': typeof AdminAppointmentsCalendarRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
   '/ecosystem/$id': typeof AdminEcosystemIdRoute
@@ -790,6 +799,7 @@ export interface FileRoutesById {
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_admin/announces/$id': typeof AdminAnnouncesIdRoute
   '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
+  '/_admin/appointments/calendar': typeof AdminAppointmentsCalendarRoute
   '/_admin/articles/$id': typeof AdminArticlesIdRoute
   '/_admin/categories/$id': typeof AdminCategoriesIdRoute
   '/_admin/ecosystem/$id': typeof AdminEcosystemIdRoute
@@ -884,6 +894,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/announces/$id'
     | '/appointments/$id'
+    | '/appointments/calendar'
     | '/articles/$id'
     | '/categories/$id'
     | '/ecosystem/$id'
@@ -976,6 +987,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/announces/$id'
     | '/appointments/$id'
+    | '/appointments/calendar'
     | '/articles/$id'
     | '/categories/$id'
     | '/ecosystem/$id'
@@ -1070,6 +1082,7 @@ export interface FileRouteTypes {
     | '/_auth/reset-password'
     | '/_admin/announces/$id'
     | '/_admin/appointments/$id'
+    | '/_admin/appointments/calendar'
     | '/_admin/articles/$id'
     | '/_admin/categories/$id'
     | '/_admin/ecosystem/$id'
@@ -1263,6 +1276,13 @@ declare module '@tanstack/react-router' {
       path: '/appointments/$id'
       fullPath: '/appointments/$id'
       preLoaderRoute: typeof AdminAppointmentsIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/appointments/calendar': {
+      id: '/_admin/appointments/calendar'
+      path: '/appointments/calendar'
+      fullPath: '/appointments/calendar'
+      preLoaderRoute: typeof AdminAppointmentsCalendarRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/articles/': {
@@ -1813,6 +1833,7 @@ interface AdminRouteChildren {
   AdminProfileRoute: typeof AdminProfileRoute
   AdminAnnouncesIdRoute: typeof AdminAnnouncesIdRoute
   AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
+  AdminAppointmentsCalendarRoute: typeof AdminAppointmentsCalendarRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
   AdminCategoriesIdRoute: typeof AdminCategoriesIdRoute
   AdminEcosystemIdRoute: typeof AdminEcosystemIdRoute
@@ -1900,6 +1921,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminProfileRoute: AdminProfileRoute,
   AdminAnnouncesIdRoute: AdminAnnouncesIdRoute,
   AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
+  AdminAppointmentsCalendarRoute: AdminAppointmentsCalendarRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,
   AdminCategoriesIdRoute: AdminCategoriesIdRoute,
   AdminEcosystemIdRoute: AdminEcosystemIdRoute,

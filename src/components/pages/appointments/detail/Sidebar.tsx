@@ -2,7 +2,6 @@ import { Loader2, Pencil, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { type AppointmentStatus } from "@/data/appointments";
 import { AppointmentBadge } from "../shared/Badge";
@@ -16,10 +15,12 @@ interface AppointmentSidebarProps {
   replacementRequired: boolean;
   replacementDate: string;
   replacementTime: string;
+  availableReplacementDates: { value: string; label: string }[];
+  isLoadingReplacementDates: boolean;
+  replacementDatesError: boolean;
   availableReplacementTimes: string[];
   isLoadingReplacementTimes: boolean;
   replacementTimesError: boolean;
-  minimumReplacementDate: string;
   isPending: boolean;
   onEditToggle: (editing: boolean) => void;
   onStatusChange: (status: AppointmentStatus) => void;
@@ -39,10 +40,12 @@ export function AppointmentSidebar({
   replacementRequired,
   replacementDate,
   replacementTime,
+  availableReplacementDates,
+  isLoadingReplacementDates,
+  replacementDatesError,
   availableReplacementTimes,
   isLoadingReplacementTimes,
   replacementTimesError,
-  minimumReplacementDate,
   isPending,
   onEditToggle,
   onStatusChange,
@@ -110,14 +113,26 @@ export function AppointmentSidebar({
               </p>
               <div>
                 <Label htmlFor="replacement-date">Nouvelle date</Label>
-                <Input
-                  id="replacement-date"
-                  type="date"
-                  min={minimumReplacementDate}
-                  value={replacementDate}
-                  onChange={(e) => onReplacementDateChange(e.target.value)}
-                  required
-                />
+                {isLoadingReplacementDates ? (
+                  <p className="mt-1 text-xs text-muted-foreground">Chargement des dates disponibles...</p>
+                ) : replacementDatesError ? (
+                  <p className="mt-1 text-xs text-destructive">Impossible de charger les dates disponibles.</p>
+                ) : availableReplacementDates.length === 0 ? (
+                  <p className="mt-1 text-xs text-muted-foreground">Aucune date réservable disponible.</p>
+                ) : (
+                  <Select value={replacementDate} onValueChange={onReplacementDateChange}>
+                    <SelectTrigger id="replacement-date" className="mt-1">
+                      <SelectValue placeholder="Choisir une date" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableReplacementDates.map((date) => (
+                        <SelectItem key={date.value} value={date.value} className="capitalize">
+                          {date.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
               <div>
                 <Label htmlFor="replacement-time">Nouvelle heure</Label>
@@ -154,6 +169,9 @@ export function AppointmentSidebar({
                   (replacementRequired &&
                     (!replacementDate ||
                       !replacementTime ||
+                      isLoadingReplacementDates ||
+                      replacementDatesError ||
+                      !availableReplacementDates.some((date) => date.value === replacementDate) ||
                       isLoadingReplacementTimes ||
                       !availableReplacementTimes.includes(replacementTime)))
                 }

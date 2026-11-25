@@ -30,17 +30,6 @@ function AdminAppointments() {
         description="Prises de rendez-vous depuis le site public."
         actions={
           <div >
-
-            <Button variant="outline" onClick={() => navigate({ to: "/appointments/calendar" })}>
-              <CalendarDays className="h-4 w-4" />
-              Vue calendrier
-            </Button>
-
-            <Button variant="outline" onClick={() => navigate({ to: "/appointments/calendar" })}>
-              <CalendarDays className="h-4 w-4" />
-              Vue calendrier
-            </Button>
-
             <Button variant="outline" onClick={() => navigate({ to: "/appointments/calendar" })}>
               <CalendarDays className="h-4 w-4" />
               Vue calendrier

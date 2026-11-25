@@ -62,7 +62,7 @@ export function ArticleContentCard({ isEditing, article, form, onChangeForm }: A
             </div>
           ) : (
             <div
-              className="mt-1.5 prose prose-sm max-w-none rounded-xl border bg-muted/10 p-6 leading-relaxed"
+              className="rich-text-content mt-1.5 rounded-xl border bg-muted/10 p-6 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: article.body }}
             />
           )}

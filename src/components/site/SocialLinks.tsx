@@ -20,6 +20,7 @@ export function SocialLinks({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
+          title={label}
           aria-label={label}
           className={cn(
             "rounded-md p-1.5 transition-colors hover:bg-accent text-muted-foreground hover:text-foreground",

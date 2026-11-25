@@ -22,8 +22,6 @@ import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AdminAnnouncesIndexRouteImport } from './routes/_admin/announces/index'
 import { Route as AdminAnnouncesIdRouteImport } from './routes/_admin/announces/$id'
-import { Route as AdminAppointmentsIndexRouteImport } from './routes/_admin/appointments/index'
-import { Route as AdminAppointmentsIdRouteImport } from './routes/_admin/appointments/$id'
 import { Route as AdminAppointmentsCalendarRouteImport } from './routes/_admin/appointments/calendar'
 import { Route as AdminArticlesIndexRouteImport } from './routes/_admin/articles/index'
 import { Route as AdminArticlesIdRouteImport } from './routes/_admin/articles/$id'
@@ -56,6 +54,8 @@ import { Route as AdminTestimonialsIndexRouteImport } from './routes/_admin/test
 import { Route as AdminTestimonialsIdRouteImport } from './routes/_admin/testimonials/$id'
 import { Route as AdminWaitlistIndexRouteImport } from './routes/_admin/waitlist/index'
 import { Route as AdminWaitlistIdRouteImport } from './routes/_admin/waitlist/$id'
+import { Route as AdminAppointmentsListeIndexRouteImport } from './routes/_admin/appointments/liste/index'
+import { Route as AdminAppointmentsListeIdRouteImport } from './routes/_admin/appointments/liste/$id'
 import { Route as AdminArticleFeedbackGroupIndexRouteImport } from './routes/_admin/articleFeedback/group/index'
 import { Route as AdminArticleFeedbackGroupArticleKeyRouteImport } from './routes/_admin/articleFeedback/group/$articleKey'
 import { Route as AdminArticleFeedbackUniqueIndexRouteImport } from './routes/_admin/articleFeedback/unique/index'
@@ -164,16 +164,6 @@ const AdminAnnouncesIndexRoute = AdminAnnouncesIndexRouteImport.update({
 const AdminAnnouncesIdRoute = AdminAnnouncesIdRouteImport.update({
   id: '/announces/$id',
   path: '/announces/$id',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAppointmentsIndexRoute = AdminAppointmentsIndexRouteImport.update({
-  id: '/appointments/',
-  path: '/appointments/',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAppointmentsIdRoute = AdminAppointmentsIdRouteImport.update({
-  id: '/appointments/$id',
-  path: '/appointments/$id',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminAppointmentsCalendarRoute =
@@ -338,6 +328,18 @@ const AdminWaitlistIdRoute = AdminWaitlistIdRouteImport.update({
   path: '/waitlist/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAppointmentsListeIndexRoute =
+  AdminAppointmentsListeIndexRouteImport.update({
+    id: '/appointments/liste/',
+    path: '/appointments/liste/',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminAppointmentsListeIdRoute =
+  AdminAppointmentsListeIdRouteImport.update({
+    id: '/appointments/liste/$id',
+    path: '/appointments/liste/$id',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminArticleFeedbackGroupIndexRoute =
   AdminArticleFeedbackGroupIndexRouteImport.update({
     id: '/articleFeedback/group/',
@@ -609,7 +611,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
-  '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/appointments/calendar': typeof AdminAppointmentsCalendarRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
@@ -629,7 +630,6 @@ export interface FileRoutesByFullPath {
   '/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/waitlist/$id': typeof AdminWaitlistIdRoute
   '/announces/': typeof AdminAnnouncesIndexRoute
-  '/appointments/': typeof AdminAppointmentsIndexRoute
   '/articles/': typeof AdminArticlesIndexRoute
   '/categories/': typeof AdminCategoriesIndexRoute
   '/ecosystem/': typeof AdminEcosystemIndexRoute
@@ -644,6 +644,7 @@ export interface FileRoutesByFullPath {
   '/stats/': typeof AdminStatsIndexRoute
   '/testimonials/': typeof AdminTestimonialsIndexRoute
   '/waitlist/': typeof AdminWaitlistIndexRoute
+  '/appointments/liste/$id': typeof AdminAppointmentsListeIdRoute
   '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
   '/community/posts/$id': typeof AdminCommunityPostsIdRoute
@@ -664,6 +665,7 @@ export interface FileRoutesByFullPath {
   '/trainings/payments/$id': typeof AdminTrainingsPaymentsIdRoute
   '/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
   '/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
+  '/appointments/liste/': typeof AdminAppointmentsListeIndexRoute
   '/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
   '/community/categories/': typeof AdminCommunityCategoriesIndexRoute
@@ -702,7 +704,6 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/announces/$id': typeof AdminAnnouncesIdRoute
-  '/appointments/$id': typeof AdminAppointmentsIdRoute
   '/appointments/calendar': typeof AdminAppointmentsCalendarRoute
   '/articles/$id': typeof AdminArticlesIdRoute
   '/categories/$id': typeof AdminCategoriesIdRoute
@@ -722,7 +723,6 @@ export interface FileRoutesByTo {
   '/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/waitlist/$id': typeof AdminWaitlistIdRoute
   '/announces': typeof AdminAnnouncesIndexRoute
-  '/appointments': typeof AdminAppointmentsIndexRoute
   '/articles': typeof AdminArticlesIndexRoute
   '/categories': typeof AdminCategoriesIndexRoute
   '/ecosystem': typeof AdminEcosystemIndexRoute
@@ -737,6 +737,7 @@ export interface FileRoutesByTo {
   '/stats': typeof AdminStatsIndexRoute
   '/testimonials': typeof AdminTestimonialsIndexRoute
   '/waitlist': typeof AdminWaitlistIndexRoute
+  '/appointments/liste/$id': typeof AdminAppointmentsListeIdRoute
   '/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
   '/community/posts/$id': typeof AdminCommunityPostsIdRoute
@@ -757,6 +758,7 @@ export interface FileRoutesByTo {
   '/trainings/payments/$id': typeof AdminTrainingsPaymentsIdRoute
   '/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
   '/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
+  '/appointments/liste': typeof AdminAppointmentsListeIndexRoute
   '/articleFeedback/group': typeof AdminArticleFeedbackGroupIndexRoute
   '/articleFeedback/unique': typeof AdminArticleFeedbackUniqueIndexRoute
   '/community/categories': typeof AdminCommunityCategoriesIndexRoute
@@ -798,7 +800,6 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_admin/announces/$id': typeof AdminAnnouncesIdRoute
-  '/_admin/appointments/$id': typeof AdminAppointmentsIdRoute
   '/_admin/appointments/calendar': typeof AdminAppointmentsCalendarRoute
   '/_admin/articles/$id': typeof AdminArticlesIdRoute
   '/_admin/categories/$id': typeof AdminCategoriesIdRoute
@@ -818,7 +819,6 @@ export interface FileRoutesById {
   '/_admin/testimonials/$id': typeof AdminTestimonialsIdRoute
   '/_admin/waitlist/$id': typeof AdminWaitlistIdRoute
   '/_admin/announces/': typeof AdminAnnouncesIndexRoute
-  '/_admin/appointments/': typeof AdminAppointmentsIndexRoute
   '/_admin/articles/': typeof AdminArticlesIndexRoute
   '/_admin/categories/': typeof AdminCategoriesIndexRoute
   '/_admin/ecosystem/': typeof AdminEcosystemIndexRoute
@@ -833,6 +833,7 @@ export interface FileRoutesById {
   '/_admin/stats/': typeof AdminStatsIndexRoute
   '/_admin/testimonials/': typeof AdminTestimonialsIndexRoute
   '/_admin/waitlist/': typeof AdminWaitlistIndexRoute
+  '/_admin/appointments/liste/$id': typeof AdminAppointmentsListeIdRoute
   '/_admin/articleFeedback/group/$articleKey': typeof AdminArticleFeedbackGroupArticleKeyRoute
   '/_admin/articleFeedback/unique/$id': typeof AdminArticleFeedbackUniqueIdRoute
   '/_admin/community/posts/$id': typeof AdminCommunityPostsIdRoute
@@ -853,6 +854,7 @@ export interface FileRoutesById {
   '/_admin/trainings/payments/$id': typeof AdminTrainingsPaymentsIdRoute
   '/_admin/trainings/registrations/$id': typeof AdminTrainingsRegistrationsIdRoute
   '/_admin/trainings/sessions/$id': typeof AdminTrainingsSessionsIdRoute
+  '/_admin/appointments/liste/': typeof AdminAppointmentsListeIndexRoute
   '/_admin/articleFeedback/group/': typeof AdminArticleFeedbackGroupIndexRoute
   '/_admin/articleFeedback/unique/': typeof AdminArticleFeedbackUniqueIndexRoute
   '/_admin/community/categories/': typeof AdminCommunityCategoriesIndexRoute
@@ -893,7 +895,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/announces/$id'
-    | '/appointments/$id'
     | '/appointments/calendar'
     | '/articles/$id'
     | '/categories/$id'
@@ -913,7 +914,6 @@ export interface FileRouteTypes {
     | '/testimonials/$id'
     | '/waitlist/$id'
     | '/announces/'
-    | '/appointments/'
     | '/articles/'
     | '/categories/'
     | '/ecosystem/'
@@ -928,6 +928,7 @@ export interface FileRouteTypes {
     | '/stats/'
     | '/testimonials/'
     | '/waitlist/'
+    | '/appointments/liste/$id'
     | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
     | '/community/posts/$id'
@@ -948,6 +949,7 @@ export interface FileRouteTypes {
     | '/trainings/payments/$id'
     | '/trainings/registrations/$id'
     | '/trainings/sessions/$id'
+    | '/appointments/liste/'
     | '/articleFeedback/group/'
     | '/articleFeedback/unique/'
     | '/community/categories/'
@@ -986,7 +988,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/announces/$id'
-    | '/appointments/$id'
     | '/appointments/calendar'
     | '/articles/$id'
     | '/categories/$id'
@@ -1006,7 +1007,6 @@ export interface FileRouteTypes {
     | '/testimonials/$id'
     | '/waitlist/$id'
     | '/announces'
-    | '/appointments'
     | '/articles'
     | '/categories'
     | '/ecosystem'
@@ -1021,6 +1021,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/testimonials'
     | '/waitlist'
+    | '/appointments/liste/$id'
     | '/articleFeedback/group/$articleKey'
     | '/articleFeedback/unique/$id'
     | '/community/posts/$id'
@@ -1041,6 +1042,7 @@ export interface FileRouteTypes {
     | '/trainings/payments/$id'
     | '/trainings/registrations/$id'
     | '/trainings/sessions/$id'
+    | '/appointments/liste'
     | '/articleFeedback/group'
     | '/articleFeedback/unique'
     | '/community/categories'
@@ -1081,7 +1083,6 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_auth/reset-password'
     | '/_admin/announces/$id'
-    | '/_admin/appointments/$id'
     | '/_admin/appointments/calendar'
     | '/_admin/articles/$id'
     | '/_admin/categories/$id'
@@ -1101,7 +1102,6 @@ export interface FileRouteTypes {
     | '/_admin/testimonials/$id'
     | '/_admin/waitlist/$id'
     | '/_admin/announces/'
-    | '/_admin/appointments/'
     | '/_admin/articles/'
     | '/_admin/categories/'
     | '/_admin/ecosystem/'
@@ -1116,6 +1116,7 @@ export interface FileRouteTypes {
     | '/_admin/stats/'
     | '/_admin/testimonials/'
     | '/_admin/waitlist/'
+    | '/_admin/appointments/liste/$id'
     | '/_admin/articleFeedback/group/$articleKey'
     | '/_admin/articleFeedback/unique/$id'
     | '/_admin/community/posts/$id'
@@ -1136,6 +1137,7 @@ export interface FileRouteTypes {
     | '/_admin/trainings/payments/$id'
     | '/_admin/trainings/registrations/$id'
     | '/_admin/trainings/sessions/$id'
+    | '/_admin/appointments/liste/'
     | '/_admin/articleFeedback/group/'
     | '/_admin/articleFeedback/unique/'
     | '/_admin/community/categories/'
@@ -1262,20 +1264,6 @@ declare module '@tanstack/react-router' {
       path: '/announces/$id'
       fullPath: '/announces/$id'
       preLoaderRoute: typeof AdminAnnouncesIdRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/appointments/': {
-      id: '/_admin/appointments/'
-      path: '/appointments'
-      fullPath: '/appointments/'
-      preLoaderRoute: typeof AdminAppointmentsIndexRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/appointments/$id': {
-      id: '/_admin/appointments/$id'
-      path: '/appointments/$id'
-      fullPath: '/appointments/$id'
-      preLoaderRoute: typeof AdminAppointmentsIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/appointments/calendar': {
@@ -1500,6 +1488,20 @@ declare module '@tanstack/react-router' {
       path: '/waitlist/$id'
       fullPath: '/waitlist/$id'
       preLoaderRoute: typeof AdminWaitlistIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/appointments/liste/': {
+      id: '/_admin/appointments/liste/'
+      path: '/appointments/liste'
+      fullPath: '/appointments/liste/'
+      preLoaderRoute: typeof AdminAppointmentsListeIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/appointments/liste/$id': {
+      id: '/_admin/appointments/liste/$id'
+      path: '/appointments/liste/$id'
+      fullPath: '/appointments/liste/$id'
+      preLoaderRoute: typeof AdminAppointmentsListeIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_admin/articleFeedback/group/': {
@@ -1832,7 +1834,6 @@ interface AdminRouteChildren {
   AdminHealthRoute: typeof AdminHealthRoute
   AdminProfileRoute: typeof AdminProfileRoute
   AdminAnnouncesIdRoute: typeof AdminAnnouncesIdRoute
-  AdminAppointmentsIdRoute: typeof AdminAppointmentsIdRoute
   AdminAppointmentsCalendarRoute: typeof AdminAppointmentsCalendarRoute
   AdminArticlesIdRoute: typeof AdminArticlesIdRoute
   AdminCategoriesIdRoute: typeof AdminCategoriesIdRoute
@@ -1852,7 +1853,6 @@ interface AdminRouteChildren {
   AdminTestimonialsIdRoute: typeof AdminTestimonialsIdRoute
   AdminWaitlistIdRoute: typeof AdminWaitlistIdRoute
   AdminAnnouncesIndexRoute: typeof AdminAnnouncesIndexRoute
-  AdminAppointmentsIndexRoute: typeof AdminAppointmentsIndexRoute
   AdminArticlesIndexRoute: typeof AdminArticlesIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
   AdminEcosystemIndexRoute: typeof AdminEcosystemIndexRoute
@@ -1867,6 +1867,7 @@ interface AdminRouteChildren {
   AdminStatsIndexRoute: typeof AdminStatsIndexRoute
   AdminTestimonialsIndexRoute: typeof AdminTestimonialsIndexRoute
   AdminWaitlistIndexRoute: typeof AdminWaitlistIndexRoute
+  AdminAppointmentsListeIdRoute: typeof AdminAppointmentsListeIdRoute
   AdminArticleFeedbackGroupArticleKeyRoute: typeof AdminArticleFeedbackGroupArticleKeyRoute
   AdminArticleFeedbackUniqueIdRoute: typeof AdminArticleFeedbackUniqueIdRoute
   AdminCommunityPostsIdRoute: typeof AdminCommunityPostsIdRoute
@@ -1887,6 +1888,7 @@ interface AdminRouteChildren {
   AdminTrainingsPaymentsIdRoute: typeof AdminTrainingsPaymentsIdRoute
   AdminTrainingsRegistrationsIdRoute: typeof AdminTrainingsRegistrationsIdRoute
   AdminTrainingsSessionsIdRoute: typeof AdminTrainingsSessionsIdRoute
+  AdminAppointmentsListeIndexRoute: typeof AdminAppointmentsListeIndexRoute
   AdminArticleFeedbackGroupIndexRoute: typeof AdminArticleFeedbackGroupIndexRoute
   AdminArticleFeedbackUniqueIndexRoute: typeof AdminArticleFeedbackUniqueIndexRoute
   AdminCommunityCategoriesIndexRoute: typeof AdminCommunityCategoriesIndexRoute
@@ -1920,7 +1922,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminHealthRoute: AdminHealthRoute,
   AdminProfileRoute: AdminProfileRoute,
   AdminAnnouncesIdRoute: AdminAnnouncesIdRoute,
-  AdminAppointmentsIdRoute: AdminAppointmentsIdRoute,
   AdminAppointmentsCalendarRoute: AdminAppointmentsCalendarRoute,
   AdminArticlesIdRoute: AdminArticlesIdRoute,
   AdminCategoriesIdRoute: AdminCategoriesIdRoute,
@@ -1940,7 +1941,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminTestimonialsIdRoute: AdminTestimonialsIdRoute,
   AdminWaitlistIdRoute: AdminWaitlistIdRoute,
   AdminAnnouncesIndexRoute: AdminAnnouncesIndexRoute,
-  AdminAppointmentsIndexRoute: AdminAppointmentsIndexRoute,
   AdminArticlesIndexRoute: AdminArticlesIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
   AdminEcosystemIndexRoute: AdminEcosystemIndexRoute,
@@ -1955,6 +1955,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminStatsIndexRoute: AdminStatsIndexRoute,
   AdminTestimonialsIndexRoute: AdminTestimonialsIndexRoute,
   AdminWaitlistIndexRoute: AdminWaitlistIndexRoute,
+  AdminAppointmentsListeIdRoute: AdminAppointmentsListeIdRoute,
   AdminArticleFeedbackGroupArticleKeyRoute:
     AdminArticleFeedbackGroupArticleKeyRoute,
   AdminArticleFeedbackUniqueIdRoute: AdminArticleFeedbackUniqueIdRoute,
@@ -1976,6 +1977,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminTrainingsPaymentsIdRoute: AdminTrainingsPaymentsIdRoute,
   AdminTrainingsRegistrationsIdRoute: AdminTrainingsRegistrationsIdRoute,
   AdminTrainingsSessionsIdRoute: AdminTrainingsSessionsIdRoute,
+  AdminAppointmentsListeIndexRoute: AdminAppointmentsListeIndexRoute,
   AdminArticleFeedbackGroupIndexRoute: AdminArticleFeedbackGroupIndexRoute,
   AdminArticleFeedbackUniqueIndexRoute: AdminArticleFeedbackUniqueIndexRoute,
   AdminCommunityCategoriesIndexRoute: AdminCommunityCategoriesIndexRoute,

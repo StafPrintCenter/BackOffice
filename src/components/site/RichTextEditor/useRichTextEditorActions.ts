@@ -31,7 +31,7 @@ export function useRichTextEditorActions({
   onDialogOpen,
   onDialogClose,
 }: UseRichTextEditorActionsProps) {
-  const activeList = () => {
+  const activeList = useCallback(() => {
     const editor = editorRef.current;
     const selection = window.getSelection();
     const node = selection?.anchorNode;
@@ -40,7 +40,7 @@ export function useRichTextEditorActions({
     return editor && list && editor.contains(list)
       ? list as HTMLOListElement | HTMLUListElement
       : null;
-  };
+  }, [editorRef]);
 
   const executeCommand = useCallback((command: string, value?: string) => {
     if (command === "undo") {
@@ -66,7 +66,7 @@ export function useRichTextEditorActions({
     const list = activeList();
     if (list?.tagName === expectedTag) list.style.listStyleType = style;
     publishChange();
-  }, [publishChange, restoreSelection]);
+  }, [activeList, publishChange, restoreSelection]);
 
   const openInsertionDialog = useCallback((mode: InsertionMode) => {
     saveSelection();

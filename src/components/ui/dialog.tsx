@@ -5,8 +5,85 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
-const Dialog = DialogPrimitive.Root;
+const DialogUnsavedChangesContext = React.createContext<
+  ((editorId: string, hasChanges: boolean) => void) | null
+>(null);
+
+export const useDialogUnsavedChanges = () => React.useContext(DialogUnsavedChangesContext);
+
+function Dialog({
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen ?? false);
+  const [isDiscardConfirmationOpen, setIsDiscardConfirmationOpen] = React.useState(false);
+  const dirtyEditors = React.useRef(new Set<string>());
+  const isControlled = open !== undefined;
+  const isOpen = isControlled ? open : uncontrolledOpen;
+
+  const registerEditorChanges = React.useCallback((editorId: string, hasChanges: boolean) => {
+    if (hasChanges) dirtyEditors.current.add(editorId);
+    else dirtyEditors.current.delete(editorId);
+  }, []);
+
+  const handleOpenChange = React.useCallback((nextOpen: boolean) => {
+    if (!nextOpen && dirtyEditors.current.size > 0) {
+      setIsDiscardConfirmationOpen(true);
+      return;
+    }
+
+    if (!isControlled) setUncontrolledOpen(nextOpen);
+    onOpenChange?.(nextOpen);
+  }, [isControlled, onOpenChange]);
+
+  const discardChanges = () => {
+    setIsDiscardConfirmationOpen(false);
+    if (!isControlled) setUncontrolledOpen(false);
+    onOpenChange?.(false);
+  };
+
+  return (
+    <DialogUnsavedChangesContext.Provider value={registerEditorChanges}>
+      <DialogPrimitive.Root
+        {...props}
+        open={isOpen}
+        onOpenChange={handleOpenChange}
+      />
+      <AlertDialog open={isDiscardConfirmationOpen} onOpenChange={setIsDiscardConfirmationOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Abandonner les modifications ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Voulez-vous vraiment abandonner sans enregistrer vos modifications ?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continuer</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={discardChanges}
+            >
+              Abandonner
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </DialogUnsavedChangesContext.Provider>
+  );
+}
 
 const DialogTrigger = DialogPrimitive.Trigger;
 

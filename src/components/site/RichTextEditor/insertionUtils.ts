@@ -77,7 +77,9 @@ export function insertPayloadAtRange(
     node = createVideoElement(url);
   } else {
     const link = document.createElement("a");
-    link.href = url;
+    const linkUrl = new URL(url);
+    linkUrl.searchParams.set("utm_source", "stafprint.com");
+    link.href = linkUrl.href;
     link.textContent = payload.text.trim() || url;
     link.target = "_blank";
     link.rel = "noopener noreferrer";

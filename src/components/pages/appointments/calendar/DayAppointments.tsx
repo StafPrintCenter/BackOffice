@@ -39,7 +39,7 @@ export function DayAppointments({
               key={appointment.id}
               type="button"
               onClick={() => onOpenAppointment(appointment.id)}
-              className="w-full rounded-xl border p-3 text-left transition-colors hover:bg-muted/50"
+              className="w-full rounded-xl border p-3 text-left transition-colors hover:bg-muted/50 cursor-pointer"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">

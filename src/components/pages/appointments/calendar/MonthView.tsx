@@ -106,7 +106,7 @@ export function MonthView({
                 aria-pressed={selected}
                 onClick={() => onSelectDate(date)}
                 className={[
-                  "min-h-16 border-b border-r p-1 text-left align-top transition-colors sm:min-h-24 sm:p-2",
+                  "min-h-16 border-b border-r p-1 text-left align-top transition-colors sm:min-h-24 sm:p-2 cursor-pointer",
                   selected ? "bg-primary/10 ring-1 ring-inset ring-primary" : "hover:bg-muted/50",
                   isSameMonth(date, visibleMonth) ? "" : "text-muted-foreground/60",
                 ].join(" ")}

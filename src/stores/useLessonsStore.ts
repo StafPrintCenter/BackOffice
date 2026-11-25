@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { adminFetch } from "@/lib/api/resolve-url";
 import { parseApiError } from "@/lib/api/error";
 import type { APIAdminLesson, AdminLessonPayload, ModuleTrainingSummary } from "@/data/trainingModules";
+import type { ModuleDetailWithLessons } from "@/stores/useTrainingModulesStore";
 
 function buildFormData(payload: Record<string, unknown>): FormData {
   const fd = new FormData();
@@ -102,9 +103,19 @@ export function useUpdateAdminLesson() {
   return useMutation({
     mutationFn: ({ lessonId, payload }: { lessonId: string; payload: AdminLessonPayload }) =>
       updateLesson(lessonId, payload),
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      qc.setQueryData<ModuleDetailWithLessons>(
+        ["training-modules", "detail", data.moduleId],
+        (current) => current && ({
+          ...current,
+          lessons: current.lessons.map((lesson) =>
+            lesson.id === variables.lessonId ? data : lesson
+          ),
+        }),
+      );
+      qc.setQueryData(["lessons", "detail", variables.lessonId], data);
       qc.invalidateQueries({ queryKey: ["training-modules", "detail", data.moduleId] });
-      qc.invalidateQueries({ queryKey: ["lessons", "detail", data.id] });
+      qc.invalidateQueries({ queryKey: ["lessons", "detail", variables.lessonId] });
     },
   });
 }

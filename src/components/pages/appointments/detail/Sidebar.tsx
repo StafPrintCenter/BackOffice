@@ -16,8 +16,10 @@ interface AppointmentSidebarProps {
   replacementRequired: boolean;
   replacementDate: string;
   replacementTime: string;
+  availableReplacementTimes: string[];
+  isLoadingReplacementTimes: boolean;
+  replacementTimesError: boolean;
   minimumReplacementDate: string;
-  minimumReplacementTime: string;
   isPending: boolean;
   onEditToggle: (editing: boolean) => void;
   onStatusChange: (status: AppointmentStatus) => void;
@@ -37,8 +39,10 @@ export function AppointmentSidebar({
   replacementRequired,
   replacementDate,
   replacementTime,
+  availableReplacementTimes,
+  isLoadingReplacementTimes,
+  replacementTimesError,
   minimumReplacementDate,
-  minimumReplacementTime,
   isPending,
   onEditToggle,
   onStatusChange,
@@ -117,14 +121,24 @@ export function AppointmentSidebar({
               </div>
               <div>
                 <Label htmlFor="replacement-time">Nouvelle heure</Label>
-                <Input
-                  id="replacement-time"
-                  type="time"
-                  min={replacementDate === minimumReplacementDate ? minimumReplacementTime : undefined}
-                  value={replacementTime}
-                  onChange={(e) => onReplacementTimeChange(e.target.value)}
-                  required
-                />
+                {isLoadingReplacementTimes ? (
+                  <p className="mt-1 text-xs text-muted-foreground">Chargement des créneaux...</p>
+                ) : replacementTimesError ? (
+                  <p className="mt-1 text-xs text-destructive">Impossible de charger les créneaux disponibles.</p>
+                ) : availableReplacementTimes.length === 0 ? (
+                  <p className="mt-1 text-xs text-muted-foreground">Aucun créneau disponible à cette date.</p>
+                ) : (
+                  <Select value={replacementTime} onValueChange={onReplacementTimeChange}>
+                    <SelectTrigger id="replacement-time" className="mt-1">
+                      <SelectValue placeholder="Choisir une heure" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableReplacementTimes.map((time) => (
+                        <SelectItem key={time} value={time}>{time}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
             </div>
           )}
@@ -135,7 +149,14 @@ export function AppointmentSidebar({
                 size="sm"
                 className="flex-1"
                 onClick={onSave}
-                disabled={isPending || (replacementRequired && (!replacementDate || !replacementTime))}
+                disabled={
+                  isPending ||
+                  (replacementRequired &&
+                    (!replacementDate ||
+                      !replacementTime ||
+                      isLoadingReplacementTimes ||
+                      !availableReplacementTimes.includes(replacementTime)))
+                }
               >
                 {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-1" /> Enregistrer</>}
               </Button>

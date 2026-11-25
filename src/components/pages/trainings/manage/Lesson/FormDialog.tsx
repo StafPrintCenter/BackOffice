@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { RichTextEditor } from "@/components/site";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -165,7 +165,9 @@ export function LessonFormDialog({
           )}
         </div>
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Annuler</Button>
+          <DialogClose asChild>
+            <Button type="button" variant="outline">Annuler</Button>
+          </DialogClose>
           <Button type="button" onClick={onSubmit} disabled={isPending}>
             {lesson ? "Enregistrer" : "Ajouter"}
           </Button>

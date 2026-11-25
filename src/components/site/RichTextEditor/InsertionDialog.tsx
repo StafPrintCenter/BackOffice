@@ -3,17 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { normalizeHttpUrl } from "./utils";
+import { normalizeHttpUrl } from "./insertionUtils";
 import type { InsertionMode, InsertionPayload } from "./types";
-
-const EMOJI_AND_SYMBOLS = [
-  "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🙂", "😉", "😊", "😍", "🥰", "😘", "😎", "🤔", "🤗",
-  "🥳", "😢", "😭", "😡", "👍", "👎", "👏", "🙌", "🙏", "💪", "🤝", "👋", "✋", "❤️", "🧡", "💛",
-  "💚", "💙", "💜", "🖤", "🤍", "💔", "✨", "⭐", "🌟", "🔥", "🎉", "🎊", "💯", "✅", "❌", "⚠️",
-  "❓", "❗", "💡", "📌", "📎", "📣", "📧", "📚", "📖", "📝", "💻", "📱", "🎓", "🏆", "🚀", "🌍",
-  "☀️", "☁️", "☕", "🍀", "🌱", "🌸", "🎵", "🎶", "©", "®", "™", "€", "$", "£", "¥", "§",
-  "¶", "•", "→", "←", "↑", "↓", "↔", "★", "☆", "✓", "✔", "✕", "÷", "±", "∞", "°",
-] as const;
+import { EmojiPicker } from "./EmojiPicker";
+import { TableSizeFields } from "./TableSizeFields";
 
 const DIALOG_TITLES: Record<InsertionMode, string> = {
   link: "Insérer un lien",
@@ -94,19 +87,7 @@ export function RichTextInsertionDialog({
         </DialogHeader>
 
         {mode === "emoji" ? (
-          <div className="grid max-h-[55vh] grid-cols-8 gap-1 overflow-y-auto rounded-md border p-2 sm:grid-cols-10">
-            {EMOJI_AND_SYMBOLS.map((item, index) => (
-              <button
-                key={`${item}-${index}`}
-                type="button"
-                title={`Insérer ${item}`}
-                onClick={() => onInsert({ type: "emoji", value: item })}
-                className="flex h-9 w-9 items-center justify-center rounded-md text-xl hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
+          <EmojiPicker onSelect={onInsert} />
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             {(mode === "link" || mode === "image" || mode === "video") && (
@@ -149,30 +130,12 @@ export function RichTextInsertionDialog({
             )}
 
             {mode === "table" && (
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <Label htmlFor="rich-text-table-rows">Lignes (1 à 10)</Label>
-                  <Input
-                    id="rich-text-table-rows"
-                    type="number"
-                    min={1}
-                    max={10}
-                    value={rows}
-                    onChange={(event) => setRows(event.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="rich-text-table-columns">Colonnes (1 à 10)</Label>
-                  <Input
-                    id="rich-text-table-columns"
-                    type="number"
-                    min={1}
-                    max={10}
-                    value={columns}
-                    onChange={(event) => setColumns(event.target.value)}
-                  />
-                </div>
-              </div>
+              <TableSizeFields
+                rows={rows}
+                columns={columns}
+                onRowsChange={setRows}
+                onColumnsChange={setColumns}
+              />
             )}
 
             {error && <p role="alert" className="text-sm text-destructive">{error}</p>}

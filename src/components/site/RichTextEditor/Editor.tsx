@@ -10,6 +10,8 @@ import { useRichTextToolbarState } from "./useRichTextToolbarState";
 interface RichTextEditorProps {
   value: string;
   onChange: (html: string) => void;
+  id?: string;
+  ariaLabelledBy?: string;
   placeholder?: string;
   minHeightClassName?: string;
 }
@@ -17,6 +19,8 @@ interface RichTextEditorProps {
 export function RichTextEditor({
   value,
   onChange,
+  id,
+  ariaLabelledBy,
   placeholder,
   minHeightClassName = "min-h-[280px]",
 }: RichTextEditorProps) {
@@ -63,9 +67,11 @@ export function RichTextEditor({
       />
       <div
         ref={editorRef}
+        id={id}
         contentEditable
         role="textbox"
         aria-multiline="true"
+        aria-labelledby={ariaLabelledBy}
         suppressContentEditableWarning
         onInput={publishChange}
         onKeyDown={actions.handleEditorKeyDown}

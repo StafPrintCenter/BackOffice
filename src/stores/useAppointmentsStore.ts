@@ -22,6 +22,8 @@ async function updateAppointmentStatus(
   const fd = new FormData();
   fd.append("status", payload.status);
   if (payload.admin_notes !== undefined) fd.append("admin_notes", payload.admin_notes ?? "");
+  if (payload.date !== undefined) fd.append("date", payload.date);
+  if (payload.time !== undefined) fd.append("time", payload.time);
 
   const response = await adminFetch(`/api/admin/appointments/${id}/status`, {
     method: "PUT",

@@ -6,7 +6,7 @@ interface AssignmentRemovalDialogProps {
   onConfirm: () => void;
 }
 
-export function AssignmentRemovalDialog({
+export function InstructorAssignmentRemovalDialog({
   open,
   onOpenChange,
   onConfirm,

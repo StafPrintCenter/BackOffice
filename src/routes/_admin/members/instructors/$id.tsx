@@ -5,13 +5,13 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
 import {
-  AssignTrainingDialog,
-  AssignmentRemovalDialog,
+  InstructorAssignTrainingDialog,
+  InstructorAssignmentRemovalDialog,
   InstructorActionDialogs,
   InstructorDetailHeader,
   InstructorProfileCard,
   InstructorStatusBanners,
-  TrainingAssignments,
+  InstructorTrainingAssignments,
 } from "@/components/pages/members/instructors/detail";
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";
 import {
@@ -192,7 +192,7 @@ function InstructorDetail() {
         <InstructorStatusBanners instructor={instructor} />
         <InstructorProfileCard instructor={instructor} />
         <MemberSecurityCard security={instructor.security} />
-        <TrainingAssignments
+        <InstructorTrainingAssignments
           instructor={instructor}
           isEligibleForAssignment={isEligibleForAssignment}
           onAssign={() => setAssignOpen(true)}
@@ -205,7 +205,7 @@ function InstructorDetail() {
         />
       </div>
 
-      <AssignTrainingDialog
+      <InstructorAssignTrainingDialog
         open={assignOpen}
         trainings={availableTrainings}
         isPending={assignMutation.isPending}
@@ -223,7 +223,7 @@ function InstructorDetail() {
         onSubmitAlert={handleAlert}
         onSubmitBlock={handleBlock}
       />
-      <AssignmentRemovalDialog
+      <InstructorAssignmentRemovalDialog
         open={Boolean(assignmentToRemove)}
         onOpenChange={(open) => {
           if (!open) setAssignmentToRemove(null);

@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { DataTable, PageHeader } from "@/components/site";
 import {
   InstructorInviteDialog,
-  instructorTableColumns,
+  InstructorTableColumns,
 } from "@/components/pages/members/instructors/home";
 import type { AdminInstructorInvitePayload, APIAdminInstructor } from "@/data/instructors";
 import { SITE } from "@/data/site";
@@ -50,7 +50,7 @@ function AdminInstructors() {
         onView={(instructor) =>
           navigate({ to: "/members/instructors/$id", params: { id: instructor.id } })
         }
-        columns={instructorTableColumns}
+        columns={InstructorTableColumns}
       />
       <InstructorInviteDialog
         open={inviteOpen}

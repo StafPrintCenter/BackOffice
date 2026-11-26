@@ -1,2 +1,2 @@
 export { InstructorInviteDialog } from "./InviteDialog";
-export { instructorTableColumns } from "./TableColumns";
+export { InstructorTableColumns } from "./TableColumns";

@@ -15,7 +15,7 @@ function formatDate(date: string) {
   return new Date(date).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" });
 }
 
-export function TrainingAssignments({
+export function InstructorTrainingAssignments({
   instructor,
   isEligibleForAssignment,
   onAssign,

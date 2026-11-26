@@ -16,7 +16,7 @@ function getStatusClassName(instructor: APIAdminInstructor) {
   return instructor.isActive ? "bg-emerald-500/10 text-emerald-600" : "bg-muted text-muted-foreground";
 }
 
-export const instructorTableColumns: Column<APIAdminInstructor>[] = [
+export const InstructorTableColumns: Column<APIAdminInstructor>[] = [
   {
     key: "name",
     label: "Instructeur",

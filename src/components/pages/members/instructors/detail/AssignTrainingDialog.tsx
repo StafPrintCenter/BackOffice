@@ -14,7 +14,7 @@ interface AssignTrainingDialogProps {
   onSubmit: (trainingId: string, role: TrainingInstructorRole) => void;
 }
 
-export function AssignTrainingDialog({
+export function InstructorAssignTrainingDialog({
   open,
   trainings,
   isPending,

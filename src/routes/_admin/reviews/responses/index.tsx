@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import { Send, FileText } from "lucide-react";
 import { PageHeader, DataTable } from "@/components/site";
 import { useAdminReviewResponsesList } from "@/stores/useReviewResponsesStore";
@@ -21,27 +22,20 @@ function AdminReviewResponses() {
 
   return (
     <>
-      <PageHeader title="Réponses" description="Consultez les réponses reçues et gérez leur publication." />
-
-      {/* Raccourci */}
-      <div className="flex items-center gap-6 mb-4">
-        <div>
-          <Link to="/reviews/forms"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <FileText className="h-4 w-4"
-            />
-            Gérer les formulaire
-          </Link>
-        </div>
-        <div>
-          <Link to="/reviews/invites"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <Send className="h-4 w-4"
-            />
-            Inviter un client
-          </Link>
-        </div>
-      </div>
+      <PageHeader
+        title="Réponses"
+        description="Consultez les réponses reçues et gérez leur publication."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/reviews/forms" })}>
+              <FileText className="h-4 w-4" /> Gérer les formulaire
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/reviews/invites" })}>
+              <Send className="h-4 w-4" /> Inviter un client
+            </Button>
+          </div>
+        }
+      />
 
       <DataTable<APIAdminReviewResponseListItem>
         data={items}

@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -75,27 +75,20 @@ function AdminReviewForms() {
 
   return (
     <>
-      <PageHeader title="Formulaires d'avis" description="Créez et gérez vos formulaires de collecte d'avis." />
-
-      {/* Raccourci */}
-      <div className="flex items-center gap-6 mb-4">
-        <div>
-          <Link to="/reviews/invites"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <Send className="h-4 w-4"
-            />
-            Inviter un client
-          </Link>
-        </div>
-        <div>
-          <Link to="/reviews/responses"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-            <MessageSquareText className="h-4 w-4"
-            />
-            Voir les reponses
-          </Link>
-        </div>
-      </div>
+      <PageHeader
+        title="Formulaires d'avis"
+        description="Créez et gérez vos formulaires de collecte d'avis."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/reviews/invites" })}>
+              <Send className="h-4 w-4" /> Inviter un client
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/reviews/responses" })}>
+              <MessageSquareText className="h-4 w-4" /> Voir les reponses
+            </Button>
+          </div>
+        }
+      />
 
       <DataTable<APIAdminReviewFormListItem>
         data={items}

@@ -1,20 +1,7 @@
 import type { ReactNode } from "react";
-import {
-  CalendarArrowDown,
-  CalendarArrowUp,
-  CalendarPlus,
-  Info,
-  Mail,
-  Shield,
-  UserCheck,
-  XCircle,
-} from "lucide-react";
+import { CalendarArrowDown, CalendarArrowUp, CalendarPlus, Info, Mail, Shield, UserCheck, XCircle } from "lucide-react";
 import { UserAvatar } from "@/components/site";
-import {
-  ADMIN_LEVEL_BADGES,
-  ADMIN_LEVEL_LABELS,
-  type APIAdminAdminDetail,
-} from "@/data/admins";
+import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS, type APIAdminAdminDetail } from "@/data/admins";
 
 interface AdminProfileCardProps {
   admin: APIAdminAdminDetail;
@@ -54,9 +41,8 @@ export function AdminProfileCard({ admin }: AdminProfileCardProps) {
 
           <div className="flex flex-wrap items-center gap-2">
             <span
-              className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${
-                ADMIN_LEVEL_BADGES[admin.level] ?? "bg-muted text-muted-foreground border-border"
-              }`}
+              className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${ADMIN_LEVEL_BADGES[admin.level] ?? "bg-muted text-muted-foreground border-border"
+                }`}
             >
               {ADMIN_LEVEL_LABELS[admin.level] ?? admin.level}
             </span>

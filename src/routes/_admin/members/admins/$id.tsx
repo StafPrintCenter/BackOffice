@@ -9,7 +9,7 @@ import {
   AdminDetailHeader,
   AdminProfileCard,
   AdminStatusBanners,
-} from "@/components/pages/members/admin/detail";
+} from "@/components/pages/members/admins/detail";
 import {
   useAdminAdminDetail,
   useAlertAdminAdmin,

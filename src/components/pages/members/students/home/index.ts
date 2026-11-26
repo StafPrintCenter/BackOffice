@@ -1,1 +1,1 @@
-export { studentTableColumns } from "./TableColumns";
+export { StudentTableColumns } from "./TableColumns";

@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { DataTable, PageHeader } from "@/components/site";
-import { studentTableColumns } from "@/components/pages/members/students/home";
+import { StudentTableColumns } from "@/components/pages/members/students/home";
 import type { APIAdminStudentListItem } from "@/data/students";
 import { SITE } from "@/data/site";
 import { useAdminStudentsList } from "@/stores/useStudentsStore";
@@ -26,7 +26,7 @@ function AdminStudents() {
         onView={(student) =>
           navigate({ to: "/members/students/$id", params: { id: student.id } })
         }
-        columns={studentTableColumns}
+        columns={StudentTableColumns}
       />
     </>
   );

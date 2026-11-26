@@ -1,1 +1,1 @@
-export { userTableColumns } from "./TableColumns";
+export { UserTableColumns } from "./TableColumns";

@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { userTableColumns } from "@/components/pages/members/users/home";
+import { UserTableColumns } from "@/components/pages/members/users/home";
 import { DataTable, PageHeader } from "@/components/site";
 import type { APIAdminUserListItem } from "@/data/users";
 import { SITE } from "@/data/site";
@@ -24,7 +24,7 @@ function AdminUsers() {
         isLoading={isLoading}
         searchKeys={["fullname", "email"]}
         onView={(user) => navigate({ to: "/members/users/$id", params: { id: user.id } })}
-        columns={userTableColumns}
+        columns={UserTableColumns}
       />
     </>
   );

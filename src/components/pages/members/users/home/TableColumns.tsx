@@ -2,7 +2,7 @@ import { UserAvatar } from "@/components/site";
 import type { Column } from "@/components/site/DataTable";
 import type { APIAdminUserListItem } from "@/data/users";
 
-export const userTableColumns: Column<APIAdminUserListItem>[] = [
+export const UserTableColumns: Column<APIAdminUserListItem>[] = [
   {
     key: "fullname",
     label: "Utilisateur",

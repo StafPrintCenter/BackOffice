@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import { PageHeader, DataTable } from "@/components/site";
 import { useAdminReportsList } from "@/stores/useReportsStore";
 import { Scale } from "lucide-react";
@@ -8,7 +9,7 @@ import { SITE } from "@/data/site";
 export const Route = createFileRoute("/_admin/reports/site/")({
   head: () => ({
     meta: [
-      { title: `Signalements | ${SITE.name}` },
+      { title: `Signalements de contenus | ${SITE.name}` },
       { name: "robots", content: "noindex" }]
   }),
   component: AdminReports,
@@ -20,14 +21,18 @@ function AdminReports() {
 
   return (
     <>
-      <PageHeader title="Signalements" description="Contenus signalés par les visiteurs." />
+      <PageHeader
+        title="Signalements de contenus"
+        description="Contenus signalés par les visiteurs."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/reports/ethical" })}>
+              <Scale className="h-4 w-4" /> Signalements ethiques
+            </Button>
+          </div>
+        }
+      />
 
-      <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <Link to="/reports/ethical" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Scale className="h-4 w-4" />
-          Signalements ethiques
-        </Link>
-      </div>
       <DataTable<APIAdminReport>
         data={items}
         isLoading={isLoading}

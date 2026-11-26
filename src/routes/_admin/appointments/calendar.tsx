@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { CalendarDays } from "lucide-react";
+import { CalendarClock } from "lucide-react";
 import { addMonths, eachDayOfInterval, endOfMonth, endOfWeek, isSameMonth, startOfMonth, startOfWeek } from "date-fns";
 import { PageHeader } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -55,8 +55,8 @@ function AdminAppointmentsCalendar() {
         description="Consultez les rendez-vous par date et accédez à leur suivi."
         actions={
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => navigate({ to: "/appointments/calendar" })}>
-              <CalendarDays className="h-4 w-4" /> Liste des rendez-vous
+            <Button variant="outline" onClick={() => navigate({ to: "/appointments/liste" })}>
+              <CalendarClock className="h-4 w-4" /> Liste des rendez-vous
             </Button>
           </div>
         }

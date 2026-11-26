@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import { DataTable, PageHeader } from "@/components/site";
 import { REPORT_STATUS_BADGES, REPORT_STATUS_LABELS, type APIAdminEthicalReport } from "@/data/reports";
 import { ShieldAlert } from "lucide-react";
@@ -24,14 +25,14 @@ function AdminEthicalReports() {
       <PageHeader
         title="Signalements éthiques"
         description="Signalements reçus via le dispositif d’alerte éthique."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/reports/site" })}>
+              <ShieldAlert className="h-4 w-4" /> Signalements du site
+            </Button>
+          </div>
+        }
       />
-
-      <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <Link to="/reports/site" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <ShieldAlert className="h-4 w-4" />
-          Signalements du site
-        </Link>
-      </div>
 
       {isError ? (
         <p className="text-destructive">Erreur lors du chargement des signalements éthiques.</p>

@@ -147,8 +147,8 @@ export function useAdminAuth() {
     };
   }, []);
 
-  const login = useCallback(async (email: string, password: string): Promise<AdminLoginOutcome> => {
-    const result = await loginAdmin(email, password);
+  const login = useCallback(async (email: string, password: string, turnstileToken: string): Promise<AdminLoginOutcome> => {
+    const result = await loginAdmin(email, password, turnstileToken);
     if (isAdminMfaChallenge(result)) {
       return { status: "mfa", challenge: result };
     }

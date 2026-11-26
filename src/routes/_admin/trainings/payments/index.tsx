@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { PageHeader, DataTable } from "@/components/site";
 import { GraduationCap, ClipboardClock, UserRoundPlus, Speech } from "lucide-react";
 import { PaymentsFilters, type PaymentsFiltersValue } from "@/components/pages/trainings/payments/Filters";
@@ -39,26 +40,23 @@ function PaymentsPage() {
       <PageHeader
         title="Paiements"
         description="Tous les paiements des formations."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/catalogs" })}>
+              <GraduationCap className="h-4 w-4" /> Catalogue des formations
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/reviews" })}>
+              <ClipboardClock className="h-4 w-4" /> Soumissions en attente
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/registrations" })}>
+              <UserRoundPlus className="h-4 w-4" /> Inscriptions
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/sessions" })}>
+              <Speech className="h-4 w-4" /> Sessions
+            </Button>
+          </div>
+        }
       />
-
-      {/* Raccourci */}
-      <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <Link to="/trainings/catalogs" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <GraduationCap className="h-4 w-4" /> Voir le catalogue des formations
-        </Link>
-
-        <Link to="/trainings/reviews" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <ClipboardClock className="h-4 w-4" /> Voir les soumissions en attente
-        </Link>
-
-        <Link to="/trainings/registrations" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
-        </Link>
-
-        <Link to="/trainings/sessions" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Speech className="h-4 w-4" /> Voir sessions
-        </Link>
-      </div>
 
       {summary && <PaymentsSummary summary={summary} />}
       <PaymentsFilters value={filters} onChange={updateFilters} onReset={() => updateFilters(EMPTY)} />

@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import { GraduationCap, ClipboardClock, Wallet, Speech } from "lucide-react";
 import { PageHeader, DataTable } from "@/components/site";
 import { useAdminTrainingRegistrationsList } from "@/stores/useTrainingRegistrationsStore";
@@ -24,26 +25,23 @@ function AdminTrainingRegistrations() {
       <PageHeader
         title="Inscriptions aux formations"
         description="Demandes d'inscription reçues depuis le site public."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/catalogs" })}>
+              <GraduationCap className="h-4 w-4" /> Catalogue des formations
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/reviews" })}>
+              <ClipboardClock className="h-4 w-4" /> Soumissions en attente
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/sessions" })}>
+              <Speech className="h-4 w-4" /> Sessions
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/payments" })}>
+              <Wallet className="h-4 w-4" /> Paiements
+            </Button>
+          </div>
+        }
       />
-
-      {/* Raccourci */}
-      <div className="flex items-center gap-6 mb-4">
-        <Link to="/trainings/catalogs" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <GraduationCap className="h-4 w-4" /> Voir le catalogue des formations
-        </Link>
-
-        <Link to="/trainings/reviews" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <ClipboardClock className="h-4 w-4" /> Voir les soumissions en attente
-        </Link>
-
-        <Link to="/trainings/sessions" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Speech className="h-4 w-4" /> Voir sessions
-        </Link>
-
-        <Link to="/trainings/payments" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Wallet className="h-4 w-4" /> Voir les paiements
-        </Link>
-      </div>
 
       <DataTable<APIAdminTrainingRegistration>
         data={items}

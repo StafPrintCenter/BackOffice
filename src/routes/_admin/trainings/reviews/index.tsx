@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2, CheckCircle2, XCircle, Clock, Calendar, UserRoundPlus, GraduationCap, Search, ChevronLeft, ChevronRight, ShieldCheck, ShieldOff, ArrowUpDown, FolderKanban, ExternalLink, Timer, Award, FileQuestion, Wallet, Speech } from "lucide-react";
@@ -43,6 +43,7 @@ const SORT_BY_LABELS: Record<NonNullable<PendingReviewsParams["sort_by"]>, strin
 };
 
 function AdminContentReviews() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<NonNullable<PendingReviewsParams["sort_by"]>>("created_at");
   const [sortOrder, setSortOrder] = useState<NonNullable<PendingReviewsParams["sort_order"]>>("desc");
@@ -108,26 +109,23 @@ function AdminContentReviews() {
       <PageHeader
         title="Soumissions en attente"
         description="Modules, leçons et quiz créés par les instructeurs en attente de validation, groupés par formation."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/catalogs" })}>
+              <GraduationCap className="h-4 w-4" /> Catalogue des formations
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/registrations" })}>
+              <UserRoundPlus className="h-4 w-4" /> Inscriptions
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/sessions" })}>
+              <Speech className="h-4 w-4" /> Sessions
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/trainings/payments" })}>
+              <Wallet className="h-4 w-4" /> Paiements
+            </Button>
+          </div>
+        }
       />
-
-      {/* Raccourci */}
-      <div className="flex items-center gap-6 mb-4">
-        <Link to="/trainings/catalogs" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <GraduationCap className="h-4 w-4" /> Voir le catalogue des formations
-        </Link>
-
-        <Link to="/trainings/registrations" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
-        </Link>
-
-        <Link to="/trainings/sessions" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Speech className="h-4 w-4" /> Voir sessions
-        </Link>
-
-        <Link to="/trainings/payments" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Wallet className="h-4 w-4" /> Voir les paiements
-        </Link>
-      </div>
 
       {/* Recherche + tri */}
       <div className="mb-4 flex flex-wrap items-center gap-2">

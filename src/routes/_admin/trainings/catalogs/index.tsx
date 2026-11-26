@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -127,13 +127,13 @@ function AdminTrainings() {
               <ClipboardClock className="h-4 w-4" /> Soumissions en attente
             </Button>
             <Button variant="outline" onClick={() => navigate({ to: "/trainings/registrations" })}>
-              <UserRoundPlus className="h-4 w-4" /> Voir les inscriptions
+              <UserRoundPlus className="h-4 w-4" /> Inscriptions
             </Button>
             <Button variant="outline" onClick={() => navigate({ to: "/trainings/sessions" })}>
-              <Speech className="h-4 w-4" /> Voir sessions
+              <Speech className="h-4 w-4" /> Sessions
             </Button>
             <Button variant="outline" onClick={() => navigate({ to: "/trainings/payments" })}>
-              <Wallet className="h-4 w-4" /> Voir les paiements
+              <Wallet className="h-4 w-4" /> Paiements
             </Button>
           </div>
         }

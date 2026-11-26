@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { PageHeader, DataTable, UserAvatar } from "@/components/site";
-import { useAdminUsersList } from "@/stores/useUsersStore";
+import { userTableColumns } from "@/components/pages/members/users/home";
+import { DataTable, PageHeader } from "@/components/site";
 import type { APIAdminUserListItem } from "@/data/users";
 import { SITE } from "@/data/site";
+import { useAdminUsersList } from "@/stores/useUsersStore";
 
 export const Route = createFileRoute("/_admin/members/users/")({
   head: () => ({
@@ -18,57 +19,12 @@ function AdminUsers() {
   return (
     <>
       <PageHeader title="Utilisateurs" description="Consultez et modérez les comptes utilisateurs." />
-
       <DataTable<APIAdminUserListItem>
         data={items}
         isLoading={isLoading}
         searchKeys={["fullname", "email"]}
-        onView={(r) => navigate({ to: "/members/users/$id", params: { id: r.id } })}
-        columns={[
-          {
-            key: "fullname",
-            label: "Utilisateur",
-            render: (r) => (
-              <div className="flex items-center gap-3">
-                <UserAvatar name={r.fullname} photo={r.photo} className="size-10 shrink-0" imageClassName="object-cover" />
-                <div>
-                  <div className="font-medium">{r.fullname}</div>
-                  <div className="text-xs text-muted-foreground">{r.email}</div>
-                </div>
-              </div>
-            ),
-          },
-          { key: "role", label: "Rôle", render: (r) => <span className="text-xs capitalize">{r.role}</span> },
-          {
-            key: "isBlocked",
-            label: "Statut",
-            render: (r) => (
-              <span
-                className={
-                  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium " +
-                  (r.isBlocked
-                    ? "bg-rose-500/10 text-rose-600 border-rose-500/20"
-                    : r.isActive
-                      ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-                      : "bg-muted text-muted-foreground border-border")
-                }
-              >
-                {r.isBlocked ? "Bloqué" : r.isActive ? "Actif" : "Inactif"}
-              </span>
-            ),
-          },
-          {
-            key: "createdAt",
-            label: "Inscrit le",
-            render: (r) => (
-              <span className="text-xs text-muted-foreground">
-                {new Date(r.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
-                  dateStyle: "short", timeStyle: "short",
-                })}
-              </span>
-            ),
-          },
-        ]}
+        onView={(user) => navigate({ to: "/members/users/$id", params: { id: user.id } })}
+        columns={userTableColumns}
       />
     </>
   );

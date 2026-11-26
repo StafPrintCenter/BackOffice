@@ -12,10 +12,11 @@ import type { APIAdminPasskeyRequestOptions } from "@/data/passkeys";
 
 export class AdminAuthApiError extends Error { }
 
-export async function loginAdmin(email: string, password: string): Promise<APIAdminLoginResult> {
+export async function loginAdmin(email: string, password: string, turnstileToken: string): Promise<APIAdminLoginResult> {
   const formData = new FormData();
   formData.append("email", email);
   formData.append("password", password);
+  formData.append("cf-turnstile-response", turnstileToken);
 
   const response = await adminFetch(`/api/admin/auth/login`, { method: "POST", body: formData });
   if (!response.ok) {

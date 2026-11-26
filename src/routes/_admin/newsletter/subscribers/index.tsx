@@ -1,5 +1,6 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Megaphone } from "lucide-react";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
@@ -31,17 +32,16 @@ function AdminNewsletterSubscribers() {
 
   return (
     <>
-      <PageHeader title="Abonnés newsletter" description="Consultez, bloquez, réactivez ou supprimez les abonnés." />
-
-      {/* Raccourci */}
-      <div className="mb-4">
-        <Link to="/newsletter/campaigns"
-          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Megaphone className="h-4 w-4"
-          />
-          Aller aux campagnes
-        </Link>
-      </div>
+      <PageHeader title="Abonnés newsletter"
+        description="Consultez, bloquez, réactivez ou supprimez les abonnés."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/newsletter/campaigns" })}>
+              <Megaphone className="h-4 w-4" /> Aller aux campagnes
+            </Button>
+          </div>
+        }
+      />
 
       <DataTable<APIAdminNewsletterSubscriberListItem>
         data={items}

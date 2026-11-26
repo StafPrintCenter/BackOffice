@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -78,17 +78,17 @@ function AdminNewsletterCampaigns() {
 
   return (
     <>
-      <PageHeader title="Campagnes newsletter" description="Créez, programmez et envoyez vos campagnes d'emailing." />
-
-      {/* Raccourci */}
-      <div className="mb-4">
-        <Link to="/newsletter/subscribers"
-          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Users className="h-4 w-4"
-          />
-          Voir les abonnés
-        </Link>
-      </div>
+      <PageHeader
+        title="Campagnes newsletter"
+        description="Créez, programmez et envoyez vos campagnes d'emailing."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/newsletter/subscribers" })}>
+              <Users className="h-4 w-4" /> Voir les abonnés
+            </Button>
+          </div>
+        }
+      />
 
       <DataTable<APIAdminNewsletterCampaignListItem>
         data={items}

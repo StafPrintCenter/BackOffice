@@ -32,7 +32,7 @@ function AdminArticleFeedbackGroups() {
         description="Score de satisfaction agrégé pour chaque article de la documentation."
         actions={
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => navigate({ to: "/articleFeedback/group" })}>
+            <Button variant="outline" onClick={() => navigate({ to: "/articleFeedback/unique" })}>
               <Sticker className="h-4 w-4" /> Feedbacks uniques
             </Button>
           </div>

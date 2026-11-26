@@ -6,4 +6,5 @@ export { DataTable } from "./DataTable";
 export { FilePreviewModal } from "./FilePreviewModal";
 export { SocialLinks } from "./SocialLinks";
 export { EmptyState, LoadingGrid } from "./States";
+export { TurnstileField } from "./TurnstileField";
 export { UserAvatar } from "./UserAvatar";

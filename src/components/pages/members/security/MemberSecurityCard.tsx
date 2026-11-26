@@ -66,8 +66,14 @@ export function MemberSecurityCard({ security }: MemberSecurityCardProps) {
                       }`}
                       aria-hidden="true"
                     />
-                    <span className="min-w-0 text-sm">{label}</span>
-                    <span className="sr-only">{passed ? "Configuré" : "Non configuré"}</span>
+                    <span className="min-w-0 flex-1 text-sm">{label}</span>
+                    <span
+                      className={`shrink-0 text-xs font-medium ${
+                        passed ? "text-emerald-600" : "text-amber-600"
+                      }`}
+                    >
+                      {passed ? "Conforme" : "À renforcer"}
+                    </span>
                   </li>
                 );
               })}

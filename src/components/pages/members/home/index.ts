@@ -1,2 +1,2 @@
-export { AdminInviteDialog } from "./AdminInviteDialog";
-export { adminTableColumns } from "./AdminTableColumns";
+export { AdminInviteDialog } from "./InviteDialog";
+export { adminTableColumns } from "./TableColumns";

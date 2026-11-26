@@ -1,10 +1,6 @@
 import { UserAvatar } from "@/components/site";
 import type { Column } from "@/components/site/DataTable";
-import {
-  ADMIN_LEVEL_BADGES,
-  ADMIN_LEVEL_LABELS,
-  type APIAdminAdminListItem,
-} from "@/data/admins";
+import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS, type APIAdminAdminListItem } from "@/data/admins";
 
 export const adminTableColumns: Column<APIAdminAdminListItem>[] = [
   {
@@ -30,9 +26,8 @@ export const adminTableColumns: Column<APIAdminAdminListItem>[] = [
     label: "Niveau",
     render: (admin) => (
       <span
-        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${
-          ADMIN_LEVEL_BADGES[admin.level] ?? "bg-muted text-muted-foreground"
-        }`}
+        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${ADMIN_LEVEL_BADGES[admin.level] ?? "bg-muted text-muted-foreground"
+          }`}
       >
         {ADMIN_LEVEL_LABELS[admin.level] ?? admin.level}
       </span>

@@ -1,12 +1,4 @@
-import {
-  AlertTriangle,
-  ArrowLeft,
-  Ban,
-  CheckCircle2,
-  MailCheck,
-  MailX,
-  ShieldCheck,
-} from "lucide-react";
+import { AlertTriangle, ArrowLeft, Ban, CheckCircle2, MailCheck, MailX, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { APIAdminInstructor } from "@/data/instructors";
 

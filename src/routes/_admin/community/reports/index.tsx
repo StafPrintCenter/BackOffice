@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import { TrendingUp, NotebookPen, LayoutGrid } from "lucide-react";
 import { PageHeader } from "@/components/site";
 import { SITE } from "@/data/site";
@@ -16,27 +17,27 @@ export const Route = createFileRoute("/_admin/community/reports/")({
 });
 
 function ReportsPage() {
+  const navigate = useNavigate();
+
   return (
     <>
       <PageHeader
         title="Signalements de la communauté"
         description="File de modération et chiffres clés."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/community/posts" })}>
+              <NotebookPen className="h-4 w-4" /> Publications
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/community/categories" })}>
+              <LayoutGrid className="h-4 w-4" /> Catégories
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/community/stats" })}>
+              <TrendingUp className="h-4 w-4" /> Statistiques
+            </Button>
+          </div>
+        }
       />
-
-      {/* Raccourci */}
-      <div className="flex items-center gap-6 mb-4">
-        <Link to="/community/posts" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <NotebookPen className="h-4 w-4" /> Publications
-        </Link>
-
-        <Link to="/community/categories" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <LayoutGrid className="h-4 w-4" /> Catégories
-        </Link>
-
-        <Link to="/community/stats" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <TrendingUp className="h-4 w-4" /> Statistiques
-        </Link>
-      </div>
 
       <ReportsList />
     </>

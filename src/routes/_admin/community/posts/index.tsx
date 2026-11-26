@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Plus, Flag, TrendingUp, LayoutGrid } from "lucide-react";
 import { PageHeader } from "@/components/site";
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/_admin/community/posts/")({
 });
 
 function CommunityPage() {
+  const navigate = useNavigate();
   const [createOpen, setCreateOpen] = useState(false);
 
   return (
@@ -26,26 +27,24 @@ function CommunityPage() {
         <PageHeader
           title="Communauté"
           description="Discussions, questions et ressources des membres."
+          actions={
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" onClick={() => navigate({ to: "/community/categories" })}>
+                <LayoutGrid className="h-4 w-4" /> Catégories
+              </Button>
+              <Button variant="outline" onClick={() => navigate({ to: "/community/reports" })}>
+                <Flag className="h-4 w-4" /> Signalement
+              </Button>
+              <Button variant="outline" onClick={() => navigate({ to: "/community/stats" })}>
+                <TrendingUp className="h-4 w-4" /> Statistiques
+              </Button>
+            </div>
+          }
         />
 
         <Button onClick={() => setCreateOpen(true)}>
           <Plus className="mr-1 h-4 w-4" /> Publier
         </Button>
-      </div>
-
-      {/* Raccourci */}
-      <div className="flex items-center gap-6 mb-4">
-        <Link to="/community/categories" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <LayoutGrid className="h-4 w-4" /> Catégories
-        </Link>
-
-        <Link to="/community/reports" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Flag className="h-4 w-4" /> Signalement
-        </Link>
-
-        <Link to="/community/stats" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <TrendingUp className="h-4 w-4" /> Statistiques
-        </Link>
       </div>
 
       <div className="pt-6">

@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Flag, NotebookPen, LayoutGrid, Plus } from "lucide-react";
+import { Flag, NotebookPen, TrendingUp, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/site";
 import { SITE } from "@/data/site";
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/_admin/community/categories/")({
 });
 
 function CategoryPage() {
+  const navigate = useNavigate();
   const { categories } = useCommunityCategories({ includeInactive: true });
   const [createOpen, setCreateOpen] = useState(false);
   const active = categories.filter((c) => c.isActive).length;
@@ -27,6 +28,19 @@ function CategoryPage() {
       <PageHeader
         title="Statistiques de la communauté"
         description="Gestion des catégories de la communaité"
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/community/posts" })}>
+              <NotebookPen className="h-4 w-4" /> Publications
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/community/reports" })}>
+              <Flag className="h-4 w-4" /> Signalement
+            </Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/community/stats" })}>
+              <TrendingUp className="h-4 w-4" /> Statistiques
+            </Button>
+          </div>
+        }
       />
 
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
@@ -37,21 +51,6 @@ function CategoryPage() {
           <Plus className="mr-1 h-4 w-4" />
           Nouvelle catégorie
         </Button>
-      </div>
-
-      {/* Raccourci */}
-      <div className="flex items-center gap-6 mb-4">
-        <Link to="/community/posts" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <NotebookPen className="h-4 w-4" /> Publications
-        </Link>
-
-        <Link to="/community/categories" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <LayoutGrid className="h-4 w-4" /> Catégories
-        </Link>
-
-        <Link to="/community/reports" className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Flag className="h-4 w-4" /> Signalement
-        </Link>
       </div>
 
       <CategoriesManager />

@@ -5,24 +5,35 @@ import { PasswordField } from "@/components/site/PasswordField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TurnstileField } from "@/components/site";
 
 interface LoginCredentialsFormProps {
   defaultEmail: string;
+  action: string;
   loading: boolean;
-  onSubmit: (email: string, password: string) => void;
+  onSubmit: (email: string, password: string, turnstileToken: string) => void | Promise<void>;
 }
 
 export function LoginCredentialsForm({
   defaultEmail,
+  action,
   loading,
   onSubmit,
 }: LoginCredentialsFormProps) {
   const [email, setEmail] = useState(defaultEmail);
   const [password, setPassword] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileResetSignal, setTurnstileResetSignal] = useState(0);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    onSubmit(email, password);
+    if (!turnstileToken) return;
+    try {
+      await onSubmit(email, password, turnstileToken);
+    } finally {
+      setTurnstileToken(null);
+      setTurnstileResetSignal((current) => current + 1);
+    }
   };
 
   return (
@@ -61,7 +72,13 @@ export function LoginCredentialsForm({
         />
       </div>
 
-      <Button type="submit" className="w-full" disabled={loading}>
+      <TurnstileField
+        action={action}
+        onTokenChange={setTurnstileToken}
+        resetSignal={turnstileResetSignal}
+      />
+
+      <Button type="submit" className="w-full" disabled={loading || !turnstileToken}>
         {loading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

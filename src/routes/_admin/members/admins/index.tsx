@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { DataTable, PageHeader } from "@/components/site";
-import { AdminInviteDialog, adminTableColumns } from "@/components/pages/members/home";
+import { AdminInviteDialog, adminTableColumns } from "@/components/pages/members/admin/home";
 import { useAdminAdminsList, useInviteAdminAdmin } from "@/stores/useAdminsStore";
 import type { AdminAdminInvitePayload, APIAdminAdminListItem } from "@/data/admins";
 import { SITE } from "@/data/site";

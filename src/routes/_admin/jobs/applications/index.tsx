@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 import { Briefcase } from "lucide-react";
 import { PageHeader, DataTable } from "@/components/site";
 import { useAdminJobApplicationsList } from "@/stores/useJobApplicationsStore";
@@ -22,15 +23,17 @@ function AdminJobApplications() {
 
   return (
     <>
-      <PageHeader title="Candidatures" description="Candidatures reçues pour les offres d'emploi." />
-
-      <div className="mb-4">
-        <Link
-          to="/jobs/offers"
-          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Briefcase className="h-4 w-4" /> Voir les offres d'emploi
-        </Link>
-      </div>
+      <PageHeader
+        title="Candidatures"
+        description="Candidatures reçues pour les offres d'emploi."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/jobs/offers" })}>
+              <Briefcase className="h-4 w-4" /> Offres d'emploi
+            </Button>
+          </div>
+        }
+      />
 
       <DataTable<APIAdminJobApplication>
         data={items}

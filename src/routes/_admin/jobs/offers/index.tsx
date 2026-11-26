@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -127,15 +127,17 @@ function AdminJobOffers() {
 
   return (
     <>
-      <PageHeader title="Offres d'emploi" description="Postes ouverts publiés sur le site." />
-
-      <div className="mb-4">
-        <Link to="/jobs/applications"
-          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
-          <Users className="h-4 w-4" />
-          Voir les candidatures
-        </Link>
-      </div>
+      <PageHeader
+        title="Offres d'emploi"
+        description="Postes ouverts publiés sur le site."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/jobs/applications" })}>
+              <Users className="h-4 w-4" /> Liste des candidatures
+            </Button>
+          </div>
+        }
+      />
 
       <DataTable<APIAdminJobOffer>
         data={items}

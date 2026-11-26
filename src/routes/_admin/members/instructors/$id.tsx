@@ -16,6 +16,7 @@ import { TRAINING_INSTRUCTOR_ROLE_LABELS } from "@/data/trainingInstructors";
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";
 import { SITE } from "@/data/site";
 import { UserAvatar } from "@/components/site";
+import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
 
 export const Route = createFileRoute("/_admin/members/instructors/$id")({
   head: () => ({
@@ -415,6 +416,8 @@ function InstructorDetail() {
             )}
           </div>
         </div>
+
+        <MemberSecurityCard security={instructor.security} />
 
         {/* Formations assignées */}
         <div className="rounded-2xl border bg-card p-6">

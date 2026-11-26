@@ -1,3 +1,5 @@
+import type { MemberSecuritySummary } from "@/data/memberSecurity";
+
 export type APIAdminUserListItem = {
   id: string;
   firstName: string;
@@ -16,6 +18,7 @@ export type APIAdminUserListItem = {
 
 export type APIAdminUserDetail = APIAdminUserListItem & {
   blockedReason: string | null;
+  security: MemberSecuritySummary;
 };
 
 export interface AdminUserAlertPayload {

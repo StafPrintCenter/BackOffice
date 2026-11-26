@@ -1,4 +1,5 @@
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";
+import type { MemberSecuritySummary } from "@/data/memberSecurity";
 
 export type InstructorRegistrationSource = "invited" | "self_registered";
 
@@ -38,6 +39,7 @@ export type APIAdminInstructor = {
   approvedAt: string | null;
   trainings: APIAdminInstructorTrainingAssignment[];
   createdAt: string;
+  security?: MemberSecuritySummary;
 };
 
 export interface AdminInstructorInvitePayload {

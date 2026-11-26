@@ -11,6 +11,7 @@ import { useAdminStudentDetail, useAlertAdminStudent, useBlockAdminStudent, useR
 import { StudentTrainingsSection } from "@/components/pages/trainings/enrollments/StudentTrainingsSection";
 import { SITE } from "@/data/site";
 import { UserAvatar } from "@/components/site";
+import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
 
 export const Route = createFileRoute("/_admin/members/students/$id")({
   head: () => ({
@@ -284,6 +285,7 @@ function StudentDetail() {
           </div>
         </div>
 
+        <MemberSecurityCard security={student.security} />
         <StudentTrainingsSection trainings={student.trainings ?? []} />
       </div>
 

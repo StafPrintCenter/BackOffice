@@ -1,3 +1,5 @@
+import type { MemberSecuritySummary } from "@/data/memberSecurity";
+
 export type AdminLevel = "default" | "super_admin" | "editor";
 
 export type APIAdminAdminListItem = {
@@ -23,6 +25,7 @@ export type APIAdminAdminListItem = {
 
 export type APIAdminAdminDetail = APIAdminAdminListItem & {
   blockedReason?: string | null;
+  security: MemberSecuritySummary;
 };
 
 export interface AdminAdminInvitePayload {

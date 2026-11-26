@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { useAdminUserDetail, useAlertAdminUser, useBlockAdminUser, useReactivateAdminUser, } from "@/stores/useUsersStore";
 import { SITE } from "@/data/site";
 import { UserAvatar } from "@/components/site";
+import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
 
 export const Route = createFileRoute("/_admin/members/users/$id")({
   head: () => ({
@@ -225,6 +226,7 @@ function UserDetail() {
             )}
           </div>
         </div>
+        <MemberSecurityCard security={user.security} />
       </div>
 
       {/* Dialog Alerte */}

@@ -1,4 +1,5 @@
 import type { StudentTrainingEnrollment } from "@/data/trainingEnrollments";
+import type { MemberSecuritySummary } from "@/data/memberSecurity";
 
 export type APIAdminStudentListItem = {
   id: string;
@@ -22,6 +23,7 @@ export type APIAdminStudentListItem = {
 
 export type APIAdminStudentDetail = APIAdminStudentListItem & {
   blockedReason: string | null;
+  security: MemberSecuritySummary;
 };
 
 export interface AdminStudentBlockPayload {

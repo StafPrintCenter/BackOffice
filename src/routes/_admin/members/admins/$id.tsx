@@ -12,6 +12,7 @@ import { useCurrentAdmin } from "@/stores/useAuthStore";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS } from "@/data/admins";
 import { SITE } from "@/data/site";
 import { UserAvatar } from "@/components/site";
+import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
 
 export const Route = createFileRoute("/_admin/members/admins/$id")({
   head: () => ({
@@ -397,6 +398,7 @@ function AdminDetail() {
             )}
           </div>
         </div>
+        <MemberSecurityCard security={admin.security} />
       </div>
 
       {/* Modales d'action */}

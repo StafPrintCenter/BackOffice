@@ -1,0 +1,1 @@
+export { studentTableColumns } from "./TableColumns";

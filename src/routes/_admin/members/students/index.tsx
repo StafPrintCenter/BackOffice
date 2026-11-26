@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { PageHeader, DataTable, UserAvatar } from "@/components/site";
-import { useAdminStudentsList } from "@/stores/useStudentsStore";
+import { DataTable, PageHeader } from "@/components/site";
+import { studentTableColumns } from "@/components/pages/members/students/home";
 import type { APIAdminStudentListItem } from "@/data/students";
 import { SITE } from "@/data/site";
+import { useAdminStudentsList } from "@/stores/useStudentsStore";
 
 export const Route = createFileRoute("/_admin/members/students/")({
   head: () => ({
@@ -18,63 +19,14 @@ function AdminStudents() {
   return (
     <>
       <PageHeader title="Apprenants" description="Consultez et modérez les comptes apprenants." />
-
       <DataTable<APIAdminStudentListItem>
         data={items}
         isLoading={isLoading}
         searchKeys={["fullname", "email", "occupation"]}
-        onView={(r) => navigate({ to: "/members/students/$id", params: { id: r.id } })}
-        columns={[
-          {
-            key: "fullname",
-            label: "Apprenant",
-            render: (r) => (
-              <div className="flex items-center gap-3">
-                <UserAvatar name={r.fullname} photo={r.photo} className="size-10 shrink-0" imageClassName="object-cover" />
-                <div>
-                  <div className="font-medium">{r.fullname}</div>
-                  <div className="text-xs text-muted-foreground">{r.email}</div>
-                </div>
-              </div>
-            ),
-          },
-          { key: "phone", label: "Téléphone", render: (r) => <span className="text-xs">{r.phone || "-"}</span> },
-          {
-            key: "birthDate",
-            label: "Date de naissance",
-            render: (r) => <span className="text-xs">{r.birthDate || "-"
-            }</span>
-          },
-          {
-            key: "isBlocked",
-            label: "Statut",
-            render: (r) => (
-              <span
-                className={
-                  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium " +
-                  (r.isBlocked
-                    ? "bg-rose-500/10 text-rose-600 border-rose-500/20"
-                    : r.isActive
-                      ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-                      : "bg-muted text-muted-foreground border-border")
-                }
-              >
-                {r.isBlocked ? "Bloqué" : r.isActive ? "Actif" : "Inactif"}
-              </span>
-            ),
-          },
-          {
-            key: "createdAt",
-            label: "Inscrit le",
-            render: (r) => (
-              <span className="text-xs text-muted-foreground">
-                {new Date(r.createdAt.replace("Z", "")).toLocaleString("fr-FR", {
-                  dateStyle: "short", timeStyle: "short",
-                })}
-              </span>
-            ),
-          },
-        ]}
+        onView={(student) =>
+          navigate({ to: "/members/students/$id", params: { id: student.id } })
+        }
+        columns={studentTableColumns}
       />
     </>
   );

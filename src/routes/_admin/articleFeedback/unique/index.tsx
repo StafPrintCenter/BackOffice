@@ -1,11 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Folders } from "lucide-react";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminArticleFeedbacksList, useDeleteAdminArticleFeedback } from "@/stores/useArticleFeedbackStore";
 import type { APIAdminArticleFeedback } from "@/data/articleFeedback";
 import { SITE } from "@/data/site";
-import { FeedbackUniqueShortcut, getFeedbackUniqueColumns } from "@/components/pages/articleFeedback/unique/home";
+import { getFeedbackUniqueColumns } from "@/components/pages/articleFeedback/unique/home";
 
 export const Route = createFileRoute("/_admin/articleFeedback/unique/")({
   head: () => ({
@@ -29,9 +31,14 @@ function AdminArticleFeedback() {
       <PageHeader
         title="Retours sur articles"
         description="Votes et commentaires laissés par les visiteurs sur les articles de la documentation."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/articleFeedback/group" })}>
+              <Folders className="h-4 w-4" /> Feedbacks groupés
+            </Button>
+          </div>
+        }
       />
-
-      <FeedbackUniqueShortcut />
 
       <DataTable<APIAdminArticleFeedback>
         data={items}

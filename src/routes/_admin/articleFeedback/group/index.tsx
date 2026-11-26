@@ -1,9 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { Sticker } from "lucide-react";
 import { PageHeader, DataTable } from "@/components/site";
 import { useAdminArticleFeedbackGroupsList } from "@/stores/useArticleFeedbackStore";
 import type { APIAdminArticleFeedbackGroup } from "@/data/articleFeedback";
 import { SITE } from "@/data/site";
-import { FeedbackGroupShortcut, getFeedbackGroupColumns } from "@/components/pages/articleFeedback/group/home";
+import { getFeedbackGroupColumns } from "@/components/pages/articleFeedback/group/home";
 
 export const Route = createFileRoute("/_admin/articleFeedback/group/")({
   head: () => ({
@@ -28,9 +30,14 @@ function AdminArticleFeedbackGroups() {
       <PageHeader
         title="Retours groupés par article"
         description="Score de satisfaction agrégé pour chaque article de la documentation."
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => navigate({ to: "/articleFeedback/group" })}>
+              <Sticker className="h-4 w-4" /> Feedbacks uniques
+            </Button>
+          </div>
+        }
       />
-
-      <FeedbackGroupShortcut />
 
       <DataTable<FeedbackGroupRow>
         data={rows}

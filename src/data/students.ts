@@ -1,7 +1,8 @@
 import type { StudentTrainingEnrollment } from "@/data/trainingEnrollments";
 import type { MemberSecuritySummary } from "@/data/memberSecurity";
+import type { MemberActivityFields } from "@/data/memberActivity";
 
-export type APIAdminStudentListItem = {
+export type APIAdminStudentListItem = MemberActivityFields & {
   id: string;
   firstName: string;
   lastName: string;

@@ -1,8 +1,9 @@
 import type { MemberSecuritySummary } from "@/data/memberSecurity";
+import type { MemberActivityFields } from "@/data/memberActivity";
 
 export type AdminLevel = "default" | "super_admin" | "editor";
 
-export type APIAdminAdminListItem = {
+export type APIAdminAdminListItem = MemberActivityFields & {
   id: string;
   firstName: string;
   lastName: string;

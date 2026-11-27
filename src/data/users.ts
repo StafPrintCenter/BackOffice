@@ -1,6 +1,7 @@
 import type { MemberSecuritySummary } from "@/data/memberSecurity";
+import type { MemberActivityFields } from "@/data/memberActivity";
 
-export type APIAdminUserListItem = {
+export type APIAdminUserListItem = MemberActivityFields & {
   id: string;
   firstName: string;
   lastName: string;

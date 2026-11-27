@@ -1,5 +1,6 @@
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";
 import type { MemberSecuritySummary } from "@/data/memberSecurity";
+import type { MemberActivityFields } from "@/data/memberActivity";
 
 export type InstructorRegistrationSource = "invited" | "self_registered";
 
@@ -18,7 +19,7 @@ export type APIInstructorCategory = {
   slug?: string;
 };
 
-export type APIAdminInstructor = {
+export type APIAdminInstructor = MemberActivityFields & {
   id: string;
   firstName: string;
   lastName: string;

@@ -4,10 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { QUIZ_MODE_LABELS } from "@/data/quizzes";
-import type { QuizMode } from "@/data/quizzes";
 import type { QuizFormValues } from "./FormTypes";
 
 interface QuizSettingsDialogProps {
@@ -40,14 +38,7 @@ export function QuizSettingsDialog({
         <div className="space-y-4">
           <div>
             <Label>Mode</Label>
-            <Select value={form.mode} onValueChange={(mode) => setForm({ ...form, mode: mode as QuizMode })}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {Object.entries(QUIZ_MODE_LABELS).map(([key, label]) => (
-                  <SelectItem key={key} value={key}>{label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <p className="text-sm text-muted-foreground">{QUIZ_MODE_LABELS[form.mode]}</p>
           </div>
           {form.mode === "quiz" && (
             <div>

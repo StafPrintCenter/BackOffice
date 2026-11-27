@@ -1,6 +1,5 @@
 import type { StudentTrainingEnrollment } from "@/data/trainingEnrollments";
-import type { MemberSecuritySummary } from "@/data/memberSecurity";
-import type { MemberActivityFields } from "@/data/memberAction";
+import type { MemberSecuritySummary, MemberActivityFields } from "@/data/memberAction";
 
 export type APIAdminStudentListItem = MemberActivityFields & {
   id: string;

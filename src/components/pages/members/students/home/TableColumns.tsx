@@ -1,7 +1,7 @@
 import { UserAvatar } from "@/components/site";
 import type { Column } from "@/components/site/DataTable";
 import type { APIAdminStudentListItem } from "@/data/students";
-import { formatLastActivityAt } from "@/data/memberActivity";
+import { formatLastActivityAt } from "@/data/memberAction";
 
 export const StudentTableColumns: Column<APIAdminStudentListItem>[] = [
   {

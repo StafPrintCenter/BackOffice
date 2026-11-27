@@ -5,7 +5,7 @@ import {
   formatLastActivityAt,
   MEMBER_ACTIVITY_AUTH_METHOD_LABELS,
   type MemberActivityFields,
-} from "@/data/memberActivity";
+} from "@/data/memberAction";
 
 interface MemberLastActivityCardProps {
   activity: MemberActivityFields;

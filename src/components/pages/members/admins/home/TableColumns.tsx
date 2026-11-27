@@ -1,7 +1,7 @@
 import { UserAvatar } from "@/components/site";
 import type { Column } from "@/components/site/DataTable";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS, type APIAdminAdminListItem } from "@/data/admins";
-import { formatLastActivityAt } from "@/data/memberActivity";
+import { formatLastActivityAt } from "@/data/memberAction";
 
 export const adminTableColumns: Column<APIAdminAdminListItem>[] = [
   {

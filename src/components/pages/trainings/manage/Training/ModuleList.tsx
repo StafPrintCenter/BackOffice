@@ -22,7 +22,7 @@ interface TrainingModuleListProps {
   handlePublishModule: (module: APIAdminTrainingModule) => void;
   publishModulePending: boolean;
   setModuleToDelete: (module: APIAdminTrainingModule) => void;
-  openCreateLesson: (moduleId: string) => void;
+  openCreateLesson: (moduleId: string, nextSortOrder: number) => void;
   openEditLesson: (moduleId: string, lesson: APIAdminLesson) => void;
   handlePublishLesson: (lesson: APIAdminLesson) => void;
   setLessonToDelete: (data: { moduleId: string; lesson: APIAdminLesson }) => void;
@@ -131,7 +131,12 @@ export function TrainingModuleList({
                   <div className="flex items-center gap-2 text-sm font-semibold">
                     <ListChecks className="h-4 w-4 text-primary" /> Leçons
                   </div>
-                  <Button type="button" size="sm" variant="outline" onClick={() => openCreateLesson(module.id)}>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => openCreateLesson(module.id, module.lessonsCount)}
+                  >
                     <Plus className="mr-1 h-3.5 w-3.5" /> Ajouter une leçon
                   </Button>
                 </div>

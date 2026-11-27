@@ -68,7 +68,7 @@ export function RichTextEditor({
 
   return (
     <div className={`rounded-lg border border-input ${disabled ? "opacity-50" : ""}`}>
-      <div inert={disabled}>
+      <div inert={disabled} className="sticky top-0 z-30">
         <RichTextToolbar
           state={toolbarState}
           onBeforeAction={saveSelection}

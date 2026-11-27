@@ -32,6 +32,7 @@ const schema = z.object({
   duration_hours: z.number().min(0),
   level: z.enum(["Débutant", "Intermédiaire", "Avancé"]),
   price: z.number().min(0),
+  original_price: z.number().min(0).nullable().optional(),
   short: z.string().trim().min(2).max(300),
   audience: z.string().trim().min(1),
   objectives: z.array(z.string().trim().min(1)).min(1),
@@ -40,7 +41,6 @@ const schema = z.object({
   certification: z.string().trim().min(1),
   schedule: z.string().trim().min(1),
   max_seats: z.number().min(0).nullable().optional(),
-  registration_fee: z.number().min(0).nullable().optional(),
   access_min_ratio: z.number().min(0).max(1).nullable().optional(),
   registration_deadline: z.string().trim().optional(),
   start_date: z.string().trim().optional(),
@@ -59,7 +59,7 @@ const empty: FormValues = {
   title: "", theme_id: "", duration: "", duration_hours: 0, level: "Débutant", price: 0, short: "",
   audience: "", objectives: [""], prerequisites: [""], program: [{ title: "", items: [""] }],
   certification: "", schedule: "", max_seats: 0,
-  registration_fee: 0, access_min_ratio: 0, registration_deadline: "", start_date: "", end_date: "",
+  access_min_ratio: 0, registration_deadline: "", start_date: "", end_date: "",
   location: "", waiting_list_enabled: false, cover_color: "", status: "draft",
 };
 
@@ -279,8 +279,9 @@ function AdminTrainings() {
                 <Input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} />
               </div>
               <div>
-                <Label>Frais d'inscription (FCFA)</Label>
-                <Input type="number" min={0} value={form.registration_fee ?? 0} onChange={(e) => setForm({ ...form, registration_fee: Number(e.target.value) })} />
+                <Label>Prix original (FCFA)</Label>
+                <Input type="number" min={0} value={form.original_price ?? ""} onChange={(e) => setForm({ ...form, original_price: e.target.value === "" ? undefined : Number(e.target.value) })} />
+                {errors.original_price && <p className="text-xs text-destructive mt-1">{errors.original_price}</p>}
               </div>
               <div>
                 <Label>Nombre de places max (0 = Illimité)</Label>

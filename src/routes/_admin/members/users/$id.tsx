@@ -108,7 +108,12 @@ function UserDetail() {
       <div className="max-w-3xl space-y-6">
         <UserStatusBanners user={user} />
         <UserProfileCard user={user} />
-        <MemberSecurityCard security={user.security} />
+        <MemberSecurityCard
+          security={user.security}
+          actor="user"
+          memberId={user.id}
+          memberName={user.fullname}
+        />
         <MemberLastActivityCard activity={user} />
       </div>
 

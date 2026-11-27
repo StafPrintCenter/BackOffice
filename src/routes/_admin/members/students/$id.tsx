@@ -120,7 +120,12 @@ function StudentDetail() {
       <div className="max-w-3xl space-y-6">
         <StudentStatusBanners student={student} />
         <StudentProfileCard student={student} />
-        <MemberSecurityCard security={student.security} />
+        <MemberSecurityCard
+          security={student.security}
+          actor="student"
+          memberId={student.id}
+          memberName={student.fullname}
+        />
         <MemberLastActivityCard activity={student} />
         <StudentTrainingsSection trainings={student.trainings ?? []} />
       </div>

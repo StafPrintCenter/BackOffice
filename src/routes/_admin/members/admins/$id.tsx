@@ -137,7 +137,12 @@ function AdminDetail() {
       <div className="max-w-3xl space-y-6">
         <AdminStatusBanners admin={admin} isSelf={isSelf} />
         <AdminProfileCard admin={admin} />
-        <MemberSecurityCard security={admin.security} />
+        <MemberSecurityCard
+          security={admin.security}
+          actor="admin"
+          memberId={admin.id}
+          memberName={admin.fullname}
+        />
         <MemberLastActivityCard activity={admin} />
       </div>
 

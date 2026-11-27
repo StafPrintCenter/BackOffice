@@ -1,6 +1,7 @@
 import { Globe, Monitor, Smartphone, Tablet, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import type { APIAdminSession } from "@/data/security-session";
 
 const DEVICE_ICONS = { desktop: Monitor, mobile: Smartphone, tablet: Tablet } as const;
@@ -26,9 +27,19 @@ interface SessionCardProps {
   session: APIAdminSession;
   onRevoke: (session: APIAdminSession) => void;
   disabled?: boolean;
+  selectable?: boolean;
+  selected?: boolean;
+  onSelect?: (session: APIAdminSession, selected: boolean) => void;
 }
 
-export function SessionCard({ session, onRevoke, disabled }: SessionCardProps) {
+export function SessionCard({
+  session,
+  onRevoke,
+  disabled,
+  selectable = false,
+  selected = false,
+  onSelect,
+}: SessionCardProps) {
   const Icon = DEVICE_ICONS[session.deviceType as keyof typeof DEVICE_ICONS] ?? Globe;
 
   return (
@@ -38,6 +49,14 @@ export function SessionCard({ session, onRevoke, disabled }: SessionCardProps) {
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex items-start gap-3">
+          {selectable && (
+            <Checkbox
+              checked={selected}
+              disabled={disabled || session.isCurrent}
+              aria-label={`Sélectionner la session ${session.deviceName}`}
+              onCheckedChange={(checked) => onSelect?.(session, checked === true)}
+            />
+          )}
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-muted text-primary">
             <Icon className="h-5 w-5" />
           </div>

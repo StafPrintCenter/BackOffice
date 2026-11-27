@@ -19,6 +19,17 @@ export interface APIAdminSessionsResponse {
   total: number;
 }
 
+export type AdminMemberActor = "admin" | "instructor" | "student" | "user";
+
+export interface APIAdminMemberSessionsResponse extends APIAdminSessionsResponse {
+  meta: {
+    currentPage: number;
+    lastPage: number;
+    perPage: number;
+    total: number;
+  };
+}
+
 export interface APIAdminSessionMessage {
   message: string;
 }

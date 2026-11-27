@@ -192,7 +192,12 @@ function InstructorDetail() {
       <div className="max-w-3xl space-y-6">
         <InstructorStatusBanners instructor={instructor} />
         <InstructorProfileCard instructor={instructor} />
-        <MemberSecurityCard security={instructor.security} />
+        <MemberSecurityCard
+          security={instructor.security}
+          actor="instructor"
+          memberId={instructor.id}
+          memberName={instructor.name}
+        />
         <MemberLastActivityCard activity={instructor} />
         <InstructorTrainingAssignments
           instructor={instructor}

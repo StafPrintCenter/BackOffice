@@ -40,8 +40,8 @@ export function TrainingDetailEditForm({ form, setForm, themes }: Props) {
         <Field label="Durée (libellé)"><Input value={form.duration} onChange={(e) => set("duration", e.target.value)} /></Field>
         <Field label="Durée (heures)"><Input type="number" value={form.duration_hours} onChange={(e) => set("duration_hours", Number(e.target.value))} /></Field>
         <Field label="Prix (FCFA)"><Input type="number" value={form.price} onChange={(e) => set("price", Number(e.target.value))} /></Field>
+        <Field label="Prix original (FCFA)"><Input type="number" min={0} value={form.original_price ?? ""} onChange={(e) => set("original_price", e.target.value === "" ? undefined : Number(e.target.value))} /></Field>
         <Field label="Places Max (0 = illimité)"><Input type="number" value={form.max_seats ?? 0} onChange={(e) => set("max_seats", Number(e.target.value))} /></Field>
-        <Field label="Frais d'inscription (FCFA)"><Input type="number" min={0} value={form.registration_fee ?? 0} onChange={(e) => set("registration_fee", Number(e.target.value))} /></Field>
         <Field label="Ratio d'accès min. (0 à 1)"><Input type="number" min={0} max={1} step={0.05} value={form.access_min_ratio ?? 0} onChange={(e) => set("access_min_ratio", Number(e.target.value))} /></Field>
         <Field label="Statut">
           <Select value={form.status ?? "draft"} onValueChange={(v) => set("status", v as TrainingStatus)}>

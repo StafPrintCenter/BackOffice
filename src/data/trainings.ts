@@ -22,7 +22,8 @@ export type APIAdminTrainingListItem = {
   objectives: string[];
   status: TrainingStatus;
   publishedAt?: string | null;
-  registrationFee?: number | null;
+  originalPrice?: number | null;
+  discountPercentage: number;
   accessMinRatio?: number | null;
   registrationDeadline?: string | null;
   startDate?: string | null;
@@ -51,6 +52,7 @@ export interface AdminTrainingPayload {
   duration_hours: number;
   level: TrainingLevel;
   price: number;
+  original_price?: number | null;
   short: string;
   audience: string;
   objectives: string[];
@@ -59,7 +61,6 @@ export interface AdminTrainingPayload {
   certification: string;
   schedule: string;
   max_seats?: number | null;
-  registration_fee?: number | null;
   access_min_ratio?: number | null;
   registration_deadline?: string;
   start_date?: string;
@@ -143,7 +144,7 @@ export function getTrainingStatusLabel(status: TrainingStatus): string {
 }
 
 /**
- * Nettoie un AdminTrainingPayload avant envoi : convertit les chaînes vides (dates, location, cover_color) et les 0 "non renseignés" (registration_fee, access_min_ratio) en `undefined` pour que buildFormData les omette, plutôt que d'envoyer une valeur vide sur un champ `nullable|date` côté Laravel.
+ * Nettoie un AdminTrainingPayload avant envoi : convertit les chaînes vides et les 0 non renseignés en `undefined` pour que buildFormData omette ces champs.
  */
 export function sanitizeTrainingPayload(payload: AdminTrainingPayload): AdminTrainingPayload {
   return {
@@ -153,7 +154,7 @@ export function sanitizeTrainingPayload(payload: AdminTrainingPayload): AdminTra
     end_date: payload.end_date || undefined,
     location: payload.location || undefined,
     cover_color: payload.cover_color || undefined,
-    registration_fee: payload.registration_fee || undefined,
+    original_price: payload.original_price || undefined,
     access_min_ratio: payload.access_min_ratio || undefined,
   };
 }

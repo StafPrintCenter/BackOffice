@@ -6,6 +6,7 @@ import { Plus, Trash2, UserRoundPlus, ClipboardClock, Wallet, Speech } from "luc
 import { PageHeader, ConfirmDelete } from "@/components/site";
 import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { DataTable } from "@/components/site/DataTable";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -107,12 +108,12 @@ function AdminTrainings() {
     if (dialog.row) {
       updateMutation.mutate({ id: dialog.row.id, payload }, {
         onSuccess: () => { toast.success("Formation modifiée"); setDialog({ open: false }); },
-        onError: () => toast.error("Erreur lors de la modification"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
       });
     } else {
       createMutation.mutate(payload, {
         onSuccess: () => { toast.success("Formation créée"); setDialog({ open: false }); },
-        onError: () => toast.error("Erreur lors de la création"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création")),
       });
     }
   };
@@ -449,7 +450,7 @@ function AdminTrainings() {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
             onSuccess: () => { toast.success("Formation supprimée"); setToDelete(null); },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${toDelete?.title}" ?`}

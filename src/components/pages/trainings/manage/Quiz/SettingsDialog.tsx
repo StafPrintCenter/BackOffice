@@ -45,7 +45,7 @@ export function QuizSettingsDialog({
               <Label>Durée limite (secondes)</Label>
               <Input
                 type="number"
-                min={1}
+                min={10}
                 value={form.time_limit_sec}
                 onChange={(event) => setForm({ ...form, time_limit_sec: event.target.value })}
               />
@@ -73,15 +73,15 @@ export function QuizSettingsDialog({
               />
             </div>
           </div>
-          {form.mode === "quiz" && (
-            <div className="flex items-center gap-3">
-              <Label>Soumission auto à la fin du temps</Label>
-              <Switch
-                checked={form.auto_submit_on_timeout}
-                onCheckedChange={(autoSubmit) => setForm({ ...form, auto_submit_on_timeout: autoSubmit })}
-              />
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            <Label>
+              {form.mode === "quiz" ? "Soumission auto à la fin du temps" : "Soumission automatique"}
+            </Label>
+            <Switch
+              checked={form.auto_submit_on_timeout}
+              onCheckedChange={(autoSubmit) => setForm({ ...form, auto_submit_on_timeout: autoSubmit })}
+            />
+          </div>
         </div>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Annuler</Button>

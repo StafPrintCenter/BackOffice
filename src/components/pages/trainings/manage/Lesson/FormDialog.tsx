@@ -25,12 +25,12 @@ export const EMPTY_LESSON_FORM: LessonFormValues = {
   title: "",
   kind: "video",
   sort_order: "0",
-  duration_minutes: "",
+  duration_minutes: "15",
   content: "",
   video_url: "",
   chapters: [""],
   brief: "",
-  is_mandatory: false,
+  is_mandatory: true,
 };
 
 export const LESSON_FORM_KINDS: Record<string, readonly LessonKind[]> = {

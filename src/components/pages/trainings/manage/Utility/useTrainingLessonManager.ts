@@ -25,8 +25,8 @@ export function useTrainingLessonManager() {
     );
   };
 
-  const openCreate = (moduleId: string) => {
-    setForm({ ...EMPTY_LESSON_FORM, sort_order: "0" });
+  const openCreate = (moduleId: string, nextSortOrder: number) => {
+    setForm({ ...EMPTY_LESSON_FORM, sort_order: String(nextSortOrder) });
     setErrors({});
     setDialog({ open: true, moduleId });
   };

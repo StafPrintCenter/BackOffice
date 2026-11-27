@@ -21,7 +21,7 @@ export function quizFormValuesForMode(mode: QuizMode): QuizFormValues {
     ...EMPTY_QUIZ_FORM,
     mode,
     time_limit_sec: mode === "quiz" ? "600" : "",
-    pass_score: mode === "exercise" ? "70" : "50",
+    pass_score: mode === "exercise" ? "70" : "80",
     max_attempts: mode === "exercise" ? "5" : "3",
     auto_submit_on_timeout: mode === "quiz",
   };

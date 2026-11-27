@@ -1,6 +1,7 @@
 import { UserAvatar } from "@/components/site";
 import type { Column } from "@/components/site/DataTable";
 import type { APIAdminInstructor } from "@/data/instructors";
+import { formatLastActivityAt } from "@/data/memberActivity";
 
 function getStatusLabel(instructor: APIAdminInstructor) {
   if (instructor.isBlocked) return "Bloqué";
@@ -58,6 +59,15 @@ export const InstructorTableColumns: Column<APIAdminInstructor>[] = [
         )}`}
       >
         {getStatusLabel(instructor)}
+      </span>
+    ),
+  },
+  {
+    key: "lastActivityAt",
+    label: "Dernière activité",
+    render: (instructor) => (
+      <span className="text-xs text-muted-foreground">
+        {formatLastActivityAt(instructor.lastActivityAt)}
       </span>
     ),
   },

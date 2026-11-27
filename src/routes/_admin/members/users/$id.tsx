@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
+import { MemberLastActivityCard } from "@/components/pages/members/MemberLastActivityCard";
 import {
   UserActionDialogs,
   UserDetailHeader,
@@ -108,6 +109,7 @@ function UserDetail() {
         <UserStatusBanners user={user} />
         <UserProfileCard user={user} />
         <MemberSecurityCard security={user.security} />
+        <MemberLastActivityCard activity={user} />
       </div>
 
       <UserActionDialogs

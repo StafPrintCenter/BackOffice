@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
+import { MemberLastActivityCard } from "@/components/pages/members/MemberLastActivityCard";
 import {
   InstructorAssignTrainingDialog,
   InstructorAssignmentRemovalDialog,
@@ -192,6 +193,7 @@ function InstructorDetail() {
         <InstructorStatusBanners instructor={instructor} />
         <InstructorProfileCard instructor={instructor} />
         <MemberSecurityCard security={instructor.security} />
+        <MemberLastActivityCard activity={instructor} />
         <InstructorTrainingAssignments
           instructor={instructor}
           isEligibleForAssignment={isEligibleForAssignment}

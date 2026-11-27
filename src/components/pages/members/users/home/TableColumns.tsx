@@ -1,6 +1,7 @@
 import { UserAvatar } from "@/components/site";
 import type { Column } from "@/components/site/DataTable";
 import type { APIAdminUserListItem } from "@/data/users";
+import { formatLastActivityAt } from "@/data/memberActivity";
 
 export const UserTableColumns: Column<APIAdminUserListItem>[] = [
   {
@@ -41,6 +42,15 @@ export const UserTableColumns: Column<APIAdminUserListItem>[] = [
         ].join(" ")}
       >
         {user.isBlocked ? "Bloqué" : user.isActive ? "Actif" : "Inactif"}
+      </span>
+    ),
+  },
+  {
+    key: "lastActivityAt",
+    label: "Dernière activité",
+    render: (user) => (
+      <span className="text-xs text-muted-foreground">
+        {formatLastActivityAt(user.lastActivityAt)}
       </span>
     ),
   },

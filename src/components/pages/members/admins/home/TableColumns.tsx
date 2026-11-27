@@ -1,6 +1,7 @@
 import { UserAvatar } from "@/components/site";
 import type { Column } from "@/components/site/DataTable";
 import { ADMIN_LEVEL_BADGES, ADMIN_LEVEL_LABELS, type APIAdminAdminListItem } from "@/data/admins";
+import { formatLastActivityAt } from "@/data/memberActivity";
 
 export const adminTableColumns: Column<APIAdminAdminListItem>[] = [
   {
@@ -56,6 +57,15 @@ export const adminTableColumns: Column<APIAdminAdminListItem>[] = [
             : admin.isActive
               ? "Actif"
               : "Inactif"}
+      </span>
+    ),
+  },
+  {
+    key: "lastActivityAt",
+    label: "Dernière activité",
+    render: (admin) => (
+      <span className="text-xs text-muted-foreground">
+        {formatLastActivityAt(admin.lastActivityAt)}
       </span>
     ),
   },

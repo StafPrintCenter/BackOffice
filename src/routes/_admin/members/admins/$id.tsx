@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
+import { MemberLastActivityCard } from "@/components/pages/members/MemberLastActivityCard";
 import {
   AdminActionDialogs,
   AdminDetailHeader,
@@ -137,6 +138,7 @@ function AdminDetail() {
         <AdminStatusBanners admin={admin} isSelf={isSelf} />
         <AdminProfileCard admin={admin} />
         <MemberSecurityCard security={admin.security} />
+        <MemberLastActivityCard activity={admin} />
       </div>
 
       <AdminActionDialogs

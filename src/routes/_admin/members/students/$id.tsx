@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
+import { MemberLastActivityCard } from "@/components/pages/members/MemberLastActivityCard";
 import {
   StudentActionDialogs,
   StudentDetailHeader,
@@ -120,6 +121,7 @@ function StudentDetail() {
         <StudentStatusBanners student={student} />
         <StudentProfileCard student={student} />
         <MemberSecurityCard security={student.security} />
+        <MemberLastActivityCard activity={student} />
         <StudentTrainingsSection trainings={student.trainings ?? []} />
       </div>
 

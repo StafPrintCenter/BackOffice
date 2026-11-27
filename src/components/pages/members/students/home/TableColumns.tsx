@@ -1,6 +1,7 @@
 import { UserAvatar } from "@/components/site";
 import type { Column } from "@/components/site/DataTable";
 import type { APIAdminStudentListItem } from "@/data/students";
+import { formatLastActivityAt } from "@/data/memberActivity";
 
 export const StudentTableColumns: Column<APIAdminStudentListItem>[] = [
   {
@@ -50,6 +51,15 @@ export const StudentTableColumns: Column<APIAdminStudentListItem>[] = [
         ].join(" ")}
       >
         {student.isBlocked ? "Bloqué" : student.isActive ? "Actif" : "Inactif"}
+      </span>
+    ),
+  },
+  {
+    key: "lastActivityAt",
+    label: "Dernière activité",
+    render: (student) => (
+      <span className="text-xs text-muted-foreground">
+        {formatLastActivityAt(student.lastActivityAt)}
       </span>
     ),
   },

@@ -142,6 +142,7 @@ export function LessonItem({
               {(lesson.kind === "quiz" || lesson.kind === "exercise") && (
                 <QuizManager
                   lessonId={lesson.id}
+                  mode={lesson.kind === "exercise" ? "exercise" : "quiz"}
                   quizId={sessionQuizId}
                   onQuizCreated={setSessionQuizId}
                   openReview={openReview}

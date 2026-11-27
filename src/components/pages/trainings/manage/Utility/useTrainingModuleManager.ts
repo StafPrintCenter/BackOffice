@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { AdminTrainingModulePayload, APIAdminTrainingModule } from "@/data/trainingModules";
 import { useCreateAdminTrainingModule, useDeleteAdminTrainingModule, usePublishAdminTrainingModule, useUpdateAdminTrainingModule } from "@/stores/useTrainingModulesStore";
 import type { ModuleDialogState } from "../Training/ManageDialogs";
@@ -60,7 +61,7 @@ export function useTrainingModuleManager(trainingId: string, moduleCount: number
         { moduleId: dialog.row.id, payload: form },
         {
           onSuccess: () => { toast.success("Module modifié"); setDialog({ open: false }); },
-          onError: () => toast.error("Erreur lors de la modification du module"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification du module")),
         }
       );
     } else {
@@ -68,7 +69,7 @@ export function useTrainingModuleManager(trainingId: string, moduleCount: number
         { trainingId, payload: form },
         {
           onSuccess: () => { toast.success("Module créé"); setDialog({ open: false }); },
-          onError: () => toast.error("Erreur lors de la création du module"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création du module")),
         }
       );
     }
@@ -77,7 +78,7 @@ export function useTrainingModuleManager(trainingId: string, moduleCount: number
   const publish = (module: APIAdminTrainingModule) => {
     publishMutation.mutate(module.id, {
       onSuccess: () => toast.success("Module publié"),
-      onError: () => toast.error("Erreur lors de la publication du module"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la publication du module")),
     });
   };
 
@@ -91,7 +92,7 @@ export function useTrainingModuleManager(trainingId: string, moduleCount: number
           setExpandedIds((current) => current.filter((id) => id !== moduleToDelete.id));
           setModuleToDelete(null);
         },
-        onError: () => toast.error("Erreur lors de la suppression du module"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression du module")),
       }
     );
   };

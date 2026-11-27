@@ -12,11 +12,12 @@ export const STATUS_OPTIONS: { value: TrainingStatus; label: string }[] = [
 export function toPayload(t: TrainingDetailItem): AdminTrainingPayload {
   return {
     title: t.title, theme_id: t.themeId, duration: t.duration, duration_hours: t.durationHours,
-    level: t.level, price: t.price, max_seats: t.maxSeats ?? 0, short: t.short, audience: t.audience,
+    level: t.level, price: t.price, original_price: t.originalPrice ?? t.price,
+    max_seats: t.maxSeats ?? 0, short: t.short, audience: t.audience,
     objectives: [...t.objectives], prerequisites: [...t.prerequisites],
     program: t.program.map((m) => ({ title: m.title, items: [...m.items] })),
     certification: t.certification, schedule: t.schedule,
-    registration_fee: t.registrationFee ?? 0, access_min_ratio: t.accessMinRatio ?? 0,
+    access_min_ratio: t.accessMinRatio ?? 0,
     registration_deadline: t.registrationDeadline ?? "", start_date: t.startDate ?? "", end_date: t.endDate ?? "",
     location: t.location ?? "", waiting_list_enabled: t.waitingListEnabled ?? false,
     cover_color: t.coverColor ?? "", status: t.status ?? "draft",

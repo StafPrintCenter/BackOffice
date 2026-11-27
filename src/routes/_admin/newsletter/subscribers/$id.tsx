@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Trash2, Ban, RotateCcw, Loader2, Mail, User, Calendar, ShieldAlert, FileText, Tag, Clock, UserX, UserCheck, } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -77,7 +78,7 @@ function SubscriberDetail() {
           toast.success("Abonné bloqué");
           setBlockDialogOpen(false);
         },
-        onError: () => toast.error("Erreur lors du blocage"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du blocage")),
       }
     );
   };
@@ -85,7 +86,7 @@ function SubscriberDetail() {
   const handleReactivate = () => {
     reactivateMutation.mutate(subscriber.id, {
       onSuccess: () => toast.success("Abonné réactivé"),
-      onError: () => toast.error("Erreur lors de la réactivation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la réactivation")),
     });
   };
 
@@ -333,7 +334,7 @@ function SubscriberDetail() {
               toast.success("Abonné supprimé");
               navigate({ to: "/newsletter/subscribers" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer l'abonné "${subscriber.email}" ?`}

@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { ArrowLeft, Loader2, Mail, Phone, GraduationCap, Calendar, UserCheck, Clock, Pencil, Save, X, MessageSquare, CheckCircle2, XCircle, User, ShieldCheck, Sparkles, Trash2, } from "lucide-react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -60,7 +61,7 @@ function TrainingRegistrationDetail() {
           toast.success("Statut mis à jour avec succès");
           setIsEditing(false);
         },
-        onError: () => toast.error("Erreur lors de la mise à jour"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la mise à jour")),
       }
     );
   };
@@ -316,7 +317,7 @@ function TrainingRegistrationDetail() {
               toast.success("Inscription supprimée");
               navigate({ to: "/trainings/registrations" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer l'inscription de "${reg?.firstName} ${reg?.lastName}" ?`}

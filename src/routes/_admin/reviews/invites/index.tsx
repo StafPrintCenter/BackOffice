@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { z } from "zod";
 import { Copy, Check, MessageSquareText, FileText } from "lucide-react";
 import { PageHeader, DataTable } from "@/components/site";
@@ -97,7 +98,7 @@ function AdminReviewInvites() {
         toast.success("Invitation créée");
         setOpen(false);
       },
-      onError: () => toast.error("Erreur lors de la création de l'invitation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création de l'invitation")),
     });
   };
 

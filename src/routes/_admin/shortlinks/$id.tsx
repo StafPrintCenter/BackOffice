@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, MousePointerClick, Globe, MonitorSmartphone, Copy, Check } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
 import { ConfirmDelete } from "@/components/site";
@@ -80,7 +81,7 @@ function ShortLinkDetail() {
     if (!form) return;
     updateMutation.mutate({ id: link.id, payload: form }, {
       onSuccess: () => { toast.success("Lien modifié"); setIsEditing(false); },
-      onError: () => toast.error("Erreur lors de la modification"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
     });
   };
 
@@ -369,7 +370,7 @@ function ShortLinkDetail() {
               toast.success("Lien supprimé");
               navigate({ to: "/shortlinks" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${link.alias}" ?`}

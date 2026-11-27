@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Star, Quote, User, Briefcase, Calendar, Sparkles, Layers } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -73,7 +74,7 @@ function TestimonialDetail() {
   const handleSave = () => {
     updateMutation.mutate({ id: testimonial.id, payload: form }, {
       onSuccess: () => { toast.success("Témoignage modifié"); setIsEditing(false); },
-      onError: () => toast.error("Erreur lors de la modification"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
     });
   };
 
@@ -292,7 +293,7 @@ function TestimonialDetail() {
               toast.success("Témoignage supprimé");
               navigate({ to: "/testimonials" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${testimonial.name}" ?`}

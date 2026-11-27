@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Loader2, Ban, Copy, Check, Send, User, Clock, FileText, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdminReviewInvitationDetail, useRevokeAdminReviewInvitation, useResendAdminReviewInvitation } from "@/stores/useReviewInvitationsStore";
@@ -74,14 +75,14 @@ function InvitationDetail() {
   const handleRevoke = () => {
     revokeMutation.mutate(invitation.id, {
       onSuccess: () => toast.success("Invitation révoquée"),
-      onError: () => toast.error("Erreur lors de la révocation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la révocation")),
     });
   };
 
   const handleResend = () => {
     resendMutation.mutate(invitation.id, {
       onSuccess: () => toast.success("Invitation renvoyée"),
-      onError: () => toast.error("Erreur lors du renvoi de l'invitation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du renvoi de l'invitation")),
     });
   };
 

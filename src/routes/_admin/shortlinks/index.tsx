@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { z } from "zod";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -85,13 +86,13 @@ function AdminShortLinks() {
         { id: dialog.row.id, payload: parsed.data as AdminShortLinkPayload },
         {
           onSuccess: () => { toast.success("Lien modifié"); setDialog({ open: false }); },
-          onError: () => toast.error("Erreur lors de la modification"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
         }
       );
     } else {
       createMutation.mutate(parsed.data as AdminShortLinkPayload, {
         onSuccess: () => { toast.success("Lien créé"); setDialog({ open: false }); },
-        onError: () => toast.error("Erreur lors de la création"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création")),
       });
     }
   };
@@ -216,7 +217,7 @@ function AdminShortLinks() {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
             onSuccess: () => { toast.success("Lien supprimé"); setToDelete(null); },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${toDelete?.alias}" ?`}

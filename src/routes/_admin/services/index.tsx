@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { z } from "zod";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -115,7 +116,7 @@ function AdminServices() {
             toast.success("Service modifié");
             setDialog({ open: false });
           },
-          onError: () => toast.error("Erreur lors de la modification"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
         }
       );
     } else {
@@ -124,7 +125,7 @@ function AdminServices() {
           toast.success("Service créé");
           setDialog({ open: false });
         },
-        onError: () => toast.error("Erreur lors de la création"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création")),
       });
     }
   };
@@ -269,7 +270,7 @@ function AdminServices() {
               toast.success("Service supprimé");
               setToDelete(null);
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${toDelete?.title}" ?`}

@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
@@ -78,7 +79,7 @@ function AdminDetail() {
           toast.success("Alerte envoyée avec succès");
           setAlertOpen(false);
         },
-        onError: () => toast.error("Erreur lors de l'envoi de l'alerte"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'envoi de l'alerte")),
       }
     );
   };
@@ -91,7 +92,7 @@ function AdminDetail() {
           toast.success("Administrateur bloqué");
           setBlockOpen(false);
         },
-        onError: () => toast.error("Erreur lors du blocage"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du blocage")),
       }
     );
   };
@@ -99,14 +100,14 @@ function AdminDetail() {
   const handleReactivate = () => {
     reactivateMutation.mutate(admin.id, {
       onSuccess: () => toast.success("Administrateur réactivé"),
-      onError: () => toast.error("Erreur lors de la réactivation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la réactivation")),
     });
   };
 
   const handleResendInvite = () => {
     resendInviteMutation.mutate(admin.id, {
       onSuccess: () => toast.success("Invitation renvoyée"),
-      onError: () => toast.error("Erreur lors du renvoi de l'invitation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du renvoi de l'invitation")),
     });
   };
 
@@ -116,7 +117,7 @@ function AdminDetail() {
         toast.success("Invitation révoquée");
         setRevokeInviteOpen(false);
       },
-      onError: () => toast.error("Erreur lors de la révocation de l'invitation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la révocation de l'invitation")),
     });
   };
 

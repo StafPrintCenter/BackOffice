@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ConfirmDelete } from "@/components/site";
 import { useAdminArticleFeedbackDetail, useDeleteAdminArticleFeedback, fetchAdminArticleFeedbackById } from "@/stores/useArticleFeedbackStore";
 import { SITE } from "@/data/site";
@@ -70,7 +71,7 @@ function ArticleFeedbackDetail() {
               toast.success("Retour supprimé");
               navigate({ to: "/articleFeedback/unique" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer le retour sur "${feedback.articleKey}" ?`}

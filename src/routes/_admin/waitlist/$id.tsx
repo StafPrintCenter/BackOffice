@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Loader2, Mail, Calendar, Layers, Copy, Check, Clock, ShieldAlert, Trash2 } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -200,7 +201,7 @@ function WaitlistEntryDetail() {
                 toast.success("Inscription supprimée");
                 navigate({ to: "/waitlist" });
               },
-              onError: () => toast.error("Erreur lors de la suppression"),
+              onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
             });
           }}
           title={`Supprimer "${entry.email}" ?`}

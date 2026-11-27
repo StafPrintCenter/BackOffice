@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
@@ -100,7 +101,7 @@ function InstructorDetail() {
           toast.success("Alerte envoyée avec succès");
           setAlertOpen(false);
         },
-        onError: () => toast.error("Erreur lors de l'envoi de l'alerte"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'envoi de l'alerte")),
       }
     );
   };
@@ -113,7 +114,7 @@ function InstructorDetail() {
           toast.success("Instructeur bloqué");
           setBlockOpen(false);
         },
-        onError: () => toast.error("Erreur lors du blocage"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du blocage")),
       }
     );
   };
@@ -121,28 +122,28 @@ function InstructorDetail() {
   const handleReactivate = () => {
     reactivateMutation.mutate(instructor.id, {
       onSuccess: () => toast.success("Instructeur réactivé"),
-      onError: () => toast.error("Erreur lors de la réactivation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la réactivation")),
     });
   };
 
   const handleApprove = () => {
     approveMutation.mutate(instructor.id, {
       onSuccess: () => toast.success("Inscription approuvée"),
-      onError: () => toast.error("Erreur lors de l'approbation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'approbation")),
     });
   };
 
   const handleResendInvite = () => {
     resendInviteMutation.mutate(instructor.id, {
       onSuccess: () => toast.success("Invitation renvoyée"),
-      onError: () => toast.error("Erreur lors du renvoi de l'invitation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du renvoi de l'invitation")),
     });
   };
 
   const handleRevokeInvite = () => {
     revokeInviteMutation.mutate(instructor.id, {
       onSuccess: () => toast.success("Invitation révoquée"),
-      onError: () => toast.error("Erreur lors de la révocation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la révocation")),
     });
   };
 
@@ -168,7 +169,7 @@ function InstructorDetail() {
         toast.success("Formation retirée");
         setAssignmentToRemove(null);
       },
-      onError: () => toast.error("Erreur lors du retrait"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du retrait")),
     });
   };
 

@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { z } from "zod";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -68,7 +69,7 @@ function AdminProjects() {
     }
     createMutation.mutate(parsed.data as AdminProjectPayload, {
       onSuccess: () => { toast.success("Projet créé"); setOpen(false); },
-      onError: () => toast.error("Erreur lors de la création"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création")),
     });
   };
 
@@ -181,7 +182,7 @@ function AdminProjects() {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
             onSuccess: () => { toast.success("Projet supprimé"); setToDelete(null); },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${toDelete?.title}" ?`}

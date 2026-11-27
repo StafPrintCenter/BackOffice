@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { Loader2, CheckCircle2, XCircle, Clock, Calendar, UserRoundPlus, GraduationCap, Search, ChevronLeft, ChevronRight, ShieldCheck, ShieldOff, ArrowUpDown, FolderKanban, ExternalLink, Timer, Award, FileQuestion, Wallet, Speech } from "lucide-react";
 import { PageHeader } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -80,7 +81,7 @@ function AdminContentReviews() {
           toast.success(dialog.decision === "approved" ? "Contenu approuvé" : "Contenu rejeté");
           setDialog({ open: false });
         },
-        onError: () => toast.error("Erreur lors de l'enregistrement de la décision"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'enregistrement de la décision")),
       }
     );
   };

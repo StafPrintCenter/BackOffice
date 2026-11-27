@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, TrendingUp, Key, Calendar, Layers, Hash } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -71,7 +72,7 @@ function StatDetail() {
   const handleSave = () => {
     updateMutation.mutate({ id: stat.id, payload: form }, {
       onSuccess: () => { toast.success("Statistique modifiée"); setIsEditing(false); },
-      onError: () => toast.error("Erreur lors de la modification"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
     });
   };
 
@@ -254,7 +255,7 @@ function StatDetail() {
               toast.success("Statistique supprimée");
               navigate({ to: "/stats" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${stat.label}" ?`}

@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminArticlesList, useDeleteAdminArticle, useAdminCategoriesList } from "@/stores";
 import type { APIAdminArticleListItem } from "@/data/articles";
@@ -59,7 +60,7 @@ function AdminArticles() {
               toast.success("Article supprimé");
               setToDelete(null);
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${toDelete?.title}" ?`}

@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -77,7 +78,7 @@ function EthicalReportDetail() {
           toast.success("Statut mis à jour");
           setIsEditing(false);
         },
-        onError: () => toast.error("Erreur lors de la mise à jour du statut"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la mise à jour du statut")),
       }
     );
   };

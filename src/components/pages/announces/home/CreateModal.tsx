@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -110,7 +111,7 @@ export function AnnouncementCreateModal({ open, onOpenChange }: AnnouncementCrea
         setErrors({});
         onOpenChange(false);
       },
-      onError: () => toast.error("Erreur lors de la création"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création")),
     });
   };
 

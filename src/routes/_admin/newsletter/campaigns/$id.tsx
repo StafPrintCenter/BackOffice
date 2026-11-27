@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, CalendarClock, Ban, Send, User, Users, Calendar } from "lucide-react";
 import { ConfirmDelete, RichTextEditor } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -102,7 +103,7 @@ function CampaignDetail() {
       },
     }, {
       onSuccess: () => { toast.success("Campagne modifiée"); setIsEditing(false); },
-      onError: () => toast.error("Erreur lors de la modification"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
     });
   };
 
@@ -122,21 +123,21 @@ function CampaignDetail() {
     if (!scheduledAt) return;
     scheduleMutation.mutate({ id: campaign.id, payload: { scheduled_at: new Date(scheduledAt).toISOString() } }, {
       onSuccess: () => { toast.success("Campagne programmée"); setScheduleDialogOpen(false); },
-      onError: () => toast.error("Erreur lors de la programmation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la programmation")),
     });
   };
 
   const handleCancelSchedule = () => {
     cancelScheduleMutation.mutate(campaign.id, {
       onSuccess: () => toast.success("Programmation annulée"),
-      onError: () => toast.error("Erreur lors de l'annulation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'annulation")),
     });
   };
 
   const handleSend = () => {
     sendMutation.mutate(campaign.id, {
       onSuccess: () => toast.success("Campagne envoyée"),
-      onError: () => toast.error("Erreur lors de l'envoi"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'envoi")),
     });
   };
 
@@ -338,7 +339,7 @@ function CampaignDetail() {
               toast.success("Campagne supprimée");
               navigate({ to: "/newsletter/campaigns" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer la campagne "${campaign.subject}" ?`}

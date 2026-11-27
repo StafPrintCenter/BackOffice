@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { Folders } from "lucide-react";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminArticleFeedbacksList, useDeleteAdminArticleFeedback } from "@/stores/useArticleFeedbackStore";
@@ -56,7 +57,7 @@ function AdminArticleFeedback() {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
             onSuccess: () => { toast.success("Retour supprimé"); setToDelete(null); },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer ce retour sur "${toDelete?.articleKey}" ?`}

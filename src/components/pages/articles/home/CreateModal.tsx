@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { z } from "zod";
 import { RichTextEditor } from "@/components/site";
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -67,7 +68,7 @@ export function ArticleCreateModal({ open, onOpenChange, categories }: ArticleCr
         toast.success("Article créé");
         onOpenChange(false);
       },
-      onError: () => toast.error("Erreur lors de la création"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création")),
     });
   };
 

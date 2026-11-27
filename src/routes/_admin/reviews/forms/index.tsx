@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { z } from "zod";
 import { Send, MessageSquareText, } from "lucide-react";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
@@ -69,7 +70,7 @@ function AdminReviewForms() {
     };
     createMutation.mutate(payload, {
       onSuccess: () => { toast.success("Formulaire créé en brouillon"); setOpen(false); },
-      onError: () => toast.error("Erreur lors de la création"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création")),
     });
   };
 
@@ -202,7 +203,7 @@ function AdminReviewForms() {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
             onSuccess: () => { toast.success("Formulaire supprimé"); setToDelete(null); },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${toDelete?.title}" ?`}

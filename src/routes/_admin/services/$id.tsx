@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Star as StarIcon, Wrench, Sparkles, Layers, Tag } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -82,7 +83,7 @@ function ServiceDetail() {
           toast.success("Service modifié");
           setIsEditing(false);
         },
-        onError: () => toast.error("Erreur lors de la modification"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
       }
     );
   };
@@ -320,7 +321,7 @@ function ServiceDetail() {
               toast.success("Service supprimé");
               navigate({ to: "/services" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${service.title}" ?`}

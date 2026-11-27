@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Globe, Lock, User, FolderCog, Calendar, Image as ImageIcon } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -85,7 +86,7 @@ function ProjectDetail() {
         toast.success("Projet mis à jour avec succès");
         setIsEditing(false);
       },
-      onError: () => toast.error("Erreur lors de la mise à jour"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la mise à jour")),
     });
   };
 
@@ -322,7 +323,7 @@ function ProjectDetail() {
               toast.success("Projet supprimé");
               navigate({ to: "/projects" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${project.title}" ?`}

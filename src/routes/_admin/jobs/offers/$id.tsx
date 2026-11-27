@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, CheckCircle, Briefcase, MapPin, Building2, Calendar, FileText, ListChecks, Settings2, Plus, Eye, EyeOff, Link2, Clock, CheckCircle2, GraduationCap, Users2, Laptop, ChevronRight, } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -125,7 +126,7 @@ function JobOfferDetail() {
       { id: offer.id, payload },
       {
         onSuccess: () => { toast.success("Offre modifiée"); setIsEditing(false); },
-        onError: () => toast.error("Erreur lors de la modification"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
       }
     );
   };
@@ -133,21 +134,21 @@ function JobOfferDetail() {
   const handlePublish = () => {
     publishMutation.mutate(offer.id, {
       onSuccess: () => toast.success("Offre publiée"),
-      onError: () => toast.error("Erreur lors de la publication"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la publication")),
     });
   };
 
   const handleDisable = () => {
     disableMutation.mutate(offer.id, {
       onSuccess: () => toast.success("Offre désactivée"),
-      onError: () => toast.error("Erreur lors de la désactivation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la désactivation")),
     });
   };
 
   const handleReactivate = () => {
     reactivateMutation.mutate(offer.id, {
       onSuccess: () => toast.success("Offre réactivée"),
-      onError: () => toast.error("Erreur lors de la réactivation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la réactivation")),
     });
   };
 
@@ -467,7 +468,7 @@ function JobOfferDetail() {
         onConfirm={() => {
           removeMutation.mutate(offer.id, {
             onSuccess: () => { toast.success("Offre supprimée"); navigate({ to: "/jobs/offers" }); },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${offer.title}" ?`}

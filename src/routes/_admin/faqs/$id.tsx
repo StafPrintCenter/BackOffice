@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, HelpCircle, Tag, Hash, Calendar, Layers } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -81,7 +82,7 @@ function FaqDetail() {
   const handleSave = () => {
     updateMutation.mutate({ id: faq.id, payload: form }, {
       onSuccess: () => { toast.success("FAQ modifiée"); setIsEditing(false); },
-      onError: () => toast.error("Erreur lors de la modification"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
     });
   };
 
@@ -261,7 +262,7 @@ function FaqDetail() {
               toast.success("FAQ supprimée");
               navigate({ to: "/faqs" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title="Supprimer cette FAQ ?"

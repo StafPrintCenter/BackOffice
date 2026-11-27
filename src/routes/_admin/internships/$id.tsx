@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Loader2, Mail, Phone, GraduationCap, Building2, Calendar, UserCheck, Clock, Pencil, Save, X, FileText, Download, CheckCircle2, XCircle, MessageCircleQuestion, Paperclip, Eye } from "lucide-react";
 import { FilePreviewModal } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -67,7 +68,7 @@ function InternshipRequestDetail() {
       { id, payload: form },
       {
         onSuccess: () => { toast.success("Demande mise à jour"); setIsEditing(false); },
-        onError: () => toast.error("Erreur lors de la mise à jour"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la mise à jour")),
       }
     );
   };
@@ -86,7 +87,7 @@ function InternshipRequestDetail() {
           setInfoOpen(false);
           setInfoMessage("");
         },
-        onError: () => toast.error("Erreur lors de l'envoi"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'envoi")),
       }
     );
   };
@@ -94,14 +95,14 @@ function InternshipRequestDetail() {
   const handleAccept = () => {
     acceptMutation.mutate(id, {
       onSuccess: () => toast.success("Demande acceptée"),
-      onError: () => toast.error("Erreur lors de l'acceptation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'acceptation")),
     });
   };
 
   const handleReject = () => {
     rejectMutation.mutate(id, {
       onSuccess: () => toast.success("Demande rejetée"),
-      onError: () => toast.error("Erreur lors du rejet"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du rejet")),
     });
   };
 

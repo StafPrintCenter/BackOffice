@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Pencil, Trash2, Save, X, Loader2, Rocket, Ban, Copy, BarChart3, CheckCircle, Plus, ArrowUp, ArrowDown, GripVertical, Mail, User, FolderOpen, Calendar, Eye, EyeOff, ChevronDown, ChevronUp, ListChecks, } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -188,7 +189,7 @@ function ReviewFormDetail() {
           toast.success("Formulaire modifié");
           setIsEditing(false);
         },
-        onError: () => toast.error("Erreur lors de la modification"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
       }
     );
   };
@@ -208,14 +209,14 @@ function ReviewFormDetail() {
   const handlePublish = () => {
     publishMutation.mutate(reviewForm.id, {
       onSuccess: () => toast.success(isDisabled ? "Formulaire réactivé" : "Formulaire publié"),
-      onError: () => toast.error("Erreur lors de la publication"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la publication")),
     });
   };
 
   const handleDisable = () => {
     disableMutation.mutate(reviewForm.id, {
       onSuccess: () => toast.success("Formulaire désactivé"),
-      onError: () => toast.error("Erreur lors de la désactivation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la désactivation")),
     });
   };
 
@@ -225,7 +226,7 @@ function ReviewFormDetail() {
         toast.success("Formulaire dupliqué");
         navigate({ to: "/reviews/forms/$id", params: { id: dup.id } });
       },
-      onError: () => toast.error("Erreur lors de la duplication"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la duplication")),
     });
   };
 
@@ -322,12 +323,12 @@ function ReviewFormDetail() {
     if (editingQuestion) {
       updateQuestionMutation.mutate({ questionId: editingQuestion.id, payload }, {
         onSuccess: () => { toast.success("Question modifiée"); setQuestionDialogOpen(false); },
-        onError: () => toast.error("Erreur lors de la modification de la question"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification de la question")),
       });
     } else {
       createQuestionMutation.mutate({ formId: reviewForm.id, payload }, {
         onSuccess: () => { toast.success("Question ajoutée"); setQuestionDialogOpen(false); },
-        onError: () => toast.error("Erreur lors de l'ajout de la question"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'ajout de la question")),
       });
     }
   };
@@ -342,7 +343,7 @@ function ReviewFormDetail() {
         formId: reviewForm.id,
         orderedItems: reordered.map((q, i) => ({ id: q.id, order: i })),
       },
-      { onError: () => toast.error("Erreur lors de la réorganisation") }
+      { onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la réorganisation")) }
     );
   };
 
@@ -741,7 +742,7 @@ function ReviewFormDetail() {
           if (!questionToDelete) return;
           deleteQuestionMutation.mutate(questionToDelete.id, {
             onSuccess: () => { toast.success("Question supprimée"); setQuestionToDelete(null); },
-            onError: () => toast.error("Erreur lors de la suppression de la question"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression de la question")),
           });
         }}
         title={`Supprimer la question "${questionToDelete?.title}" ?`}
@@ -756,7 +757,7 @@ function ReviewFormDetail() {
               toast.success("Formulaire supprimé");
               navigate({ to: "/reviews/forms" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${reviewForm.title}" ?`}

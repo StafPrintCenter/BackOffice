@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { Mail, Trash2, UserCheck, UserPlus } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -102,7 +103,7 @@ export function TrainingDetailInstructorsSection({ trainingId, mainColor }: { tr
           if (!toRemove) return;
           removeMutation.mutate({ trainingId, assignmentId: toRemove }, {
             onSuccess: () => { toast.success("Formateur retiré"); setToRemove(null); },
-            onError: () => toast.error("Erreur lors du retrait"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du retrait")),
           });
         }}
         title="Retirer ce formateur de la formation ?"

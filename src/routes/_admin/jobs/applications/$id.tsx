@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Loader2, Mail, Phone, Briefcase, GraduationCap, Calendar, UserCheck, Clock, Pencil, Save, X, FileText, Download, CheckCircle2, XCircle, Eye, Paperclip, } from "lucide-react";
 import { FilePreviewModal } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -64,7 +65,7 @@ function JobApplicationDetail() {
           toast.success("Candidature mise à jour");
           setIsEditing(false);
         },
-        onError: () => toast.error("Erreur lors de la mise à jour"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la mise à jour")),
       }
     );
   };
@@ -72,14 +73,14 @@ function JobApplicationDetail() {
   const handleAccept = () => {
     acceptMutation.mutate(id, {
       onSuccess: () => toast.success("Candidature acceptée"),
-      onError: () => toast.error("Erreur lors de l'acceptation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'acceptation")),
     });
   };
 
   const handleReject = () => {
     rejectMutation.mutate(id, {
       onSuccess: () => toast.success("Candidature rejetée"),
-      onError: () => toast.error("Erreur lors du rejet"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du rejet")),
     });
   };
 

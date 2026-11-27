@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { DataTable, PageHeader } from "@/components/site";
 import { AdminInviteDialog, adminTableColumns } from "@/components/pages/members/admins/home";
 import { useAdminAdminsList, useInviteAdminAdmin } from "@/stores/useAdminsStore";
@@ -26,7 +27,7 @@ function AdminAdmins() {
         toast.success("Invitation envoyée");
         setInviteOpen(false);
       },
-      onError: () => toast.error("Erreur lors de l'invitation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'invitation")),
     });
   };
 

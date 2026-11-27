@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { Loader2 } from "lucide-react";
 import { ConfirmDelete } from "@/components/site";
 import { Button } from "@/components/ui/button";
@@ -87,7 +88,7 @@ function CategoryDetail() {
           toast.success("Catégorie modifiée");
           setIsEditing(false);
         },
-        onError: () => toast.error("Erreur lors de la modification"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
       }
     );
   };
@@ -146,7 +147,7 @@ function CategoryDetail() {
               toast.success("Catégorie supprimée");
               navigate({ to: "/categories" });
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${cat.name}" ?`}

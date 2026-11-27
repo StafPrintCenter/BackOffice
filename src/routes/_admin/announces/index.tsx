@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminAnnouncementsList, useDeleteAdminAnnouncement } from "@/stores/useAnnouncementsStore";
 import type { APIAdminAnnouncement } from "@/data/announcements";
@@ -48,7 +49,7 @@ function AdminAnnouncements() {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
             onSuccess: () => { toast.success("Annonce supprimée"); setToDelete(null); },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${toDelete?.title}" ?`}

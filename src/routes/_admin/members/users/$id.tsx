@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { MemberSecurityCard } from "@/components/pages/members/security/MemberSecurityCard";
 import { MemberLastActivityCard } from "@/components/pages/members/MemberLastActivityCard";
@@ -69,7 +70,7 @@ function UserDetail() {
           toast.success("Alerte envoyée avec succès");
           setAlertOpen(false);
         },
-        onError: () => toast.error("Erreur lors de l'envoi de l'alerte"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'envoi de l'alerte")),
       }
     );
   };
@@ -82,7 +83,7 @@ function UserDetail() {
           toast.success("Utilisateur bloqué");
           setBlockOpen(false);
         },
-        onError: () => toast.error("Erreur lors du blocage"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors du blocage")),
       }
     );
   };
@@ -90,7 +91,7 @@ function UserDetail() {
   const handleReactivate = () => {
     reactivateMutation.mutate(user.id, {
       onSuccess: () => toast.success("Utilisateur réactivé"),
-      onError: () => toast.error("Erreur lors de la réactivation"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la réactivation")),
     });
   };
 

@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminCategoriesList, useCreateAdminCategory, useUpdateAdminCategory, useDeleteAdminCategory } from "@/stores/useCategoriesStore";
 import type { APIAdminCategory, AdminCategoryPayload } from "@/data/categories";
@@ -47,7 +48,7 @@ function AdminCategories() {
             toast.success("Catégorie modifiée");
             setDialogOpen(false);
           },
-          onError: () => toast.error("Erreur lors de la modification"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
         }
       );
     } else {
@@ -56,7 +57,7 @@ function AdminCategories() {
           toast.success("Catégorie créée");
           setDialogOpen(false);
         },
-        onError: () => toast.error("Erreur lors de la création"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création")),
       });
     }
   };
@@ -97,7 +98,7 @@ function AdminCategories() {
               toast.success("Catégorie supprimée");
               setToDelete(null);
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${toDelete?.name}" ?`}

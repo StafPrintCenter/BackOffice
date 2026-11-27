@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { HelpCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz } from "@/stores/useQuizzesStore";
@@ -74,7 +75,7 @@ export function QuizManager({
         { quizId, payload },
         {
           onSuccess: () => { toast.success("Quiz modifié"); setQuizDialog(false); },
-          onError: () => toast.error("Erreur lors de la modification du quiz"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification du quiz")),
         }
       );
     } else {
@@ -86,7 +87,7 @@ export function QuizManager({
             onQuizCreated(created.id);
             setQuizDialog(false);
           },
-          onError: () => toast.error("Erreur lors de la création du quiz"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création du quiz")),
         }
       );
     }
@@ -106,7 +107,7 @@ export function QuizManager({
       { lessonId, quizId },
       {
         onSuccess: () => { toast.success("Quiz supprimé"); setQuizToDelete(false); },
-        onError: () => toast.error("Erreur lors de la suppression du quiz"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression du quiz")),
       }
     );
   };

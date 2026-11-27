@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { z } from "zod";
 import { Users } from "lucide-react";
 import { PageHeader, ConfirmDelete, DataTable, RichTextEditor } from "@/components/site";
@@ -72,7 +73,7 @@ function AdminNewsletterCampaigns() {
     };
     createMutation.mutate(payload, {
       onSuccess: () => { toast.success("Campagne créée en brouillon"); setOpen(false); },
-      onError: () => toast.error("Erreur lors de la création"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la création")),
     });
   };
 
@@ -212,7 +213,7 @@ function AdminNewsletterCampaigns() {
           if (!toDelete) return;
           removeMutation.mutate(toDelete.id, {
             onSuccess: () => { toast.success("Campagne supprimée"); setToDelete(null); },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer la campagne "${toDelete?.subject}" ?`}

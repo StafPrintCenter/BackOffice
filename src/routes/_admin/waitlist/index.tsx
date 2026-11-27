@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { PageHeader, ConfirmDelete, DataTable } from "@/components/site";
 import { useAdminWaitlistList, useDeleteAdminWaitlist } from "@/stores/useWaitlistStore";
 import { getWaitlistPlatformBadge, getWaitlistPlatformLabel } from "@/data/waitlist";
@@ -74,7 +75,7 @@ function AdminWaitlist() {
               toast.success("Inscription supprimée de la liste d'attente");
               setToDelete(null);
             },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           });
         }}
         title={`Supprimer "${toDelete?.email}" ?`}

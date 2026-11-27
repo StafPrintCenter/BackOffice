@@ -22,7 +22,14 @@ export function TrainingDetailSidebar({ training, mainColor }: { training: Train
                 <span className="h-4 w-4 shrink-0 rounded-md border shadow-sm" style={{ backgroundColor: training.coverColor }} /></span>
             </Row>
           )}
-          {!!training.registrationFee && training.registrationFee > 0 && <Row icon={Wallet}>Frais d'inscription : {training.registrationFee.toLocaleString()} FCFA</Row>}
+          {training.discountPercentage > 0 && training.originalPrice != null && (
+            <Row icon={Wallet}>
+              <span className="flex items-center gap-2">
+                <span>Prix de base : <span className="line-through">{training.originalPrice.toLocaleString()} FCFA</span></span>
+                <span className="font-semibold text-foreground">-{training.discountPercentage}%</span>
+              </span>
+            </Row>
+          )}
           {training.accessMinRatio !== undefined && training.accessMinRatio !== null && <Row icon={PercentCircle}>Ratio d'accès min. : {Math.round(training.accessMinRatio * 100)}%</Row>}
         </div>
 

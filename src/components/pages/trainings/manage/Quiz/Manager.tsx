@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { HelpCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAdminQuiz, usePublishAdminQuiz } from "@/stores/useQuizzesStore";
-import type { AdminQuizPayload } from "@/data/quizzes";
+import type { AdminQuizPayload, QuizMode } from "@/data/quizzes";
 import { QuizContent } from "./Content";
 import { QuizManagerDialogs } from "./ManagerDialogs";
 import { EMPTY_QUIZ_FORM, type QuizFormValues } from "./FormTypes";
@@ -11,11 +11,13 @@ import { useQuizQuestionManager } from "../Utility/useQuizQuestionManager";
 
 export function QuizManager({
   lessonId,
+  mode,
   quizId,
   onQuizCreated,
   openReview,
 }: {
   lessonId: string;
+  mode: QuizMode;
   quizId: string | null;
   onQuizCreated: (id: string) => void;
   openReview: (type: "module" | "lesson" | "quiz", id: string, title: string, decision: "approved" | "rejected") => void;
@@ -33,7 +35,7 @@ export function QuizManager({
   const [quizToDelete, setQuizToDelete] = useState(false);
 
   const openCreateQuiz = () => {
-    setQuizForm(EMPTY_QUIZ_FORM);
+    setQuizForm({ ...EMPTY_QUIZ_FORM, mode });
     setQuizError("");
     setQuizDialog(true);
   };
@@ -41,7 +43,7 @@ export function QuizManager({
   const openEditQuiz = () => {
     if (!quiz) return;
     setQuizForm({
-      mode: quiz.mode,
+      mode,
       time_limit_sec: quiz.timeLimitSec != null ? String(quiz.timeLimitSec) : "",
       pass_score: String(quiz.passScore),
       max_attempts: String(quiz.maxAttempts),
@@ -52,14 +54,14 @@ export function QuizManager({
   };
 
   const submitQuiz = () => {
-    if (quizForm.mode === "quiz" && !quizForm.time_limit_sec.trim()) {
+    if (mode === "quiz" && !quizForm.time_limit_sec.trim()) {
       setQuizError("La durée limite est requise en mode Quiz chronométré");
       return;
     }
     setQuizError("");
 
     const payload: AdminQuizPayload = {
-      mode: quizForm.mode,
+      mode,
       time_limit_sec: quizForm.time_limit_sec ? Number(quizForm.time_limit_sec) : undefined,
       pass_score: Number(quizForm.pass_score),
       max_attempts: Number(quizForm.max_attempts),

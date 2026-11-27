@@ -1,7 +1,7 @@
 import { CheckCircle2, ShieldCheck, UsersRound, XCircle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import type { MemberSecurityChecks, MemberSecuritySummary } from "@/data/memberSecurity";
+import type { MemberSecurityChecks, MemberSecuritySummary } from "@/data/memberAction";
 
 interface MemberSecurityCardProps {
   security: MemberSecuritySummary | undefined;
@@ -61,16 +61,14 @@ export function MemberSecurityCard({ security }: MemberSecurityCardProps) {
                     className="flex items-start gap-2 rounded-lg border bg-background/50 p-3"
                   >
                     <StatusIcon
-                      className={`mt-0.5 h-4 w-4 shrink-0 ${
-                        passed ? "text-emerald-600" : "text-amber-600"
-                      }`}
+                      className={`mt-0.5 h-4 w-4 shrink-0 ${passed ? "text-emerald-600" : "text-amber-600"
+                        }`}
                       aria-hidden="true"
                     />
                     <span className="min-w-0 flex-1 text-sm">{label}</span>
                     <span
-                      className={`shrink-0 text-xs font-medium ${
-                        passed ? "text-emerald-600" : "text-amber-600"
-                      }`}
+                      className={`shrink-0 text-xs font-medium ${passed ? "text-emerald-600" : "text-amber-600"
+                        }`}
                     >
                       {passed ? "Conforme" : "À renforcer"}
                     </span>

@@ -1,6 +1,5 @@
 import type { TrainingInstructorRole } from "@/data/trainingInstructors";
-import type { MemberSecuritySummary } from "@/data/memberSecurity";
-import type { MemberActivityFields } from "@/data/memberAction";
+import type { MemberSecuritySummary, MemberActivityFields } from "@/data/memberAction";
 
 export type InstructorRegistrationSource = "invited" | "self_registered";
 

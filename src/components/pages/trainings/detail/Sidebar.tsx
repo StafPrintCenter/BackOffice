@@ -13,6 +13,14 @@ export function TrainingDetailSidebar({ training, mainColor }: { training: Train
       <div className="rounded-2xl border bg-card p-6">
         <div className="font-display text-3xl font-bold" style={{ color: mainColor }}>{training.price.toLocaleString()} FCFA</div>
         <div className="mt-4 space-y-3 text-sm">
+          {training.discountPercentage > 0 && training.originalPrice != null && (
+            <Row icon={Wallet}>
+              <span className="flex items-center gap-2">
+                <span>Prix de base : <span className="line-through">{training.originalPrice.toLocaleString()} FCFA</span></span>
+                <span className="font-semibold text-foreground">-{training.discountPercentage}%</span>
+              </span>
+            </Row>
+          )}
           <Row icon={Users}>{training.audience || "-"}</Row>
           <Row icon={Award}>{training.certification || "-"}</Row>
           <Row icon={CalendarClock}>{training.schedule || "-"}</Row>
@@ -22,14 +30,7 @@ export function TrainingDetailSidebar({ training, mainColor }: { training: Train
                 <span className="h-4 w-4 shrink-0 rounded-md border shadow-sm" style={{ backgroundColor: training.coverColor }} /></span>
             </Row>
           )}
-          {training.discountPercentage > 0 && training.originalPrice != null && (
-            <Row icon={Wallet}>
-              <span className="flex items-center gap-2">
-                <span>Prix de base : <span className="line-through">{training.originalPrice.toLocaleString()} FCFA</span></span>
-                <span className="font-semibold text-foreground">-{training.discountPercentage}%</span>
-              </span>
-            </Row>
-          )}
+
           {training.accessMinRatio !== undefined && training.accessMinRatio !== null && <Row icon={PercentCircle}>Ratio d'accès min. : {Math.round(training.accessMinRatio * 100)}%</Row>}
         </div>
 

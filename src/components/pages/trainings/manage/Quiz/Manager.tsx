@@ -6,7 +6,7 @@ import { useAdminQuizDetail, useCreateAdminQuiz, useUpdateAdminQuiz, useDeleteAd
 import type { AdminQuizPayload, QuizMode } from "@/data/quizzes";
 import { QuizContent } from "./Content";
 import { QuizManagerDialogs } from "./ManagerDialogs";
-import { EMPTY_QUIZ_FORM, type QuizFormValues } from "./FormTypes";
+import { EMPTY_QUIZ_FORM, quizFormValuesForMode, type QuizFormValues } from "./FormTypes";
 import { useQuizQuestionManager } from "../Utility/useQuizQuestionManager";
 
 export function QuizManager({
@@ -35,18 +35,19 @@ export function QuizManager({
   const [quizToDelete, setQuizToDelete] = useState(false);
 
   const openCreateQuiz = () => {
-    setQuizForm({ ...EMPTY_QUIZ_FORM, mode });
+    setQuizForm(quizFormValuesForMode(mode));
     setQuizError("");
     setQuizDialog(true);
   };
 
   const openEditQuiz = () => {
     if (!quiz) return;
+    const defaults = quizFormValuesForMode(mode);
     setQuizForm({
       mode,
-      time_limit_sec: quiz.timeLimitSec != null ? String(quiz.timeLimitSec) : "",
-      pass_score: String(quiz.passScore),
-      max_attempts: String(quiz.maxAttempts),
+      time_limit_sec: mode === "quiz" && quiz.timeLimitSec != null ? String(quiz.timeLimitSec) : defaults.time_limit_sec,
+      pass_score: quiz.passScore != null ? String(quiz.passScore) : defaults.pass_score,
+      max_attempts: quiz.maxAttempts != null ? String(quiz.maxAttempts) : defaults.max_attempts,
       auto_submit_on_timeout: quiz.autoSubmitOnTimeout,
     });
     setQuizError("");

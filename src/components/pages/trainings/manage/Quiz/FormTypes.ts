@@ -10,11 +10,22 @@ export interface QuizFormValues {
 
 export const EMPTY_QUIZ_FORM: QuizFormValues = {
   mode: "quiz",
-  time_limit_sec: "",
-  pass_score: "50",
-  max_attempts: "1",
+  time_limit_sec: "600",
+  pass_score: "80",
+  max_attempts: "3",
   auto_submit_on_timeout: true,
 };
+
+export function quizFormValuesForMode(mode: QuizMode): QuizFormValues {
+  return {
+    ...EMPTY_QUIZ_FORM,
+    mode,
+    time_limit_sec: mode === "quiz" ? "600" : "",
+    pass_score: mode === "exercise" ? "70" : "50",
+    max_attempts: mode === "exercise" ? "5" : "3",
+    auto_submit_on_timeout: mode === "quiz",
+  };
+}
 
 export interface QuestionFormValues {
   prompt: string;

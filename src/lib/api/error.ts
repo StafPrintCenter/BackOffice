@@ -17,3 +17,7 @@ export async function parseApiError(response: Response, fallback: string): Promi
   }
   return new Error(fallback);
 }
+
+export function getApiErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error && error.message.trim() ? error.message : fallback;
+}

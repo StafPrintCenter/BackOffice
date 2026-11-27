@@ -1,13 +1,5 @@
 import type { ReactNode } from "react";
-import {
-  Clock3,
-  Globe2,
-  KeyRound,
-  Laptop,
-  MapPin,
-  MonitorSmartphone,
-  Smartphone,
-} from "lucide-react";
+import { Clock3, Globe2, KeyRound, Laptop, MapPin, MonitorSmartphone, Smartphone } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   formatLastActivityAt,
@@ -44,7 +36,7 @@ function ActivityDetail({
       <span className="shrink-0 text-muted-foreground">{icon}</span>
       <div className="min-w-0">
         <div className="text-xs font-medium text-muted-foreground">{label}</div>
-        <div className="mt-0.5 break-words text-sm font-semibold">{value || "-"}</div>
+        <div className="mt-0.5 wrap-break-word text-sm font-semibold">{value || "-"}</div>
       </div>
     </div>
   );

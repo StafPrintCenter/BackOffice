@@ -9,6 +9,7 @@ import { useAdminCategoriesList } from "@/stores/useCategoriesStore";
 import { sanitizeTrainingPayload } from "@/data/trainings";
 import type { AdminTrainingPayload } from "@/data/trainings";
 import { SITE } from "@/data/site";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { toPayload, TrainingDetailHero, TrainingDetailInstructorsSection, TrainingDetailEditForm, TrainingDetailSidebar, TrainingDetailSessionsCard, TrainingDetailObjectivesCard, TrainingDetailProgramCard } from "@/components/pages/trainings/detail";
 import { TrainingStudentsSection } from "@/components/pages/trainings/enrollments/TrainingStudentsSection";
 
@@ -56,7 +57,7 @@ function TrainingDetail() {
   const handleSave = () =>
     updateMutation.mutate({ id: training.id, payload: sanitizeTrainingPayload(form) }, {
       onSuccess: () => { toast.success("Formation modifiée"); setIsEditing(false); },
-      onError: () => toast.error("Erreur lors de la modification"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification")),
     });
 
   const handleCancel = () => { setForm(toPayload(training)); setIsEditing(false); };
@@ -105,7 +106,7 @@ function TrainingDetail() {
         onConfirm={() =>
           removeMutation.mutate(training.id, {
             onSuccess: () => { toast.success("Formation supprimée"); navigate({ to: "/trainings/catalogs" }); },
-            onError: () => toast.error("Erreur lors de la suppression"),
+            onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression")),
           })
         }
         title={`Supprimer "${training.title}" ?`}

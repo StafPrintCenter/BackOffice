@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { useCreateAdminContentReview } from "@/stores/useContentReviewsStore";
 import type { ContentReviewDialogState } from "../Training/ManageDialogs";
 
@@ -32,7 +33,7 @@ export function useTrainingReviewManager() {
           toast.success(dialog.decision === "approved" ? "Contenu approuvé" : "Contenu rejeté");
           setDialog(null);
         },
-        onError: () => toast.error("Erreur lors de l'enregistrement de la décision"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'enregistrement de la décision")),
       }
     );
   };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { AdminQuizQuestionPayload, QuizQuestion } from "@/data/quizzes";
 import { useCreateAdminQuizQuestion, useDeleteAdminQuizQuestion, useUpdateAdminQuizQuestion } from "@/stores/useQuizzesStore";
 import { EMPTY_QUESTION_FORM, type QuestionDialogState, type QuestionFormValues } from "../Quiz/FormTypes";
@@ -68,7 +69,7 @@ export function useQuizQuestionManager(quizId: string | null, questionCount: num
         { questionId: dialog.row.id, quizId, payload },
         {
           onSuccess: () => { toast.success("Question modifiée"); setDialog({ open: false }); },
-          onError: () => toast.error("Erreur lors de la modification de la question"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification de la question")),
         }
       );
     } else {
@@ -76,7 +77,7 @@ export function useQuizQuestionManager(quizId: string | null, questionCount: num
         { quizId, payload },
         {
           onSuccess: () => { toast.success("Question ajoutée"); setDialog({ open: false }); },
-          onError: () => toast.error("Erreur lors de l'ajout de la question"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'ajout de la question")),
         }
       );
     }
@@ -88,7 +89,7 @@ export function useQuizQuestionManager(quizId: string | null, questionCount: num
       { questionId: questionToDelete.id, quizId },
       {
         onSuccess: () => { toast.success("Question supprimée"); setQuestionToDelete(null); },
-        onError: () => toast.error("Erreur lors de la suppression de la question"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression de la question")),
       }
     );
   };

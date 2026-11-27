@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { LESSON_FORM_KINDS, EMPTY_LESSON_FORM, type LessonFormValues } from "../Lesson";
 import type { APIAdminLesson, AdminLessonPayload } from "@/data/trainingModules";
 import { useCreateAdminLesson, useDeleteAdminLesson, usePublishAdminLesson, useUpdateAdminLesson } from "@/stores/useLessonsStore";
@@ -77,7 +78,7 @@ export function useTrainingLessonManager() {
         { lessonId: dialog.row.id, payload },
         {
           onSuccess: () => { toast.success("Leçon modifiée"); setDialog({ open: false, moduleId: "" }); },
-          onError: () => toast.error("Erreur lors de la modification de la leçon"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la modification de la leçon")),
         }
       );
     } else {
@@ -85,7 +86,7 @@ export function useTrainingLessonManager() {
         { moduleId: dialog.moduleId, payload },
         {
           onSuccess: () => { toast.success("Leçon ajoutée"); setDialog({ open: false, moduleId: "" }); },
-          onError: () => toast.error("Erreur lors de l'ajout de la leçon"),
+          onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de l'ajout de la leçon")),
         }
       );
     }
@@ -94,7 +95,7 @@ export function useTrainingLessonManager() {
   const publish = (lesson: APIAdminLesson) => {
     publishMutation.mutate(lesson.id, {
       onSuccess: () => toast.success("Leçon publiée"),
-      onError: () => toast.error("Erreur lors de la publication de la leçon"),
+      onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la publication de la leçon")),
     });
   };
 
@@ -108,7 +109,7 @@ export function useTrainingLessonManager() {
           setExpandedIds((current) => current.filter((id) => id !== lessonToDelete.lesson.id));
           setLessonToDelete(null);
         },
-        onError: () => toast.error("Erreur lors de la suppression de la leçon"),
+        onError: (error) => toast.error(getApiErrorMessage(error, "Erreur lors de la suppression de la leçon")),
       }
     );
   };
